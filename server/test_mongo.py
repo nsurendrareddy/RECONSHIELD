@@ -5,7 +5,7 @@ import certifi
 async def test():
     try:
         client = AsyncIOMotorClient(
-            'mongodb+srv://nsurendrareddy3_db_user:lp22QQOYlm84p3iy@cluster0.ib2u7um.mongodb.net/?appName=Cluster0',
+            '',
             tlsCAFile=certifi.where(),
             tlsAllowInvalidCertificates=True
         )
