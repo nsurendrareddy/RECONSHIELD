@@ -180,13 +180,19 @@ pip install -r requirements.txt
 uvicorn main:app --host 0.0.0.0 --port $PORT
 ```
 
-### Frontend (Vercel / Netlify)
-```bash
-cd client
-npm run build
-# Deploy the dist/ folder
-# Set API proxy/rewrite to your backend URL
-```
+### Frontend (Vercel)
+1. **Import** the repository into Vercel.
+2. In **Project Settings**, set the **Root Directory** to `client`.
+3. Vercel will automatically detect **Vite** and set the build command (`npm run build`) and output directory (`dist`).
+4. Add an **Environment Variable**:
+   - `VITE_API_URL`: Your backend API URL (e.g., `https://reconshield-api.onrender.com`)
+5. Deploy.
+
+> [!IMPORTANT]
+> **CORS Configuration**: On your backend (Render), make sure to update the `FRONTEND_URL` environment variable to your new Vercel URL. This ensures the API allows requests from your frontend.
+
+> [!TIP]
+> The `client/vercel.json` file is already configured to handle React Router navigation (SPA routing).
 
 ### Docker (Optional — enables Linux tools)
 ```dockerfile
