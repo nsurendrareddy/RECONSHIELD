@@ -4,6 +4,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://reconshield.onrender.com/api/:path*"
+    },
+    {
+      "source": "/uploads/:path*",
+      "destination": "https://reconshield.onrender.com/uploads/:path*"
     }
   ]
 }
