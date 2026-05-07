@@ -11,8 +11,14 @@ db = None
 async def init_db():
     """Initialize the database connection and indexes."""
     global client, db
-    client = AsyncIOMotorClient(settings.MONGO_URI)
+    client = AsyncIOMotorClient(
+        settings.MONGO_URI,
+        serverSelectionTimeoutMS=5000
+    )
     db = client[settings.MONGO_DB_NAME]
+    
+    # Verify connection
+    await client.admin.command('ping')
     
     # Create indexes
     await db.scans.create_index("domain")
