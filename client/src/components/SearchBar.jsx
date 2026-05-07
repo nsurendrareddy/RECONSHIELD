@@ -39,7 +39,7 @@ export default function SearchBar({ onScan, isScanning }) {
             <button
               type="submit"
               disabled={isScanning}
-              className="shrink-0 px-6 py-3 bg-gradient-to-r from-matrix-400 to-cyber-400 text-surface-950 font-bold font-heading text-sm tracking-wider rounded-xl
+              className="shrink-0 px-4 sm:px-6 py-3 bg-gradient-to-r from-matrix-400 to-cyber-400 text-surface-950 font-bold font-heading text-xs sm:text-sm tracking-wider rounded-xl
                          hover:from-matrix-300 hover:to-cyber-300 disabled:opacity-40 disabled:cursor-not-allowed
                          transition-all duration-300 shadow-lg shadow-matrix-400/15 hover:shadow-matrix-400/30
                          flex items-center gap-2 uppercase"

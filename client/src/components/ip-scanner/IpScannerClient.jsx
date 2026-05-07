@@ -156,48 +156,49 @@ export default function IpScannerClient() {
 
           <form onSubmit={handleScan} className="flex-1 max-w-lg relative group">
             <div className="absolute inset-0 bg-matrix-400/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 -z-10" />
-            <input
-              type="text"
-              value={target}
-              onChange={(e) => setTarget(e.target.value)}
-              placeholder="Enter IP address or domain (e.g. 8.8.8.8 or google.com)"
-              className="w-full bg-surface-900/50 border border-white/5 rounded-2xl py-4 pl-12 pr-32 focus:border-matrix-400/50 focus:ring-1 focus:ring-matrix-400/50 outline-none transition-all font-mono text-sm"
-            />
-            <div className="absolute right-32 top-1/2 -translate-y-1/2 flex items-center gap-2">
-               <button 
-                 type="button"
-                 onClick={handleGps}
-                 className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-matrix-400 transition-colors"
-                 title="Use Browser GPS (Most Accurate)"
-               >
-                 <Activity className="w-4 h-4" />
-               </button>
-               <button 
-                 type="button"
-                 onClick={handleMyIp}
-                 className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-matrix-400 transition-colors"
-                 title="Scan My IP"
-               >
-                 <MapPin className="w-4 h-4" />
-               </button>
+            <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-1.5 sm:p-2 rounded-2xl bg-surface-900/50 border border-white/5 focus-within:border-matrix-400/50 transition-all">
+              <div className="flex-1 flex items-center gap-2 px-3 sm:px-4 min-h-[48px]">
+                <Search className="w-4 h-4 text-gray-500 shrink-0" />
+                <input
+                  type="text"
+                  value={target}
+                  onChange={(e) => setTarget(e.target.value)}
+                  placeholder="IP or domain"
+                  className="w-full bg-transparent border-none outline-none text-matrix-400 placeholder-gray-600 text-sm font-mono"
+                  disabled={scanning}
+                />
+              </div>
+              
+              <div className="flex items-center justify-between sm:justify-end gap-2 px-3 sm:px-0">
+                <div className="flex items-center gap-1">
+                  <button 
+                    type="button"
+                    onClick={handleGps}
+                    className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-matrix-400 transition-colors"
+                    title="Use Browser GPS"
+                  >
+                    <Activity className="w-4 h-4" />
+                  </button>
+                  <button 
+                    type="button"
+                    onClick={handleMyIp}
+                    className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-matrix-400 transition-colors"
+                    title="Scan My IP"
+                  >
+                    <MapPin className="w-4 h-4" />
+                  </button>
+                </div>
+                
+                <button
+                  disabled={scanning}
+                  type="submit"
+                  className="flex-1 sm:flex-none px-6 py-2.5 bg-matrix-400 text-surface-950 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-matrix-300 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+                >
+                  {scanning ? <Activity className="w-3 h-3 animate-spin" /> : <Shield className="w-3 h-3" />}
+                  <span>{scanning ? '...' : 'Scan'}</span>
+                </button>
+              </div>
             </div>
-            <button
-              disabled={scanning}
-              type="submit"
-              className="absolute right-2 top-2 bottom-2 px-6 bg-matrix-400 text-surface-950 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-matrix-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2"
-            >
-              {scanning ? (
-                <>
-                  <Activity className="w-3 h-3 animate-spin" />
-                  <span>Scanning...</span>
-                </>
-              ) : (
-                <>
-                  <Shield className="w-3 h-3" />
-                  <span>Start Scan</span>
-                </>
-              )}
-            </button>
           </form>
         </div>
       </div>
@@ -286,7 +287,7 @@ export default function IpScannerClient() {
                 animate={{ opacity: 1 }}
                 className="space-y-6"
               >
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                   <div className="terminal-card col-span-2 p-6 flex items-center justify-between">
                     <div className="space-y-4">
                       <div>

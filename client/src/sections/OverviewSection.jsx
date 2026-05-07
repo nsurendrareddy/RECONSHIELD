@@ -52,7 +52,7 @@ export default function OverviewSection({ data, scanId, onLockClick }) {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-6">
             {[
               { icon: AlertTriangle, color: 'red', count: stats.critical || 0, label: 'Critical' },
               { icon: AlertTriangle, color: 'amber', count: stats.warnings || 0, label: 'Warnings' },
