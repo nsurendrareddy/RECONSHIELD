@@ -36,6 +36,7 @@ async def get_article(slug: str):
     db = get_database()
     # Normalize slug for lookup
     slug_normalized = sanitize_slug(slug)
+    print(f">>> BLOG REQUEST: raw='{slug}', normalized='{slug_normalized}'", flush=True)
     article = await db.articles.find_one({"slug": slug_normalized})
     
     if not article:

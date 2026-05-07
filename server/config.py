@@ -24,7 +24,14 @@ class Settings:
     SCAN_TIMEOUT: int = int(os.getenv("SCAN_TIMEOUT", "120"))
     PORT_CHECK_TIMEOUT: float = float(os.getenv("PORT_CHECK_TIMEOUT", "3.0"))
 
-    MONGO_URI: str = os.getenv("MONGO_URI", "")
+    MONGO_URI: str = os.getenv("MONGO_URI", "mongodb+srv://nsurendrareddy3_db_user:Reddy9999@cluster0.ib2u7um.mongodb.net/?appName=Cluster0").strip().rstrip(',')
+    if not MONGO_URI:
+        print("!!! WARNING: MONGO_URI is not set !!!", flush=True)
+    else:
+        # Log a masked version for debugging
+        masked_uri = MONGO_URI.split("@")[-1] if "@" in MONGO_URI else "INVALID_FORMAT"
+        print(f">>> MONGO_URI host: {masked_uri}", flush=True)
+    
     MONGO_DB_NAME: str = os.getenv("MONGO_DB_NAME", "reconshield")
 
     # SMTP Settings

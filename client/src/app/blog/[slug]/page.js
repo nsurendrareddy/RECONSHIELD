@@ -6,8 +6,11 @@ import Link from 'next/link';
 
 async function getPost(slug) {
   try {
-    const res = await fetch(`${API_BASE}/blog/${slug}`, { cache: 'no-store' });
-    if (!res.ok) return null;
+    const res = await fetch(`${API_BASE}/blog/${encodeURIComponent(slug)}`, { cache: 'no-store' });
+    if (!res.ok) {
+      console.warn(`Blog fetch failed for slug: ${slug}, status: ${res.status}`);
+      return null;
+    }
     return res.json();
   } catch (err) {
     console.error(err);
