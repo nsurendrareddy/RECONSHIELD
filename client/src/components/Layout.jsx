@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Shield, History, Terminal, Sun, Moon, Activity, LogOut, Edit, AlertTriangle, Lock, Globe } from 'lucide-react'
+import { Shield, History, Terminal, Sun, Moon, Activity, LogOut, Edit, AlertTriangle, Lock, Globe, Menu, X, User } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useState, useEffect } from 'react'
 
@@ -10,6 +10,7 @@ export default function Layout({ children }) {
   const { user, role, logout } = useAuth()
   const [theme, setTheme] = useState('dark')
   const [showBanner, setShowBanner] = useState(true)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('reconshield-theme') || 'dark'
@@ -90,9 +91,9 @@ export default function Layout({ children }) {
               </div>
             </Link>
 
-            {/* Nav */}
+            {/* Nav - Desktop */}
             <div className="flex items-center gap-2 sm:gap-6">
-              <nav className="flex items-center gap-1">
+              <nav className="hidden md:flex items-center gap-1">
                 {navItems.map(({ path, label, icon: Icon }) => (
                   <Link
                     key={path}
@@ -108,12 +109,12 @@ export default function Layout({ children }) {
                     }`}
                   >
                     {Icon && <Icon className="w-4 h-4" />}
-                    <span className="hidden md:inline">{label}</span>
+                    <span>{label}</span>
                   </Link>
                 ))}
               </nav>
 
-              <div className={`flex items-center gap-3 sm:gap-4 ml-2 sm:ml-4 pl-2 sm:pl-4 border-l ${theme === 'dark' ? 'border-white/[0.06]' : 'border-gray-200'}`}>
+              <div className={`flex items-center gap-2 sm:gap-4 ml-2 sm:ml-4 pl-2 sm:pl-4 border-l ${theme === 'dark' ? 'border-white/[0.06]' : 'border-gray-200'}`}>
                 {/* Theme Toggle */}
                 <button 
                   onClick={toggleTheme}
@@ -122,10 +123,12 @@ export default function Layout({ children }) {
                       ? 'bg-white/[0.03] text-gray-400 hover:text-white hover:bg-white/[0.08]' 
                       : 'bg-gray-100 text-gray-500 hover:text-gray-900 hover:bg-gray-200'
                   }`}
+                  aria-label="Toggle Theme"
                 >
                   {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                 </button>
 
+                {/* Desktop Auth */}
                 <div className="hidden sm:flex items-center gap-4">
                   {!user ? (
                     <>
@@ -167,10 +170,108 @@ export default function Layout({ children }) {
                     </>
                   )}
                 </div>
+
+                {/* Mobile Menu Button */}
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className={`md:hidden p-2 rounded-lg transition-all ${
+                    theme === 'dark'
+                      ? 'bg-matrix-400/10 text-matrix-400'
+                      : 'bg-matrix-600/10 text-matrix-600'
+                  }`}
+                  aria-label="Toggle Menu"
+                >
+                  {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                </button>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Mobile Navigation Overlay */}
+        {isMenuOpen && (
+          <div className={`md:hidden fixed inset-0 top-16 z-40 transition-all duration-300 ${
+            theme === 'dark' ? 'bg-surface-950/95' : 'bg-white/95'
+          } backdrop-blur-xl`}>
+            <div className="px-6 py-8 space-y-8 animate-fade-in">
+              <nav className="flex flex-col gap-2">
+                {navItems.map(({ path, label, icon: Icon }) => (
+                  <Link
+                    key={path}
+                    href={path}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`flex items-center gap-4 p-4 rounded-xl text-base font-medium transition-all ${
+                      pathname === path
+                        ? theme === 'dark'
+                          ? 'bg-matrix-400/10 text-matrix-400 border border-matrix-400/20'
+                          : 'bg-matrix-600/10 text-matrix-600 border border-matrix-600/20'
+                        : theme === 'dark'
+                          ? 'text-gray-400 hover:text-matrix-400 hover:bg-white/[0.02]'
+                          : 'text-gray-600 hover:text-matrix-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    {Icon && <Icon className="w-5 h-5" />}
+                    <span>{label}</span>
+                  </Link>
+                ))}
+              </nav>
+
+              <div className="pt-8 border-t border-white/[0.06]">
+                {!user ? (
+                  <div className="grid grid-cols-2 gap-4">
+                    <Link
+                      href="/login"
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`flex items-center justify-center py-4 rounded-xl text-sm font-bold uppercase tracking-wider transition-all ${
+                        theme === 'dark' ? 'bg-white/[0.03] text-gray-400' : 'bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/register"
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`flex items-center justify-center py-4 rounded-xl text-sm font-bold uppercase tracking-wider transition-all ${
+                        theme === 'dark' ? 'bg-matrix-400 text-surface-950' : 'bg-matrix-600 text-white'
+                      }`}
+                    >
+                      Register
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className={`flex items-center gap-3 p-4 rounded-xl ${theme === 'dark' ? 'bg-white/[0.03]' : 'bg-gray-50'}`}>
+                      <div className="w-10 h-10 rounded-full bg-matrix-400/20 flex items-center justify-center text-matrix-400">
+                        <User className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className={`text-sm font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{user.email || 'Operative'}</p>
+                        <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">{role || 'User'}</p>
+                      </div>
+                    </div>
+                    {role === 'admin' && (
+                      <Link
+                        href="/blog/create"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="flex items-center justify-center gap-2 py-4 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-xl text-sm font-bold uppercase tracking-wider"
+                      >
+                        <Edit className="w-4 h-4" />
+                        Write Article
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => { logout(); setIsMenuOpen(false); }}
+                      className="w-full flex items-center justify-center gap-2 py-4 bg-red-500/5 text-red-500 border border-red-500/10 rounded-xl text-sm font-bold uppercase tracking-wider"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </header>
 
       {/* Main Content */}
@@ -231,13 +332,5 @@ export default function Layout({ children }) {
         </div>
       </footer>
     </div>
-  )
-}
-
-function X({ className }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-    </svg>
   )
 }
