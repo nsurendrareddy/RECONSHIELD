@@ -20,19 +20,29 @@ export default function Login() {
     setError('')
 
     try {
+      const formData = new URLSearchParams();
+      formData.append('username', email);
+      formData.append('password', password);
+
       const response = await fetch(`${API_BASE}/auth/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData
       })
 
       const data = await response.json()
 
       if (response.ok) {
-        login(data.token, data.role)
+        // FastAPI returns access_token, not token
+        login(data.access_token, data.role)
         router.push('/')
       } else {
-        setError(data.detail || 'Invalid intelligence credentials.')
+        const errorMsg = typeof data.detail === 'string' 
+          ? data.detail 
+          : Array.isArray(data.detail) 
+            ? data.detail[0].msg 
+            : 'Invalid intelligence credentials.';
+        setError(errorMsg)
       }
     } catch (err) {
       setError('Connection to intelligence relay failed.')
