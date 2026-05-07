@@ -4,10 +4,30 @@ import { useScan } from '@/hooks/useScan';
 import SearchBar from '@/components/SearchBar';
 import LoadingState from '@/components/LoadingState';
 import { motion } from 'framer-motion';
+import { Globe, Lock, Layers, Shield, Activity } from 'lucide-react';
 
-export default function ToolScannerClient({ toolId, config }) {
+// Specialized sections
+import DnsSection from '@/sections/DnsSection';
+import SslSection from '@/sections/SslSection';
+import HeadersSection from '@/sections/HeadersSection';
+import VulnSimSection from '@/sections/VulnSimSection';
+import IpSection from '@/sections/IpSection';
+
+const SECTION_MAP = {
+  'dns-lookup': { section: DnsSection, icon: Globe, dataKey: 'dns' },
+  'ssl-checker': { section: SslSection, icon: Lock, dataKey: 'ssl' },
+  'security-headers': { section: HeadersSection, icon: Layers, dataKey: 'headers' },
+  'vulnerability-scanner': { section: VulnSimSection, icon: Shield, dataKey: 'vuln_sim' },
+  'threat-intelligence': { section: IpSection, icon: Activity, dataKey: 'ip' },
+};
+
+export default function ToolScannerClient({ toolId, title, desc }) {
   const { status, scanData, domain, scan, scanProgress, progress, reset } = useScan();
   const results = scanData?.results || {};
+  
+  const tool = SECTION_MAP[toolId] || SECTION_MAP['dns-lookup'];
+  const SectionComponent = tool.section;
+  const IconComponent = tool.icon;
 
   return (
     <div className="max-w-5xl mx-auto py-12">
@@ -17,11 +37,11 @@ export default function ToolScannerClient({ toolId, config }) {
         className="flex items-center gap-4 mb-10"
       >
         <div className="w-14 h-14 rounded-2xl bg-matrix-400/10 border border-matrix-400/20 flex items-center justify-center text-matrix-400">
-          {React.cloneElement(config.icon, { size: 28 })}
+          <IconComponent size={28} />
         </div>
         <div>
-          <h1 className="text-3xl font-display font-bold text-white uppercase tracking-wider">{config.title}</h1>
-          <p className="text-gray-500 font-mono text-sm mt-1">{config.desc}</p>
+          <h1 className="text-3xl font-display font-bold text-white uppercase tracking-wider">{title}</h1>
+          <p className="text-gray-500 font-mono text-sm mt-1">{desc}</p>
         </div>
       </motion.div>
 
@@ -44,7 +64,7 @@ export default function ToolScannerClient({ toolId, config }) {
             <button onClick={reset} className="text-[10px] font-mono text-gray-500 hover:text-matrix-400 uppercase underline">New Analysis</button>
           </div>
           
-          <config.section data={results[config.dataKey]} />
+          <SectionComponent data={results[tool.dataKey]} />
         </motion.div>
       )}
 
