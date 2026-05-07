@@ -26,6 +26,8 @@ import ErrorBoundary from '../components/ErrorBoundary'
 import AuthModal from '../components/AuthModal'
 import { useState } from 'react'
 import { AlertTriangle, RotateCcw, Crosshair, Clock } from 'lucide-react'
+import SOCBackground from '../components/SOCBackground'
+import Hero from '../components/Hero'
 
 export default function Dashboard() {
   const { status, scanData, error, progress, scanProgress, domain, scan, reset } = useScan()
@@ -33,9 +35,23 @@ export default function Dashboard() {
   const results = scanData?.results || {}
   const isLimitReached = status === 'limit-reached'
 
+  useEffect(() => {
+    if (status === 'completed' && scanData) {
+      document.title = `Scan Report: ${scanData.domain} | ReconShield`;
+    } else {
+      document.title = 'ReconShield - AI Cybersecurity & Threat Detection Platform';
+    }
+  }, [status, scanData]);
+
   return (
-    <div>
-      <SearchBar onScan={scan} isScanning={status === 'scanning'} />
+    <div className="relative min-h-screen">
+      <SOCBackground />
+      
+      {status === 'idle' && <Hero />}
+      
+      <div className={status === 'idle' ? 'max-w-4xl mx-auto' : ''}>
+        <SearchBar onScan={scan} isScanning={status === 'scanning'} />
+      </div>
 
       {status === 'scanning' && (
         <ErrorBoundary>

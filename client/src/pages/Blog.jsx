@@ -3,11 +3,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { API_BASE, BASE_URL } from '../utils/api'
+import { Search } from 'lucide-react'
 
 export default function Blog() {
   const [articles, setArticles] = useState([])
   const { role, token } = useAuth()
   const navigate = useNavigate()
+
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('All')
 
   useEffect(() => {
     fetch(`${API_BASE}/blog`)
@@ -15,6 +19,15 @@ export default function Blog() {
       .then(data => setArticles(data))
       .catch(err => console.error(err))
   }, [])
+
+  const categories = ['All', ...new Set(articles.map(a => a.category))]
+
+  const filteredArticles = articles.filter(article => {
+    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                         article.content.toLowerCase().includes(searchQuery.toLowerCase())
+    const matchesCategory = selectedCategory === 'All' || article.category === selectedCategory
+    return matchesSearch && matchesCategory
+  })
 
   const getCategoryColor = (cat) => {
     const colors = {
@@ -59,8 +72,36 @@ export default function Blog() {
         </div>
       </div>
 
+      <div className="flex flex-col md:flex-row gap-6 mb-12">
+        <div className="relative flex-1">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <input 
+            type="text"
+            placeholder="Search intelligence briefings..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-surface-900 border border-white/5 rounded-xl py-3 pl-12 pr-4 text-sm text-white focus:border-matrix-400 focus:outline-none transition-all"
+          />
+        </div>
+        <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+          {categories.map(cat => (
+            <button
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`px-4 py-2 rounded-xl text-xs font-mono whitespace-nowrap border transition-all ${
+                selectedCategory === cat 
+                ? 'bg-matrix-400 text-surface-950 border-matrix-400 font-bold' 
+                : 'bg-surface-900 text-gray-500 border-white/5 hover:border-matrix-400/30'
+              }`}
+            >
+              {cat.toUpperCase()}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {articles.map((article, i) => (
+        {filteredArticles.map((article, i) => (
           <div 
             onClick={() => navigate(`/blog/${article.slug}`)} 
             key={article._id} 

@@ -16,23 +16,7 @@ export default function SearchBar({ onScan, isScanning }) {
   }
 
   return (
-    <div className="animate-fade-in">
-      {/* Hero */}
-      <div className="text-center mb-10">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-matrix-400/5 border border-matrix-400/10 mb-5">
-          <Zap className="w-3.5 h-3.5 text-matrix-400" />
-          <span className="text-xs font-mono text-matrix-400/80 tracking-wider">ENTERPRISE SECURITY INTELLIGENCE</span>
-        </div>
-        <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-wider mb-4">
-          <span className="text-gradient-matrix">SECURITY</span>
-          <span className="text-white"> SCANNER</span>
-        </h2>
-        <p className="text-gray-500 max-w-xl mx-auto text-sm leading-relaxed">
-          Advanced reconnaissance engine combining OSINT, DNS analysis, SSL inspection,
-          technology fingerprinting, and AI-powered risk assessment.
-        </p>
-      </div>
-
+    <div className="animate-fade-in py-8">
       {/* Search */}
       <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
         <div className="relative group">

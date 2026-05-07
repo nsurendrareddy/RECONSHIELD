@@ -43,6 +43,13 @@ export default function OverviewSection({ data, scanId, onLockClick }) {
 
           <p className="text-gray-400 text-sm mb-5 leading-relaxed font-sans">{risk.summary}</p>
 
+          {/* Severity Bar */}
+          <div className="flex w-full h-1.5 rounded-full overflow-hidden mb-6 bg-surface-800">
+            <div className="bg-red-500 h-full transition-all duration-1000" style={{ width: `${(stats.critical / (stats.total || 1)) * 100}%` }} />
+            <div className="bg-amber-500 h-full transition-all duration-1000" style={{ width: `${(stats.warnings / (stats.total || 1)) * 100}%` }} />
+            <div className="bg-cyan-500 h-full transition-all duration-1000" style={{ width: `${(stats.info / (stats.total || 1)) * 100}%` }} />
+          </div>
+
           {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
             {[
