@@ -53,7 +53,15 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # CORS
 frontend_url = settings.FRONTEND_URL
-allowed_origins = ["*"] if settings.ENV == "development" else [frontend_url]
+allowed_origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://reconshield.vercel.app",
+    frontend_url.rstrip("/")
+]
+
+# Ensure we don't have duplicates and filter out empty strings
+allowed_origins = list(set([o for o in allowed_origins if o]))
 
 app.add_middleware(
     CORSMiddleware,
@@ -81,6 +89,16 @@ async def root():
         "version": "1.0.0",
         "docs": "/docs",
         "health": "/api/health"
+    }
+
+
+# API Base route
+@app.get("/api")
+async def api_root():
+    return {
+        "message": "ReconShield API Base",
+        "status": "active",
+        "endpoints": ["/scan", "/history", "/auth", "/ip-scanner"]
     }
 
 
