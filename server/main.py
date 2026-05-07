@@ -52,9 +52,12 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # CORS
+frontend_url = settings.FRONTEND_URL
+allowed_origins = ["*"] if settings.ENV == "development" else [frontend_url]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"] if settings.ENV == "development" else [settings.FRONTEND_URL],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -68,6 +71,17 @@ async def log_requests(request: Request, call_next):
     logger.info(f"{request.method} {request.url.path} from {request.client.host}")
     response = await call_next(request)
     return response
+
+
+# Root route
+@app.get("/")
+async def root():
+    return {
+        "message": "ReconShield API is running",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/api/health"
+    }
 
 
 # Global error handler
@@ -96,6 +110,12 @@ app.include_router(contact_router, prefix="/api/contact", tags=["Contact"])
 app.include_router(monitor_router, prefix="/api/monitor", tags=["Monitor"])
 app.include_router(ip_scanner_router, prefix="/api/ip-scanner", tags=["IP Scanner"])
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info(f"Environment: {settings.ENV}")
+    logger.info(f"Allowed Origins: {allowed_origins}")
 
 
 if __name__ == "__main__":
