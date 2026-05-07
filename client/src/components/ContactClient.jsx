@@ -63,27 +63,27 @@ export default function ContactClient() {
         </div>
 
         <div className="space-y-4">
-          <a href="#" className="flex items-center gap-4 p-4 rounded-xl bg-surface-800/50 border border-white/5 hover:border-matrix-400/30 hover:bg-matrix-400/5 transition-all group">
+          <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 rounded-xl bg-surface-800/50 border border-white/5 hover:border-matrix-400/30 hover:bg-matrix-400/5 transition-all group">
             <Globe className="w-5 h-5 text-gray-400 group-hover:text-matrix-400 transition-colors" />
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-matrix-400 transition-colors">GitHub Repository</p>
-              <p className="text-xs font-mono text-gray-500">Contribute to the project</p>
+              <p className="text-xs font-mono text-gray-500">nsurendrareddy</p>
             </div>
           </a>
-          <a href="#" className="flex items-center gap-4 p-4 rounded-xl bg-surface-800/50 border border-white/5 hover:border-cyber-400/30 hover:bg-cyber-400/5 transition-all group">
+          <a href="https://www.linkedin.com/in/surendrareddy3/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 p-4 rounded-xl bg-surface-800/50 border border-white/5 hover:border-cyber-400/30 hover:bg-cyber-400/5 transition-all group">
             <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-cyber-400 transition-colors" />
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-cyber-400 transition-colors">LinkedIn Network</p>
-              <p className="text-xs font-mono text-gray-500">Connect with the team</p>
+              <p className="text-xs font-mono text-gray-500">surendrareddy3</p>
             </div>
           </a>
-          <div className="flex items-center gap-4 p-4 rounded-xl bg-surface-800/50 border border-white/5">
-            <Mail className="w-5 h-5 text-gray-400" />
+          <a href="mailto:NSURENDRAREDDY3@GMAIL.COM" className="flex items-center gap-4 p-4 rounded-xl bg-surface-800/50 border border-white/5 hover:border-matrix-400/30 hover:bg-matrix-400/5 transition-all group">
+            <Mail className="w-5 h-5 text-gray-400 group-hover:text-matrix-400 transition-colors" />
             <div>
-              <p className="text-sm font-semibold text-white">Direct Email</p>
-              <p className="text-xs font-mono text-matrix-400">secure@reconshield.com</p>
+              <p className="text-sm font-semibold text-white group-hover:text-matrix-400 transition-colors">Direct Email</p>
+              <p className="text-xs font-mono text-matrix-400">NSURENDRAREDDY3@GMAIL.COM</p>
             </div>
-          </div>
+          </a>
         </div>
       </div>
 
