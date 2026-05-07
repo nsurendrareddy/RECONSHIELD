@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react'
 import ModuleCard from '../components/ModuleCard'
 import { GitBranch, Search, Cloud, AlertTriangle } from 'lucide-react'

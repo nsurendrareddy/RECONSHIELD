@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect, useRef } from 'react'
 import { Terminal as TerminalIcon, X, Maximize2, Minimize2, Cpu, Shield, Zap } from 'lucide-react'
 

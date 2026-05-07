@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react'
 import { Search, Shield, Loader2, Zap } from 'lucide-react'
 

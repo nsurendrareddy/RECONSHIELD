@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react'
 import { Target, AlertTriangle, Shield, ChevronDown, ChevronUp } from 'lucide-react'
 

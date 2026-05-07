@@ -1,3 +1,4 @@
+'use client'
 import { useState } from 'react'
 import { Download, Lock, Loader2 } from 'lucide-react'
 import { downloadExport } from '../utils/api'

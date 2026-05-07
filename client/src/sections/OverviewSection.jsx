@@ -1,3 +1,4 @@
+'use client'
 import ScoreGauge from '../components/ScoreGauge'
 import StatusBadge from '../components/StatusBadge'
 import ExportButton from '../components/ExportButton'

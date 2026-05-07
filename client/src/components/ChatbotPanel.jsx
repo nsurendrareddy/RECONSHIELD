@@ -1,3 +1,4 @@
+'use client'
 import { useState, useRef, useEffect } from 'react'
 import { MessageCircle, X, Send, Bot, ChevronDown } from 'lucide-react'
 import { askAboutScan } from '../utils/api'

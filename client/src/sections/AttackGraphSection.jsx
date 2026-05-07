@@ -1,3 +1,4 @@
+'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useReactFlow, ReactFlow, Background, Controls, MiniMap, Handle, Position, ReactFlowProvider } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
