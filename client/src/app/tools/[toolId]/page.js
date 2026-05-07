@@ -9,7 +9,7 @@ import HeadersSection from '@/sections/HeadersSection';
 import VulnSimSection from '@/sections/VulnSimSection';
 import IpSection from '@/sections/IpSection';
 
-const TOOL_CONFIG = {
+export const TOOL_CONFIG = {
   'dns-lookup': {
     title: 'Free DNS Lookup Tool',
     desc: 'Check A, MX, CNAME records instantly. Identify nameserver history, SPF/DMARC status, and potential DNS vulnerabilities.',
@@ -90,7 +90,8 @@ const TOOL_CONFIG = {
 };
 
 export async function generateMetadata({ params }) {
-  const { toolId } = await params;
+  const resolvedParams = await params;
+  const toolId = resolvedParams?.toolId || 'dns-lookup';
   const config = TOOL_CONFIG[toolId] || TOOL_CONFIG['dns-lookup'];
   
   return {
@@ -99,16 +100,17 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default async function Page({ params }) {
-  const { toolId } = await params;
+/**
+ * Shared content component used by both dynamic and static routes.
+ */
+export function ToolPageContent({ toolId }) {
   const config = TOOL_CONFIG[toolId] || TOOL_CONFIG['dns-lookup'];
   
   return (
     <>
       {/* 
           SERVER-RENDERED SEO CONTENT
-          This block is rendered directly into the HTML stream, 
-          ensuring crawlers see the H1 and description even without JavaScript.
+          This block is rendered directly into the HTML stream.
       */}
       <div className="sr-only">
         <h1>{config.title}</h1>
@@ -123,4 +125,12 @@ export default async function Page({ params }) {
       </div>
     </>
   );
+}
+
+export default async function Page({ params }) {
+  // If params is provided (dynamic route /tools/[toolId])
+  const resolvedParams = await params;
+  const toolId = resolvedParams?.toolId || 'dns-lookup';
+  
+  return <ToolPageContent toolId={toolId} />;
 }

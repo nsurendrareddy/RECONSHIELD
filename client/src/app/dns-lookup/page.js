@@ -1,4 +1,4 @@
-import ToolScanner from "../tools/[toolId]/page";
+import { ToolPageContent } from "../tools/[toolId]/page";
 
 export const metadata = {
   title: "Free DNS Lookup Tool | ReconShield",
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <ToolScanner toolId="dns-lookup" />;
+  return <ToolPageContent toolId="dns-lookup" />;
 }

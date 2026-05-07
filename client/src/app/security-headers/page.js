@@ -1,4 +1,4 @@
-import ToolScanner from "../tools/[toolId]/page";
+import { ToolPageContent } from "../tools/[toolId]/page";
 
 export const metadata = {
   title: "HTTP Security Headers Analysis & CSP Auditor | ReconShield",
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <ToolScanner toolId="security-headers" />;
+  return <ToolPageContent toolId="security-headers" />;
 }
