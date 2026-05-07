@@ -1,4 +1,5 @@
 export const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || '').replace(/\/$/, '')
+console.log(`>>> API INITIALIZED: BASE_URL='${BASE_URL}'`);
 export const API_BASE = `${BASE_URL}/api`
 
 export async function startScan(domain, consent) {
