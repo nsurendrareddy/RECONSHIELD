@@ -4,6 +4,7 @@ FastAPI Backend Server
 """
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
+print(">>> RECONSHIELD STARTING UP <<<")
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -29,12 +30,17 @@ from middleware.rate_limiter import limiter
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup and shutdown events."""
-    await init_db()
-    await connect_to_mongo()
-    # Ensure uploads directory exists
-    if not os.path.exists("uploads/blog"):
-        os.makedirs("uploads/blog", exist_ok=True)
-    logger.info("ReconShield API started")
+    try:
+        await init_db()
+        await connect_to_mongo()
+        # Ensure uploads directory exists
+        if not os.path.exists("uploads/blog"):
+            os.makedirs("uploads/blog", exist_ok=True)
+        logger.info("ReconShield API started")
+    except Exception as e:
+        logger.error(f"FATAL STARTUP ERROR: {e}", exc_info=True)
+        # Re-raise to ensure the process exits but we at least see the error
+        raise e
     yield
     await close_mongo_connection()
     logger.info("ReconShield API shutting down")
