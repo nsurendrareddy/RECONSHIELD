@@ -24,7 +24,7 @@ class Settings:
     SCAN_TIMEOUT: int = int(os.getenv("SCAN_TIMEOUT", "120"))
     PORT_CHECK_TIMEOUT: float = float(os.getenv("PORT_CHECK_TIMEOUT", "3.0"))
 
-    MONGO_URI: str = os.getenv("MONGO_URI", "mongodb+srv://nsurendrareddy3_db_user:Reddy9999@cluster0.ib2u7um.mongodb.net/?appName=Cluster0")
+    MONGO_URI: str = os.getenv("MONGO_URI", "")
     MONGO_DB_NAME: str = os.getenv("MONGO_DB_NAME", "reconshield")
 
     # SMTP Settings
