@@ -115,7 +115,13 @@ async def global_exception_handler(request: Request, exc: Exception):
 # Health check
 @app.get("/api/health")
 async def health_check():
-    return {"status": "ok", "version": "1.0.0"}
+    from db.mongo import get_database
+    db = get_database()
+    return {
+        "status": "ok",
+        "version": "1.0.0",
+        "database": "connected" if db is not None else "disconnected"
+    }
 
 
 # Mount routers
