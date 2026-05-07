@@ -32,6 +32,9 @@ class Settings:
     SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
     SMTP_USER: str = os.getenv("SMTP_USER", "nsurendrareddy3@gmail.com")
     SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "") # To be set in environment
+    
+    # Resend API
+    RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "")
 
 
 settings = Settings()
