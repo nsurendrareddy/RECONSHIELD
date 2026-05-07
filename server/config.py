@@ -34,7 +34,7 @@ class Settings:
     SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "") # To be set in environment
     
     # Resend API
-    RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "re_RnR4ZE8j_MpcydiGCjRS7RxNt6dKgbHSg")
+    RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "")
 
 
 settings = Settings()
