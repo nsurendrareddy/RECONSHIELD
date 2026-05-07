@@ -28,7 +28,7 @@ export default function Hero({ onStartScan }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-white leading-tight mb-6"
+          className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-black text-white leading-tight mb-6"
         >
           AI-Powered <span className="text-gradient-matrix">Cybersecurity</span> <br />
           & Threat Intelligence Platform
