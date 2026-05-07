@@ -92,3 +92,15 @@ class ContactMessage(BaseModel):
         "arbitrary_types_allowed": True,
         "json_encoders": {ObjectId: str}
     }
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class VerifyOTPRequest(BaseModel):
+    email: EmailStr
+    otp: str
+
+class ResetPasswordRequest(BaseModel):
+    email: EmailStr
+    otp: str
+    new_password: str
