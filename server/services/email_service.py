@@ -33,23 +33,23 @@ class EmailService:
             </html>
             """
 
-            resend.Emails.send({{
+            resend.Emails.send({
                 "from": "ReconShield <onboarding@resend.dev>",
                 "to": email,
                 "subject": "ReconShield Security Verification Code",
                 "html": body
-            }})
+            })
 
-            logger.info(f"OTP successfully sent to {{email}} via Resend")
+            logger.info(f"OTP successfully sent to {email} via Resend")
 
         except Exception as e:
-            logger.error(f"CRITICAL EMAIL FAILURE: {{e}}")
+            logger.error(f"CRITICAL EMAIL FAILURE: {str(e)}")
             EmailService.mock_send(email, otp)
 
     @staticmethod
     def mock_send(email: str, otp: str):
         print("\n" + "="*50)
-        print(f"DEBUG RECOVERY CODE FOR {{email}}: {{otp}}")
+        print(f"DEBUG RECOVERY CODE FOR {email}: {otp}")
         print("="*50 + "\n")
 
     @staticmethod
