@@ -30,6 +30,17 @@ async def get_article(slug: str):
     article["_id"] = str(article["_id"])
     return article
 
+@router.get("/id/{id}", response_model=Article)
+async def get_article_by_id(id: str):
+    db = get_database()
+    if not ObjectId.is_valid(id):
+        raise HTTPException(status_code=400, detail="Invalid Article ID")
+    article = await db.articles.find_one({"_id": ObjectId(id)})
+    if not article:
+        raise HTTPException(status_code=404, detail="Article not found")
+    article["_id"] = str(article["_id"])
+    return article
+
 @router.post("/create", response_model=Article)
 async def create_article(article_in: ArticleCreate, current_admin: dict = Depends(get_current_admin)):
     db = get_database()
