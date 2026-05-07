@@ -2,6 +2,7 @@ import logging
 import random
 import string
 import smtplib
+import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from config import settings
@@ -18,6 +19,8 @@ class EmailService:
             logger.warning("SMTP_PASSWORD not set. Falling back to console log.")
             EmailService.mock_send(email, otp)
             return
+
+        logger.info(f"Attempting to send OTP to {email} via {settings.SMTP_HOST}:{settings.SMTP_PORT}")
 
         try:
             msg = MIMEMultipart()
@@ -42,23 +45,28 @@ class EmailService:
             """
             msg.attach(MIMEText(body, 'html'))
 
-            server = smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=10)
-            server.starttls()
-            server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
-            server.send_message(msg)
-            server.quit()
+            # Port 465 is for SMTP_SSL, Port 587 is for STARTTLS
+            if settings.SMTP_PORT == 465:
+                context = ssl.create_default_context()
+                with smtplib.SMTP_SSL(settings.SMTP_HOST, settings.SMTP_PORT, context=context, timeout=10) as server:
+                    server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
+                    server.send_message(msg)
+            else:
+                with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=10) as server:
+                    server.starttls()
+                    server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
+                    server.send_message(msg)
             
             logger.info(f"OTP successfully sent to {email}")
         except Exception as e:
-            logger.error(f"Failed to send email: {e}")
+            logger.error(f"CRITICAL EMAIL FAILURE: {str(e)}")
             # Fallback to console log so the user isn't locked out during development
             EmailService.mock_send(email, otp)
 
     @staticmethod
     def mock_send(email: str, otp: str):
         print("\n" + "="*50)
-        print(f"FALLBACK TRANSMISSION TO: {email}")
-        print(f"OTP: {otp}")
+        print(f"DEBUG RECOVERY CODE FOR {email}: {otp}")
         print("="*50 + "\n")
 
     @staticmethod
