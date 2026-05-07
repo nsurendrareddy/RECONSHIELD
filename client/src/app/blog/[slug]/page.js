@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 async function getPost(slug) {
   try {
-    const res = await fetch(`${API_BASE}/blog/${slug}`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_BASE}/blog/${slug}`, { cache: 'no-store' });
     if (!res.ok) return null;
     return res.json();
   } catch (err) {

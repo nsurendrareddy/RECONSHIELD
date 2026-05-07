@@ -10,7 +10,17 @@ from db.mongo import get_database
 from models import Article, ArticleCreate, ArticleUpdate
 from utils.auth import get_current_admin
 
+import re
+
 router = APIRouter()
+
+def sanitize_slug(slug: str) -> str:
+    if not slug: return ""
+    # Convert to lowercase, replace spaces and special chars with hyphens
+    s = slug.strip().lower()
+    s = re.sub(r'[^a-z0-9]+', '-', s)
+    s = re.sub(r'-+', '-', s) # Remove duplicate hyphens
+    return s.strip('-')
 
 @router.get("/", response_model=List[Article])
 async def get_articles():
@@ -24,7 +34,14 @@ async def get_articles():
 @router.get("/{slug}", response_model=Article)
 async def get_article(slug: str):
     db = get_database()
-    article = await db.articles.find_one({"slug": slug.strip()})
+    # Normalize slug for lookup
+    slug_normalized = sanitize_slug(slug)
+    article = await db.articles.find_one({"slug": slug_normalized})
+    
+    if not article:
+        # Fallback for exact match just in case
+        article = await db.articles.find_one({"slug": slug.strip()})
+        
     if not article:
         raise HTTPException(status_code=404, detail="Article not found")
     article["_id"] = str(article["_id"])
@@ -51,7 +68,7 @@ async def create_article(article_in: ArticleCreate, current_admin: dict = Depend
         raise HTTPException(status_code=400, detail="Slug already exists")
         
     article_dict = article_in.model_dump()
-    article_dict["slug"] = article_dict["slug"].strip()
+    article_dict["slug"] = sanitize_slug(article_dict["slug"])
     article_dict["author_id"] = current_admin["id"]
     article_dict["created_at"] = datetime.utcnow()
     
@@ -68,7 +85,7 @@ async def update_article(id: str, article_in: ArticleUpdate, current_admin: dict
     update_data = {k: v for k, v in article_in.model_dump().items() if v is not None}
     
     if "slug" in update_data:
-        update_data["slug"] = update_data["slug"].strip()
+        update_data["slug"] = sanitize_slug(update_data["slug"])
         existing = await db.articles.find_one({"slug": update_data["slug"], "_id": {"$ne": ObjectId(id)}})
         if existing:
             raise HTTPException(status_code=400, detail="Slug already exists")

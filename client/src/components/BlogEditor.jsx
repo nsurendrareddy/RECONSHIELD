@@ -57,10 +57,30 @@ export default function BlogEditor({ initialData = null, isEdit = false }) {
     const { name, value } = e.target
     setFormData(prev => {
       const newData = { ...prev, [name]: value }
-      // Auto-generate slug from title if not manually edited or if empty
-      if (name === 'title' && !isEdit && (!prev.slug || prev.slug === prev.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, ''))) {
-        newData.slug = value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]/g, '')
+      
+      // Sanitization function for slugs (matches backend logic)
+      const sanitizeSlug = (str) => {
+        if (!str) return ""
+        return str.toLowerCase()
+          .trim()
+          .replace(/[^a-z0-9]+/g, '-') // Replace special chars and spaces with -
+          .replace(/-+/g, '-')         // Remove duplicate hyphens
+          .replace(/^-+|-+$/g, '')     // Trim hyphens from ends
       }
+
+      // Auto-generate slug from title if not manually edited or if empty
+      if (name === 'title' && !isEdit) {
+        const currentGeneratedSlug = sanitizeSlug(prev.title)
+        if (!prev.slug || prev.slug === currentGeneratedSlug) {
+          newData.slug = sanitizeSlug(value)
+        }
+      }
+      
+      // If manually editing slug, sanitize it as well
+      if (name === 'slug') {
+        newData.slug = sanitizeSlug(value)
+      }
+
       return newData
     })
   }
@@ -117,12 +137,18 @@ export default function BlogEditor({ initialData = null, isEdit = false }) {
         body: JSON.stringify(formData)
       })
 
+      const data = await res.json()
+
       if (!res.ok) {
-        const data = await res.json()
         throw new Error(data.detail || 'Failed to save article')
       }
 
-      router.push(`/blog/${formData.slug}`)
+      // Ensure we use the slug from the server response in case it was modified
+      const finalSlug = data.slug || formData.slug
+      
+      // Force refresh to clear any client-side caches
+      router.refresh()
+      router.push(`/blog/${finalSlug}`)
     } catch (err) {
       setError(err.message)
     } finally {
