@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE, BASE_URL } from '../utils/api';
 
 export default function AdminBlogEditor() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ export default function AdminBlogEditor() {
       // Actually, since our API only has GET /{slug}, we might need to find it by slug or update the API to GET by ID.
       // But for now we can fetch all and find, or just assume the user passes the ID to update.
       // Let's modify the backend later if needed, but for now we can do a hacky fetch all.
-      fetch('/api/blog')
+      fetch(`${API_BASE}/blog`)
         .then(res => res.json())
         .then(data => {
           const article = data.find(a => a._id === id);
@@ -65,7 +66,7 @@ export default function AdminBlogEditor() {
     formDataUpload.append('file', file);
 
     try {
-      const res = await fetch('/api/blog/upload-image', {
+      const res = await fetch(`${API_BASE}/blog/upload-image`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -93,13 +94,17 @@ export default function AdminBlogEditor() {
     };
 
     const url = id 
-      ? `/api/blog/update/${id}`
-      : '/api/blog/create';
+      ? `${API_BASE}/blog/update/${id}`
+      : `${API_BASE}/api/blog/create`;
       
+    // Wait, the create URL in the original code was '/api/blog/create' but API_BASE already includes '/api'
+    const correctUrl = id 
+      ? `${API_BASE}/blog/update/${id}`
+      : `${API_BASE}/blog/create`;
     const method = id ? 'PUT' : 'POST';
 
     try {
-      const response = await fetch(url, {
+      const response = await fetch(correctUrl, {
         method,
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +186,7 @@ export default function AdminBlogEditor() {
           <div className="flex items-center gap-6">
             <div className="w-32 h-20 bg-surface-900 border border-matrix-400/[0.1] rounded-lg overflow-hidden flex items-center justify-center">
               {formData.image_url ? (
-                <img src={formData.image_url} alt="Preview" className="w-full h-full object-cover" />
+                <img src={formData.image_url.startsWith('http') ? formData.image_url : `${BASE_URL}${formData.image_url}`} alt="Preview" className="w-full h-full object-cover" />
               ) : (
                 <span className="text-[10px] text-gray-600 uppercase font-mono">No Image</span>
               )}

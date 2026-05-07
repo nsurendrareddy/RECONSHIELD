@@ -9,6 +9,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import ScanTerminalLog from '../components/ip-scanner/ScanTerminalLog'
+import { API_BASE } from '../utils/api'
 
 // Fix for default marker icons in Leaflet with React
 delete L.Icon.Default.prototype._getIconUrl;
@@ -106,7 +107,7 @@ export default function IpScanner() {
     setLastTarget(targetToScan)
 
     try {
-      const response = await fetch('/api/ip-scanner', {
+      const response = await fetch(`${API_BASE}/ip-scanner`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ target: targetToScan })

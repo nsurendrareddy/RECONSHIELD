@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Mail, Github, Linkedin, Send, Terminal } from 'lucide-react'
+import { API_BASE } from '../utils/api';
 
 export default function Contact() {
   const [status, setStatus] = useState('idle')
@@ -21,7 +22,7 @@ export default function Contact() {
     setError('')
 
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch(`${API_BASE}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

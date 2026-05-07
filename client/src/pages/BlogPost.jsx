@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { ArrowLeft, Clock, Calendar, Tag, ShieldAlert, BookOpen } from 'lucide-react'
+import { API_BASE, BASE_URL } from '../utils/api'
 
 export default function BlogPost() {
   const { slug } = useParams()
@@ -9,7 +10,7 @@ export default function BlogPost() {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    fetch(`/api/blog/${slug}`)
+    fetch(`${API_BASE}/blog/${slug}`)
       .then(res => {
         if (!res.ok) throw new Error('Not found')
         return res.json()
@@ -75,7 +76,7 @@ export default function BlogPost() {
         <div className="w-full h-64 md:h-96 relative border-b border-white/5 bg-surface-900">
           {post.image_url ? (
             <img 
-              src={post.image_url} 
+              src={post.image_url.startsWith('http') ? post.image_url : `${BASE_URL}${post.image_url}`} 
               alt={post.title} 
               className="w-full h-full object-cover" 
             />

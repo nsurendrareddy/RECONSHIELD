@@ -1,4 +1,5 @@
-const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '') + '/api'
+export const BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
+export const API_BASE = `${BASE_URL}/api`
 
 export async function startScan(domain, consent) {
   const res = await fetch(`${API_BASE}/scan`, {

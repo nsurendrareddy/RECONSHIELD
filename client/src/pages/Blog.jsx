@@ -2,6 +2,7 @@ import { BookOpen, ArrowRight, Tag, Edit, Trash2 } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
+import { API_BASE, BASE_URL } from '../utils/api'
 
 export default function Blog() {
   const [articles, setArticles] = useState([])
@@ -9,7 +10,7 @@ export default function Blog() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('/api/blog')
+    fetch(`${API_BASE}/blog`)
       .then(res => res.json())
       .then(data => setArticles(data))
       .catch(err => console.error(err))
@@ -32,7 +33,7 @@ export default function Blog() {
     if (!window.confirm('Are you sure you want to delete this article?')) return;
 
     try {
-      const res = await fetch(`/api/blog/delete/${id}`, {
+      const res = await fetch(`${API_BASE}/blog/delete/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -89,7 +90,7 @@ export default function Blog() {
             <div className="w-full h-48 relative overflow-hidden bg-surface-900 border-b border-white/5">
               {article.image_url ? (
                 <img 
-                  src={article.image_url} 
+                  src={article.image_url.startsWith('http') ? article.image_url : `${BASE_URL}${article.image_url}`} 
                   alt={article.title} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                 />
