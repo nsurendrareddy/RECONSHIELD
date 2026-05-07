@@ -20,10 +20,12 @@ export function useScan() {
   }, [])
 
   const getGuestScanCount = () => {
+    if (typeof window === 'undefined') return 0;
     return parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
   }
 
   const incrementGuestScanCount = () => {
+    if (typeof window === 'undefined') return;
     const current = getGuestScanCount()
     localStorage.setItem(STORAGE_KEY, (current + 1).toString())
   }

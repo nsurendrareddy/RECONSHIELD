@@ -1,10 +1,12 @@
-import { Link, useLocation } from 'react-router-dom'
+'use client'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { Shield, History, Terminal, Sun, Moon, Activity, LogOut, Edit, AlertTriangle, Lock, Globe } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { useState, useEffect } from 'react'
 
 export default function Layout({ children }) {
-  const location = useLocation()
+  const pathname = usePathname()
   const { user, role, logout } = useAuth()
   const [theme, setTheme] = useState('dark')
   const [showBanner, setShowBanner] = useState(true)
@@ -65,7 +67,7 @@ export default function Layout({ children }) {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
+            <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
                   theme === 'dark'
@@ -94,9 +96,9 @@ export default function Layout({ children }) {
                 {navItems.map(({ path, label, icon: Icon }) => (
                   <Link
                     key={path}
-                    to={path}
+                    href={path}
                     className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      location.pathname === path
+                      pathname === path
                         ? theme === 'dark'
                           ? 'bg-matrix-400/10 text-matrix-400 border border-matrix-400/20'
                           : 'bg-matrix-600/10 text-matrix-600 border border-matrix-600/20'
@@ -128,13 +130,13 @@ export default function Layout({ children }) {
                   {!user ? (
                     <>
                       <Link
-                        to="/login"
+                        href="/login"
                         className={`text-sm font-medium transition-colors ${theme === 'dark' ? 'text-gray-400 hover:text-matrix-400' : 'text-gray-600 hover:text-matrix-600'}`}
                       >
                         Login
                       </Link>
                       <Link
-                        to="/register"
+                        href="/register"
                         className={`text-sm font-medium px-4 py-2 rounded-lg transition-all ${
                           theme === 'dark'
                             ? 'bg-matrix-400/10 text-matrix-400 border border-matrix-400/20 hover:bg-matrix-400/20'
@@ -148,7 +150,7 @@ export default function Layout({ children }) {
                     <>
                       {role === 'admin' && (
                         <Link
-                          to="/blog/create"
+                          href="/blog/create"
                           className="flex items-center gap-2 text-sm font-medium px-4 py-2 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-lg hover:bg-amber-500/20 transition-all"
                         >
                           <Edit className="w-4 h-4" />
@@ -196,17 +198,17 @@ export default function Layout({ children }) {
             <div>
               <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Platform</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/" className="hover:text-matrix-400 transition-colors">Security Scanner</Link></li>
-                <li><Link to="/blog" className="hover:text-matrix-400 transition-colors">Security Blog</Link></li>
-                <li><Link to="/about" className="hover:text-matrix-400 transition-colors">About Research</Link></li>
+                <li><Link href="/" className="hover:text-matrix-400 transition-colors">Security Scanner</Link></li>
+                <li><Link href="/blog" className="hover:text-matrix-400 transition-colors">Security Blog</Link></li>
+                <li><Link href="/about" className="hover:text-matrix-400 transition-colors">About Research</Link></li>
               </ul>
             </div>
             <div>
               <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Legal</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/terms" className="hover:text-matrix-400 transition-colors">Terms of Use</Link></li>
-                <li><Link to="/privacy" className="hover:text-matrix-400 transition-colors">Privacy Policy</Link></li>
-                <li><Link to="/contact" className="hover:text-matrix-400 transition-colors">Contact Support</Link></li>
+                <li><Link href="/terms" className="hover:text-matrix-400 transition-colors">Terms of Use</Link></li>
+                <li><Link href="/privacy" className="hover:text-matrix-400 transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/contact" className="hover:text-matrix-400 transition-colors">Contact Support</Link></li>
               </ul>
             </div>
           </div>

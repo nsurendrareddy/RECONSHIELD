@@ -1,19 +1,29 @@
+'use client'
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
-  const [role, setRole] = useState(localStorage.getItem('role') || 'user');
+  const [token, setToken] = useState(null);
+  const [role, setRole] = useState('user');
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem('token');
+    const savedRole = localStorage.getItem('role') || 'user';
+    if (savedToken) {
+      setToken(savedToken);
+      setRole(savedRole);
+      setUser({ role: savedRole });
+    }
+  }, []);
 
   useEffect(() => {
     if (token) {
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
-      // Optional: Fetch user profile here to verify token validity
       setUser({ role });
-    } else {
+    } else if (token === null && user !== null) {
       localStorage.removeItem('token');
       localStorage.removeItem('role');
       setUser(null);

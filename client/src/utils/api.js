@@ -1,4 +1,4 @@
-export const BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '')
+export const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || '').replace(/\/$/, '')
 export const API_BASE = `${BASE_URL}/api`
 
 export async function startScan(domain, consent) {

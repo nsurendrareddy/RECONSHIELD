@@ -3,39 +3,61 @@
   <url>
     <loc>https://reconshield.vercel.app/</loc>
     <lastmod>2026-05-07</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://reconshield.vercel.app/blog</loc>
     <lastmod>2026-05-07</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://reconshield.vercel.app/dns-lookup</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://reconshield.vercel.app/ssl-checker</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://reconshield.vercel.app/security-headers</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://reconshield.vercel.app/vulnerability-scanner</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://reconshield.vercel.app/threat-intelligence</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://reconshield.vercel.app/ip-scanner</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://reconshield.vercel.app/about</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://reconshield.vercel.app/contact</loc>
+    <lastmod>2026-05-07</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 </urlset>

@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router-dom'
+'use client'
+import { useRouter } from 'next/navigation'
 import { X, Shield, Lock, ArrowRight } from 'lucide-react'
 
 export default function AuthModal({ isOpen, onClose, message }) {
-  const navigate = useNavigate()
+  const router = useRouter()
 
   if (!isOpen) return null
 
@@ -38,14 +39,14 @@ export default function AuthModal({ isOpen, onClose, message }) {
 
           <div className="flex flex-col gap-3 w-full">
             <button 
-              onClick={() => navigate('/login')}
+              onClick={() => router.push('/login')}
               className="flex items-center justify-center gap-2 w-full py-3 bg-matrix-400 text-black font-bold rounded-xl hover:bg-matrix-300 transition-all shadow-lg shadow-matrix-400/20"
             >
               Sign In <ArrowRight className="w-4 h-4" />
             </button>
             
             <button 
-              onClick={() => navigate('/register')}
+              onClick={() => router.push('/register')}
               className="w-full py-3 bg-surface-800 text-gray-300 font-medium rounded-xl border border-white/5 hover:bg-surface-700 transition-all"
             >
               Create Free Account
