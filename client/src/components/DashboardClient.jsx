@@ -107,7 +107,7 @@ export default function DashboardClient() {
             />
           </ErrorBoundary>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <ErrorBoundary><DomainSection data={results.whois} /></ErrorBoundary>
             <ErrorBoundary><SslSection data={results.ssl} /></ErrorBoundary>
             <ErrorBoundary><DnsSection data={results.dns} /></ErrorBoundary>
