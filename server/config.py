@@ -24,8 +24,13 @@ class Settings:
     SCAN_TIMEOUT: int = int(os.getenv("SCAN_TIMEOUT", "120"))
     PORT_CHECK_TIMEOUT: float = float(os.getenv("PORT_CHECK_TIMEOUT", "3.0"))
 
-    MONGO_URI: str = os.getenv("MONGO_URI", "mongodb+srv://nsurendrareddy3_db_user:Reddy9999@cluster0.ib2u7um.mongodb.net/?appName=Cluster0")
     MONGO_DB_NAME: str = os.getenv("MONGO_DB_NAME", "reconshield")
+
+    # SMTP Settings
+    SMTP_HOST: str = os.getenv("SMTP_HOST", "smtp.gmail.com")
+    SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
+    SMTP_USER: str = os.getenv("SMTP_USER", "nsurendrareddy3@gmail.com")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "") # To be set in environment
 
 
 settings = Settings()
