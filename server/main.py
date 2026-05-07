@@ -1,25 +1,15 @@
-print(">>> LOADING CORE MODULES...", flush=True)
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
-print(">>> CORE MODULES LOADED", flush=True)
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-print(">>> FASTAPI EXTENSIONS LOADED", flush=True)
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 import os
 
-print(">>> LOADING CONFIG...", flush=True)
 from config import settings
-print(">>> CONFIG LOADED", flush=True)
-
-print(">>> LOADING DATABASE LAYERS...", flush=True)
 from db.store import init_db
 from db.mongo import connect_to_mongo, close_mongo_connection
-print(">>> DATABASE LAYERS LOADED", flush=True)
-
-print(">>> LOADING ROUTERS...", flush=True)
 from routes.scan import router as scan_router
 from routes.history import router as history_router
 from routes.export import router as export_router
@@ -28,7 +18,6 @@ from routes.blog import router as blog_router
 from routes.contact import router as contact_router
 from routes.monitor import router as monitor_router
 from routes.ip_scanner import router as ip_scanner_router
-print(">>> ROUTERS LOADED", flush=True)
 
 from utils.logger import logger
 from middleware.rate_limiter import limiter
