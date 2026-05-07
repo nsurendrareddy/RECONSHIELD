@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://reconshield-backend.onrender.com/api/:path*"
+      "destination": "https://reconshield.onrender.com/api/:path*"
     }
   ]
 }
