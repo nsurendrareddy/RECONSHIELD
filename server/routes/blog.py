@@ -15,13 +15,14 @@ import cloudinary
 import cloudinary.uploader
 from config import settings
 
-# Configure Cloudinary
-cloudinary.config(
-    cloud_name=settings.CLOUDINARY_CLOUD_NAME,
-    api_key=settings.CLOUDINARY_API_KEY,
-    api_secret=settings.CLOUDINARY_API_SECRET,
-    secure=True
-)
+# Helper to ensure Cloudinary is configured
+def configure_cloudinary():
+    cloudinary.config(
+        cloud_name=settings.CLOUDINARY_CLOUD_NAME,
+        api_key=settings.CLOUDINARY_API_KEY,
+        api_secret=settings.CLOUDINARY_API_SECRET,
+        secure=True
+    )
 
 router = APIRouter()
 
@@ -125,6 +126,7 @@ async def delete_article(id: str, current_admin: dict = Depends(get_current_admi
 @router.post("/upload-image")
 async def upload_image(file: UploadFile = File(...), current_admin: dict = Depends(get_current_admin)):
     try:
+        configure_cloudinary()
         # Upload to Cloudinary
         result = cloudinary.uploader.upload(
             file.file,
