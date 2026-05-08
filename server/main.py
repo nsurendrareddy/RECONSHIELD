@@ -8,26 +8,45 @@ from slowapi.errors import RateLimitExceeded
 import os
 
 from config import settings
+from db.store import init_db
+from db.mongo import connect_to_mongo, close_mongo_connection
 from routes.scan import router as scan_router
+from routes.history import router as history_router
+from routes.export import router as export_router
+from routes.auth import router as auth_router
+from routes.blog import router as blog_router
 from routes.contact import router as contact_router
+from routes.monitor import router as monitor_router
+from routes.ip_scanner import router as ip_scanner_router
 
 from utils.logger import logger
 from middleware.rate_limiter import limiter
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Startup and shutdown events (Database-Less Mode)."""
-    logger.info(f"ReconShield API initializing in {settings.ENV} mode (Sanity.io Powered)")
-    # Ensure uploads directory exists
-    if not os.path.exists("uploads"):
-        os.makedirs("uploads", exist_ok=True)
+    """Startup and shutdown events."""
+    try:
+        logger.info(f"ReconShield API initializing in {settings.ENV} mode")
+        await init_db()
+        await connect_to_mongo()
+        # Ensure uploads directory exists (Legacy support)
+        if not os.path.exists("uploads/blog"):
+            os.makedirs("uploads/blog", exist_ok=True)
+        logger.info("ReconShield API successfully started")
+    except Exception as e:
+        print(f"!!! FATAL STARTUP ERROR: {e}", flush=True)
+        logger.error(f"FATAL STARTUP ERROR: {e}", exc_info=True)
+        raise e
     yield
+    await close_mongo_connection()
     logger.info("ReconShield API shutting down")
+
 
 app = FastAPI(
     title="ReconShield API",
     description="Ethical Intelligence & Security Analyzer",
-    version="2.0.0",
+    version="1.0.0",
     lifespan=lifespan,
 )
 
@@ -41,9 +60,10 @@ allowed_origins = [
     "http://localhost:5173",
     "http://localhost:3000",
     "https://reconshield.vercel.app",
-    frontend_url.rstrip("/") if frontend_url else None
+    frontend_url.rstrip("/")
 ]
 
+# Ensure we don't have duplicates and filter out empty strings
 allowed_origins = list(set([o for o in allowed_origins if o]))
 
 app.add_middleware(
@@ -55,35 +75,71 @@ app.add_middleware(
     expose_headers=["Content-Disposition"],
 )
 
+
+# Request logging
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
     logger.info(f"{request.method} {request.url.path} from {request.client.host}")
     response = await call_next(request)
     return response
 
+
+# Root route
 @app.get("/")
 async def root():
     return {
         "message": "ReconShield API is running",
-        "version": "2.0.0",
-        "mode": "Database-Less (Sanity.io Powered)",
+        "version": "1.0.0",
         "docs": "/docs",
         "health": "/api/health"
     }
 
+
+# API Base route
+@app.get("/api")
+async def api_root():
+    return {
+        "message": "ReconShield API Base",
+        "status": "active",
+        "endpoints": ["/scan", "/history", "/auth", "/ip-scanner"]
+    }
+
+
+# Global error handler
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled error: {exc}", exc_info=True)
+    return JSONResponse(
+        status_code=500,
+        content={"error": "Internal server error", "detail": str(exc)},
+    )
+
+
+# Health check
 @app.get("/api/health")
 async def health_check():
+    from db.mongo import get_database
+    db = get_database()
     return {
         "status": "ok",
-        "version": "2.0.0",
-        "database": "none (stateless)"
+        "version": "1.0.0",
+        "database": "connected" if db is not None else "disconnected"
     }
+
 
 # Mount routers
 app.include_router(scan_router, prefix="/api/scan", tags=["Scan"])
+app.include_router(history_router, prefix="/api/history", tags=["History"])
+app.include_router(export_router, prefix="/api/export", tags=["Export"])
+app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
+app.include_router(blog_router, prefix="/api/blog", tags=["Blog"])
 app.include_router(contact_router, prefix="/api/contact", tags=["Contact"])
+app.include_router(monitor_router, prefix="/api/monitor", tags=["Monitor"])
+app.include_router(ip_scanner_router, prefix="/api/ip-scanner", tags=["IP Scanner"])
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
+
+# Server Entry Point
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=settings.PORT, reload=True)
