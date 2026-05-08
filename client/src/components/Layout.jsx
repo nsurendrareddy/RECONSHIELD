@@ -144,7 +144,6 @@ export default function Layout({ children }) {
               </div>
             </div>
           </div>
-        </div>
 
         {/* Mobile Navigation Overlay */}
         {isMenuOpen && (
