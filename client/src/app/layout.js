@@ -1,4 +1,3 @@
-import { AuthProvider } from "@/context/AuthContext";
 import Layout from "@/components/Layout";
 import "./globals.css";
 
@@ -31,11 +30,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark h-full antialiased">
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
-        <AuthProvider>
-          <Layout>
-            {children}
-          </Layout>
-        </AuthProvider>
+        <Layout>
+          {children}
+        </Layout>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
