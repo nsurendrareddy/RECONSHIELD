@@ -4,13 +4,13 @@ import "./globals.css";
 
 export const metadata = {
   title: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
-  description: "Scan websites, analyze IP threats, detect vulnerabilities, and monitor cyber risks in real time using advanced AI security analytics.",
+  description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
   keywords: ["cybersecurity", "vulnerability scanner", "IP intelligence", "threat detection", "SSL checker", "DNS lookup"],
   authors: [{ name: "ReconShield Team" }],
   openGraph: {
     title: "ReconShield - AI Cybersecurity Platform",
-    description: "Advanced reconnaissance and threat intelligence at your fingertips.",
-    url: "https://reconshield.vercel.app",
+    description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
+    url: "https://reconshield.vercel.app/",
     siteName: "ReconShield",
     images: [
       {
@@ -36,6 +36,17 @@ export default function RootLayout({ children }) {
             {children}
           </Layout>
         </AuthProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "ReconShield",
+              "url": "https://reconshield.vercel.app/",
+            }),
+          }}
+        />
       </body>
     </html>
   );

@@ -2,7 +2,7 @@ import DashboardClient from '@/components/DashboardClient';
 
 export const metadata = {
   title: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
-  description: "Scan websites, analyze IP threats, detect vulnerabilities, and monitor cyber risks in real time using advanced AI security analytics.",
+  description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
   keywords: ["cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield"],
 };
 
