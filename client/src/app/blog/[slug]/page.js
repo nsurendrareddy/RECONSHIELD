@@ -4,36 +4,48 @@ import Link from 'next/link';
 
 // Helper to get absolute API URL for server-side fetching
 const getAbsoluteApiUrl = () => {
-  // Use the env var set in Vercel/Local
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+  // Use the env var set in Vercel/Local, or fallback to your production Render API
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://reconshield-api.onrender.com';
   return `${baseUrl.replace(/\/$/, '')}/api`;
 };
 
 async function getPost(slug) {
+  if (!slug || slug === 'undefined') {
+    console.error('>>> getPost called with invalid slug:', slug);
+    return null;
+  }
+  
   const API_BASE = getAbsoluteApiUrl();
   const url = `${API_BASE}/blog/${encodeURIComponent(slug)}`;
   
+  console.log(`>>> SERVER FETCH: ${url}`);
+  
   try {
     const res = await fetch(url, {
-      next: { revalidate: 10 }, // Short cache for responsiveness
+      next: { revalidate: 60 },
       headers: {
         'Accept': 'application/json',
       }
     });
     
     if (!res.ok) {
+      console.error(`>>> SERVER FETCH FAILED: Status ${res.status} for ${url}`);
       return { _error: true, status: res.status, url };
     }
     
     const data = await res.json();
     return data;
   } catch (err) {
+    console.error('>>> SERVER FETCH ERROR:', err);
     return { _error: true, message: err.message, url };
   }
 }
 
 export async function generateMetadata({ params }) {
-  const post = await getPost(params.slug);
+  // IMPORTANT: In Next.js 15+, params must be awaited
+  const { slug } = await params;
+  
+  const post = await getPost(slug);
   if (!post || post._error) return { title: 'Intelligence Briefing Missing | ReconShield' };
 
   const description = post.meta_description || post.content.substring(0, 160).replace(/[#*]/g, '').trim();
@@ -53,7 +65,10 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const post = await getPost(params.slug);
+  // IMPORTANT: In Next.js 15+, params must be awaited
+  const { slug } = await params;
+  
+  const post = await getPost(slug);
 
   if (!post || post._error) {
     const isConnectionError = post?._error && !post?.status;
