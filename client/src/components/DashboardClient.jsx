@@ -24,7 +24,6 @@ import InfraSection from '@/sections/InfraSection'
 import ComplianceSection from '@/sections/ComplianceSection'
 import ChatbotPanel from '@/components/ChatbotPanel'
 import ErrorBoundary from '@/components/ErrorBoundary'
-import AuthModal from '@/components/AuthModal'
 import { useState } from 'react'
 import { AlertTriangle, RotateCcw, Crosshair, Clock } from 'lucide-react'
 import SOCBackground from '@/components/SOCBackground'
@@ -32,7 +31,6 @@ import Hero from '@/components/Hero'
 
 export default function DashboardClient() {
   const { status, scanData, error, progress, scanProgress, domain, scan, reset } = useScan()
-  const [isDownloadAuthOpen, setIsDownloadAuthOpen] = useState(false)
   const results = scanData?.results || {}
   const isLimitReached = status === 'limit-reached'
 
@@ -52,16 +50,6 @@ export default function DashboardClient() {
         </ErrorBoundary>
       )}
 
-      <AuthModal
-        isOpen={isLimitReached}
-        onClose={reset}
-        message="You've reached the free scan limit for guests. Create a free account to perform unlimited scans and download detailed reports."
-      />
-      <AuthModal
-        isOpen={isDownloadAuthOpen}
-        onClose={() => setIsDownloadAuthOpen(false)}
-        message="Downloadable PDF and JSON reports are premium features. Please sign in or create an account to download this report."
-      />
 
       {status === 'error' && (
         <div className="mt-12 text-center animate-fade-in">
@@ -95,7 +83,7 @@ export default function DashboardClient() {
             </button>
           </div>
 
-          <ErrorBoundary><OverviewSection data={results} scanId={scanData.id} onLockClick={() => setIsDownloadAuthOpen(true)} /></ErrorBoundary>
+          <ErrorBoundary><OverviewSection data={results} scanId={scanData.id} /></ErrorBoundary>
           <ErrorBoundary><ChartsSection data={results} /></ErrorBoundary>
           <ErrorBoundary><BugBountySection data={results} domain={scanData.domain} /></ErrorBoundary>
           <ErrorBoundary><AttackGraphSection data={results} /></ErrorBoundary>

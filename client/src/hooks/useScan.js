@@ -1,12 +1,7 @@
 import { useState, useRef, useCallback } from 'react'
 import { startScan, getScan, getScanStatus } from '../utils/api'
-import { useAuth } from '../context/AuthContext'
-
-const GUEST_SCAN_LIMIT = 3
-const STORAGE_KEY = 'reconshield_guest_scans'
 
 export function useScan() {
-  const { token } = useAuth()
   const [status, setStatus] = useState('idle')
   const [scanData, setScanData] = useState(null)
   const [error, setError] = useState(null)
@@ -19,27 +14,7 @@ export function useScan() {
     if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null }
   }, [])
 
-  const getGuestScanCount = () => {
-    if (typeof window === 'undefined') return 0;
-    return parseInt(localStorage.getItem(STORAGE_KEY) || '0', 10)
-  }
-
-  const incrementGuestScanCount = () => {
-    if (typeof window === 'undefined') return;
-    const current = getGuestScanCount()
-    localStorage.setItem(STORAGE_KEY, (current + 1).toString())
-  }
-
   const scan = useCallback(async (targetDomain) => {
-    // Check limit for guests
-    if (!token) {
-      const count = getGuestScanCount()
-      if (count >= GUEST_SCAN_LIMIT) {
-        setStatus('limit-reached')
-        return
-      }
-    }
-
     setStatus('scanning')
     setError(null)
     setScanData(null)
@@ -50,11 +25,6 @@ export function useScan() {
     try {
       const { id } = await startScan(targetDomain, true)
       setProgress('Scan queued. Modules starting...')
-
-      // Increment count for guests on successful start
-      if (!token) {
-        incrementGuestScanCount()
-      }
 
       let attempts = 0
       pollRef.current = setInterval(async () => {
@@ -83,7 +53,7 @@ export function useScan() {
       setError(e.message)
       setStatus('error')
     }
-  }, [stopPolling, token])
+  }, [stopPolling])
 
   const reset = useCallback(() => {
     stopPolling()

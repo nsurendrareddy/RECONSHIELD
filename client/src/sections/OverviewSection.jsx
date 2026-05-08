@@ -1,12 +1,11 @@
 'use client'
 import ScoreGauge from '../components/ScoreGauge'
 import StatusBadge from '../components/StatusBadge'
-import ExportButton from '../components/ExportButton'
 import HackTargetModal from '../components/HackTargetModal'
 import { Shield, AlertTriangle, CheckCircle, Info, Crosshair, Zap, Terminal } from 'lucide-react'
 import { useState } from 'react'
 
-export default function OverviewSection({ data, scanId, onLockClick }) {
+export default function OverviewSection({ data, scanId }) {
   const [isHackOpen, setIsHackOpen] = useState(false)
   const risk = data?.risk || {}
   const stats = risk.stats || {}
@@ -38,7 +37,6 @@ export default function OverviewSection({ data, scanId, onLockClick }) {
                 <Terminal className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
                 SIMULATE_RECON()
               </button>
-              <ExportButton scanId={scanId} onLockClick={onLockClick} />
             </div>
           </div>
 
