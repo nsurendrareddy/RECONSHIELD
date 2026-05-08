@@ -1,12 +1,7 @@
-"""MongoDB database layer for scan storage."""
 import json
 from datetime import datetime, timezone
-from motor.motor_asyncio import AsyncIOMotorClient
 from config import settings
 from utils.logger import logger
-
-client = None
-db = None
 
 # Simple in-memory store for database-less operation (Render/Production)
 # In production, we rely on Sanity.io for content and Resend for interactions.

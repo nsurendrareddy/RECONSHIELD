@@ -15,7 +15,7 @@ async def create_contact(message: ContactMessage):
     logger.info(f"Contact message received from {message.email}")
     
     # Optional: Send notification email using the already configured email_service
-    # email_service.send_notification(message)
+    # email_service.send_notification(message.model_dump())
     
     return {
         "status": "success", 
