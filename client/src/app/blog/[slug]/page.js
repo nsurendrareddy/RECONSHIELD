@@ -1,54 +1,27 @@
 import BlogPostClient from '@/components/BlogPostClient';
 import { ShieldAlert, ArrowLeft, WifiOff } from 'lucide-react';
 import Link from 'next/link';
-
-// Helper to get absolute API URL for server-side fetching
-const getAbsoluteApiUrl = () => {
-  // Use the env var set in Vercel/Local, or fallback to your production Render API
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://reconshield-api.onrender.com';
-  return `${baseUrl.replace(/\/$/, '')}/api`;
-};
+import { client, blogDetailQuery, urlFor } from '@/utils/sanity';
 
 async function getPost(slug) {
-  if (!slug || slug === 'undefined') {
-    console.error('>>> getPost called with invalid slug:', slug);
-    return null;
-  }
-  
-  const API_BASE = getAbsoluteApiUrl();
-  const url = `${API_BASE}/blog/${encodeURIComponent(slug)}`;
-  
-  console.log(`>>> SERVER FETCH: ${url}`);
+  if (!slug || slug === 'undefined') return null;
   
   try {
-    const res = await fetch(url, {
-      next: { revalidate: 60 },
-      headers: {
-        'Accept': 'application/json',
-      }
-    });
-    
-    if (!res.ok) {
-      console.error(`>>> SERVER FETCH FAILED: Status ${res.status} for ${url}`);
-      return { _error: true, status: res.status, url };
-    }
-    
-    const data = await res.json();
-    return data;
+    const sanityPost = await client.fetch(blogDetailQuery, { slug });
+    return sanityPost;
   } catch (err) {
-    console.error('>>> SERVER FETCH ERROR:', err);
-    return { _error: true, message: err.message, url };
+    console.error('>>> SANITY FETCH ERROR:', err);
+    return { _error: true, message: err.message };
   }
 }
 
 export async function generateMetadata({ params }) {
-  // IMPORTANT: In Next.js 15+, params must be awaited
   const { slug } = await params;
-  
   const post = await getPost(slug);
   if (!post || post._error) return { title: 'Intelligence Briefing Missing | ReconShield' };
 
-  const description = post.meta_description || post.content.substring(0, 160).replace(/[#*]/g, '').trim();
+  const description = post.excerpt || 'ReconShield Intelligence Briefing';
+  const imageUrl = post.mainImage ? urlFor(post.mainImage).url() : '/og-image.png';
   
   return {
     title: `${post.title} | ReconShield Intelligence`,
@@ -58,47 +31,26 @@ export async function generateMetadata({ params }) {
       description: description,
       url: `https://reconshield.vercel.app/blog/${post.slug}`,
       siteName: 'ReconShield',
-      images: [{ url: post.image_url || '/og-image.png' }],
+      images: [{ url: imageUrl }],
       type: 'article',
     }
   };
 }
 
 export default async function Page({ params }) {
-  // IMPORTANT: In Next.js 15+, params must be awaited
   const { slug } = await params;
-  
   const post = await getPost(slug);
 
   if (!post || post._error) {
-    const isConnectionError = post?._error && !post?.status;
-    
     return (
       <div className="animate-fade-in max-w-4xl mx-auto text-center py-20 px-4">
-        {isConnectionError ? (
-          <WifiOff className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-        ) : (
-          <ShieldAlert className="w-12 h-12 text-red-500 mx-auto mb-4" />
-        )}
-        
+        <ShieldAlert className="w-12 h-12 text-red-500 mx-auto mb-4" />
         <h1 className="text-3xl font-display font-bold text-white tracking-wider uppercase">
-          {isConnectionError ? 'Connection Interrupted' : 'Intelligence Briefing Missing'}
+          Intelligence Briefing Missing
         </h1>
-        
-        <p className="text-gray-500 font-mono mt-2 mb-4">
-          {isConnectionError 
-            ? 'Unable to reach the intelligence database. Please verify your connection or try again later.'
-            : 'The requested intelligence briefing does not exist or has been classified.'}
+        <p className="text-gray-500 font-mono mt-2 mb-8">
+          The requested intelligence briefing does not exist or has been classified.
         </p>
-
-        {post?._error && (
-          <div className="mb-8 p-3 bg-white/5 rounded-lg border border-white/10 inline-block">
-            <code className="text-[10px] text-gray-500 font-mono">
-              Status: {post.status || 'Connection Failed'} | Target: {post.url}
-            </code>
-          </div>
-        )}
-        
         <div className="block">
           <Link href="/blog" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-surface-800 text-sm font-mono text-matrix-400 hover:bg-surface-700 transition-all border border-matrix-400/20">
             <ArrowLeft className="w-4 h-4" /> Return to Archives
@@ -112,8 +64,8 @@ export default async function Page({ params }) {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": post.title,
-    "datePublished": post.created_at,
-    "description": post.meta_description || post.content.substring(0, 160)
+    "datePublished": post.publishedAt,
+    "description": post.excerpt || ''
   };
 
   return (

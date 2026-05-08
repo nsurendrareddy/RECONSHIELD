@@ -4,10 +4,48 @@ import { ArrowLeft, Clock, Calendar, Tag, BookOpen } from 'lucide-react'
 import Link from 'next/link'
 import { BASE_URL } from '@/utils/api'
 
+import { PortableText } from '@portabletext/react'
+import { urlFor } from '@/utils/sanity'
+
+const components = {
+  block: {
+    h2: ({ children }) => <h2 className="text-2xl font-display font-bold text-matrix-400 mt-10 mb-5 tracking-wider uppercase">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-xl font-display font-semibold text-white mt-8 mb-4 tracking-wide">{children}</h3>,
+    normal: ({ children }) => <p className="text-gray-300 font-mono text-sm leading-loose mb-6">{children}</p>,
+    blockquote: ({ children }) => <blockquote className="border-l-4 border-matrix-400 pl-6 my-10 italic text-gray-400 text-lg">{children}</blockquote>,
+  },
+  list: {
+    bullet: ({ children }) => <ul className="mb-6 font-mono text-sm leading-relaxed list-disc ml-4 space-y-2">{children}</ul>,
+    number: ({ children }) => <ol className="mb-6 font-mono text-sm leading-relaxed list-decimal ml-4 space-y-2">{children}</ol>,
+  },
+  listItem: {
+    bullet: ({ children }) => <li className="text-gray-300">{children}</li>,
+    number: ({ children }) => <li className="text-gray-300">{children}</li>,
+  },
+  marks: {
+    strong: ({ children }) => <strong className="text-matrix-400 font-bold">{children}</strong>,
+    link: ({ children, value }) => {
+      const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
+      return (
+        <a href={value.href} rel={rel} className="text-matrix-400 underline decoration-matrix-400/30 hover:decoration-matrix-400 transition-all">
+          {children}
+        </a>
+      )
+    },
+  },
+}
+
 export default function BlogPostClient({ post }) {
+  const isSanity = !!post._type || !!post.body;
+  const imageUrl = isSanity 
+    ? (post.mainImage ? urlFor(post.mainImage).url() : null)
+    : (post.image_url?.startsWith('http') ? post.image_url : `${BASE_URL}${post.image_url}`);
+
   const renderContent = (content) => {
-    // Check if the content is HTML (from the new rich text editor)
-    const isHtml = content.trim().startsWith('<') || content.includes('</');
+    if (!content) return null;
+    
+    // Check if the content is HTML (from the old rich text editor)
+    const isHtml = typeof content === 'string' && (content.trim().startsWith('<') || content.includes('</'));
     
     if (isHtml) {
       return (
@@ -19,24 +57,24 @@ export default function BlogPostClient({ post }) {
     }
 
     // Fallback for old markdown-style posts
-    return content.trim().split('\n\n').map((paragraph, index) => {
-      const text = paragraph.trim()
-      if (text.startsWith('### ')) {
-        return <h3 key={index} className="text-xl font-heading font-semibold text-white mt-8 mb-4">{text.substring(4)}</h3>
-      }
-      if (text.startsWith('## ')) {
-        return <h2 key={index} className="text-2xl font-heading font-bold text-matrix-400 mt-10 mb-5">{text.substring(3)}</h2>
-      }
-      if (text.startsWith('- ')) {
-        const items = text.split('\n').map((item, i) => <li key={i} className="mb-2 ml-4 list-disc text-gray-300">{item.substring(2)}</li>)
-        return <ul key={index} className="mb-6 font-mono text-sm leading-relaxed">{items}</ul>
-      }
-      if (text.match(/^[0-9]+\./)) {
-        const items = text.split('\n').map((item, i) => <li key={i} className="mb-2 ml-4 list-decimal text-gray-300">{item.substring(item.indexOf('.') + 1).trim()}</li>)
-        return <ol key={index} className="mb-6 font-mono text-sm leading-relaxed">{items}</ol>
-      }
-      return <p key={index} className="text-gray-300 font-mono text-sm leading-relaxed mb-6">{text}</p>
-    })
+    if (typeof content === 'string') {
+      return content.trim().split('\n\n').map((paragraph, index) => {
+        const text = paragraph.trim()
+        if (text.startsWith('### ')) {
+          return <h3 key={index} className="text-xl font-heading font-semibold text-white mt-8 mb-4">{text.substring(4)}</h3>
+        }
+        if (text.startsWith('## ')) {
+          return <h2 key={index} className="text-2xl font-heading font-bold text-matrix-400 mt-10 mb-5">{text.substring(3)}</h2>
+        }
+        if (text.startsWith('- ')) {
+          const items = text.split('\n').map((item, i) => <li key={i} className="mb-2 ml-4 list-disc text-gray-300">{item.substring(2)}</li>)
+          return <ul key={index} className="mb-6 font-mono text-sm leading-relaxed">{items}</ul>
+        }
+        return <p key={index} className="text-gray-300 font-mono text-sm leading-relaxed mb-6">{text}</p>
+      })
+    }
+    
+    return null;
   }
 
   return (
@@ -48,9 +86,9 @@ export default function BlogPostClient({ post }) {
       <article className="relative">
         {/* Header Image Section */}
         <div className="w-full h-64 md:h-[450px] relative rounded-3xl overflow-hidden border border-white/5 bg-surface-900 shadow-2xl">
-          {post.image_url ? (
+          {imageUrl ? (
             <img 
-              src={post.image_url.startsWith('http') ? post.image_url : `${BASE_URL}${post.image_url}`} 
+              src={imageUrl} 
               alt={post.title} 
               className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-1000" 
             />
@@ -77,19 +115,19 @@ export default function BlogPostClient({ post }) {
                 <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-gray-400">
                   <span className="flex items-center gap-2">
                     <Calendar className="w-4 h-4 text-matrix-400/60" /> 
-                    {new Date(post.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                    {new Date(post.publishedAt || post.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                   </span>
                   <span className="flex items-center gap-2">
                     <Clock className="w-4 h-4 text-matrix-400/60" /> 
-                    {Math.max(1, Math.ceil((post.content?.split(' ').length || 0) / 200))} min read
+                    {isSanity ? 'Read Online' : `${Math.max(1, Math.ceil((post.content?.split(' ').length || 0) / 200))} min read`}
                   </span>
                 </div>
               </div>
 
-              {post.meta_description && (
+              {(post.meta_description || post.excerpt) && (
                 <div className="border-t border-white/5 pt-8">
                   <p className="text-lg text-gray-400 font-heading leading-relaxed italic max-w-2xl">
-                    {post.meta_description}
+                    {post.meta_description || post.excerpt}
                   </p>
                 </div>
               )}
@@ -100,7 +138,11 @@ export default function BlogPostClient({ post }) {
         {/* Article Body */}
         <div className="px-6 md:px-12 py-12 md:py-20">
           <div className="prose prose-invert max-w-none prose-p:text-gray-300 prose-p:font-mono prose-p:text-sm prose-p:leading-loose prose-headings:font-display prose-headings:tracking-wider prose-headings:uppercase prose-strong:text-matrix-400">
-            {renderContent(post.content)}
+            {isSanity ? (
+              <PortableText value={post.body} components={components} />
+            ) : (
+              renderContent(post.content)
+            )}
           </div>
         </div>
       </article>

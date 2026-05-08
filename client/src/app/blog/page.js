@@ -1,31 +1,38 @@
 'use client'
-import { BookOpen, ArrowRight, Tag, Edit, Trash2, Search } from 'lucide-react'
-import Link from 'next/link'
+import { BookOpen, ArrowRight, Tag, Search } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
-import { useAuth } from '@/context/AuthContext'
 import { API_BASE, BASE_URL } from '@/utils/api'
+import { client, blogListQuery, urlFor } from '@/utils/sanity'
 
 export default function Blog() {
-  const [articles, setArticles] = useState([])
-  const { role, token } = useAuth()
+  const [sanityArticles, setSanityArticles] = useState([])
   const router = useRouter()
 
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('All')
 
   useEffect(() => {
-    fetch(`${API_BASE}/blog`)
-      .then(res => res.json())
-      .then(data => setArticles(data))
-      .catch(err => console.error(err))
+    // Fetch ONLY from Sanity
+    client.fetch(blogListQuery)
+      .then(data => setSanityArticles(data || []))
+      .catch(err => console.error('Sanity fetch error:', err))
   }, [])
 
-  const categories = ['All', ...new Set(articles.map(a => a.category))]
+  // Process Sanity articles
+  const allArticles = sanityArticles.map(a => ({ 
+    ...a, 
+    _source: 'sanity', 
+    created_at: a.publishedAt,
+    image_url: a.mainImage ? urlFor(a.mainImage).url() : null,
+    content: a.excerpt || ''
+  })).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
 
-  const filteredArticles = articles.filter(article => {
-    const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         article.content.toLowerCase().includes(searchQuery.toLowerCase())
+  const categories = ['All', ...new Set(allArticles.map(a => a.category).filter(Boolean))]
+
+  const filteredArticles = allArticles.filter(article => {
+    const matchesSearch = (article.title || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (article.content || '').toLowerCase().includes(searchQuery.toLowerCase())
     const matchesCategory = selectedCategory === 'All' || article.category === selectedCategory
     return matchesSearch && matchesCategory
   })
@@ -39,26 +46,6 @@ export default function Blog() {
       'Vulnerabilities': 'text-red-400 bg-red-400/10 border-red-400/20',
     }
     return colors[cat] || 'text-gray-400 bg-gray-400/10 border-gray-400/20'
-  }
-
-  const handleDelete = async (id, e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!window.confirm('Are you sure you want to delete this article?')) return;
-
-    try {
-      const res = await fetch(`${API_BASE}/blog/delete/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      if (res.ok) {
-        setArticles(articles.filter(a => a._id !== id));
-      }
-    } catch (err) {
-      console.error(err);
-    }
   }
 
   return (
@@ -109,30 +96,13 @@ export default function Blog() {
             className="glass-card flex flex-col group animate-slide-up overflow-hidden hover:scale-[1.02] transition-transform duration-300 relative cursor-pointer" 
             style={{ animationDelay: `${i * 0.1}s` }}
           >
-            {/* Admin Controls */}
-            {role === 'admin' && (
-              <div className="absolute top-4 right-4 z-30 flex gap-2">
-                <Link
-                  href={`/blog/edit/${article._id}`}
-                  onClick={(e) => e.stopPropagation()}
-                  className="p-2 bg-blue-500/20 text-blue-400 rounded hover:bg-blue-500/40 backdrop-blur-md"
-                >
-                  <Edit className="w-4 h-4" />
-                </Link>
-                <button
-                  onClick={(e) => handleDelete(article._id, e)}
-                  className="p-2 bg-red-500/20 text-red-400 rounded hover:bg-red-500/40 backdrop-blur-md"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            )}
-
             {/* Article Image */}
             <div className="w-full h-48 relative overflow-hidden bg-surface-900 border-b border-white/5">
               {article.image_url ? (
                 <img 
-                  src={article.image_url.startsWith('http') ? article.image_url : `${BASE_URL}${article.image_url}`} 
+                  src={article._source === 'custom' && !article.image_url.startsWith('http') 
+                        ? `${BASE_URL}${article.image_url}` 
+                        : article.image_url} 
                   alt={article.title} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                 />
@@ -145,7 +115,7 @@ export default function Blog() {
               <div className="absolute top-4 left-4 z-20">
                 <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-mono font-medium border backdrop-blur-md ${getCategoryColor(article.category)}`}>
                   <Tag className="w-3 h-3" />
-                  {article.category}
+                  {article.category || 'INTEL'}
                 </span>
               </div>
             </div>
@@ -153,7 +123,8 @@ export default function Blog() {
             {/* Content */}
             <div className="p-6 flex flex-col flex-1">
               <div className="flex items-center justify-between text-[10px] font-mono text-gray-500 mb-3">
-                <span>{new Date(article.created_at).toLocaleDateString()}</span>
+                <span>{new Date(article.created_at || article.publishedAt).toLocaleDateString()}</span>
+                {article._source === 'sanity' && <span className="text-matrix-400 opacity-50">Verified Intel</span>}
               </div>
 
               <h3 className="text-lg font-heading font-semibold text-white mb-3 group-hover:text-matrix-400 transition-colors line-clamp-2">
@@ -161,7 +132,7 @@ export default function Blog() {
               </h3>
               
               <p className="text-sm text-gray-400 mb-6 flex-1 line-clamp-3 leading-relaxed">
-                {article.meta_description || article.content.substring(0, 100) + '...'}
+                {article.meta_description || article.excerpt || article.content?.substring(0, 100) + '...'}
               </p>
               
               <div className="flex items-center gap-2 text-xs font-mono font-semibold text-matrix-400 group-hover:text-matrix-300 transition-colors uppercase tracking-wider w-fit">
@@ -170,7 +141,7 @@ export default function Blog() {
             </div>
           </div>
         ))}
-        {articles.length === 0 && (
+        {allArticles.length === 0 && (
           <p className="text-gray-500 col-span-full">No articles found.</p>
         )}
       </div>

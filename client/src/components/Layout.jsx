@@ -114,61 +114,19 @@ export default function Layout({ children }) {
                 ))}
               </nav>
 
-              <div className={`flex items-center gap-2 sm:gap-4 ml-2 sm:ml-4 pl-2 sm:pl-4 border-l ${theme === 'dark' ? 'border-white/[0.06]' : 'border-gray-200'}`}>
-                {/* Theme Toggle */}
-                <button 
-                  onClick={toggleTheme}
-                  className={`p-2 rounded-lg transition-all ${
-                    theme === 'dark' 
-                      ? 'bg-white/[0.03] text-gray-400 hover:text-white hover:bg-white/[0.08]' 
-                      : 'bg-gray-100 text-gray-500 hover:text-gray-900 hover:bg-gray-200'
-                  }`}
-                  aria-label="Toggle Theme"
-                >
-                  {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                </button>
-
-                {/* Desktop Auth */}
-                <div className="hidden sm:flex items-center gap-4">
-                  {!user ? (
-                    <>
-                      <Link
-                        href="/login"
-                        className={`text-sm font-medium transition-colors ${theme === 'dark' ? 'text-gray-400 hover:text-matrix-400' : 'text-gray-600 hover:text-matrix-600'}`}
-                      >
-                        Login
-                      </Link>
-                      <Link
-                        href="/register"
-                        className={`text-sm font-medium px-4 py-2 rounded-lg transition-all ${
-                          theme === 'dark'
-                            ? 'bg-matrix-400/10 text-matrix-400 border border-matrix-400/20 hover:bg-matrix-400/20'
-                            : 'bg-matrix-600 text-white hover:bg-matrix-700 shadow-sm'
-                        }`}
-                      >
-                        Register
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      {role === 'admin' && (
-                        <Link
-                          href="/blog/create"
-                          className="flex items-center gap-2 text-sm font-medium px-4 py-2 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-lg hover:bg-amber-500/20 transition-all"
-                        >
-                          <Edit className="w-4 h-4" />
-                          <span className="hidden lg:inline">Write Article</span>
-                        </Link>
-                      )}
-                      <button
-                        onClick={logout}
-                        className={`flex items-center gap-2 text-sm font-medium transition-colors ${theme === 'dark' ? 'text-gray-400 hover:text-red-400' : 'text-gray-600 hover:text-red-600'}`}
-                      >
-                        <LogOut className="w-4 h-4" />
-                        <span className="hidden lg:inline">Logout</span>
-                      </button>
-                    </>
-                  )}
+                {/* Theme Toggle Only */}
+                <div className="flex items-center gap-4">
+                  <button 
+                    onClick={toggleTheme}
+                    className={`p-2 rounded-lg transition-all ${
+                      theme === 'dark' 
+                        ? 'bg-white/[0.03] text-gray-400 hover:text-white hover:bg-white/[0.08]' 
+                        : 'bg-gray-100 text-gray-500 hover:text-gray-900 hover:bg-gray-200'
+                    }`}
+                    aria-label="Toggle Theme"
+                  >
+                    {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                  </button>
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -216,58 +174,8 @@ export default function Layout({ children }) {
                 ))}
               </nav>
 
-              <div className="pt-8 border-t border-white/[0.06]">
-                {!user ? (
-                  <div className="grid grid-cols-2 gap-4">
-                    <Link
-                      href="/login"
-                      onClick={() => setIsMenuOpen(false)}
-                      className={`flex items-center justify-center py-4 rounded-xl text-sm font-bold uppercase tracking-wider transition-all ${
-                        theme === 'dark' ? 'bg-white/[0.03] text-gray-400' : 'bg-gray-100 text-gray-600'
-                      }`}
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      href="/register"
-                      onClick={() => setIsMenuOpen(false)}
-                      className={`flex items-center justify-center py-4 rounded-xl text-sm font-bold uppercase tracking-wider transition-all ${
-                        theme === 'dark' ? 'bg-matrix-400 text-surface-950' : 'bg-matrix-600 text-white'
-                      }`}
-                    >
-                      Register
-                    </Link>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div className={`flex items-center gap-3 p-4 rounded-xl ${theme === 'dark' ? 'bg-white/[0.03]' : 'bg-gray-50'}`}>
-                      <div className="w-10 h-10 rounded-full bg-matrix-400/20 flex items-center justify-center text-matrix-400">
-                        <User className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <p className={`text-sm font-bold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{user.email || 'Operative'}</p>
-                        <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">{role || 'User'}</p>
-                      </div>
-                    </div>
-                    {role === 'admin' && (
-                      <Link
-                        href="/blog/create"
-                        onClick={() => setIsMenuOpen(false)}
-                        className="flex items-center justify-center gap-2 py-4 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-xl text-sm font-bold uppercase tracking-wider"
-                      >
-                        <Edit className="w-4 h-4" />
-                        Write Article
-                      </Link>
-                    )}
-                    <button
-                      onClick={() => { logout(); setIsMenuOpen(false); }}
-                      className="w-full flex items-center justify-center gap-2 py-4 bg-red-500/5 text-red-500 border border-red-500/10 rounded-xl text-sm font-bold uppercase tracking-wider"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      Logout
-                    </button>
-                  </div>
-                )}
+              <div className="pt-8 border-t border-white/[0.06] text-center">
+                <p className="text-[10px] font-mono text-gray-500 uppercase tracking-[0.2em]">Authorized Intelligence Access Only</p>
               </div>
             </div>
           </div>
