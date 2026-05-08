@@ -1,13 +1,11 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Shield, History, Terminal, Sun, Moon, Activity, LogOut, Edit, AlertTriangle, Lock, Globe, Menu, X, User } from 'lucide-react'
-import { useAuth } from '../context/AuthContext'
+import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Globe, Menu, X } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 export default function Layout({ children }) {
   const pathname = usePathname()
-  const { user, role, logout } = useAuth()
   const [theme, setTheme] = useState('dark')
   const [showBanner, setShowBanner] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
