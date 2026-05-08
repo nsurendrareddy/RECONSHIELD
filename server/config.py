@@ -6,9 +6,10 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '..', '.env'))
 
 
 class Settings:
-    PORT: int = int(os.getenv("PORT", "3001"))
-    ENV: str = os.getenv("NODE_ENV", "development")
-    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:5173")
+    # Render provides PORT env var, default to 10000 for local/dev
+    PORT: int = int(os.getenv("PORT", "10000"))
+    ENV: str = os.getenv("NODE_ENV", "production")
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "https://reconshield.vercel.app")
 
     # Optional API keys — app works fully without these
     SECURITYTRAILS_API_KEY: str = os.getenv("SECURITYTRAILS_API_KEY", "")
@@ -18,28 +19,29 @@ class Settings:
 
     # Rate limiting
     RATE_LIMIT_GENERAL: str = "100/15minutes"
-    RATE_LIMIT_SCAN: str = "5/15minutes"
+    RATE_LIMIT_SCAN: str = "10/15minutes"
 
     # Scan settings
     SCAN_TIMEOUT: int = int(os.getenv("SCAN_TIMEOUT", "120"))
     PORT_CHECK_TIMEOUT: float = float(os.getenv("PORT_CHECK_TIMEOUT", "3.0"))
 
-    MONGO_URI: str = os.getenv("MONGO_URI", "mongodb+srv://nsurendrareddy3_db_user:Reddy9999@cluster0.ib2u7um.mongodb.net/?appName=Cluster0").strip().rstrip(',')
+    # MongoDB (Deprecated but kept as empty strings to avoid import errors)
+    MONGO_URI: str = os.getenv("MONGO_URI", "")
     MONGO_DB_NAME: str = os.getenv("MONGO_DB_NAME", "reconshield")
 
-    # SMTP Settings
+    # SMTP Settings (Optional)
     SMTP_HOST: str = os.getenv("SMTP_HOST", "smtp.gmail.com")
     SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
-    SMTP_USER: str = os.getenv("SMTP_USER", "nsurendrareddy3@gmail.com")
-    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "") # To be set in environment
+    SMTP_USER: str = os.getenv("SMTP_USER", "")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
     
     # Resend API
-    RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "re_RnR4ZE8j_MpcydiGCjRS7RxNt6dKgbHSg")
+    RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "")
 
     # Cloudinary Settings
-    CLOUDINARY_CLOUD_NAME: str = os.getenv("CLOUDINARY_CLOUD_NAME", "dvin0qhb8")
-    CLOUDINARY_API_KEY: str = os.getenv("CLOUDINARY_API_KEY", "657155712862687")
-    CLOUDINARY_API_SECRET: str = os.getenv("CLOUDINARY_API_SECRET", "0DRZX7TlvsFzji_fzs-9sXp5i5o")
+    CLOUDINARY_CLOUD_NAME: str = os.getenv("CLOUDINARY_CLOUD_NAME", "")
+    CLOUDINARY_API_KEY: str = os.getenv("CLOUDINARY_API_KEY", "")
+    CLOUDINARY_API_SECRET: str = os.getenv("CLOUDINARY_API_SECRET", "")
 
 
 settings = Settings()
