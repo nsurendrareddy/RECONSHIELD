@@ -112,36 +112,34 @@ export default function Layout({ children }) {
                 ))}
               </nav>
 
-                {/* Theme Toggle Only */}
-                <div className="flex items-center gap-4">
-                  <button 
-                    onClick={toggleTheme}
-                    className={`p-2 rounded-lg transition-all ${
-                      theme === 'dark' 
-                        ? 'bg-white/[0.03] text-gray-400 hover:text-white hover:bg-white/[0.08]' 
-                        : 'bg-gray-100 text-gray-500 hover:text-gray-900 hover:bg-gray-200'
-                    }`}
-                    aria-label="Toggle Theme"
-                  >
-                    {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                  </button>
-                </div>
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className={`p-2 rounded-lg transition-all ${
+                  theme === 'dark'
+                    ? 'bg-white/[0.03] text-gray-400 hover:text-white hover:bg-white/[0.08]'
+                    : 'bg-gray-100 text-gray-500 hover:text-gray-900 hover:bg-gray-200'
+                }`}
+                aria-label="Toggle Theme"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
 
-                {/* Mobile Menu Button */}
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className={`md:hidden p-2 rounded-lg transition-all ${
-                    theme === 'dark'
-                      ? 'bg-matrix-400/10 text-matrix-400'
-                      : 'bg-matrix-600/10 text-matrix-600'
-                  }`}
-                  aria-label="Toggle Menu"
-                >
-                  {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-          </div>
+              {/* Mobile Menu Button */}
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className={`md:hidden p-2 rounded-lg transition-all ${
+                  theme === 'dark'
+                    ? 'bg-matrix-400/10 text-matrix-400'
+                    : 'bg-matrix-600/10 text-matrix-600'
+                }`}
+                aria-label="Toggle Menu"
+              >
+                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div> {/* closes "flex items-center gap-2 sm:gap-6" */}
+          </div>   {/* closes "flex items-center justify-between h-16" */}
+        </div>     {/* closes "max-w-[1440px]..." */}
 
         {/* Mobile Navigation Overlay */}
         {isMenuOpen && (
