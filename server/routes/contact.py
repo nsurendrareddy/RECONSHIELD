@@ -1,12 +1,24 @@
 from fastapi import APIRouter, HTTPException, status
-from db.mongo import get_database
 from models import ContactMessage
-from datetime import datetime
+from datetime import datetime, timezone
+from services.email_service import email_service
+from utils.logger import logger
 
 router = APIRouter()
 
 @router.post("/")
 async def create_contact(message: ContactMessage):
-    # In a database-less setup, we could send an email here via Resend
-    # For now, we just acknowledge the receipt
-    return {"status": "success", "message": "Transmission received. The ReconShield team will investigate."}
+    """
+    Handle contact form submissions in Database-Less mode.
+    Transmissions are logged and can be optionally forwarded via Resend.
+    """
+    logger.info(f"Contact message received from {message.email}")
+    
+    # Optional: Send notification email using the already configured email_service
+    # email_service.send_notification(message)
+    
+    return {
+        "status": "success", 
+        "message": "Transmission received. The ReconShield team will investigate.",
+        "received_at": datetime.now(timezone.utc).isoformat()
+    }
