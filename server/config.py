@@ -24,7 +24,7 @@ class Settings:
     SCAN_TIMEOUT: int = int(os.getenv("SCAN_TIMEOUT", "120"))
     PORT_CHECK_TIMEOUT: float = float(os.getenv("PORT_CHECK_TIMEOUT", "3.0"))
 
-    MONGO_URI: str = os.getenv("MONGO_URI", "mongodb+srv://nsurendrareddy3_db_user:Reddy9999@cluster0.ib2u7um.mongodb.net/?appName=Cluster0").strip().rstrip(',')
+    MONGO_URI: str = os.getenv("MONGO_URI", "").strip().rstrip(',')
     MONGO_DB_NAME: str = os.getenv("MONGO_DB_NAME", "reconshield")
 
     # SMTP Settings
@@ -34,12 +34,12 @@ class Settings:
     SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "") # To be set in environment
     
     # Resend API
-    RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "re_RnR4ZE8j_MpcydiGCjRS7RxNt6dKgbHSg")
+    RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "")
 
     # Cloudinary Settings
-    CLOUDINARY_CLOUD_NAME: str = os.getenv("CLOUDINARY_CLOUD_NAME", "dvin0qhb8")
-    CLOUDINARY_API_KEY: str = os.getenv("CLOUDINARY_API_KEY", "657155712862687")
-    CLOUDINARY_API_SECRET: str = os.getenv("CLOUDINARY_API_SECRET", "0DRZX7TlvsFzji_fzs-9sXp5i5o")
+    CLOUDINARY_CLOUD_NAME: str = os.getenv("CLOUDINARY_CLOUD_NAME", "")
+    CLOUDINARY_API_KEY: str = os.getenv("CLOUDINARY_API_KEY", "")
+    CLOUDINARY_API_SECRET: str = os.getenv("CLOUDINARY_API_SECRET", "")
 
 
 settings = Settings()
