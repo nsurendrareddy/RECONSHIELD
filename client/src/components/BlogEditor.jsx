@@ -6,10 +6,31 @@ import Link from 'next/link'
 import { API_BASE, BASE_URL } from '@/utils/api'
 import { useAuth } from '@/context/AuthContext'
 
+import dynamic from 'next/dynamic';
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+import 'react-quill-new/dist/quill.snow.css';
+
 export default function BlogEditor({ initialData = null, isEdit = false }) {
   const router = useRouter()
   const { token, role } = useAuth()
   
+  // Quill Modules configuration
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline','strike', 'blockquote'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image', 'code-block'],
+      ['clean']
+    ],
+  };
+
+  const formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet', 'indent',
+    'link', 'image', 'code-block'
+  ];
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -239,17 +260,53 @@ export default function BlogEditor({ initialData = null, isEdit = false }) {
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-gray-500 uppercase tracking-widest ml-1">Content (Markdown Supported)</label>
-                <textarea
-                  name="content"
-                  value={formData.content}
-                  onChange={handleChange}
-                  rows={15}
-                  placeholder="### Executive Summary\nDetailed technical analysis goes here..."
-                  required
-                  className="w-full bg-surface-900 border border-white/5 rounded-xl py-4 px-4 text-gray-300 font-mono text-sm focus:border-matrix-400 focus:outline-none transition-all resize-none"
-                />
+              <div className="space-y-2 flex flex-col min-h-[500px]">
+                <label className="text-xs font-mono text-gray-500 uppercase tracking-widest ml-1">Content (Rich Text Editor)</label>
+                <div className="flex-1 bg-surface-900 border border-white/5 rounded-xl overflow-hidden focus-within:border-matrix-400 transition-all">
+                  <ReactQuill 
+                    theme="snow"
+                    value={formData.content}
+                    onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+                    modules={modules}
+                    formats={formats}
+                    placeholder="Write your intelligence briefing here..."
+                    className="h-full text-white font-mono blog-quill-editor"
+                  />
+                </div>
+                <style jsx global>{`
+                  .blog-quill-editor .ql-toolbar {
+                    background: #111;
+                    border: none !important;
+                    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
+                    padding: 12px;
+                  }
+                  .blog-quill-editor .ql-container {
+                    border: none !important;
+                    font-family: 'JetBrains Mono', monospace !important;
+                    font-size: 14px;
+                    min-height: 400px;
+                  }
+                  .blog-quill-editor .ql-editor {
+                    min-height: 400px;
+                    color: #ccc;
+                  }
+                  .blog-quill-editor .ql-editor.ql-blank::before {
+                    color: #555 !important;
+                    font-style: normal;
+                  }
+                  .blog-quill-editor .ql-stroke {
+                    stroke: #888 !important;
+                  }
+                  .blog-quill-editor .ql-fill {
+                    fill: #888 !important;
+                  }
+                  .blog-quill-editor .ql-picker {
+                    color: #888 !important;
+                  }
+                  .blog-quill-editor .ql-active .ql-stroke {
+                    stroke: #00ff41 !important;
+                  }
+                `}</style>
               </div>
             </div>
 

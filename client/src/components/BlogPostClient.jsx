@@ -6,6 +6,19 @@ import { BASE_URL } from '@/utils/api'
 
 export default function BlogPostClient({ post }) {
   const renderContent = (content) => {
+    // Check if the content is HTML (from the new rich text editor)
+    const isHtml = content.trim().startsWith('<') || content.includes('</');
+    
+    if (isHtml) {
+      return (
+        <div 
+          className="rich-text-content"
+          dangerouslySetInnerHTML={{ __html: content }} 
+        />
+      );
+    }
+
+    // Fallback for old markdown-style posts
     return content.trim().split('\n\n').map((paragraph, index) => {
       const text = paragraph.trim()
       if (text.startsWith('### ')) {
