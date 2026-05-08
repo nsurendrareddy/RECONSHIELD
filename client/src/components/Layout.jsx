@@ -59,12 +59,13 @@ export default function Layout({ children }) {
 
       {/* Header */}
       <header className={`sticky top-0 z-50 border-b backdrop-blur-xl transition-all duration-300 ${
-        theme === 'dark' 
-          ? 'bg-surface-950/80 border-white/[0.04]' 
+        theme === 'dark'
+          ? 'bg-surface-950/80 border-white/[0.04]'
           : 'bg-white/80 border-gray-200'
       }`}>
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
+
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative">
@@ -89,7 +90,7 @@ export default function Layout({ children }) {
               </div>
             </Link>
 
-            {/* Nav - Desktop */}
+            {/* Nav - Desktop + Controls */}
             <div className="flex items-center gap-2 sm:gap-6">
               <nav className="hidden md:flex items-center gap-1">
                 {navItems.map(({ path, label, icon: Icon }) => (
@@ -137,44 +138,48 @@ export default function Layout({ children }) {
               >
                 {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
-            </div> {/* closes "flex items-center gap-2 sm:gap-6" */}
-          </div>   {/* closes "flex items-center justify-between h-16" */}
-        </div>     {/* closes "max-w-[1440px]..." */}
+            </div>
+            {/* END: flex items-center gap-2 sm:gap-6 */}
 
-        {/* Mobile Navigation Overlay */}
-        {isMenuOpen && (
-          <div className={`md:hidden fixed inset-0 top-16 z-40 transition-all duration-300 ${
-            theme === 'dark' ? 'bg-surface-950/95' : 'bg-white/95'
-          } backdrop-blur-xl`}>
-            <div className="px-6 py-8 space-y-8 animate-fade-in">
-              <nav className="flex flex-col gap-2">
-                {navItems.map(({ path, label, icon: Icon }) => (
-                  <Link
-                    key={path}
-                    href={path}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`flex items-center gap-4 p-4 rounded-xl text-base font-medium transition-all ${
-                      pathname === path
-                        ? theme === 'dark'
-                          ? 'bg-matrix-400/10 text-matrix-400 border border-matrix-400/20'
-                          : 'bg-matrix-600/10 text-matrix-600 border border-matrix-600/20'
-                        : theme === 'dark'
-                          ? 'text-gray-400 hover:text-matrix-400 hover:bg-white/[0.02]'
-                          : 'text-gray-600 hover:text-matrix-600 hover:bg-gray-100'
-                    }`}
-                  >
-                    {Icon && <Icon className="w-5 h-5" />}
-                    <span>{label}</span>
-                  </Link>
-                ))}
-              </nav>
+          </div>
+          {/* END: flex items-center justify-between h-16 */}
 
-              <div className="pt-8 border-t border-white/[0.06] text-center">
-                <p className="text-[10px] font-mono text-gray-500 uppercase tracking-[0.2em]">Authorized Intelligence Access Only</p>
+          {/* Mobile Navigation Overlay — inside max-w container */}
+          {isMenuOpen && (
+            <div className={`md:hidden fixed inset-0 top-16 z-40 transition-all duration-300 ${
+              theme === 'dark' ? 'bg-surface-950/95' : 'bg-white/95'
+            } backdrop-blur-xl`}>
+              <div className="px-6 py-8 space-y-8 animate-fade-in">
+                <nav className="flex flex-col gap-2">
+                  {navItems.map(({ path, label, icon: Icon }) => (
+                    <Link
+                      key={path}
+                      href={path}
+                      onClick={() => setIsMenuOpen(false)}
+                      className={`flex items-center gap-4 p-4 rounded-xl text-base font-medium transition-all ${
+                        pathname === path
+                          ? theme === 'dark'
+                            ? 'bg-matrix-400/10 text-matrix-400 border border-matrix-400/20'
+                            : 'bg-matrix-600/10 text-matrix-600 border border-matrix-600/20'
+                          : theme === 'dark'
+                            ? 'text-gray-400 hover:text-matrix-400 hover:bg-white/[0.02]'
+                            : 'text-gray-600 hover:text-matrix-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      {Icon && <Icon className="w-5 h-5" />}
+                      <span>{label}</span>
+                    </Link>
+                  ))}
+                </nav>
+                <div className="pt-8 border-t border-white/[0.06] text-center">
+                  <p className="text-[10px] font-mono text-gray-500 uppercase tracking-[0.2em]">Authorized Intelligence Access Only</p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+
+        </div>
+        {/* END: max-w-[1440px] */}
       </header>
 
       {/* Main Content */}
@@ -184,8 +189,8 @@ export default function Layout({ children }) {
 
       {/* Footer */}
       <footer className={`border-t mt-16 transition-colors duration-300 ${
-        theme === 'dark' 
-          ? 'bg-surface-950/80 border-white/[0.04] text-gray-500' 
+        theme === 'dark'
+          ? 'bg-surface-950/80 border-white/[0.04] text-gray-500'
           : 'bg-white border-gray-200 text-gray-600'
       } backdrop-blur-md`}>
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -216,7 +221,7 @@ export default function Layout({ children }) {
               </ul>
             </div>
           </div>
-          
+
           <div className={`pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-6 ${theme === 'dark' ? 'border-white/[0.04]' : 'border-gray-100'}`}>
             <div className="flex items-center gap-6">
               <p className="text-[11px] font-mono">© 2026 RECONSHIELD INTELLIGENCE</p>
