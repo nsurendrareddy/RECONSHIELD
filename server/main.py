@@ -27,16 +27,16 @@ from middleware.rate_limiter import limiter
 async def lifespan(app: FastAPI):
     """Startup and shutdown events."""
     try:
+        logger.info(f"ReconShield API initializing in {settings.ENV} mode")
         await init_db()
         await connect_to_mongo()
-        # Ensure uploads directory exists
+        # Ensure uploads directory exists (Legacy support)
         if not os.path.exists("uploads/blog"):
             os.makedirs("uploads/blog", exist_ok=True)
-        logger.info("ReconShield API started")
+        logger.info("ReconShield API successfully started")
     except Exception as e:
         print(f"!!! FATAL STARTUP ERROR: {e}", flush=True)
         logger.error(f"FATAL STARTUP ERROR: {e}", exc_info=True)
-        # Re-raise to ensure the process exits but we at least see the error
         raise e
     yield
     await close_mongo_connection()
@@ -139,12 +139,7 @@ app.include_router(ip_scanner_router, prefix="/api/ip-scanner", tags=["IP Scanne
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 
-@app.on_event("startup")
-async def startup_event():
-    logger.info(f"Environment: {settings.ENV}")
-    logger.info(f"Allowed Origins: {allowed_origins}")
-
-
+# Server Entry Point
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=settings.PORT, reload=True)
