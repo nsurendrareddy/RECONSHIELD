@@ -5,7 +5,7 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'etmnx6kx',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2023-05-03',
-  useCdn: true,
+  useCdn: false, // Set to false to ensure we get the latest published content immediately
 });
 
 const builder = createImageUrlBuilder(client);
@@ -16,8 +16,9 @@ export const urlFor = (source) => {
 };
 
 // GROQ Queries
-export const blogListQuery = `*[_type == "post"] | order(publishedAt desc) {
+export const blogListQuery = `*[_type == "post"] | order(publishedAt desc, _createdAt desc) {
   _id,
+  _createdAt,
   title,
   "slug": slug.current,
   mainImage,

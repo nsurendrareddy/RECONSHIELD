@@ -2,10 +2,15 @@ import Layout from "@/components/Layout";
 import "./globals.css";
 
 export const metadata = {
+  metadataBase: new URL("https://reconshield.vercel.app"),
   title: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
   description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
   keywords: ["cybersecurity", "vulnerability scanner", "IP intelligence", "threat detection", "SSL checker", "DNS lookup"],
   authors: [{ name: "ReconShield Team" }],
+  icons: {
+    icon: "/icon.png",
+    apple: "/apple-icon.png",
+  },
   openGraph: {
     title: "ReconShield - AI Cybersecurity Platform",
     description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",

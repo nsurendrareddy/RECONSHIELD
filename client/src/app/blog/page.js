@@ -15,18 +15,29 @@ export default function Blog() {
   useEffect(() => {
     // Fetch ONLY from Sanity
     client.fetch(blogListQuery)
-      .then(data => setSanityArticles(data || []))
+      .then(data => {
+        console.log('Sanity Articles Fetched:', data);
+        setSanityArticles(data || []);
+      })
       .catch(err => console.error('Sanity fetch error:', err))
   }, [])
 
   // Process Sanity articles
-  const allArticles = sanityArticles.map(a => ({ 
-    ...a, 
-    _source: 'sanity', 
-    created_at: a.publishedAt,
-    image_url: a.mainImage ? urlFor(a.mainImage).url() : null,
-    content: a.excerpt || ''
-  })).sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+  const allArticles = sanityArticles.map(a => {
+    if (!a.slug) console.warn(`Article "${a.title}" is missing a slug and won't be clickable.`);
+    return { 
+      ...a, 
+      _source: 'sanity', 
+      created_at: a.publishedAt || a._createdAt, // Fallback to _createdAt if publishedAt is missing
+      image_url: a.mainImage ? urlFor(a.mainImage).url() : null,
+      content: a.excerpt || ''
+    };
+  }).filter(a => a.slug) // Only show articles with a valid slug
+  .sort((a, b) => {
+    const dateA = new Date(a.created_at);
+    const dateB = new Date(b.created_at);
+    return dateB - dateA;
+  })
 
   const categories = ['All', ...new Set(allArticles.map(a => a.category).filter(Boolean))]
 
@@ -123,7 +134,7 @@ export default function Blog() {
             {/* Content */}
             <div className="p-6 flex flex-col flex-1">
               <div className="flex items-center justify-between text-[10px] font-mono text-gray-500 mb-3">
-                <span>{new Date(article.created_at || article.publishedAt).toLocaleDateString()}</span>
+                <span>{new Date(article.created_at).toLocaleDateString()}</span>
                 {article._source === 'sanity' && <span className="text-matrix-400 opacity-50">Verified Intel</span>}
               </div>
 
