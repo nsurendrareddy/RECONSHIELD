@@ -1,26 +1,40 @@
 import BlogPostClient from '@/components/BlogPostClient';
-import { API_BASE } from '@/utils/api';
 import { ShieldAlert, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
-// Fetch post data on the server
+// Helper to get absolute API URL for server-side fetching
+const getAbsoluteApiUrl = () => {
+  // If defined in env, use it. Otherwise fallback to production API
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'https://reconshield-api.onrender.com';
+  return `${baseUrl.replace(/\/$/, '')}/api`;
+};
+
 async function getPost(slug) {
+  const API_BASE = getAbsoluteApiUrl();
+  const url = `${API_BASE}/blog/${encodeURIComponent(slug)}`;
+  
+  console.log(`>>> SERVER FETCH: ${url}`);
+  
   try {
-    const res = await fetch(`${API_BASE}/blog/${encodeURIComponent(slug)}`, {
-      next: { revalidate: 3600 } // Cache for 1 hour
+    const res = await fetch(url, {
+      next: { revalidate: 60 } // Reduced cache for easier debugging
     });
-    if (!res.ok) return null;
+    
+    if (!res.ok) {
+      console.error(`>>> SERVER FETCH FAILED: Status ${res.status} for ${url}`);
+      return null;
+    }
+    
     return res.json();
   } catch (err) {
-    console.error('Error fetching post:', err);
+    console.error('>>> SERVER FETCH ERROR:', err);
     return null;
   }
 }
 
-// Dynamic Metadata Generation for SEO
 export async function generateMetadata({ params }) {
   const post = await getPost(params.slug);
-  if (!post) return { title: 'Article Not Found | ReconShield' };
+  if (!post) return { title: 'Intelligence Briefing Missing | ReconShield' };
 
   const description = post.meta_description || post.content.substring(0, 160).replace(/[#*]/g, '').trim();
   
@@ -32,27 +46,8 @@ export async function generateMetadata({ params }) {
       description: description,
       url: `https://reconshield.vercel.app/blog/${post.slug}`,
       siteName: 'ReconShield',
-      images: [
-        {
-          url: post.image_url || '/og-image.png',
-          width: 1200,
-          height: 630,
-        },
-      ],
-      locale: 'en_US',
+      images: [{ url: post.image_url || '/og-image.png' }],
       type: 'article',
-      publishedTime: post.created_at,
-      authors: ['ReconShield Team'],
-      tags: [post.category, 'Cybersecurity', 'OSINT', 'Threat Intelligence'],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: post.title,
-      description: description,
-      images: [post.image_url || '/og-image.png'],
-    },
-    alternates: {
-      canonical: `https://reconshield.vercel.app/blog/${post.slug}`,
     }
   };
 }
@@ -73,32 +68,12 @@ export default async function Page({ params }) {
     );
   }
 
-  // JSON-LD Structured Data for Article
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://reconshield.vercel.app/blog/${post.slug}`
-    },
     "headline": post.title,
-    "image": post.image_url || 'https://reconshield.vercel.app/og-image.png',
     "datePublished": post.created_at,
-    "dateModified": post.updated_at || post.created_at,
-    "author": {
-      "@type": "Organization",
-      "name": "ReconShield Team",
-      "url": "https://reconshield.vercel.app"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "ReconShield",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://reconshield.vercel.app/icon.png"
-      }
-    },
-    "description": post.meta_description || post.content.substring(0, 160).trim()
+    "description": post.meta_description || post.content.substring(0, 160)
   };
 
   return (

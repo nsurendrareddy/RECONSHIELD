@@ -11,6 +11,17 @@ from models import Article, ArticleCreate, ArticleUpdate
 from utils.auth import get_current_admin
 
 import re
+import cloudinary
+import cloudinary.uploader
+from config import settings
+
+# Configure Cloudinary
+cloudinary.config(
+    cloud_name=settings.CLOUDINARY_CLOUD_NAME,
+    api_key=settings.CLOUDINARY_API_KEY,
+    api_secret=settings.CLOUDINARY_API_SECRET,
+    secure=True
+)
 
 router = APIRouter()
 
@@ -113,18 +124,17 @@ async def delete_article(id: str, current_admin: dict = Depends(get_current_admi
 
 @router.post("/upload-image")
 async def upload_image(file: UploadFile = File(...), current_admin: dict = Depends(get_current_admin)):
-    # Check if directory exists
-    upload_dir = "uploads/blog"
-    if not os.path.exists(upload_dir):
-        os.makedirs(upload_dir, exist_ok=True)
+    try:
+        # Upload to Cloudinary
+        result = cloudinary.uploader.upload(
+            file.file,
+            folder="reconshield_blog",
+            resource_type="auto"
+        )
         
-    # Generate unique filename
-    file_ext = os.path.splitext(file.filename)[1]
-    unique_filename = f"{uuid.uuid4()}{file_ext}"
-    file_path = os.path.join(upload_dir, unique_filename)
-    
-    # Save file
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
-        
-    return {"url": f"/uploads/blog/{unique_filename}"}
+        # Return the secure URL from Cloudinary
+        return {"url": result.get("secure_url")}
+    except Exception as e:
+        print(f"!!! CLOUDINARY UPLOAD ERROR: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to upload to Cloudinary: {str(e)}")
+

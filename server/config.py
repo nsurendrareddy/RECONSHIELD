@@ -36,5 +36,10 @@ class Settings:
     # Resend API
     RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "re_RnR4ZE8j_MpcydiGCjRS7RxNt6dKgbHSg")
 
+    # Cloudinary Settings
+    CLOUDINARY_CLOUD_NAME: str = os.getenv("CLOUDINARY_CLOUD_NAME", "dvin0qhb8")
+    CLOUDINARY_API_KEY: str = os.getenv("CLOUDINARY_API_KEY", "657155712862687")
+    CLOUDINARY_API_SECRET: str = os.getenv("CLOUDINARY_API_SECRET", "0DRZX7TlvsFzji_fzs-9sXp5i5o")
+
 
 settings = Settings()
