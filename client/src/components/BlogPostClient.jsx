@@ -27,53 +27,66 @@ export default function BlogPostClient({ post }) {
   }
 
   return (
-    <div className="animate-fade-in max-w-4xl mx-auto pb-20">
+    <div className="animate-fade-in max-w-4xl mx-auto pb-20 px-4">
       <Link href="/blog" className="inline-flex items-center gap-2 text-xs font-mono text-gray-500 hover:text-matrix-400 transition-colors mb-8 group">
-        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Blog
+        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Intelligence Briefings
       </Link>
 
-      <article className="glass-card overflow-hidden">
-        {/* Header Image */}
-        <div className="w-full h-64 md:h-96 relative border-b border-white/5 bg-surface-900">
+      <article className="relative">
+        {/* Header Image Section */}
+        <div className="w-full h-64 md:h-[450px] relative rounded-3xl overflow-hidden border border-white/5 bg-surface-900 shadow-2xl">
           {post.image_url ? (
             <img 
               src={post.image_url.startsWith('http') ? post.image_url : `${BASE_URL}${post.image_url}`} 
               alt={post.title} 
-              className="w-full h-full object-cover" 
+              className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-1000" 
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-matrix-400/10 to-transparent flex items-center justify-center">
-              <BookOpen className="w-16 h-16 text-matrix-400/10" />
+              <BookOpen className="w-20 h-20 text-matrix-400/10" />
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-surface-950 to-transparent z-10 opacity-80"></div>
-          
-          <div className="absolute bottom-0 left-0 w-full p-8 z-20">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono font-medium border text-matrix-400 bg-matrix-400/10 border-matrix-400/20 backdrop-blur-md mb-4">
-              <Tag className="w-3.5 h-3.5" />
-              {post.category}
-            </span>
-            <h1 className="text-3xl md:text-5xl font-display font-bold text-white tracking-wider uppercase leading-tight mb-4">
-              {post.title}
-            </h1>
-            <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-gray-400">
-              <span className="flex items-center gap-2"><Calendar className="w-4 h-4 text-gray-500" /> {new Date(post.created_at).toLocaleDateString()}</span>
-              <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-gray-500" /> {Math.max(1, Math.ceil(post.content.split(' ').length / 200))} min read</span>
+          <div className="absolute inset-0 bg-gradient-to-t from-surface-950 via-surface-950/40 to-transparent"></div>
+        </div>
+
+        {/* Floating Title Card */}
+        <div className="relative -mt-20 md:-mt-32 px-6 md:px-12 z-20">
+          <div className="bg-surface-900/60 backdrop-blur-2xl border border-white/10 p-8 md:p-12 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+            <div className="flex flex-col gap-6">
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[10px] uppercase tracking-widest font-mono font-bold border text-matrix-400 bg-matrix-400/10 border-matrix-400/20 mb-6">
+                  <Tag className="w-3.5 h-3.5" />
+                  {post.category || 'Intelligence'}
+                </span>
+                <h1 className="text-3xl md:text-5xl font-display font-bold text-white tracking-tight leading-[1.1] mb-6">
+                  {post.title}
+                </h1>
+                <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-gray-400">
+                  <span className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-matrix-400/60" /> 
+                    {new Date(post.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-matrix-400/60" /> 
+                    {Math.max(1, Math.ceil((post.content?.split(' ').length || 0) / 200))} min read
+                  </span>
+                </div>
+              </div>
+
+              {post.meta_description && (
+                <div className="border-t border-white/5 pt-8">
+                  <p className="text-lg text-gray-400 font-heading leading-relaxed italic max-w-2xl">
+                    {post.meta_description}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-8 md:p-12">
-          {post.meta_description && (
-            <div className="border-l-4 border-matrix-400 pl-6 mb-10">
-              <p className="text-lg text-gray-400 font-heading leading-relaxed italic">
-                {post.meta_description}
-              </p>
-            </div>
-          )}
-
-          <div className="prose prose-invert max-w-none">
+        {/* Article Body */}
+        <div className="px-6 md:px-12 py-12 md:py-20">
+          <div className="prose prose-invert max-w-none prose-p:text-gray-300 prose-p:font-mono prose-p:text-sm prose-p:leading-loose prose-headings:font-display prose-headings:tracking-wider prose-headings:uppercase prose-strong:text-matrix-400">
             {renderContent(post.content)}
           </div>
         </div>
