@@ -179,7 +179,6 @@ export default function Blog() {
           SYSTEM NOTE: {articlesMissingSlugs.length} post(s) (e.g. "{articlesMissingSlugs[0].title}") are hidden because they lack a slug.
         </div>
       )}
-      </div>
     </div>
   )
 }
