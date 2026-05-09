@@ -73,10 +73,10 @@ export default async function Page({ params }) {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": post.category === "Cyber News" ? "NewsArticle" : "Article",
+    "@type": post.categories?.[0]?.title === "Cyber News" ? "NewsArticle" : "Article",
     "headline": post.title,
     "description": post.excerpt,
-    "image": post.mainImageUrl,
+    "image": post.mainImageUrl || (post.mainImage ? urlFor(post.mainImage).url() : "https://reconshield.vercel.app/og-image.png"),
     "datePublished": post.publishedAt,
     "dateModified": post.publishedAt,
     "author": {

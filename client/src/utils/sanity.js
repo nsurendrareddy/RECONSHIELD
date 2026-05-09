@@ -37,5 +37,6 @@ export const blogDetailQuery = `*[_type == "post" && slug.current == $slug][0] {
   excerpt,
   body,
   "category": categories[0]->title,
+  "categories": categories[]->{ title },
   "author": author->{ name }
 }`;

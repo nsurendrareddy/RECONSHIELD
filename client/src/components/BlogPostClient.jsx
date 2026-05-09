@@ -8,6 +8,15 @@ import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
 
 const components = {
+  types: {
+    image: ({ value }) => (
+      <img
+        src={urlFor(value).width(800).url()}
+        alt={value.alt || ''}
+        style={{ width: '100%', borderRadius: '8px', margin: '1.5rem 0' }}
+      />
+    ),
+  },
   block: {
     h2: ({ children }) => <h2 className="text-2xl font-display font-bold text-matrix-400 mt-10 mb-5 tracking-wider uppercase">{children}</h2>,
     h3: ({ children }) => <h3 className="text-xl font-display font-semibold text-white mt-8 mb-4 tracking-wide">{children}</h3>,
