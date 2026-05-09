@@ -21,18 +21,29 @@ export async function generateMetadata({ params }) {
   if (!post || post._error) return { title: 'Intelligence Briefing Missing | ReconShield' };
 
   const description = post.excerpt || 'ReconShield Intelligence Briefing';
-  const imageUrl = post.mainImage ? urlFor(post.mainImage).url() : '/og-image.png';
+  const imageUrl = post.mainImageUrl || '/og-image.png';
   
   return {
     title: `${post.title} | ReconShield Intelligence`,
     description: description,
+    alternates: {
+      canonical: `https://reconshield.vercel.app/blog/${slug}`,
+    },
     openGraph: {
       title: post.title,
       description: description,
-      url: `https://reconshield.vercel.app/blog/${post.slug}`,
+      url: `https://reconshield.vercel.app/blog/${slug}`,
       siteName: 'ReconShield',
       images: [{ url: imageUrl }],
       type: 'article',
+      publishedTime: post.publishedAt,
+      authors: [post.author?.name || 'Surendra Reddy'],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: description,
+      images: [imageUrl],
     }
   };
 }
@@ -62,10 +73,29 @@ export default async function Page({ params }) {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": post.category === "Cyber News" ? "NewsArticle" : "Article",
     "headline": post.title,
+    "description": post.excerpt,
+    "image": post.mainImageUrl,
     "datePublished": post.publishedAt,
-    "description": post.excerpt || ''
+    "dateModified": post.publishedAt,
+    "author": {
+      "@type": "Person",
+      "name": post.author?.name || "Surendra Reddy"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ReconShield",
+      "url": "https://reconshield.vercel.app",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://reconshield.vercel.app/og-image.png"
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `https://reconshield.vercel.app/blog/${slug}`
+    }
   };
 
   return (

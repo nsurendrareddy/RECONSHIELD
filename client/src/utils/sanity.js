@@ -32,8 +32,10 @@ export const blogDetailQuery = `*[_type == "post" && slug.current == $slug][0] {
   title,
   "slug": slug.current,
   mainImage,
+  "mainImageUrl": mainImage.asset->url,
   publishedAt,
+  excerpt,
   body,
   "category": categories[0]->title,
-  "author": author->name
+  "author": author->{ name }
 }`;

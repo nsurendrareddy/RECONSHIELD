@@ -38,15 +38,44 @@ export default function RootLayout({ children }) {
         <Layout>
           {children}
         </Layout>
+        {/* Site-wide JSON-LD */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              "name": "ReconShield",
-              "url": "https://reconshield.vercel.app/",
-            }),
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "ReconShield",
+                "url": "https://reconshield.vercel.app/",
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "ReconShield",
+                "url": "https://reconshield.vercel.app",
+                "logo": "https://reconshield.vercel.app/og-image.png"
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "ReconShield",
+                "operatingSystem": "All",
+                "applicationCategory": "SecurityApplication",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "USD"
+                },
+                "featureList": [
+                  "IP Reputation",
+                  "DNS Analysis",
+                  "SSL Auditing",
+                  "Vulnerability Scanning",
+                  "AI Risk Assessment"
+                ]
+              }
+            ]),
           }}
         />
       </body>
