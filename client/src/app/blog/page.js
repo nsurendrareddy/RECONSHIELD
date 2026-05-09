@@ -71,8 +71,8 @@ export default function Blog() {
   }
 
   const sanityConfig = {
-    projectId: client.config().projectId,
-    dataset: client.config().dataset,
+    projectId: 'etmnx6kx',
+    dataset: 'production',
   }
 
   return (
@@ -181,13 +181,13 @@ export default function Blog() {
       {/* Hidden Debug Info for Admin */}
       <div className="mt-20 pt-8 border-t border-white/5 flex flex-wrap gap-6 items-center justify-between opacity-30 hover:opacity-100 transition-opacity duration-500">
         <div className="flex gap-4 text-[10px] font-mono text-gray-500">
-          <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-matrix-400 animate-pulse"></div> Sanity Link: {sanityConfig.projectId} / {sanityConfig.dataset}</span>
+          <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-matrix-400 animate-pulse"></div> Sanity Connected</span>
           <span>•</span>
-          <span>Found: {sanityArticles.length} documents</span>
+          <span>{sanityArticles.length} documents found</span>
           {articlesMissingSlugs.length > 0 && (
             <>
               <span>•</span>
-              <span className="text-amber-500">{articlesMissingSlugs.length} hidden (no slug)</span>
+              <span className="text-amber-500">{articlesMissingSlugs.length} hidden</span>
             </>
           )}
         </div>
