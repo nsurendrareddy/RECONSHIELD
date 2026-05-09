@@ -2,6 +2,8 @@ import BlogPostClient from '@/components/BlogPostClient';
 import { ShieldAlert, ArrowLeft, WifiOff } from 'lucide-react';
 import Link from 'next/link';
 import { client, blogDetailQuery, urlFor } from '@/utils/sanity';
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function getPost(slug) {
   if (!slug || slug === 'undefined') return null;

@@ -14,17 +14,24 @@ export default function Blog() {
 
   useEffect(() => {
     // Fetch ONLY from Sanity
+    console.log('Fetching blog posts from Sanity...');
     client.fetch(blogListQuery)
       .then(data => {
-        console.log('Sanity Articles Fetched:', data);
+        console.log('Sanity Articles Fetched:', data?.length || 0, data);
         setSanityArticles(data || []);
       })
-      .catch(err => console.error('Sanity fetch error:', err))
+      .catch(err => {
+        console.error('Sanity fetch error:', err);
+        // Fallback or error state
+      })
   }, [])
 
   // Process Sanity articles
   const allArticles = sanityArticles.map(a => {
-    if (!a.slug) console.warn(`Article "${a.title}" is missing a slug and won't be clickable.`);
+    const hasSlug = a.slug;
+    if (!hasSlug) {
+      console.warn(`Article "${a.title || 'Untitled'}" is missing a slug and will be hidden.`, a);
+    }
     return { 
       ...a, 
       _source: 'sanity', 
@@ -32,16 +39,20 @@ export default function Blog() {
       image_url: a.mainImage ? urlFor(a.mainImage).url() : null,
       content: a.excerpt || ''
     };
-  }).filter(a => a.slug) // Only show articles with a valid slug
+  })
   .sort((a, b) => {
     const dateA = new Date(a.created_at);
     const dateB = new Date(b.created_at);
     return dateB - dateA;
   })
 
-  const categories = ['All', ...new Set(allArticles.map(a => a.category).filter(Boolean))]
+  // Filter for display
+  const articlesWithSlugs = allArticles.filter(a => a.slug)
+  const articlesMissingSlugs = allArticles.filter(a => !a.slug)
 
-  const filteredArticles = allArticles.filter(article => {
+  const categories = ['All', ...new Set(articlesWithSlugs.map(a => a.category).filter(Boolean))]
+
+  const filteredArticles = articlesWithSlugs.filter(article => {
     const matchesSearch = (article.title || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
                           (article.content || '').toLowerCase().includes(searchQuery.toLowerCase())
     const matchesCategory = selectedCategory === 'All' || article.category === selectedCategory
@@ -111,9 +122,7 @@ export default function Blog() {
             <div className="w-full h-48 relative overflow-hidden bg-surface-900 border-b border-white/5">
               {article.image_url ? (
                 <img 
-                  src={article._source === 'custom' && !article.image_url.startsWith('http') 
-                        ? `${BASE_URL}${article.image_url}` 
-                        : article.image_url} 
+                  src={article.image_url} 
                   alt={article.title} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                 />
@@ -135,7 +144,7 @@ export default function Blog() {
             <div className="p-6 flex flex-col flex-1">
               <div className="flex items-center justify-between text-[10px] font-mono text-gray-500 mb-3">
                 <span>{new Date(article.created_at).toLocaleDateString()}</span>
-                {article._source === 'sanity' && <span className="text-matrix-400 opacity-50">Verified Intel</span>}
+                <span className="text-matrix-400 opacity-50">Verified Intel</span>
               </div>
 
               <h3 className="text-lg font-heading font-semibold text-white mb-3 group-hover:text-matrix-400 transition-colors line-clamp-2">
@@ -143,7 +152,7 @@ export default function Blog() {
               </h3>
               
               <p className="text-sm text-gray-400 mb-6 flex-1 line-clamp-3 leading-relaxed">
-                {article.meta_description || article.excerpt || article.content?.substring(0, 100) + '...'}
+                {article.excerpt || article.content?.substring(0, 100) + '...'}
               </p>
               
               <div className="flex items-center gap-2 text-xs font-mono font-semibold text-matrix-400 group-hover:text-matrix-300 transition-colors uppercase tracking-wider w-fit">
@@ -152,9 +161,24 @@ export default function Blog() {
             </div>
           </div>
         ))}
-        {allArticles.length === 0 && (
-          <p className="text-gray-500 col-span-full">No articles found.</p>
+        {articlesWithSlugs.length === 0 && (
+          <div className="col-span-full py-20 text-center">
+            <p className="text-gray-500 mb-4">No published intelligence briefings found.</p>
+            {articlesMissingSlugs.length > 0 && (
+              <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-mono inline-block">
+                Warning: {articlesMissingSlugs.length} post(s) found but they are missing a URL slug.
+              </div>
+            )}
+          </div>
         )}
+      </div>
+      
+      {/* Hidden Debug Info for Admin */}
+      {articlesMissingSlugs.length > 0 && articlesWithSlugs.length > 0 && (
+        <div className="mt-8 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-mono">
+          SYSTEM NOTE: {articlesMissingSlugs.length} post(s) (e.g. "{articlesMissingSlugs[0].title}") are hidden because they lack a slug.
+        </div>
+      )}
       </div>
     </div>
   )
