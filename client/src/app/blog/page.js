@@ -70,6 +70,11 @@ export default function Blog() {
     return colors[cat] || 'text-gray-400 bg-gray-400/10 border-gray-400/20'
   }
 
+  const sanityConfig = {
+    projectId: client.config().projectId,
+    dataset: client.config().dataset,
+  }
+
   return (
     <div className="animate-fade-in max-w-6xl mx-auto">
       <div className="flex items-center gap-3 mb-10">
@@ -174,9 +179,26 @@ export default function Blog() {
       </div>
       
       {/* Hidden Debug Info for Admin */}
+      <div className="mt-20 pt-8 border-t border-white/5 flex flex-wrap gap-6 items-center justify-between opacity-30 hover:opacity-100 transition-opacity duration-500">
+        <div className="flex gap-4 text-[10px] font-mono text-gray-500">
+          <span className="flex items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-matrix-400 animate-pulse"></div> Sanity Link: {sanityConfig.projectId} / {sanityConfig.dataset}</span>
+          <span>•</span>
+          <span>Found: {sanityArticles.length} documents</span>
+          {articlesMissingSlugs.length > 0 && (
+            <>
+              <span>•</span>
+              <span className="text-amber-500">{articlesMissingSlugs.length} hidden (no slug)</span>
+            </>
+          )}
+        </div>
+        <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
+          ReconShield Intelligence Network
+        </div>
+      </div>
+
       {articlesMissingSlugs.length > 0 && articlesWithSlugs.length > 0 && (
-        <div className="mt-8 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-mono">
-          SYSTEM NOTE: {articlesMissingSlugs.length} post(s) (e.g. "{articlesMissingSlugs[0].title}") are hidden because they lack a slug.
+        <div className="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[10px] font-mono animate-pulse">
+          SYSTEM ALERT: {articlesMissingSlugs.length} post(s) detected but missing URL slugs. Fix in Sanity Studio to display.
         </div>
       )}
     </div>
