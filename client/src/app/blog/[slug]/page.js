@@ -1,7 +1,7 @@
 import BlogPostClient from '@/components/BlogPostClient';
 import { ShieldAlert, ArrowLeft, WifiOff } from 'lucide-react';
 import Link from 'next/link';
-import { client, blogDetailQuery, urlFor } from '@/utils/sanity';
+import { client, blogDetailQuery, urlFor, recentPostsQuery, categoriesWithCountQuery, relatedPostsQuery } from '@/utils/sanity';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
@@ -73,6 +73,13 @@ export default async function Page({ params }) {
     );
   }
 
+  // Fetch sidebar and related data
+  const [recentPosts, categories, relatedPosts] = await Promise.all([
+    client.fetch(recentPostsQuery, { slug }),
+    client.fetch(categoriesWithCountQuery),
+    client.fetch(relatedPostsQuery, { slug })
+  ]);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": post.categories?.[0]?.title === "Cyber News" ? "NewsArticle" : "Article",
@@ -106,7 +113,12 @@ export default async function Page({ params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BlogPostClient post={post} />
+      <BlogPostClient 
+        post={post} 
+        recentPosts={recentPosts || []} 
+        categories={categories || []} 
+        relatedPosts={relatedPosts || []}
+      />
     </>
   );
 }

@@ -40,5 +40,32 @@ export const blogDetailQuery = `*[_type == "post" && slug.current == $slug][0] {
   body,
   "category": categories[0]->title,
   "categories": categories[]->{ title },
+  "author": author->{ name },
+  "tags": tags[]
+}`;
+
+export const recentPostsQuery = `*[_type == "post" && slug.current != $slug] | order(publishedAt desc)[0...3] {
+  _id,
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  "categories": categories[]->{ title }
+}`;
+
+export const categoriesWithCountQuery = `*[_type == "category"] {
+  _id,
+  title,
+  "count": count(*[_type == "post" && references(^._id)])
+}`;
+
+export const relatedPostsQuery = `*[_type == "post" && slug.current != $slug && count(categories[@._ref in *[_type == "post" && slug.current == $slug].categories[]._ref]) > 0] | order(publishedAt desc)[0...3] {
+  _id,
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  "categories": categories[]->{ title },
+  excerpt,
   "author": author->{ name }
 }`;
