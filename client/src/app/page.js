@@ -1,18 +1,25 @@
 import DashboardClient from '@/components/DashboardClient';
+import HomeSections from '@/components/HomeSections';
+import { client, homepageBlogQuery } from '@/utils/sanity';
 
 export const metadata = {
   title: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
   description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
   keywords: ["cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield"],
+  alternates: {
+    canonical: 'https://reconshield.vercel.app',
+  },
+  openGraph: {
+    url: 'https://reconshield.vercel.app',
+    type: 'website',
+  }
 };
 
-export default function Page() {
+export default async function Page() {
+  const posts = await client.fetch(homepageBlogQuery);
+
   return (
     <>
-      {/* 
-          SERVER-RENDERED HERO CONTENT
-          Ensures the core value proposition is indexable by crawlers immediately.
-      */}
       <div className="sr-only">
         <h1>ReconShield AI Cybersecurity Platform</h1>
         <p>
@@ -29,6 +36,7 @@ export default function Page() {
       </div>
 
       <DashboardClient />
+      <HomeSections posts={posts || []} />
     </>
   );
 }

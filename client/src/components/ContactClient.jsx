@@ -8,9 +8,12 @@ export default function ContactClient() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    subject: 'General Question',
     message: ''
   })
   const [error, setError] = useState('')
+  const emailArr = ['nsurendrareddy3', 'gmail.com']
+  const obfuscatedEmail = emailArr.join('@')
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -36,7 +39,7 @@ export default function ContactClient() {
       }
 
       setStatus('sent')
-      setFormData({ name: '', email: '', message: '' })
+      setFormData({ name: '', email: '', subject: 'General Question', message: '' })
       
       setTimeout(() => setStatus('idle'), 5000)
     } catch (err) {
@@ -77,11 +80,11 @@ export default function ContactClient() {
               <p className="text-xs font-mono text-gray-500">surendrareddy3</p>
             </div>
           </a>
-          <a href="mailto:NSURENDRAREDDY3@GMAIL.COM" className="flex items-center gap-4 p-4 rounded-xl bg-surface-800/50 border border-white/5 hover:border-matrix-400/30 hover:bg-matrix-400/5 transition-all group">
+          <a href={`mailto:${obfuscatedEmail}`} className="flex items-center gap-4 p-4 rounded-xl bg-surface-800/50 border border-white/5 hover:border-matrix-400/30 hover:bg-matrix-400/5 transition-all group">
             <Mail className="w-5 h-5 text-gray-400 group-hover:text-matrix-400 transition-colors" />
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-matrix-400 transition-colors">Direct Email</p>
-              <p className="text-xs font-mono text-matrix-400">NSURENDRAREDDY3@GMAIL.COM</p>
+              <p className="text-xs font-mono text-matrix-400 uppercase">{obfuscatedEmail}</p>
             </div>
           </a>
         </div>
@@ -89,12 +92,35 @@ export default function ContactClient() {
 
       <div className="lg:w-2/3">
         <div className="glass-card p-8">
+          <div className="font-mono text-[10px] text-[#475569] uppercase tracking-[2px] mb-6">
+            // RESPONSE TIME — We aim to respond within 48 hours.
+          </div>
           {error && (
             <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-mono">
               [!] ERROR: {error}
             </div>
           )}
           <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="space-y-1.5">
+              <label className="text-xs font-mono text-gray-500 uppercase tracking-widest pl-1">Inquiry Type</label>
+              <div className="relative">
+                <select 
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  className="w-full bg-surface-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-matrix-400/50 focus:ring-1 focus:ring-matrix-400/50 transition-all font-mono appearance-none"
+                >
+                  <option value="Bug Report">Bug Report</option>
+                  <option value="Enterprise Inquiry">Enterprise Inquiry</option>
+                  <option value="API Access Request">API Access Request</option>
+                  <option value="General Question">General Question</option>
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
+                  <Terminal className="w-4 h-4" />
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div className="space-y-1.5">
                 <label className="text-xs font-mono text-gray-500 uppercase tracking-widest pl-1">Agent Name</label>

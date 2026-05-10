@@ -1,6 +1,13 @@
 export const metadata = {
-  title: "Privacy & Data Policy | ReconShield Intelligence",
-  description: "How ReconShield handles your data and ensures privacy for security researchers.",
+  title: "Privacy Policy | ReconShield Intelligence",
+  description: "How we handle data and respect user privacy on the ReconShield platform.",
+  alternates: {
+    canonical: 'https://reconshield.vercel.app/privacy',
+  },
+  openGraph: {
+    url: 'https://reconshield.vercel.app/privacy',
+    type: 'website',
+  }
 };
 
 export default function Privacy() {

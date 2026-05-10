@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Globe, Menu, X } from 'lucide-react'
+import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Globe, Menu, X, Github, Linkedin, ExternalLink } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 export default function Layout({ children }) {
@@ -203,6 +203,23 @@ export default function Layout({ children }) {
                 Advanced educational reconnaissance and intelligence platform. Empowers security researchers with visibility into their attack surface through passive data collection.
               </p>
             </div>
+            
+            {/* Newsletter Signup */}
+            <div>
+              <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>// WEEKLY INTEL</h4>
+              <p className="text-[11px] text-[#475569] mb-4 leading-relaxed">Get the latest threat intelligence and OSINT guides.</p>
+              <form action="#" className="space-y-2">
+                <input 
+                  type="email" 
+                  placeholder="agent@agency.gov" 
+                  className="w-full bg-surface-900 border border-white/10 rounded-lg px-3 py-2 text-[11px] text-white focus:outline-none focus:border-matrix-400/50 transition-all font-mono"
+                />
+                <button className="w-full bg-matrix-400/10 hover:bg-matrix-400/20 text-matrix-400 border border-matrix-400/30 rounded-lg py-2 font-mono text-[10px] tracking-widest uppercase transition-all">
+                  SUBSCRIBE
+                </button>
+              </form>
+            </div>
+
             <div>
               <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Platform</h4>
               <ul className="space-y-2 text-sm">
@@ -219,6 +236,16 @@ export default function Layout({ children }) {
                 <li><Link href="/contact" className="hover:text-matrix-400 transition-colors">Contact Support</Link></li>
               </ul>
             </div>
+          </div>
+
+          {/* Social Row */}
+          <div className="flex items-center gap-3 mb-8">
+            <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-matrix-400 transition-colors">
+              <Github className="w-4 h-4" />
+            </a>
+            <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-matrix-400 transition-colors">
+              <Linkedin className="w-4 h-4" />
+            </a>
           </div>
 
           <div className={`pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-6 ${theme === 'dark' ? 'border-white/[0.04]' : 'border-gray-100'}`}>

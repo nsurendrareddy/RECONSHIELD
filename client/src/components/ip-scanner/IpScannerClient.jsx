@@ -7,6 +7,7 @@ import {
   Cpu, ExternalLink, Zap, Info, Layers, Eye
 } from 'lucide-react'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { API_BASE } from '@/utils/api'
 
 // Dynamically import Leaflet components to avoid SSR issues
@@ -201,6 +202,23 @@ export default function IpScannerClient() {
             </div>
           </form>
         </div>
+
+        {/* What You Get Section */}
+        <div className="mt-8">
+          <h2 className="font-mono text-[10px] tracking-[3px] uppercase text-[#475569] mb-4">// INTELLIGENCE COLLECTED</h2>
+          <div className="flex flex-wrap gap-2">
+            {[
+              'ISP / Hosting Provider', 'ASN Number', 'Country & City', 
+              'Abuse Confidence Score', 'Blocklist Presence', 'Reverse DNS', 
+              'Proxy / VPN Detection', 'Threat Tags'
+            ].map((p, i) => (
+              <div key={i} className="px-3 py-1.5 bg-[#0d1117] border border-[#1a2332] rounded-full flex items-center gap-2">
+                <span className="text-[#00ff8866] text-[10px]">▸</span>
+                <span className="font-mono text-[11px] text-[#64748b]">{p}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {error && (
@@ -346,6 +364,25 @@ export default function IpScannerClient() {
             ) : null}
           </AnimatePresence>
         </div>
+      </div>
+
+      {/* Related Article CTA */}
+      <div className="mt-20">
+        <Link href="/blog/how-to-check-ip-reputation-a-complete-guide-for-security-researchers" className="block bg-[#0d1117] border border-[#00ff8833] rounded-[6px] p-6 group hover:border-[#00ff8866] transition-all">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-white font-bold text-lg mb-1 group-hover:text-[#00ff88] transition-colors">
+                Learn how IP reputation works →
+              </h3>
+              <p className="text-[#475569] text-sm font-sans">
+                Our complete guide to IP threat intelligence, DNSBL lookups, and risk scoring.
+              </p>
+            </div>
+            <div className="font-mono text-[10px] text-[#00ff8866] uppercase tracking-[2px]">
+              INTEL_GUIDE // VOL_042
+            </div>
+          </div>
+        </Link>
       </div>
     </div>
   )

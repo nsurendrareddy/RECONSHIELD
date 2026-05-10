@@ -4,6 +4,13 @@ export const metadata = {
   title: "Advanced IP Intelligence & Reputation Scanner | ReconShield",
   description: "Perform deep-packet inspection and passive footprinting on any IP address. Analyze ISP data, ASN reputation, geolocation, and security threats in real-time.",
   keywords: ["ip scanner", "ip intelligence", "threat reputation", "asn lookup", "ip geolocation", "network reconnaissance"],
+  alternates: {
+    canonical: 'https://reconshield.vercel.app/ip-scanner',
+  },
+  openGraph: {
+    url: 'https://reconshield.vercel.app/ip-scanner',
+    type: 'website',
+  }
 };
 
 export default function Page() {
@@ -33,6 +40,23 @@ export default function Page() {
           reputation, and associated risks. Our tool combines geolocation data, ASN intelligence, and threat 
           reputation databases to provide a 360-degree view of any network endpoint.
         </p>
+
+        {/* What You Get Section */}
+        <div className="mt-12">
+          <h2 className="font-mono text-[10px] tracking-[3px] uppercase text-[#475569] mb-4">// INTELLIGENCE COLLECTED</h2>
+          <div className="flex flex-wrap gap-2">
+            {[
+              'ISP / Hosting Provider', 'ASN Number', 'Country & City', 
+              'Abuse Confidence Score', 'Blocklist Presence', 'Reverse DNS', 
+              'Proxy / VPN Detection', 'Threat Tags'
+            ].map((p, i) => (
+              <div key={i} className="px-3 py-1.5 bg-[#0d1117] border border-[#1a2332] rounded-full flex items-center gap-2">
+                <span className="text-[#00ff8866] text-[10px]">▸</span>
+                <span className="font-mono text-[11px] text-[#64748b]">{p}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );
