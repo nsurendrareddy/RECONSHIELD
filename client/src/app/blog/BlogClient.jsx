@@ -62,9 +62,11 @@ export default function BlogClient({ posts }) {
                 <div className="relative aspect-[21/9] w-full">
                   {featuredPost.mainImage && (
                     <Image 
-                      src={urlFor(featuredPost.mainImage).width(1200).url()} 
+                      src={urlFor(featuredPost.mainImage).width(1200).auto('format').url()} 
                       alt={featuredPost.title}
                       fill
+                      priority
+                      sizes="(max-width: 1024px) 100vw, 80vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   )}
@@ -103,9 +105,10 @@ export default function BlogClient({ posts }) {
                   <div className="relative w-16 h-16 shrink-0 bg-[#1a2332] overflow-hidden">
                     {post.mainImage && (
                       <Image 
-                        src={urlFor(post.mainImage).width(64).height(64).url()} 
+                        src={urlFor(post.mainImage).width(64).height(64).auto('format').url()} 
                         alt={post.title}
                         fill
+                        sizes="64px"
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                     )}
@@ -174,9 +177,10 @@ export default function BlogClient({ posts }) {
               <div className="relative aspect-video w-full overflow-hidden">
                 {post.mainImage && (
                   <Image 
-                    src={urlFor(post.mainImage).width(800).url()} 
+                    src={urlFor(post.mainImage).width(800).auto('format').url()} 
                     alt={post.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 )}
