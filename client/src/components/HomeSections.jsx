@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { 
   Network, Lock, Terminal, FileCode, ShieldAlert, Zap, 
-  MousePointer2, Search, BarChart3, Github, Linkedin, ArrowRight 
+  MousePointer2, Search, BarChart3, ArrowRight 
 } from 'lucide-react'
 import { urlFor } from '@/utils/sanity'
 

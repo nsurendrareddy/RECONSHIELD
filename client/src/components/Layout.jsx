@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Globe, Menu, X, Github, Linkedin, ExternalLink } from 'lucide-react'
+import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Globe, Menu, X, ExternalLink } from 'lucide-react'
 import { useState, useEffect } from 'react'
 
 export default function Layout({ children }) {
@@ -241,10 +241,10 @@ export default function Layout({ children }) {
           {/* Social Row */}
           <div className="flex items-center gap-3 mb-8">
             <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-matrix-400 transition-colors">
-              <Github className="w-4 h-4" />
+              <Globe className="w-4 h-4" />
             </a>
             <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-matrix-400 transition-colors">
-              <Linkedin className="w-4 h-4" />
+              <ExternalLink className="w-4 h-4" />
             </a>
           </div>
 

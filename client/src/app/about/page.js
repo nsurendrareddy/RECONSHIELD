@@ -1,4 +1,4 @@
-import { Shield, Target, Activity, Users, Globe, Lock, Cpu, Github, Linkedin, ExternalLink } from 'lucide-react'
+import { Shield, Target, Activity, Users, Globe, Lock, Cpu, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 
 export const metadata = {
@@ -51,10 +51,10 @@ export default function About() {
           <p className="font-mono text-xs text-[#00ff88] uppercase tracking-[2px] mb-4">Founder & Security Researcher</p>
           <div className="flex items-center justify-center md:justify-start gap-4">
             <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#00ff88] transition-colors">
-              <Github className="w-5 h-5" />
+              <Globe className="w-5 h-5" />
             </a>
             <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#00ff88] transition-colors">
-              <Linkedin className="w-5 h-5" />
+              <ExternalLink className="w-5 h-5" />
             </a>
           </div>
         </div>
