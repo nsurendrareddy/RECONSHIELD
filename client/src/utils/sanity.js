@@ -23,8 +23,10 @@ export const blogListQuery = `*[_type == "post"] | order(publishedAt desc, _crea
   "slug": slug.current,
   mainImage,
   publishedAt,
-  "category": categories[0]->title,
-  excerpt
+  "categories": categories[]->{ title },
+  excerpt,
+  "author": author->{ name },
+  body
 }`;
 
 export const blogDetailQuery = `*[_type == "post" && slug.current == $slug][0] {

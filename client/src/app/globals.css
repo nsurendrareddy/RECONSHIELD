@@ -35,13 +35,9 @@
   --color-neon-500: #8B5CF6;
   --color-neon-600: #7C3AED;
 
-  --color-surface-950: #050508;
-  --color-surface-900: #0A0A0F;
-  --color-surface-800: #0F0F18;
-  --color-surface-700: #161625;
-  --color-surface-600: #1E1E30;
-  --color-surface-500: #2A2A3D;
-  --color-surface-400: #3A3A50;
+  --color-surface-950: #0a0c0f;
+  --color-surface-900: #0d1117;
+  --color-accent: #00ff88;
 }
 
 /* ===== Base ===== */
@@ -103,6 +99,7 @@ body {
 
 @keyframes matrix-column { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
 @keyframes scan-fast { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
 .animate-fade-in { animation: fade-in 0.45s ease-out both; }
 .animate-slide-up { animation: slide-up 0.55s ease-out both; }
@@ -114,6 +111,7 @@ body {
 .animate-blink { animation: blink 1s step-end infinite; }
 .animate-matrix-column { animation: matrix-column 10s linear infinite; }
 .animate-scan-fast { animation: scan-fast 1.5s linear infinite; }
+.animate-ticker { animation: ticker 40s linear infinite; }
 
 /* Stagger */
 .stagger > *:nth-child(1) { animation-delay: 0.05s; }
