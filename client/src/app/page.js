@@ -3,13 +3,15 @@ import HomeSections from '@/components/HomeSections';
 import { client, homepageBlogQuery } from '@/utils/sanity';
 
 export const metadata = {
-  title: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
-  description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
+  title: "AI Cybersecurity & Threat Intelligence Platform",
+  description: "Advanced AI-powered cybersecurity platform for threat intelligence, OSINT, and vulnerability scanning. Professional-grade security tools for researchers.",
   keywords: ["cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield"],
   alternates: {
     canonical: 'https://reconshield.vercel.app',
   },
   openGraph: {
+    title: "ReconShield - AI Cybersecurity Platform",
+    siteName: "ReconShield",
     url: 'https://reconshield.vercel.app',
     type: 'website',
   }
