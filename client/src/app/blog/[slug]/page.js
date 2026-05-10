@@ -1,6 +1,7 @@
 import BlogPostClient from '@/components/BlogPostClient';
 import { ShieldAlert, ArrowLeft, WifiOff } from 'lucide-react';
 import Link from 'next/link';
+import { NextSeo } from 'next-seo';
 import { client, blogDetailQuery, urlFor, recentPostsQuery, categoriesWithCountQuery, relatedPostsQuery } from '@/utils/sanity';
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -110,6 +111,22 @@ export default async function Page({ params }) {
 
   return (
     <>
+      <NextSeo
+        title={`${post.title} | ReconShield Intelligence`}
+        description={post.excerpt}
+        canonical={`https://reconshield.com/blog/${slug}`}
+        openGraph={{
+          url: `https://reconshield.com/blog/${slug}`,
+          title: post.title,
+          description: post.excerpt,
+          images: [{ url: post.mainImageUrl || 'https://reconshield.com/og-image.png' }],
+          article: {
+            publishedTime: post.publishedAt,
+            authors: [post.author?.name || 'ReconShield Team'],
+            tags: post.tags || [],
+          }
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

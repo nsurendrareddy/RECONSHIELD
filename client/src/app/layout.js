@@ -3,7 +3,7 @@ import Script from "next/script";
 import "./globals.css";
 
 export const metadata = {
-  metadataBase: new URL("https://reconshield.vercel.app"),
+  metadataBase: new URL("https://reconshield.com"),
   title: {
     default: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
     template: "%s | ReconShield"
@@ -66,14 +66,14 @@ export default function RootLayout({ children }) {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 "name": "ReconShield",
-                "url": "https://reconshield.vercel.app/",
+                "url": "https://reconshield.com",
               },
               {
                 "@context": "https://schema.org",
                 "@type": "Organization",
                 "name": "ReconShield",
-                "url": "https://reconshield.vercel.app",
-                "logo": "https://reconshield.vercel.app/og-image.png"
+                "url": "https://reconshield.com",
+                "logo": "https://reconshield.com/og-image.png"
               },
               {
                 "@context": "https://schema.org",
