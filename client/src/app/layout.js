@@ -1,4 +1,5 @@
 import Layout from "@/components/Layout";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata = {
@@ -41,6 +42,21 @@ export default function RootLayout({ children }) {
         <Layout>
           {children}
         </Layout>
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-CCQ5L37N81"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-CCQ5L37N81');
+          `}
+        </Script>
         {/* Site-wide JSON-LD */}
         <script
           type="application/ld+json"
