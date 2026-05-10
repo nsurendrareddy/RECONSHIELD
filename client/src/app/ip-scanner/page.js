@@ -8,6 +8,8 @@ export const metadata = {
     canonical: 'https://reconshield.vercel.app/ip-scanner',
   },
   openGraph: {
+    title: "Advanced IP Intelligence & Reputation Scanner | ReconShield",
+    description: "Perform deep-packet inspection and passive footprinting on any IP address. Analyze ISP data, ASN reputation, geolocation, and security threats in real-time.",
     url: 'https://reconshield.vercel.app/ip-scanner',
     type: 'website',
   }

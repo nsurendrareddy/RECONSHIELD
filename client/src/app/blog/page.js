@@ -21,7 +21,7 @@ export default async function BlogPage() {
   
   try {
     posts = await client.fetch(blogListQuery)
-    console.log('Fetched posts count:', posts?.length || 0)
+    console.log("Posts fetched:", posts?.length)
   } catch (error) {
     console.error('Error fetching blog posts from Sanity:', error)
   }

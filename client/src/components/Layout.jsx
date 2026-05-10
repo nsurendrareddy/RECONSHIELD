@@ -238,22 +238,23 @@ export default function Layout({ children }) {
             </div>
           </div>
 
-          {/* Social Row */}
-          <div className="flex items-center gap-3 mb-8">
-            <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-matrix-400 transition-colors">
-              <Globe className="w-4 h-4" />
-            </a>
-            <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-matrix-400 transition-colors">
-              <ExternalLink className="w-4 h-4" />
-            </a>
-          </div>
-
           <div className={`pt-8 border-t flex flex-col md:flex-row items-center justify-between gap-6 ${theme === 'dark' ? 'border-white/[0.04]' : 'border-gray-100'}`}>
-            <div className="flex items-center gap-6">
-              <p className="text-[11px] font-mono">© 2026 RECONSHIELD INTELLIGENCE</p>
-              <div className="flex items-center gap-2 px-3 py-1 bg-surface-900/40 rounded-full border border-white/[0.03]">
-                <div className="w-1.5 h-1.5 rounded-full bg-matrix-400 animate-pulse" />
-                <span className="text-[10px] font-mono text-matrix-400 uppercase tracking-tighter">System Live</span>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-6">
+                <p className="text-[11px] font-mono">© 2026 RECONSHIELD INTELLIGENCE</p>
+                <div className="flex items-center gap-2 px-3 py-1 bg-surface-900/40 rounded-full border border-white/[0.03]">
+                  <div className="w-1.5 h-1.5 rounded-full bg-matrix-400 animate-pulse" />
+                  <span className="text-[10px] font-mono text-matrix-400 uppercase tracking-tighter">System Live</span>
+                </div>
+              </div>
+              {/* Social Row */}
+              <div className="flex items-center gap-3">
+                <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-matrix-400 transition-colors">
+                  <Globe className="w-4 h-4" />
+                </a>
+                <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-matrix-400 transition-colors">
+                  <ExternalLink className="w-4 h-4" />
+                </a>
               </div>
             </div>
             <div className="flex items-center gap-2 px-4 py-2 bg-amber-500/5 border border-amber-500/10 rounded-xl">

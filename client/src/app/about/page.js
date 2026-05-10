@@ -8,6 +8,8 @@ export const metadata = {
     canonical: 'https://reconshield.vercel.app/about',
   },
   openGraph: {
+    title: "About ReconShield | AI-Powered Cybersecurity Research",
+    description: "Learn about the mission of ReconShield: providing advanced, AI-driven visibility into global attack surfaces for security researchers.",
     url: 'https://reconshield.vercel.app/about',
     type: 'website',
   }
@@ -42,19 +44,19 @@ export default function About() {
       </div>
 
       {/* Founder Card */}
-      <div className="bg-[#0d1117] border border-[#1a2332] rounded-[6px] p-8 mb-20 flex flex-col md:flex-row items-center gap-8">
-        <div className="w-20 h-20 rounded-full bg-[#00ff8811] border border-[#00ff8833] flex items-center justify-center text-[#00ff88] font-mono text-2xl font-bold">
+      <div className="bg-[#0d1117] border border-[#1a2332] rounded-[6px] p-4 mb-20 flex items-center gap-4">
+        <div className="w-[44px] h-[44px] rounded-full bg-[#00ff8811] border border-[#00ff8833] flex items-center justify-center text-[#00ff88] font-mono text-[16px] font-bold shrink-0">
           SR
         </div>
-        <div className="flex-1 text-center md:text-left">
-          <h2 className="text-2xl font-bold text-white mb-1">Surendra Reddy</h2>
-          <p className="font-mono text-xs text-[#00ff88] uppercase tracking-[2px] mb-4">Founder & Security Researcher</p>
-          <div className="flex items-center justify-center md:justify-start gap-4">
+        <div>
+          <h2 className="text-[15px] font-bold text-white mb-0.5">Surendra Reddy</h2>
+          <p className="font-mono text-[12px] text-[#475569] uppercase tracking-[1px] mb-2">Founder & Security Researcher</p>
+          <div className="flex items-center gap-4">
             <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#00ff88] transition-colors">
-              <Globe className="w-5 h-5" />
+              <Globe className="w-4 h-4" />
             </a>
             <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#00ff88] transition-colors">
-              <ExternalLink className="w-5 h-5" />
+              <ExternalLink className="w-4 h-4" />
             </a>
           </div>
         </div>
@@ -90,9 +92,13 @@ export default function About() {
       <section className="mb-24">
         <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold mb-8">// HOW WE COLLECT DATA</h2>
         <div className="space-y-4">
-          {methodology.map((m, i) => (
+          {[
+            "Passive only — no packets sent directly to the target",
+            "Public data sources only — WHOIS, DNS, certificate logs, threat feeds",
+            "No storage of scan targets — queries are not logged or retained"
+          ].map((m, i) => (
             <div key={i} className="flex items-center gap-3 text-[12px] text-[#64748b] font-mono uppercase">
-              <span className="text-[#00ff88]">▸</span>
+              <span className="text-[#00ff8866]">▸</span>
               <span>{m}</span>
             </div>
           ))}

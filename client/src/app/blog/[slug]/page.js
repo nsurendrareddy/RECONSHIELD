@@ -22,8 +22,9 @@ export async function generateMetadata({ params }) {
   const post = await getPost(slug);
   if (!post || post._error) return { title: 'Intelligence Briefing Missing | ReconShield' };
 
-  const description = post.excerpt || 'ReconShield Intelligence Briefing';
+  const description = post.excerpt;
   const imageUrl = post.mainImageUrl || '/og-image.png';
+  const authorName = post.author?.name ?? "ReconShield Team";
   
   return {
     title: `${post.title} | ReconShield Intelligence`,
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }) {
       images: [{ url: imageUrl }],
       type: 'article',
       publishedTime: post.publishedAt,
-      authors: [post.author?.name || 'Surendra Reddy'],
+      authors: [authorName],
     },
     twitter: {
       card: 'summary_large_image',
@@ -90,7 +91,7 @@ export default async function Page({ params }) {
     "dateModified": post.publishedAt,
     "author": {
       "@type": "Person",
-      "name": post.author?.name || "Surendra Reddy"
+      "name": post.author?.name ?? "ReconShield Team"
     },
     "publisher": {
       "@type": "Organization",
