@@ -1,4 +1,3 @@
-import { NextSeo } from 'next-seo';
 import DashboardClient from '@/components/DashboardClient';
 import HomeSections from '@/components/HomeSections';
 import { client, homepageBlogQuery } from '@/utils/sanity';
@@ -23,16 +22,6 @@ export default async function Page() {
 
   return (
     <>
-      <NextSeo 
-        title="ReconShield | AI Cybersecurity & Threat Intelligence Platform"
-        description="Advanced AI-powered cybersecurity platform for threat intelligence, OSINT, and vulnerability scanning. Professional-grade security tools for researchers."
-        canonical="https://reconshield.com"
-        openGraph={{
-          url: 'https://reconshield.com',
-          title: 'ReconShield | AI Cybersecurity & Threat Intelligence Platform',
-          description: 'Advanced AI-powered cybersecurity platform for threat intelligence, OSINT, and vulnerability scanning.',
-        }}
-      />
       <div className="sr-only">
         <h1>ReconShield AI Cybersecurity Platform</h1>
         <p>

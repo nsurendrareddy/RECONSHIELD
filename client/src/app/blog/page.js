@@ -1,4 +1,3 @@
-import { NextSeo } from 'next-seo';
 import { client, blogListQuery } from '@/utils/sanity'
 import BlogClient from './BlogClient'
 
@@ -29,16 +28,6 @@ export default async function BlogPage() {
 
   return (
     <div className="bg-[#0a0c0f]">
-      <NextSeo 
-        title="Cyber Intelligence Briefings | ReconShield Blog"
-        description="Latest threat intelligence, security research, and OSINT guides from the ReconShield team."
-        canonical="https://reconshield.com/blog"
-        openGraph={{
-          url: 'https://reconshield.com/blog',
-          title: 'Cyber Intelligence Briefings | ReconShield Blog',
-          description: 'Latest threat intelligence, security research, and OSINT guides from the ReconShield team.',
-        }}
-      />
       <BlogClient posts={posts || []} />
     </div>
   )
