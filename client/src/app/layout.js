@@ -34,14 +34,18 @@ export const metadata = {
   verification: {
     google: "Z0orCISb23IH0gqw02ckAwBvgyyqJdl5-QyrPcWeeKM",
   },
-  other: {
-    "google-adsense-account": "ca-pub-3496685713682736",
-  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark h-full antialiased">
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
         <Layout>
           {children}
