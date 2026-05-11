@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://reconshield.com</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/about</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/apple-icon.png</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/contact</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/dns-lookup</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/icon.png</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/ip-scanner</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/privacy</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/security-headers</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/ssl-checker</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/terms</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/threat-intelligence</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://reconshield.com/vulnerability-scanner</loc><lastmod>2026-05-11T03:24:34.845Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/about</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/apple-icon.png</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/contact</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/dns-lookup</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/icon.png</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/ip-scanner</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/privacy</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/security-headers</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/ssl-checker</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/terms</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/threat-intelligence</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/vulnerability-scanner</loc><lastmod>2026-05-11T03:53:43.900Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://reconshield.com/blog/quasar-linux-rat-targets-developers-to-compromise-the-software-supply-chain</loc><lastmod>2026-05-08T15:44:21Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://reconshield.com/blog/critical-microsoft-365-copilot-vulnerabilities-expose-sensitive-information</loc><lastmod>2026-05-10T07:36:27Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://reconshield.com/blog/ai-investment-fraudsters-spawn-15-500-scam-sites-abusing-legitimate-marketing-tool</loc><lastmod>2026-05-10T04:43:22Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
@@ -24,4 +24,5 @@
 <url><loc>https://reconshield.com/blog/7-3-million-downloads-later-fake-android-apps-exposed-for-payment-fraud</loc><lastmod>2026-05-08T15:38:09Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://reconshield.com/blog/reconshield-ai-powered-cybersecurity-and-threat-intelligence-platform</loc><lastmod>2026-05-10T14:40:28Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 <url><loc>https://reconshield.com/blog/firefox-receives-423-security-patches-powered-by-claude-mythos-and-ai-tools</loc><lastmod>2026-05-10T09:15:34Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://reconshield.com/blog/how-to-check-ip-reputation-a-complete-guide-for-security-researchers</loc><lastmod>2026-05-11T03:37:25Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

@@ -176,14 +176,14 @@ export default function BlogClient({ posts }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredPosts.map((post) => (
             <Link href={`/blog/${post.slug}`} key={post._id} className="group flex flex-col bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8833] transition-all duration-300">
-              <div className="relative aspect-video w-full overflow-hidden">
+              <div className="relative aspect-square w-full overflow-hidden">
                 {post.mainImage && (
                   <Image 
-                    src={urlFor(post.mainImage).width(800).auto('format').url()} 
+                    src={urlFor(post.mainImage).width(361).height(361).fit('crop').auto('format').url()} 
                     alt={post.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 361px"
-                    quality={75}
+                    quality={70}
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 )}

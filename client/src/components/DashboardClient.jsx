@@ -3,26 +3,26 @@ import dynamic from 'next/dynamic'
 import { useScan } from '@/hooks/useScan'
 import SearchBar from '@/components/SearchBar'
 import LoadingState from '@/components/LoadingState'
-import OverviewSection from '@/sections/OverviewSection'
+const OverviewSection = dynamic(() => import('@/sections/OverviewSection'), { ssr: false })
 const ChartsSection = dynamic(() => import('@/sections/ChartsSection'), { ssr: false })
-import AiExplanationSection from '@/sections/AiExplanationSection'
-import DomainSection from '@/sections/DomainSection'
-import DnsSection from '@/sections/DnsSection'
-import SslSection from '@/sections/SslSection'
-import HeadersSection from '@/sections/HeadersSection'
-import TechSection from '@/sections/TechSection'
-import IpSection from '@/sections/IpSection'
-import SubdomainSection from '@/sections/SubdomainSection'
-import PortSection from '@/sections/PortSection'
-import WebsiteSection from '@/sections/WebsiteSection'
-import RiskSection from '@/sections/RiskSection'
+const AiExplanationSection = dynamic(() => import('@/sections/AiExplanationSection'), { ssr: false })
+const DomainSection = dynamic(() => import('@/sections/DomainSection'), { ssr: false })
+const DnsSection = dynamic(() => import('@/sections/DnsSection'), { ssr: false })
+const SslSection = dynamic(() => import('@/sections/SslSection'), { ssr: false })
+const HeadersSection = dynamic(() => import('@/sections/HeadersSection'), { ssr: false })
+const TechSection = dynamic(() => import('@/sections/TechSection'), { ssr: false })
+const IpSection = dynamic(() => import('@/sections/IpSection'), { ssr: false })
+const SubdomainSection = dynamic(() => import('@/sections/SubdomainSection'), { ssr: false })
+const PortSection = dynamic(() => import('@/sections/PortSection'), { ssr: false })
+const WebsiteSection = dynamic(() => import('@/sections/WebsiteSection'), { ssr: false })
+const RiskSection = dynamic(() => import('@/sections/RiskSection'), { ssr: false })
 const BugBountySection = dynamic(() => import('@/sections/BugBountySection'), { ssr: false })
 const VulnSimSection = dynamic(() => import('@/sections/VulnSimSection'), { ssr: false })
-import RobotsSection from '@/sections/RobotsSection'
-import WaybackSection from '@/sections/WaybackSection'
+const RobotsSection = dynamic(() => import('@/sections/RobotsSection'), { ssr: false })
+const WaybackSection = dynamic(() => import('@/sections/WaybackSection'), { ssr: false })
 const AttackGraphSection = dynamic(() => import('@/sections/AttackGraphSection'), { ssr: false })
-import InfraSection from '@/sections/InfraSection'
-import ComplianceSection from '@/sections/ComplianceSection'
+const InfraSection = dynamic(() => import('@/sections/InfraSection'), { ssr: false })
+const ComplianceSection = dynamic(() => import('@/sections/ComplianceSection'), { ssr: false })
 const ChatbotPanel = dynamic(() => import('@/components/ChatbotPanel'), { ssr: false })
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { useState } from 'react'
