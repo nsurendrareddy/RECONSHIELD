@@ -1,8 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useReactFlow, ReactFlow, Background, Controls, MiniMap, Handle, Position, ReactFlowProvider } from '@xyflow/react'
-import '@xyflow/react/dist/style.css'
-import '@/styles/react-flow.css'
 import { Network } from 'lucide-react'
 
 const nodeStyles = {
@@ -108,6 +106,12 @@ function buildGraphData(data) {
 function GraphInner({ data }) {
   const [detail, setDetail] = useState(null)
   const { nodes, edges } = buildGraphData(data)
+
+  useEffect(() => {
+    // Load styles dynamically to keep them off the critical path
+    import('@xyflow/react/dist/style.css');
+    import('@/styles/react-flow.css');
+  }, []);
 
   return (
     <div className="relative h-[420px] bg-surface-950/60 rounded-2xl border border-white/[0.04] overflow-hidden">

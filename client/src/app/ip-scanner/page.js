@@ -1,4 +1,8 @@
-import IpScannerClient from '@/components/ip-scanner/IpScannerClient';
+import dynamic from 'next/dynamic';
+const IpScannerClient = dynamic(() => import('@/components/ip-scanner/IpScannerClient'), {
+  ssr: false,
+  loading: () => <div className="min-h-[600px] animate-pulse bg-surface-900/50 rounded-3xl" />
+});
 
 export const metadata = {
   title: "Advanced IP Intelligence & Reputation Scanner | ReconShield",

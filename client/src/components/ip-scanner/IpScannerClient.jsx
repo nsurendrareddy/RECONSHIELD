@@ -26,7 +26,6 @@ const MapUpdater = dynamic(() => Promise.resolve(({ center }) => {
   return null;
 }), { ssr: false });
 
-import 'leaflet/dist/leaflet.css'
 import ScanTerminalLog from '@/components/ip-scanner/ScanTerminalLog'
 
 export default function IpScannerClient() {
@@ -39,7 +38,8 @@ export default function IpScannerClient() {
   const [L, setL] = useState(null)
 
   useEffect(() => {
-    // Import leaflet only on client
+    // Import leaflet and its styles only on client
+    import('leaflet/dist/leaflet.css');
     import('leaflet').then(leaflet => {
       setL(leaflet.default);
       // Fix for default marker icons
