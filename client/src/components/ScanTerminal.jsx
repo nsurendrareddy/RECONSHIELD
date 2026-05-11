@@ -44,9 +44,14 @@ export default function ScanTerminal({ progress = [], domain }) {
     }
   }, [progress, domain])
 
-  // Auto-scroll
+  // Auto-scroll with requestAnimationFrame to avoid forced reflow
   useEffect(() => {
-    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    if (scrollRef.current) {
+      const el = scrollRef.current;
+      requestAnimationFrame(() => {
+        el.scrollTop = el.scrollHeight;
+      });
+    }
   }, [displayedLines])
 
   const typeColors = {

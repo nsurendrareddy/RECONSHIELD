@@ -58,7 +58,12 @@ export default function ScanTerminalLog({ scanning, data, target }) {
   }, [data, scanning])
 
   useEffect(() => {
-    if (ref.current) ref.current.scrollTop = ref.current.scrollHeight
+    if (ref.current) {
+      const el = ref.current;
+      requestAnimationFrame(() => {
+        el.scrollTop = el.scrollHeight;
+      });
+    }
   }, [visibleLines])
 
   if (!data && !scanning) return null

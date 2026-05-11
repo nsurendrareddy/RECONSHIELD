@@ -44,7 +44,10 @@ export default function HackTargetModal({ isOpen, onClose, target }) {
 
   useEffect(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+      const el = scrollRef.current;
+      requestAnimationFrame(() => {
+        el.scrollTop = el.scrollHeight;
+      });
     }
   }, [lines])
 
