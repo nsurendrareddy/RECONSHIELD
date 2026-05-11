@@ -18,7 +18,7 @@ export default function Terms() {
   return (
     <div className="animate-fade-in max-w-4xl mx-auto py-12">
       <div className="glass-card p-10 md:p-16">
-        <div className="font-mono text-[10px] text-[#475569] uppercase tracking-[2px] mb-8">
+        <div className="font-mono text-[10px] text-[#94a3b8] uppercase tracking-[2px] mb-8">
           LAST UPDATED: MAY 10, 2026
         </div>
         <h1 className="text-3xl font-display font-bold text-white tracking-widest uppercase mb-10 border-b border-white/5 pb-6">
@@ -73,7 +73,7 @@ export default function Terms() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <Link href="/privacy" className="text-xs font-mono text-[#475569] hover:text-[#00ff88] transition-colors uppercase tracking-[1px]">
+          <Link href="/privacy" className="text-xs font-mono text-[#94a3b8] hover:text-[#00ff88] transition-colors uppercase tracking-[1px]">
             For information on data handling, see our Privacy Policy →
           </Link>
           <div className="p-4 bg-matrix-400/5 border border-matrix-400/20 rounded-xl flex-1 md:flex-none">

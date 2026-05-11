@@ -45,7 +45,7 @@ export default function Page() {
 
         {/* What You Get Section */}
         <div className="mt-12">
-          <h2 className="font-mono text-[10px] tracking-[3px] uppercase text-[#475569] mb-4">// INTELLIGENCE COLLECTED</h2>
+          <h2 className="font-mono text-[10px] tracking-[3px] uppercase text-[#94a3b8] mb-4">// INTELLIGENCE COLLECTED</h2>
           <div className="flex flex-wrap gap-2">
             {[
               'ISP / Hosting Provider', 'ASN Number', 'Country & City', 

@@ -66,7 +66,8 @@ export default function BlogClient({ posts }) {
                       alt={featuredPost.title}
                       fill
                       priority
-                      sizes="(max-width: 1024px) 100vw, 80vw"
+                      sizes="(max-width: 1024px) 100vw, 1088px"
+                      quality={75}
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   )}
@@ -109,6 +110,7 @@ export default function BlogClient({ posts }) {
                         alt={post.title}
                         fill
                         sizes="64px"
+                        quality={75}
                         className="object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                     )}
@@ -180,7 +182,8 @@ export default function BlogClient({ posts }) {
                     src={urlFor(post.mainImage).width(800).auto('format').url()} 
                     alt={post.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, 361px"
+                    quality={75}
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                 )}

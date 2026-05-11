@@ -44,7 +44,7 @@ export default function Layout({ children }) {
               <span className="uppercase tracking-wider">Legal Disclaimer:</span>
             </div>
             <p className="opacity-80">This platform is for authorized security research and educational purposes ONLY. Scanning assets without explicit permission is illegal.</p>
-            <button onClick={() => setShowBanner(false)} className="ml-auto p-1 hover:bg-amber-500/10 rounded transition-colors">
+            <button onClick={() => setShowBanner(false)} aria-label="Dismiss notification" className="ml-auto p-1 hover:bg-amber-500/10 rounded transition-colors">
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -71,7 +71,7 @@ export default function Layout({ children }) {
             <div className="flex items-center justify-between h-16">
   
               {/* Logo */}
-              <Link href="/" className="flex items-center gap-3 group">
+              <Link href="/" aria-label="ReconShield home" className="flex items-center gap-3 group">
                 <div className="relative">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${theme === 'dark'
                       ? 'bg-matrix-400/10 border border-matrix-400/20 group-hover:border-matrix-400/40'
@@ -207,7 +207,7 @@ export default function Layout({ children }) {
             {/* Newsletter Signup */}
             <div>
               <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>// WEEKLY INTEL</h4>
-              <p className="text-[11px] text-[#475569] mb-4 leading-relaxed">Get the latest threat intelligence and OSINT guides.</p>
+              <p className="text-[11px] text-[#94a3b8] mb-4 leading-relaxed">Get the latest threat intelligence and OSINT guides.</p>
               <form action="#" className="space-y-2">
                 <input 
                   type="email" 
@@ -249,10 +249,10 @@ export default function Layout({ children }) {
               </div>
               {/* Social Row */}
               <div className="flex items-center gap-3">
-                <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-matrix-400 transition-colors">
+                <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile" className="text-[#94a3b8] hover:text-matrix-400 transition-colors">
                   <Globe className="w-4 h-4" />
                 </a>
-                <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-[#475569] hover:text-matrix-400 transition-colors">
+                <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile" className="text-[#94a3b8] hover:text-matrix-400 transition-colors">
                   <ExternalLink className="w-4 h-4" />
                 </a>
               </div>

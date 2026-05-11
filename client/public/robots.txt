@@ -1,4 +1,9 @@
+# *
 User-agent: *
 Allow: /
 
-Sitemap: https://reconshield.vercel.app/sitemap.xml
+# Host
+Host: https://reconshield.com
+
+# Sitemaps
+Sitemap: https://reconshield.com/sitemap.xml

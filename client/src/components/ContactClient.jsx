@@ -92,7 +92,7 @@ export default function ContactClient() {
 
       <div className="lg:w-2/3">
         <div className="glass-card p-8">
-          <div className="font-mono text-[10px] text-[#475569] uppercase tracking-[2px] mb-6">
+          <div className="font-mono text-[10px] text-[#94a3b8] uppercase tracking-[2px] mb-6">
             // RESPONSE TIME — We aim to respond within 48 hours.
           </div>
           {error && (

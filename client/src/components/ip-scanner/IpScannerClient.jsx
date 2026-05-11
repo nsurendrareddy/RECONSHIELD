@@ -205,7 +205,7 @@ export default function IpScannerClient() {
 
         {/* What You Get Section */}
         <div className="mt-8">
-          <h2 className="font-mono text-[10px] tracking-[3px] uppercase text-[#475569] mb-4">// INTELLIGENCE COLLECTED</h2>
+          <h2 className="font-mono text-[10px] tracking-[3px] uppercase text-[#94a3b8] mb-4">// INTELLIGENCE COLLECTED</h2>
           <div className="flex flex-wrap gap-2">
             {[
               'ISP / Hosting Provider', 'ASN Number', 'Country & City', 
@@ -374,7 +374,7 @@ export default function IpScannerClient() {
               <h3 className="text-white font-bold text-lg mb-1 group-hover:text-[#00ff88] transition-colors">
                 Learn how IP reputation works →
               </h3>
-              <p className="text-[#475569] text-sm font-sans">
+              <p className="text-[#94a3b8] text-sm font-sans">
                 Our complete guide to IP threat intelligence, DNSBL lookups, and risk scoring.
               </p>
             </div>

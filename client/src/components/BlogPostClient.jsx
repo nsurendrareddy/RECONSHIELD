@@ -17,6 +17,7 @@ const ptComponents = {
             alt={value.alt || 'Article Image'}
             fill
             sizes="(max-width: 800px) 100vw, 800px"
+            quality={75}
             className="object-cover"
           />
           {value.caption && (
@@ -95,7 +96,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
     <div className="bg-[#0a0c0f] min-h-screen text-white font-sans selection:bg-[#00ff8833] selection:text-[#00ff88]">
       {/* Article Header */}
       <div className="max-w-[1440px] mx-auto px-6 py-4">
-        <div className="font-mono text-[10px] text-[#475569] uppercase tracking-[2px] mb-6 flex items-center gap-2">
+        <div className="font-mono text-[10px] text-[#94a3b8] uppercase tracking-[2px] mb-6 flex items-center gap-2">
           <Link href="/" className="hover:text-white transition-colors">HOME</Link>
           <span>›</span>
           <Link href="/blog" className="hover:text-white transition-colors">BLOG</Link>
@@ -110,6 +111,8 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
               alt={post.title}
               fill
               priority
+              sizes="(max-width: 1440px) 100vw, 1440px"
+              quality={75}
               className="object-cover"
             />
           )}
@@ -122,7 +125,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
           <h1 className="text-[20px] md:text-[24px] font-semibold text-[#f1f5f9] mb-6 leading-tight">
             {post.title}
           </h1>
-          <div className="flex flex-wrap items-center gap-6 font-mono text-[10px] text-[#475569] uppercase tracking-[2px]">
+          <div className="flex flex-wrap items-center gap-6 font-mono text-[10px] text-[#94a3b8] uppercase tracking-[2px]">
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded-full bg-[#1a2332] flex items-center justify-center text-[#00ff88] text-[8px]">
                 {getInitials(post.author?.name)}
@@ -181,6 +184,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
                             alt={p.title}
                             fill
                             sizes="240px"
+                            quality={75}
                             className="object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         )}
@@ -191,7 +195,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
                       <h4 className="text-[11px] font-medium text-gray-300 group-hover:text-white transition-colors line-clamp-2">
                         {p.title}
                       </h4>
-                      <span className="block font-mono text-[8px] text-[#475569] uppercase mt-1">
+                      <span className="block font-mono text-[8px] text-[#94a3b8] uppercase mt-1">
                         {formatDate(p.publishedAt)}
                       </span>
                     </Link>
@@ -262,7 +266,8 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
                       src={urlFor(p.mainImage).width(800).auto('format').url()} 
                       alt={p.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 768px) 100vw, 361px"
+                      quality={75}
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   )}

@@ -43,7 +43,7 @@ export default function HomeSections({ posts }) {
             <div key={i} className="bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8833] rounded-[6px] p-4 transition-all group">
               <f.icon className="w-5 h-5 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
               <h3 className="font-mono text-[13px] text-[#e2e8f0] uppercase tracking-[1px] mb-2">{f.title}</h3>
-              <p className="text-[11px] text-[#475569] font-sans leading-relaxed">{f.desc}</p>
+              <p className="text-[11px] text-[#94a3b8] font-sans leading-relaxed">{f.desc}</p>
             </div>
           ))}
         </div>
@@ -61,7 +61,7 @@ export default function HomeSections({ posts }) {
               <div className="flex-1 bg-[#0d1117] border border-[#1a2332] p-4 rounded-[6px] w-full">
                 <span className="block font-mono text-[10px] text-[#00ff88] mb-4">{s.num}</span>
                 <h3 className="font-mono text-[13px] text-[#e2e8f0] uppercase tracking-[1px] mb-2">{s.title}</h3>
-                <p className="text-[11px] text-[#475569] leading-relaxed font-sans">{s.desc}</p>
+                <p className="text-[11px] text-[#94a3b8] leading-relaxed font-sans">{s.desc}</p>
               </div>
               {i < steps.length - 1 && (
                 <div className="hidden md:block text-[#1a2332] text-xl px-2">▸</div>
@@ -87,7 +87,8 @@ export default function HomeSections({ posts }) {
                       src={urlFor(post.mainImage).width(800).auto('format').url()} 
                       alt={post.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
+                      sizes="(max-width: 768px) 100vw, 361px"
+                      quality={75}
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                   )}
@@ -99,10 +100,10 @@ export default function HomeSections({ posts }) {
                   <h3 className="text-[13px] font-semibold mb-3 leading-tight group-hover:text-[#00ff88] transition-colors text-white">
                     {post.title}
                   </h3>
-                  <p className="text-[#475569] text-[11px] leading-relaxed line-clamp-2 mb-6">
+                  <p className="text-[#94a3b8] text-[11px] leading-relaxed line-clamp-2 mb-6">
                     {post.excerpt}
                   </p>
-                  <div className="mt-auto pt-4 border-t border-[#1a2332] flex items-center justify-between font-mono text-[9px] text-[#475569] uppercase tracking-[1px]">
+                  <div className="mt-auto pt-4 border-t border-[#1a2332] flex items-center justify-between font-mono text-[9px] text-[#94a3b8] uppercase tracking-[1px]">
                     <span>{formatDate(post.publishedAt)}</span>
                     <span className="text-[#00ff88] group-hover:translate-x-1 transition-transform">READ →</span>
                   </div>

@@ -1,5 +1,5 @@
 import DashboardClient from '@/components/DashboardClient';
-import HomeSections from '@/components/HomeSections';
+import DynamicHomeSections from '@/components/DynamicHomeSections';
 import { client, homepageBlogQuery } from '@/utils/sanity';
 
 export const metadata = {
@@ -38,7 +38,7 @@ export default async function Page() {
       </div>
 
       <DashboardClient />
-      <HomeSections posts={posts || []} />
+      <DynamicHomeSections posts={posts || []} />
     </>
   );
 }

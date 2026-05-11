@@ -50,7 +50,7 @@ export default function About() {
         </div>
         <div>
           <h2 className="text-[15px] font-bold text-white mb-0.5">Surendra Reddy</h2>
-          <p className="font-mono text-[12px] text-[#475569] uppercase tracking-[1px] mb-2">Founder & Security Researcher</p>
+          <p className="font-mono text-[12px] text-[#94a3b8] uppercase tracking-[1px] mb-2">Founder & Security Researcher</p>
           <div className="flex items-center gap-4">
             <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-[#00ff88] transition-colors">
               <Globe className="w-4 h-4" />

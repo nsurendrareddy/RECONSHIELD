@@ -1,9 +1,10 @@
 'use client'
+import dynamic from 'next/dynamic'
 import { useScan } from '@/hooks/useScan'
 import SearchBar from '@/components/SearchBar'
 import LoadingState from '@/components/LoadingState'
 import OverviewSection from '@/sections/OverviewSection'
-import ChartsSection from '@/sections/ChartsSection'
+const ChartsSection = dynamic(() => import('@/sections/ChartsSection'), { ssr: false })
 import AiExplanationSection from '@/sections/AiExplanationSection'
 import DomainSection from '@/sections/DomainSection'
 import DnsSection from '@/sections/DnsSection'
@@ -15,14 +16,14 @@ import SubdomainSection from '@/sections/SubdomainSection'
 import PortSection from '@/sections/PortSection'
 import WebsiteSection from '@/sections/WebsiteSection'
 import RiskSection from '@/sections/RiskSection'
-import BugBountySection from '@/sections/BugBountySection'
-import VulnSimSection from '@/sections/VulnSimSection'
+const BugBountySection = dynamic(() => import('@/sections/BugBountySection'), { ssr: false })
+const VulnSimSection = dynamic(() => import('@/sections/VulnSimSection'), { ssr: false })
 import RobotsSection from '@/sections/RobotsSection'
 import WaybackSection from '@/sections/WaybackSection'
-import AttackGraphSection from '@/sections/AttackGraphSection'
+const AttackGraphSection = dynamic(() => import('@/sections/AttackGraphSection'), { ssr: false })
 import InfraSection from '@/sections/InfraSection'
 import ComplianceSection from '@/sections/ComplianceSection'
-import ChatbotPanel from '@/components/ChatbotPanel'
+const ChatbotPanel = dynamic(() => import('@/components/ChatbotPanel'), { ssr: false })
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { useState } from 'react'
 import { AlertTriangle, RotateCcw, Crosshair, Clock } from 'lucide-react'
