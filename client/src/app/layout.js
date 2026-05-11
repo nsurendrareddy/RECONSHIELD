@@ -1,5 +1,7 @@
 import Layout from "@/components/Layout";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const metadata = {
@@ -43,20 +45,8 @@ export default function RootLayout({ children }) {
           {children}
         </Layout>
 
-        {/* Google Analytics */}
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-CCQ5L37N81"
-          strategy="lazyOnload"
-        />
-        <Script id="google-analytics" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'G-CCQ5L37N81');
-          `}
-        </Script>
+        <Analytics />
+        <SpeedInsights />
         {/* Site-wide JSON-LD */}
         <script
           type="application/ld+json"
