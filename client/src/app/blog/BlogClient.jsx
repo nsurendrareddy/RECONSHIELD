@@ -6,6 +6,8 @@ import { urlFor } from '@/utils/sanity'
 
 export default function BlogClient({ posts }) {
   const [activeFilter, setActiveFilter] = useState('ALL')
+  const [currentPage, setCurrentPage] = useState(1)
+  const postsPerPage = 9
 
   const categories = useMemo(() => {
     const cats = new Set(['ALL'])
@@ -21,6 +23,29 @@ export default function BlogClient({ posts }) {
     if (activeFilter === 'ALL') return posts
     return posts.filter(post => post.categories?.[0]?.title?.toUpperCase() === activeFilter)
   }, [posts, activeFilter])
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
+  const currentPosts = useMemo(() => {
+    const lastIndex = currentPage * postsPerPage
+    const firstIndex = lastIndex - postsPerPage
+    return filteredPosts.slice(firstIndex, lastIndex)
+  }, [filteredPosts, currentPage, postsPerPage])
+
+  const handleFilterChange = (cat) => {
+    setActiveFilter(cat)
+    setCurrentPage(1)
+  }
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page)
+    const element = document.getElementById('articles-grid')
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      window.scrollTo({ top: 800, behavior: 'smooth' })
+    }
+  }
 
   const featuredPost = posts[0]
   const trendingPosts = posts.slice(1, 4)
@@ -46,7 +71,7 @@ export default function BlogClient({ posts }) {
   }
 
   return (
-    <main className="max-w-[1440px] mx-auto px-6 py-12">
+    <div className="max-w-[1440px] mx-auto px-6 py-12">
       {/* Hero Section */}
       <div className="mb-16">
         <div className="flex items-center gap-4 mb-8">
@@ -160,7 +185,7 @@ export default function BlogClient({ posts }) {
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActiveFilter(cat)}
+                onClick={() => handleFilterChange(cat)}
                 className={`px-4 py-1.5 font-mono text-[10px] tracking-[2px] uppercase border transition-all duration-200 ${
                   activeFilter === cat
                     ? 'bg-[#00ff88] text-[#0a0c0f] border-[#00ff88]'
@@ -173,8 +198,8 @@ export default function BlogClient({ posts }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPosts.map((post) => (
+        <div id="articles-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {currentPosts.map((post) => (
             <Link href={`/blog/${post.slug}`} key={post._id} className="group flex flex-col bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8833] transition-all duration-300">
               <div className="relative aspect-square w-full overflow-hidden">
                 {post.mainImage && (
@@ -215,7 +240,52 @@ export default function BlogClient({ posts }) {
             </Link>
           ))}
         </div>
+
+        {/* Pagination UI */}
+        {totalPages > 1 && (
+          <div className="mt-16 flex items-center justify-center gap-4">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 font-mono text-[10px] tracking-[2px] uppercase border transition-all ${
+                currentPage === 1
+                  ? 'text-gray-700 border-gray-800 cursor-not-allowed opacity-50'
+                  : 'text-gray-400 border-[#1a2332] hover:text-[#00ff88] hover:border-[#00ff8833]'
+              }`}
+            >
+              PREV
+            </button>
+            
+            <div className="flex items-center gap-2 overflow-x-auto py-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={`w-8 h-8 shrink-0 font-mono text-[10px] border transition-all ${
+                    currentPage === page
+                      ? 'bg-[#00ff88] text-[#0a0c0f] border-[#00ff88]'
+                      : 'text-gray-500 border-[#1a2332] hover:text-[#00ff88] hover:border-[#00ff8833]'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 font-mono text-[10px] tracking-[2px] uppercase border transition-all ${
+                currentPage === totalPages
+                  ? 'text-gray-700 border-gray-800 cursor-not-allowed opacity-50'
+                  : 'text-gray-400 border-[#1a2332] hover:text-[#00ff88] hover:border-[#00ff8833]'
+              }`}
+            >
+              NEXT
+            </button>
+          </div>
+        )}
       </div>
-    </main>
+    </div>
   )
 }
