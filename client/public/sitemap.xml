@@ -7,7 +7,7 @@
 
   <!-- ========== HOMEPAGE ========== -->
   <url>
-    <loc>https://reconshield.com</loc>
+    <loc>https://reconshield.vercel.app</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -15,37 +15,37 @@
 
   <!-- ========== CORE TOOL PAGES ========== -->
   <url>
-    <loc>https://reconshield.com/ip-scanner</loc>
+    <loc>https://reconshield.vercel.app/ip-scanner</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://reconshield.com/threat-intelligence</loc>
+    <loc>https://reconshield.vercel.app/threat-intelligence</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://reconshield.com/vulnerability-scanner</loc>
+    <loc>https://reconshield.vercel.app/vulnerability-scanner</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://reconshield.com/ssl-checker</loc>
+    <loc>https://reconshield.vercel.app/ssl-checker</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://reconshield.com/dns-lookup</loc>
+    <loc>https://reconshield.vercel.app/dns-lookup</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://reconshield.com/security-headers</loc>
+    <loc>https://reconshield.vercel.app/security-headers</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -53,25 +53,25 @@
 
   <!-- ========== ABOUT / COMPANY ========== -->
   <url>
-    <loc>https://reconshield.com/about</loc>
+    <loc>https://reconshield.vercel.app/about</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://reconshield.com/contact</loc>
+    <loc>https://reconshield.vercel.app/contact</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.4</priority>
   </url>
   <url>
-    <loc>https://reconshield.com/privacy</loc>
+    <loc>https://reconshield.vercel.app/privacy</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://reconshield.com/terms</loc>
+    <loc>https://reconshield.vercel.app/terms</loc>
     <lastmod>2026-05-11T04:35:51Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
@@ -79,7 +79,7 @@
 
   <!-- ========== BLOG HUB ========== -->
   <url>
-    <loc>https://reconshield.com/blog</loc>
+    <loc>https://reconshield.vercel.app/blog</loc>
     <lastmod>2026-05-12T00:00:00Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -88,7 +88,7 @@
   <!-- ========== BLOG ARTICLES (with Google News tags) ========== -->
 
   <url>
-    <loc>https://reconshield.com/blog/quasar-linux-rat-targets-developers-to-compromise-the-software-supply-chain</loc>
+    <loc>https://reconshield.vercel.app/blog/quasar-linux-rat-targets-developers-to-compromise-the-software-supply-chain</loc>
     <lastmod>2026-05-08T15:44:21Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -103,7 +103,7 @@
   </url>
 
   <url>
-    <loc>https://reconshield.com/blog/critical-microsoft-365-copilot-vulnerabilities-expose-sensitive-information</loc>
+    <loc>https://reconshield.vercel.app/blog/critical-microsoft-365-copilot-vulnerabilities-expose-sensitive-information</loc>
     <lastmod>2026-05-10T07:36:27Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -118,7 +118,7 @@
   </url>
 
   <url>
-    <loc>https://reconshield.com/blog/ai-investment-fraudsters-spawn-15-500-scam-sites-abusing-legitimate-marketing-tool</loc>
+    <loc>https://reconshield.vercel.app/blog/ai-investment-fraudsters-spawn-15-500-scam-sites-abusing-legitimate-marketing-tool</loc>
     <lastmod>2026-05-10T04:43:22Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -133,7 +133,7 @@
   </url>
 
   <url>
-    <loc>https://reconshield.com/blog/linux-servers-under-attack-by-stealthy-pamdoora-ssh-credential-stealer</loc>
+    <loc>https://reconshield.vercel.app/blog/linux-servers-under-attack-by-stealthy-pamdoora-ssh-credential-stealer</loc>
     <lastmod>2026-05-10T09:06:04Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -148,7 +148,7 @@
   </url>
 
   <url>
-    <loc>https://reconshield.com/blog/ai-fraud-and-cybercrime-marketplaces-are-evolving-rapidly-says-accertify</loc>
+    <loc>https://reconshield.vercel.app/blog/ai-fraud-and-cybercrime-marketplaces-are-evolving-rapidly-says-accertify</loc>
     <lastmod>2026-05-10T14:57:45Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -163,7 +163,7 @@
   </url>
 
   <url>
-    <loc>https://reconshield.com/blog/cpanel-whm-critical-vulnerability-fix</loc>
+    <loc>https://reconshield.vercel.app/blog/cpanel-whm-critical-vulnerability-fix</loc>
     <lastmod>2026-05-10T04:35:12Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -178,7 +178,7 @@
   </url>
 
   <url>
-    <loc>https://reconshield.com/blog/firefox-receives-423-security-patches-powered-by-claude-mythos-and-ai-tools</loc>
+    <loc>https://reconshield.vercel.app/blog/firefox-receives-423-security-patches-powered-by-claude-mythos-and-ai-tools</loc>
     <lastmod>2026-05-10T09:15:34Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -193,7 +193,7 @@
   </url>
 
   <url>
-    <loc>https://reconshield.com/blog/7-3-million-downloads-later-fake-android-apps-exposed-for-payment-fraud</loc>
+    <loc>https://reconshield.vercel.app/blog/7-3-million-downloads-later-fake-android-apps-exposed-for-payment-fraud</loc>
     <lastmod>2026-05-08T15:38:09Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -209,7 +209,7 @@
 
   <!-- CANONICAL guide - kept the newer/correct slug only -->
   <url>
-    <loc>https://reconshield.com/blog/how-to-check-ip-reputation-a-complete-guide-for-security-researchers</loc>
+    <loc>https://reconshield.vercel.app/blog/how-to-check-ip-reputation-a-complete-guide-for-security-researchers</loc>
     <lastmod>2026-05-11T03:37:25Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -225,7 +225,7 @@
 
   <!-- CONSOLIDATED self-promotional article - keep only one -->
   <url>
-    <loc>https://reconshield.com/blog/reconshield-ai-powered-cybersecurity-and-threat-intelligence-platform</loc>
+    <loc>https://reconshield.vercel.app/blog/reconshield-ai-powered-cybersecurity-and-threat-intelligence-platform</loc>
     <lastmod>2026-05-10T14:40:28Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

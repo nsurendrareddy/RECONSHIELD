@@ -7,14 +7,15 @@ export const metadata = {
   description: "Advanced AI-powered cybersecurity platform for threat intelligence, OSINT, and vulnerability scanning. Professional-grade security tools for researchers.",
   keywords: ["cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield"],
   alternates: {
-    canonical: 'https://reconshield.com',
+    canonical: 'https://reconshield.vercel.app',
   },
   openGraph: {
     title: "ReconShield - AI Cybersecurity Platform",
     siteName: "ReconShield",
-    url: 'https://reconshield.com',
+    url: 'https://reconshield.vercel.app',
     type: 'website',
   }
+
 };
 
 export default async function Page() {

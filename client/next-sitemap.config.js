@@ -29,8 +29,9 @@ async function getPosts() {
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.SITE_URL || 'https://reconshield.com',
+  siteUrl: process.env.SITE_URL || 'https://reconshield.vercel.app',
   generateRobotsTxt: true,
+
   generateIndexSitemap: false,
   exclude: ['/server-sitemap.xml', '/apple-icon.png', '/icon.png'],
   robotsTxtOptions: {

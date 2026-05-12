@@ -8,12 +8,13 @@ export const metadata = {
   title: "Cyber Intelligence Briefings | ReconShield Blog",
   description: "Latest threat intelligence, security research, and OSINT guides from the ReconShield team.",
   alternates: {
-    canonical: 'https://reconshield.com/blog',
+    canonical: 'https://reconshield.vercel.app/blog',
   },
   openGraph: {
-    url: 'https://reconshield.com/blog',
+    url: 'https://reconshield.vercel.app/blog',
     type: 'website',
   }
+
 };
 
 export default async function BlogPage() {

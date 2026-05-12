@@ -3,7 +3,8 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://reconshield.com
+Host: https://reconshield.vercel.app
 
 # Sitemaps
-Sitemap: https://reconshield.com/sitemap.xml
+Sitemap: https://reconshield.vercel.app/sitemap.xml
+

@@ -4,7 +4,10 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const metadata = {
-  metadataBase: new URL("https://reconshield.com"),
+  metadataBase: new URL("https://reconshield.vercel.app"),
+  alternates: {
+    canonical: "https://reconshield.vercel.app",
+  },
   title: {
     default: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
     template: "%s | ReconShield"
@@ -36,6 +39,7 @@ export const metadata = {
   },
 };
 
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark h-full antialiased">
@@ -62,15 +66,16 @@ export default function RootLayout({ children }) {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 "name": "ReconShield",
-                "url": "https://reconshield.com",
+                "url": "https://reconshield.vercel.app",
               },
               {
                 "@context": "https://schema.org",
                 "@type": "Organization",
                 "name": "ReconShield",
-                "url": "https://reconshield.com",
-                "logo": "https://reconshield.com/og-image.png"
+                "url": "https://reconshield.vercel.app",
+                "logo": "https://reconshield.vercel.app/og-image.png"
               },
+
               {
                 "@context": "https://schema.org",
                 "@type": "SoftwareApplication",
