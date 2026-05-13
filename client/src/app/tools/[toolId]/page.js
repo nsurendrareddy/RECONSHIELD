@@ -74,6 +74,13 @@ export async function generateMetadata({ params }) {
   return {
     title: toolId === 'dns-lookup' ? config.title + ' | ReconShield' : `${config.title} | ReconShield Security Tools`,
     description: config.desc,
+    alternates: {
+      canonical: `https://reconshield.in/tools/${toolId}`,
+    },
+    openGraph: {
+      url: `https://reconshield.in/tools/${toolId}`,
+      type: 'website',
+    }
   };
 }
 
