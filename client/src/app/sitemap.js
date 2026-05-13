@@ -30,7 +30,7 @@ export default async function sitemap() {
   const posts = await getBlogPosts()
 
   const blogUrls = posts
-    .filter((post) => post.slug)
+    .filter((post) => post.slug && post.slug !== 'how-to-check-ip-reputation-a-complete-guide-for-security-researchers')
     .map((post) => ({
       url: `${BASE_URL}/blog/${post.slug}`,
       lastModified: post.publishedAt ? new Date(post.publishedAt) : new Date(),

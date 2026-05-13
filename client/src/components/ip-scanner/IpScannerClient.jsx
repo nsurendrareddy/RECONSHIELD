@@ -366,24 +366,6 @@ export default function IpScannerClient() {
         </div>
       </div>
 
-      {/* Related Article CTA */}
-      <div className="mt-20">
-        <Link href="/blog/how-to-check-ip-reputation-a-complete-guide-for-security-researchers" className="block bg-[#0d1117] border border-[#00ff8833] rounded-[6px] p-6 group hover:border-[#00ff8866] transition-all">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <h3 className="text-white font-bold text-lg mb-1 group-hover:text-[#00ff88] transition-colors">
-                Learn how IP reputation works →
-              </h3>
-              <p className="text-[#94a3b8] text-sm font-sans">
-                Our complete guide to IP threat intelligence, DNSBL lookups, and risk scoring.
-              </p>
-            </div>
-            <div className="font-mono text-[10px] text-[#00ff8866] uppercase tracking-[2px]">
-              INTEL_GUIDE // VOL_042
-            </div>
-          </div>
-        </Link>
-      </div>
     </div>
   )
 }
