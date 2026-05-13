@@ -9,7 +9,7 @@ class Settings:
     # Render provides PORT env var, default to 10000 for local/dev
     PORT: int = int(os.getenv("PORT", "10000"))
     ENV: str = os.getenv("NODE_ENV", "production")
-    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "https://reconshield.vercel.app")
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "https://reconshield.in")
 
     # Optional API keys — app works fully without these
     SECURITYTRAILS_API_KEY: str = os.getenv("SECURITYTRAILS_API_KEY", "")

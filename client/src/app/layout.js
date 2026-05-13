@@ -17,6 +17,7 @@ export const metadata = {
   authors: [{ name: "ReconShield Team" }],
   icons: {
     icon: "/icon.png",
+    shortcut: "/favicon.png",
     apple: "/apple-icon.png",
   },
   openGraph: {

@@ -54,7 +54,7 @@ frontend_url = settings.FRONTEND_URL
 allowed_origins = [
     "http://localhost:5173",
     "http://localhost:3000",
-    "https://reconshield.vercel.app",
+    "https://reconshield.in",
     frontend_url.rstrip("/") if frontend_url else None
 ]
 
