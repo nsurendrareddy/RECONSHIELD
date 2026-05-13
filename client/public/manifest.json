@@ -1,0 +1,21 @@
+{
+  "name": "ReconShield",
+  "short_name": "ReconShield",
+  "description": "AI-powered cybersecurity platform for threat intelligence and vulnerability scanning.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#00ff88",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

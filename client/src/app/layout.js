@@ -17,8 +17,10 @@ export const metadata = {
   authors: [{ name: "ReconShield Team" }],
   icons: {
     icon: "/icon.png",
+    shortcut: "/favicon.ico",
     apple: "/apple-icon.png",
   },
+  manifest: "/manifest.json",
   openGraph: {
     title: "ReconShield - AI Cybersecurity Platform",
     description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
@@ -66,6 +68,7 @@ export default function RootLayout({ children }) {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 "name": "ReconShield",
+                "alternateName": ["Recon Shield", "reconshield.in"],
                 "url": "https://reconshield.in",
               },
               {

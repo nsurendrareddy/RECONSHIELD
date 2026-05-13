@@ -3,7 +3,7 @@ import DynamicHomeSections from '@/components/DynamicHomeSections';
 import { client, homepageBlogQuery } from '@/utils/sanity';
 
 export const metadata = {
-  title: "AI Cybersecurity & Threat Intelligence Platform",
+  title: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
   description: "Advanced AI-powered cybersecurity platform for threat intelligence, OSINT, and vulnerability scanning. Professional-grade security tools for researchers.",
   keywords: ["cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield"],
   alternates: {
