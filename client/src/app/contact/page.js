@@ -3,12 +3,12 @@ export const metadata = {
   title: "Contact Secure Support | ReconShield Cybersecurity",
   description: "Get in touch with the ReconShield team for secure technical support, enterprise inquiries, and API access requests.",
   alternates: {
-    canonical: 'https://reconshield.vercel.app/contact',
+    canonical: 'https://reconshield.in/contact',
   },
   openGraph: {
     title: "Contact Secure Support | ReconShield Cybersecurity",
     description: "Get in touch with the ReconShield team for secure technical support, enterprise inquiries, and API access requests.",
-    url: 'https://reconshield.vercel.app/contact',
+    url: 'https://reconshield.in/contact',
     type: 'website',
   }
 };

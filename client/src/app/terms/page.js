@@ -4,12 +4,12 @@ export const metadata = {
   title: "Terms of Service | ReconShield Intelligence",
   description: "Terms and conditions for using the ReconShield platform for security research and reconnaissance.",
   alternates: {
-    canonical: 'https://reconshield.vercel.app/terms',
+    canonical: 'https://reconshield.in/terms',
   },
   openGraph: {
     title: "Terms of Service | ReconShield Intelligence",
     description: "Terms and conditions for using the ReconShield platform for security research and reconnaissance.",
-    url: 'https://reconshield.vercel.app/terms',
+    url: 'https://reconshield.in/terms',
     type: 'website',
   }
 };

@@ -2,12 +2,12 @@ export const metadata = {
   title: "Privacy Policy | ReconShield Intelligence",
   description: "How we handle data and respect user privacy on the ReconShield platform.",
   alternates: {
-    canonical: 'https://reconshield.vercel.app/privacy',
+    canonical: 'https://reconshield.in/privacy',
   },
   openGraph: {
     title: "Privacy Policy | ReconShield Intelligence",
     description: "How we handle data and respect user privacy on the ReconShield platform.",
-    url: 'https://reconshield.vercel.app/privacy',
+    url: 'https://reconshield.in/privacy',
     type: 'website',
   }
 };

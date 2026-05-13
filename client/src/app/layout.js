@@ -4,9 +4,9 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 export const metadata = {
-  metadataBase: new URL("https://reconshield.vercel.app"),
+  metadataBase: new URL("https://reconshield.in"),
   alternates: {
-    canonical: "https://reconshield.vercel.app",
+    canonical: "https://reconshield.in",
   },
   title: {
     default: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
@@ -22,7 +22,7 @@ export const metadata = {
   openGraph: {
     title: "ReconShield - AI Cybersecurity Platform",
     description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
-    url: "https://reconshield.vercel.app/",
+    url: "https://reconshield.in/",
     siteName: "ReconShield",
     images: [
       {
@@ -66,14 +66,14 @@ export default function RootLayout({ children }) {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 "name": "ReconShield",
-                "url": "https://reconshield.vercel.app",
+                "url": "https://reconshield.in",
               },
               {
                 "@context": "https://schema.org",
                 "@type": "Organization",
                 "name": "ReconShield",
-                "url": "https://reconshield.vercel.app",
-                "logo": "https://reconshield.vercel.app/og-image.png"
+                "url": "https://reconshield.in",
+                "logo": "https://reconshield.in/og-image.png"
               },
 
               {

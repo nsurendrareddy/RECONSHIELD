@@ -1,4 +1,4 @@
-const BASE_URL = 'https://reconshield.vercel.app'
+const BASE_URL = 'https://reconshield.in'
 const SANITY_PROJECT_ID = 'etmnx6kx'
 const SANITY_DATASET = 'production'
 const SANITY_API_VERSION = '2021-10-21'

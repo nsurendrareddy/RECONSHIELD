@@ -30,12 +30,12 @@ export async function generateMetadata({ params }) {
     title: `${post.title} | ReconShield Intelligence`,
     description: description,
     alternates: {
-      canonical: `https://reconshield.vercel.app/blog/${slug}`,
+      canonical: `https://reconshield.in/blog/${slug}`,
     },
     openGraph: {
       title: post.title,
       description: description,
-      url: `https://reconshield.vercel.app/blog/${slug}`,
+      url: `https://reconshield.in/blog/${slug}`,
       siteName: 'ReconShield',
       images: [{ url: imageUrl }],
       type: 'article',
@@ -86,7 +86,7 @@ export default async function Page({ params }) {
     "@type": post.categories?.[0]?.title === "Cyber News" ? "NewsArticle" : "Article",
     "headline": post.title,
     "description": post.excerpt,
-    "image": post.mainImageUrl || (post.mainImage ? urlFor(post.mainImage).url() : "https://reconshield.vercel.app/og-image.png"),
+    "image": post.mainImageUrl || (post.mainImage ? urlFor(post.mainImage).url() : "https://reconshield.in/og-image.png"),
     "datePublished": post.publishedAt,
     "dateModified": post.publishedAt,
     "author": {
@@ -96,15 +96,15 @@ export default async function Page({ params }) {
     "publisher": {
       "@type": "Organization",
       "name": "ReconShield",
-      "url": "https://reconshield.vercel.app",
+      "url": "https://reconshield.in",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://reconshield.vercel.app/og-image.png"
+        "url": "https://reconshield.in/og-image.png"
       }
     },
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://reconshield.vercel.app/blog/${slug}`
+      "@id": `https://reconshield.in/blog/${slug}`
     }
   };
 

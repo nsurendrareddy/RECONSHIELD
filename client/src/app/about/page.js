@@ -5,12 +5,12 @@ export const metadata = {
   title: "About ReconShield | AI-Powered Cybersecurity Research",
   description: "Learn about the mission of ReconShield: providing advanced, AI-driven visibility into global attack surfaces for security researchers.",
   alternates: {
-    canonical: 'https://reconshield.vercel.app/about',
+    canonical: 'https://reconshield.in/about',
   },
   openGraph: {
     title: "About ReconShield | AI-Powered Cybersecurity Research",
     description: "Learn about the mission of ReconShield: providing advanced, AI-driven visibility into global attack surfaces for security researchers.",
-    url: 'https://reconshield.vercel.app/about',
+    url: 'https://reconshield.in/about',
     type: 'website',
   }
 };

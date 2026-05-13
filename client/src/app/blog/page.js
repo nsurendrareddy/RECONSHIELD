@@ -8,10 +8,10 @@ export const metadata = {
   title: "Cyber Intelligence Briefings | ReconShield Blog",
   description: "Latest threat intelligence, security research, and OSINT guides from the ReconShield team.",
   alternates: {
-    canonical: 'https://reconshield.vercel.app/blog',
+    canonical: 'https://reconshield.in/blog',
   },
   openGraph: {
-    url: 'https://reconshield.vercel.app/blog',
+    url: 'https://reconshield.in/blog',
     type: 'website',
   }
 
