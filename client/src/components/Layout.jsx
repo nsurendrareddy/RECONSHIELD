@@ -72,13 +72,13 @@ export default function Layout({ children }) {
             {/* Logo */}
             <Link href="/" aria-label="ReconShield home" className="flex items-center gap-3 group">
               <div className="relative">
-                <div className={`w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center transition-all ${theme === 'dark'
-                    ? 'bg-matrix-400/5 border border-matrix-400/10 group-hover:border-matrix-400/30'
-                    : 'bg-matrix-600/5 border border-matrix-600/10 group-hover:border-matrix-600/30'
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${theme === 'dark'
+                    ? 'bg-matrix-400/10 border border-matrix-400/20 group-hover:border-matrix-400/40'
+                    : 'bg-matrix-600/10 border border-matrix-600/20 group-hover:border-matrix-600/40'
                   }`}>
-                  <img src="/favicon.png" alt="ReconShield Logo" className="w-8 h-8 object-contain" />
+                  <Shield className={`w-5 h-5 ${theme === 'dark' ? 'text-matrix-400' : 'text-matrix-600'}`} />
                 </div>
-                <div className={`absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full animate-pulse ${theme === 'dark' ? 'bg-matrix-400' : 'bg-matrix-600'}`} />
+                <div className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full animate-pulse ${theme === 'dark' ? 'bg-matrix-400' : 'bg-matrix-600'}`} />
               </div>
               <div className="hidden xs:block">
                 <h1 className="font-display text-lg font-bold tracking-wider">
@@ -193,7 +193,7 @@ export default function Layout({ children }) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-2 mb-4">
-                <img src="/favicon.png" alt="ReconShield" className="w-6 h-6 object-contain" />
+                <Shield className={`w-5 h-5 ${theme === 'dark' ? 'text-matrix-400' : 'text-matrix-600'}`} />
                 <span className={`font-display font-bold tracking-wider ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>RECONSHIELD</span>
               </div>
               <p className="text-sm leading-relaxed max-w-sm">
