@@ -10,7 +10,7 @@ export const metadata = {
   },
   title: {
     default: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
-    template: "ReconShield | %s"
+    template: "%s | ReconShield"
   },
   description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
   keywords: ["cybersecurity", "vulnerability scanner", "IP intelligence", "threat detection", "SSL checker", "DNS lookup"],
@@ -19,7 +19,6 @@ export const metadata = {
     icon: [
       { url: "/favicon.ico" },
       { url: "/favicon.png", type: "image/png" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
     ],
     shortcut: "/favicon.ico",
     apple: "/apple-icon.png",
@@ -72,7 +71,7 @@ export default function RootLayout({ children }) {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 "name": "ReconShield",
-                "alternateName": ["Recon Shield", "reconshield.in"],
+                "alternateName": ["Recon Shield"],
                 "url": "https://reconshield.in",
               },
               {
