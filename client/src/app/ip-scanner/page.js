@@ -4,14 +4,14 @@ const IpScannerClient = dynamic(() => import('@/components/ip-scanner/IpScannerC
 });
 
 export const metadata = {
-  title: "Advanced IP Intelligence & Reputation Scanner | ReconShield",
+  title: "Advanced IP Intelligence & Reputation Scanner",
   description: "Perform deep-packet inspection and passive footprinting on any IP address. Analyze ISP data, ASN reputation, geolocation, and security threats in real-time.",
   keywords: ["ip scanner", "ip intelligence", "threat reputation", "asn lookup", "ip geolocation", "network reconnaissance"],
   alternates: {
     canonical: 'https://reconshield.in/ip-scanner',
   },
   openGraph: {
-    title: "Advanced IP Intelligence & Reputation Scanner | ReconShield",
+    title: "Advanced IP Intelligence & Reputation Scanner",
     description: "Perform deep-packet inspection and passive footprinting on any IP address. Analyze ISP data, ASN reputation, geolocation, and security threats in real-time.",
     url: 'https://reconshield.in/ip-scanner',
     type: 'website',

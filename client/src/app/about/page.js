@@ -2,13 +2,13 @@ import { Shield, Target, Activity, Users, Globe, Lock, Cpu, ExternalLink } from 
 import Link from 'next/link'
 
 export const metadata = {
-  title: "About ReconShield | AI-Powered Cybersecurity Research",
+  title: "AI-Powered Cybersecurity Research",
   description: "Learn about the mission of ReconShield: providing advanced, AI-driven visibility into global attack surfaces for security researchers.",
   alternates: {
     canonical: 'https://reconshield.in/about',
   },
   openGraph: {
-    title: "About ReconShield | AI-Powered Cybersecurity Research",
+    title: "ReconShield | AI-Powered Cybersecurity Research",
     description: "Learn about the mission of ReconShield: providing advanced, AI-driven visibility into global attack surfaces for security researchers.",
     url: 'https://reconshield.in/about',
     type: 'website',

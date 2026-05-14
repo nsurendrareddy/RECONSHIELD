@@ -20,14 +20,14 @@ async function getPost(slug) {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post || post._error) return { title: 'Intelligence Briefing Missing | ReconShield' };
+  if (!post || post._error) return { title: 'Intelligence Briefing Missing' };
 
   const description = post.excerpt;
   const imageUrl = post.mainImageUrl || '/og-image.png';
   const authorName = post.author?.name ?? "ReconShield Team";
   
   return {
-    title: `${post.title} | ReconShield Intelligence`,
+    title: `${post.title} | Intelligence`,
     description: description,
     alternates: {
       canonical: `https://reconshield.in/blog/${slug}`,

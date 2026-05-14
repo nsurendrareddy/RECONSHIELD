@@ -10,13 +10,17 @@ export const metadata = {
   },
   title: {
     default: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
-    template: "%s | ReconShield"
+    template: "ReconShield | %s"
   },
   description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
   keywords: ["cybersecurity", "vulnerability scanner", "IP intelligence", "threat detection", "SSL checker", "DNS lookup"],
   authors: [{ name: "ReconShield Team" }],
   icons: {
-    icon: "/icon.png",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
     shortcut: "/favicon.ico",
     apple: "/apple-icon.png",
   },

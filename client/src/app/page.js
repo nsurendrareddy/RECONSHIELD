@@ -3,14 +3,14 @@ import DynamicHomeSections from '@/components/DynamicHomeSections';
 import { client, homepageBlogQuery } from '@/utils/sanity';
 
 export const metadata = {
-  title: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
+  title: "AI Cybersecurity & Threat Intelligence Platform",
   description: "Advanced AI-powered cybersecurity platform for threat intelligence, OSINT, and vulnerability scanning. Professional-grade security tools for researchers.",
   keywords: ["cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield"],
   alternates: {
     canonical: 'https://reconshield.in',
   },
   openGraph: {
-    title: "ReconShield - AI Cybersecurity Platform",
+    title: "ReconShield | AI Cybersecurity Platform",
     siteName: "ReconShield",
     url: 'https://reconshield.in',
     type: 'website',

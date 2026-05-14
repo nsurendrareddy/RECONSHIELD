@@ -72,7 +72,7 @@ export async function generateMetadata({ params }) {
   const config = TOOL_CONFIG[toolId] || TOOL_CONFIG['dns-lookup'];
   
   return {
-    title: toolId === 'dns-lookup' ? config.title + ' | ReconShield' : `${config.title} | ReconShield Security Tools`,
+    title: toolId === 'dns-lookup' ? config.title : `${config.title} | Security Tools`,
     description: config.desc,
     alternates: {
       canonical: `https://reconshield.in/tools/${toolId}`,
