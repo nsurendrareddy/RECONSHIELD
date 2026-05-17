@@ -63,7 +63,7 @@ export default function ContactClient() {
           <p className="text-gray-400 text-sm leading-relaxed">
             Welcome to ReconShield. We are a small independent research team dedicated to providing high-fidelity intelligence tools to the security community. You can reach out to us for security research questions, platform feedback, media enquiries, or enterprise deployment requests. 
             <br/><br/>
-            As a lean team, we appreciate your patience and typically aim to respond within 48 hours. For direct inquiries or secure support, you can use the secure transmission form below or email us directly at <span className="text-matrix-400 font-mono">[your@email.com]</span>.
+            As a lean team, we appreciate your patience and typically aim to respond within 48 hours. For direct inquiries or secure support, you can use the secure transmission form below or email us directly.
           </p>
         </div>
 
