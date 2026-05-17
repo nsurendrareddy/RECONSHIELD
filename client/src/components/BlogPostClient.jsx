@@ -126,12 +126,14 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
             {post.title}
           </h1>
           <div className="flex flex-wrap items-center gap-6 font-mono text-[10px] text-[#94a3b8] uppercase tracking-[2px]">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-full bg-[#1a2332] flex items-center justify-center text-[#00ff88] text-[8px]">
+            <Link href="/about" className="flex items-center gap-2 group cursor-pointer">
+              <div className="w-6 h-6 rounded-full bg-[#1a2332] flex items-center justify-center text-[#00ff88] text-[8px] group-hover:bg-[#00ff8811] transition-colors">
                 {getInitials(post.author?.name)}
               </div>
-              <span className="text-white">{post.author?.name}</span>
-            </div>
+              <span className="text-white group-hover:text-[#00ff88] transition-colors underline decoration-transparent group-hover:decoration-[#00ff8844] underline-offset-4 flex items-center gap-1.5">
+                {post.author?.name} <span className="text-[8px] text-gray-500 group-hover:text-[#00ff88]">↗ View profile</span>
+              </span>
+            </Link>
             <div className="flex items-center gap-1.5">
               <Calendar className="w-3 h-3" />
               <span>{formatDate(post.publishedAt || post._createdAt)}</span>

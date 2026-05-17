@@ -70,6 +70,24 @@ export default function Terms() {
               This agreement is governed by the laws of India. Any disputes shall be resolved under Indian jurisdiction.
             </p>
           </section>
+
+          <section>
+            <h3 className="text-white font-bold mb-4 flex items-center gap-3">
+              <span className="text-matrix-400">06.</span> ADVERTISING
+            </h3>
+            <p>
+              ReconShield displays third-party advertisements provided by Google AdSense. We do not personally select or endorse the products or services advertised, and we are not responsible for the content of these third-party ads. Users who wish to control the personalization of the ads they see can opt out or manage their preferences via Google Ad Settings.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-white font-bold mb-4 flex items-center gap-3">
+              <span className="text-matrix-400">07.</span> USER CONDUCT
+            </h3>
+            <p>
+              ReconShield is strictly an educational platform built for defensive security research. You must not use our services to facilitate unauthorized access, launch denial-of-service attacks, or conduct any illegal activities. Any misuse of our platform to target systems without proper authorization will result in immediate termination of your access and potential reporting to relevant authorities.
+            </p>
+          </section>
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
