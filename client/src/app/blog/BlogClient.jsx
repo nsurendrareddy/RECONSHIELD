@@ -165,7 +165,7 @@ export default function BlogClient({ posts }) {
         </div>
         <div className="flex-1 overflow-hidden">
           <div className="flex items-center whitespace-nowrap animate-ticker">
-            {[...posts, ...posts].map((post, i) => (
+            {[...posts.slice(0, 5), ...posts.slice(0, 5)].map((post, i) => (
               <div key={`${post._id}-${i}`} className="flex items-center px-8">
                 <Link href={`/blog/${post.slug}`} className="font-mono text-[10px] tracking-[1px] uppercase text-gray-400 hover:text-[#00ff88] transition-colors">
                   {post.title}

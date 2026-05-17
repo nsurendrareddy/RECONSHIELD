@@ -5,8 +5,8 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 60 // revalidate every minute
 
 export const metadata = {
-  title: "Cyber Intelligence Briefings | Blog",
-  description: "Latest threat intelligence, security research, and OSINT guides from the ReconShield team.",
+  title: "Cyber Threat Intelligence Blog | ReconShield Research",
+  description: "Stay ahead of evolving threats. Explore ReconShield's cybersecurity blog for the latest in OSINT research, vulnerability analysis, and actionable intelligence.",
   alternates: {
     canonical: 'https://reconshield.in/blog',
   },

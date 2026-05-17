@@ -2,8 +2,8 @@ import { Shield, Target, Activity, Users, Globe, Lock, Cpu, ExternalLink } from 
 import Link from 'next/link'
 
 export const metadata = {
-  title: "AI-Powered Cybersecurity Research",
-  description: "Learn about the mission of ReconShield: providing advanced, AI-driven visibility into global attack surfaces for security researchers.",
+  title: "About Surendra Reddy | Founder of ReconShield",
+  description: "Meet Surendra Reddy, founder of ReconShield. Learn about his mission to provide researchers with AI-driven cybersecurity tools and advanced threat intelligence.",
   alternates: {
     canonical: 'https://reconshield.in/about',
   },
@@ -72,18 +72,24 @@ export default function About() {
         ))}
       </div>
 
-      {/* Platform Story */}
+      {/* Author Bio */}
       <section className="mb-24">
-        <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold mb-8">// THE STORY</h2>
-        <div className="space-y-6 text-[13px] text-[#94a3b8] leading-[1.8] font-sans max-w-3xl">
+        <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold mb-8">// ABOUT THE AUTHOR & FOUNDER</h2>
+        <div className="space-y-6 text-[14px] text-gray-400 leading-[1.8] font-mono max-w-3xl">
           <p>
-            ReconShield was founded with a singular mission: to democratize access to professional-grade OSINT and reconnaissance tools. In an era where attack surfaces are expanding faster than security teams can monitor them, we believe that visibility should be accessible to every researcher, not just those with enterprise budgets.
+            Surendra Reddy is a cybersecurity researcher, threat intelligence analyst, and the founder of ReconShield. With a deep passion for offensive security and defensive architecture, Surendra has dedicated his career to understanding the intricate mechanisms of modern digital attack surfaces. His background spans across Open Source Intelligence (OSINT), vulnerability research, and advanced network reconnaissance, making him a trusted voice in the cybersecurity community.
           </p>
           <p>
-            Our philosophy is built around "Passive-Only" reconnaissance. By querying public records, threat feeds, and global infrastructure data without ever sending a single packet to the target, we ensure that researchers can conduct their work safely, legally, and ethically.
+            The motivation for building ReconShield stemmed from a critical observation: enterprise-grade intelligence tools were increasingly locked behind corporate paywalls, leaving independent researchers and ethical hackers at a disadvantage. Surendra envisioned a platform that democratized access to high-fidelity, actionable intelligence. By integrating cutting-edge AI analytics with a strict "passive-only" reconnaissance methodology, he created ReconShield—a platform that empowers the security community to conduct proactive threat hunting safely, legally, and ethically.
           </p>
           <p>
-            Built for researchers, SOC analysts, and the security community, ReconShield provides high-fidelity intelligence that empowers better defensive decisions through automated discovery and AI-powered risk scoring.
+            Surendra's primary areas of expertise lie in automating complex reconnaissance workflows, interpreting zero-day vulnerability disclosures, and mapping global threat landscapes. Through his research, he actively contributes to uncovering sophisticated exploit chains and developing defensive countermeasures that help organizations secure their infrastructure.
+          </p>
+          <p>
+            Whether he is dissecting the latest malware payload, auditing SSL/TLS compliance, or developing new OSINT tools, Surendra remains committed to advancing the field of cybersecurity. He believes that continuous learning and community collaboration are the cornerstones of effective defense.
+          </p>
+          <p className="text-[#00ff88] mt-8">
+            Connect with Surendra to discuss threat intelligence, security research, or potential collaborations on <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noreferrer" className="underline hover:text-white transition-colors">LinkedIn</a> and <a href="https://github.com/nsurendrareddy" target="_blank" rel="noreferrer" className="underline hover:text-white transition-colors">GitHub</a>.
           </p>
         </div>
       </section>

@@ -75,6 +75,55 @@ export default function Hero({ onStartScan }) {
           <StatBox label="Daily Scans" value="12.5K" icon={<Target />} />
           <StatBox label="Security Score" value="98.4" icon={<Shield />} />
         </motion.div>
+
+        {/* About ReconShield Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="mt-32 max-w-5xl mx-auto text-left border-t border-white/5 pt-16 mb-16"
+        >
+          <div className="flex items-center gap-4 mb-8">
+            <h2 className="text-2xl font-display font-bold text-white tracking-widest uppercase">
+              About <span className="text-matrix-400">ReconShield</span>
+            </h2>
+            <div className="h-[1px] flex-1 bg-gradient-to-r from-white/10 to-transparent" />
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-gray-400 text-sm leading-relaxed font-mono">
+            <div>
+              <h3 className="text-white font-bold mb-3 uppercase tracking-wide flex items-center gap-2">
+                <Target className="w-4 h-4 text-matrix-400" /> What is ReconShield?
+              </h3>
+              <p className="mb-6">
+                ReconShield is a next-generation cybersecurity platform and OSINT (Open Source Intelligence) research hub engineered to provide unparalleled visibility into the digital attack surface. We empower security researchers, ethical hackers, and IT professionals with an arsenal of sophisticated tools designed to expose vulnerabilities before adversaries can exploit them.
+              </p>
+              
+              <h3 className="text-white font-bold mb-3 uppercase tracking-wide flex items-center gap-2">
+                <Shield className="w-4 h-4 text-matrix-400" /> Who is it for?
+              </h3>
+              <p>
+                Our platform is specifically built for cybersecurity researchers, SOC analysts, penetration testers, and ethical hackers who require high-fidelity intelligence and automated reconnaissance. Whether you are conducting proactive security auditing or mapping complex infrastructure networks, ReconShield provides the actionable data needed to stay ahead of evolving cyber threats.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-white font-bold mb-3 uppercase tracking-wide flex items-center gap-2">
+                <Zap className="w-4 h-4 text-matrix-400" /> What tools does it offer?
+              </h3>
+              <p className="mb-6">
+                ReconShield is equipped with a comprehensive suite of professional-grade security tools. Our advanced vulnerability scanner performs deep-packet inspection of SSL/TLS configurations, security headers, and domain infrastructure. The IP intelligence engine tracks network reputation and pinpoints malicious activities. Furthermore, our threat intelligence blog delivers cutting-edge insights and security alerts on the latest global cyber events.
+              </p>
+              
+              <h3 className="text-white font-bold mb-3 uppercase tracking-wide flex items-center gap-2">
+                <Activity className="w-4 h-4 text-matrix-400" /> Why it was built
+              </h3>
+              <p>
+                ReconShield was built to democratize access to advanced security tools. What sets us apart is our AI-powered analysis—we interpret complex technical scans into human-readable risk reports. We operate on a strict "Passive-Only" methodology, querying public records without sending packets directly to targets. Experience an intelligence hub built by researchers, for researchers.
+              </p>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

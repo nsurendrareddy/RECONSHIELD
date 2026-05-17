@@ -1,8 +1,8 @@
 import Link from 'next/link'
 
 export const metadata = {
-  title: "Terms of Service | ReconShield Intelligence",
-  description: "Terms and conditions for using the ReconShield platform for security research and reconnaissance.",
+  title: "Terms of Use | ReconShield Engagement & Services",
+  description: "Read the Terms of Use for ReconShield. Review the rules for authorized use, data accuracy, and ethical security research on our intelligence platform.",
   alternates: {
     canonical: 'https://reconshield.in/terms',
   },
