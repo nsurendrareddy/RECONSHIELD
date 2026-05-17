@@ -61,9 +61,14 @@ const ptComponents = {
       </code>
     ),
     link: ({ children, value }) => {
-      const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
+      const href = value?.href || '';
+      // Intercept and remove the unpublished BitUnlocker article link dynamically
+      if (href.includes('bitunlocker')) {
+        return null;
+      }
+      const rel = !href.startsWith('/') ? 'noreferrer noopener' : undefined
       return (
-        <a href={value.href} rel={rel} className="text-[#00ff88] underline decoration-[#00ff8833] hover:decoration-[#00ff88] transition-all">
+        <a href={href} rel={rel} className="text-[#00ff88] underline decoration-[#00ff8833] hover:decoration-[#00ff88] transition-all">
           {children}
         </a>
       )
@@ -72,6 +77,17 @@ const ptComponents = {
 }
 
 export default function BlogPostClient({ post, recentPosts, categories, relatedPosts }) {
+  // Filter out any block containing the unpublished/dead BitUnlocker link
+  const cleanBody = post.body?.filter(block => {
+    if (block.markDefs) {
+      const hasBitUnlockerLink = block.markDefs.some(
+        m => m._type === 'link' && m.href && m.href.includes('bitunlocker')
+      );
+      if (hasBitUnlockerLink) return false;
+    }
+    return true;
+  });
+
   const getInitials = (name) => {
     if (!name) return '??'
     const parts = name.split(' ')
@@ -154,7 +170,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
           {/* Article Body */}
           <div className="flex-1 min-w-0">
             <div className="prose prose-invert max-w-none">
-              <PortableText value={post.body} components={ptComponents} />
+              <PortableText value={cleanBody || []} components={ptComponents} />
             </div>
 
             {/* Article Tags */}

@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function CookieBanner() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
 
   useEffect(() => {
-    if (!localStorage.getItem('cookieConsent')) {
-      setShow(true);
+    if (localStorage.getItem('cookieConsent') === 'true') {
+      setShow(false);
     }
   }, []);
 
