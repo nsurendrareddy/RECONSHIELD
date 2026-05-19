@@ -1,5 +1,4 @@
 import Layout from "@/components/Layout";
-import CookieBanner from "@/components/CookieBanner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
@@ -66,19 +65,38 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
-        {/* Lazy load Google AdSense script after First Contentful Paint */}
+        {/* Google AdSense Script - Deferred via requestIdleCallback to keep Main Thread & FCP 100% free */}
         <Script
-          async
-          defer
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
-          crossOrigin="anonymous"
+          id="adsense-lazy"
           strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                function loadAdSense() {
+                  var script = document.createElement('script');
+                  script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736';
+                  script.async = true;
+                  script.defer = true;
+                  script.crossOrigin = 'anonymous';
+                  document.head.appendChild(script);
+                }
+                if (window.requestIdleCallback) {
+                  window.requestIdleCallback(function() {
+                    setTimeout(loadAdSense, 800);
+                  });
+                } else {
+                  window.addEventListener('load', function() {
+                    setTimeout(loadAdSense, 2000);
+                  });
+                }
+              })();
+            `
+          }}
         />
 
         <Layout>
           {children}
         </Layout>
-        <CookieBanner />
 
         <Analytics />
         <SpeedInsights />

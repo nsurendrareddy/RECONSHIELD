@@ -3,6 +3,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Globe, Menu, X, ExternalLink } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import dynamic from 'next/dynamic'
+
+const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
 
 export default function Layout({ children }) {
   const pathname = usePathname()
@@ -263,6 +266,7 @@ export default function Layout({ children }) {
           </div>
         </div>
       </footer>
+      <CookieBanner />
     </div>
   )
 }

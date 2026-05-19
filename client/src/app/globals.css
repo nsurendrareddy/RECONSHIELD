@@ -221,4 +221,21 @@ body {
 ::-webkit-scrollbar-thumb { background: rgba(0,255,156,0.15); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(0,255,156,0.3); }
 
+/* ===== Google AdSense Layout Shift Mitigation (CLS) ===== */
+.adsbygoogle, 
+ins.adsbygoogle {
+  display: block !important;
+  min-height: 250px;
+  background: transparent;
+  overflow: hidden;
+  transition: min-height 0.3s ease-in-out;
+}
+
+/* Ensure auto ad spaces reserve dimensions */
+.google-ad-container {
+  min-height: 250px;
+  min-width: 300px;
+}
+
+
 
