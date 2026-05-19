@@ -173,6 +173,11 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
               <PortableText value={cleanBody || []} components={ptComponents} />
             </div>
 
+            {/* Reader Revenue Manager Inline CTA */}
+            <div className="mt-12 flex justify-center">
+              <div rrm-inline-cta="edf53e34-4989-4bd4-b28e-d1c0e30b9fd4"></div>
+            </div>
+
             {/* Article Tags */}
             <div className="mt-12 pt-8 border-t border-[#1a2332] flex flex-wrap gap-2">
               {(post.tags || post.categories || []).map((tag, i) => (
