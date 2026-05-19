@@ -63,6 +63,23 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap"
         />
+
+        {/* Subscribe with Google */}
+        <script async type="application/javascript" src="https://news.google.com/swg/js/v1/swg-basic.js"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
+                basicSubscriptions.init({
+                  type: "NewsArticle",
+                  isPartOfType: ["Product"],
+                  isPartOfProductId: "CAow7aHgCw:openaccess",
+                  clientOptions: { theme: "light", lang: "en" },
+                });
+              });
+            `
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
         {/* Google AdSense Script - Deferred via requestIdleCallback & only executes if user grants cookie consent */}
