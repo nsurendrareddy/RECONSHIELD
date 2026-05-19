@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import CookieBanner from "@/components/CookieBanner";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata = {
@@ -51,13 +52,29 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark h-full antialiased">
       <head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
-          crossOrigin="anonymous"
+        {/* Preconnect and Preload Critical Fonts & Assets */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preload"
+          as="style"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap"
         />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
+        {/* Lazy load Google AdSense script after First Contentful Paint */}
+        <Script
+          async
+          defer
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
+
         <Layout>
           {children}
         </Layout>

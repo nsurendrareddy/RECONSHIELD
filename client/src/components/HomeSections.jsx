@@ -52,7 +52,7 @@ export default function HomeSections({ posts }) {
       {/* Section 2: How It Works */}
       <section>
         <div className="flex items-center gap-4 mb-12">
-          <h2 className="font-mono text-xs tracking-[4px] uppercase text-gray-500 font-bold">// HOW IT WORKS</h2>
+          <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#8a9bb0] font-bold">// HOW IT WORKS</h2>
           <div className="h-[1px] flex-1 bg-[#1a2332]" />
         </div>
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4">
@@ -75,7 +75,7 @@ export default function HomeSections({ posts }) {
       {posts && posts.length > 0 && (
         <section>
           <div className="flex items-center gap-4 mb-12">
-            <h2 className="font-mono text-xs tracking-[4px] uppercase text-gray-500 font-bold">// LATEST INTELLIGENCE</h2>
+            <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#8a9bb0] font-bold">// LATEST INTELLIGENCE</h2>
             <div className="h-[1px] flex-1 bg-[#1a2332]" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
