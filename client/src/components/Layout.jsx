@@ -233,6 +233,7 @@ export default function Layout({ children }) {
               <ul className="space-y-2 text-sm">
                 <li><Link href="/terms" className="hover:text-matrix-400 transition-colors">Terms of Use</Link></li>
                 <li><Link href="/privacy" className="hover:text-matrix-400 transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/disclaimer" className="hover:text-[#00ff88] transition-colors text-amber-500/80 hover:text-amber-500">Legal Disclaimer</Link></li>
                 <li><Link href="/contact" className="hover:text-matrix-400 transition-colors">Contact Support</Link></li>
               </ul>
             </div>

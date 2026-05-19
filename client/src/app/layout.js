@@ -65,14 +65,17 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
-        {/* Google AdSense Script - Deferred via requestIdleCallback to keep Main Thread & FCP 100% free */}
+        {/* Google AdSense Script - Deferred via requestIdleCallback & only executes if user grants cookie consent */}
         <Script
           id="adsense-lazy"
           strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
+                var adsLoaded = false;
                 function loadAdSense() {
+                  if (adsLoaded) return;
+                  adsLoaded = true;
                   var script = document.createElement('script');
                   script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736';
                   script.async = true;
@@ -80,14 +83,21 @@ export default function RootLayout({ children }) {
                   script.crossOrigin = 'anonymous';
                   document.head.appendChild(script);
                 }
-                if (window.requestIdleCallback) {
-                  window.requestIdleCallback(function() {
-                    setTimeout(loadAdSense, 800);
-                  });
-                } else {
-                  window.addEventListener('load', function() {
-                    setTimeout(loadAdSense, 2000);
-                  });
+                
+                // Expose globally so CookieBanner can trigger AdSense instantly on Accept
+                window.__triggerAdSense = loadAdSense;
+
+                // Load automatically if consent was already given in a previous session
+                if (typeof localStorage !== 'undefined' && localStorage.getItem('cookieConsent') === 'true') {
+                  if (window.requestIdleCallback) {
+                    window.requestIdleCallback(function() {
+                      setTimeout(loadAdSense, 800);
+                    });
+                  } else {
+                    window.addEventListener('load', function() {
+                      setTimeout(loadAdSense, 2000);
+                    });
+                  }
                 }
               })();
             `

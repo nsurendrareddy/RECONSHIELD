@@ -94,6 +94,19 @@ export function ToolPageContent({ toolId }) {
         <p>{config.desc}</p>
       </div>
 
+      {/* Prominent Legal Disclaimer Badge */}
+      <div className="max-w-5xl mx-auto px-4 pt-8">
+        <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 flex flex-col sm:flex-row items-center gap-3 text-[10px] sm:text-xs font-mono text-amber-500 mb-8 shadow-sm">
+          <div className="flex items-center gap-1.5 shrink-0 uppercase font-bold tracking-wider">
+            <span className="text-[14px]">⚠️</span> LEGAL DISCLAIMER:
+          </div>
+          <p className="flex-1 leading-relaxed font-sans text-gray-400">
+            ReconShield is intended for authorized security research and educational purposes only. Unauthorized scanning is illegal.
+            <a href="/disclaimer" className="text-amber-500 underline ml-1.5 hover:text-amber-400 font-mono text-[10px]">View Policy</a>
+          </p>
+        </div>
+      </div>
+
       <ToolScannerClient 
         toolId={toolId} 
         title={config.title} 
