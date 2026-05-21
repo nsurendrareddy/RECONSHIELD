@@ -24,6 +24,20 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/threat-intelligence',
+        destination: '/ip-scanner',
+        permanent: true,
+      },
+      {
+        source: '/tools/threat-intelligence',
+        destination: '/ip-scanner',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

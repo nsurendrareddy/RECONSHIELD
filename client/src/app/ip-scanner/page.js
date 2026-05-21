@@ -26,11 +26,19 @@ export default function Page() {
           Visible to Google even before JavaScript executes.
       */}
       <div className="sr-only">
-        <h1>Advanced IP Intelligence Scanner</h1>
+        <h1>Advanced IP Intelligence & Threat Reputation Scanner</h1>
         <p>
           ReconShield's IP Intelligence Scanner provides comprehensive deep-packet inspection and passive footprinting 
-          for any IP address or domain. Analyze infrastructure, security headers, and threat reputation in real-time.
+          for any IP address or domain. Analyze infrastructure, security headers, and threat reputation in real-time using our AI-driven reconnaissance engine.
         </p>
+        <h2>Features of our IP Scanner</h2>
+        <ul>
+          <li>Real-time ASN and ISP lookups</li>
+          <li>Geolocation mapping and timezone analysis</li>
+          <li>Global threat reputation scoring against 50+ blocklists</li>
+          <li>Proxy, VPN, and Tor exit node detection</li>
+          <li>Reverse DNS footprinting</li>
+        </ul>
       </div>
 
       {/* Prominent Legal Disclaimer Badge */}
@@ -48,31 +56,72 @@ export default function Page() {
 
       <IpScannerClient />
       
-      {/* Additional SEO content for better indexing */}
-      <div className="max-w-4xl mx-auto px-4 pb-20 prose prose-invert">
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider border-t border-white/5 pt-12">
-          About IP Intelligence Reconnaissance
-        </h2>
-        <p className="text-gray-400 leading-relaxed mb-6 font-mono text-sm">
-          IP intelligence is the process of gathering actionable data about an IP address to understand its origin, 
-          reputation, and associated risks. Our tool combines geolocation data, ASN intelligence, and threat 
-          reputation databases to provide a 360-degree view of any network endpoint.
-        </p>
+      {/* Comprehensive SEO content for better indexing & preventing canonical duplicate issues */}
+      <div className="max-w-4xl mx-auto px-4 pb-20 prose prose-invert prose-p:text-gray-400 prose-a:text-[#00ff88]">
+        <div className="mt-16 border-t border-white/5 pt-12">
+          <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">
+            About IP Intelligence Reconnaissance
+          </h2>
+          <p className="font-mono text-sm leading-relaxed mb-6">
+            IP intelligence is the critical first step in any modern security investigation. By gathering actionable data about an IP address, security researchers can understand a target's origin, hosting provider reputation, and associated cyber risks. Our free, advanced IP scanner combines exact geolocation data, Autonomous System Number (ASN) intelligence, and cross-referenced threat reputation databases to provide a 360-degree view of any network endpoint on the internet.
+          </p>
+          <p className="font-mono text-sm leading-relaxed mb-8">
+            Whether you are analyzing suspicious traffic in your server logs, verifying the authenticity of an email sender, or mapping out a bug bounty target, ReconShield's passive footprinting ensures you get maximum visibility without alerting the target infrastructure.
+          </p>
+        </div>
 
-        {/* What You Get Section */}
+        {/* Intelligence Breakdown */}
         <div className="mt-12">
-          <h2 className="font-mono text-[10px] tracking-[3px] uppercase text-[#94a3b8] mb-4">// INTELLIGENCE COLLECTED</h2>
-          <div className="flex flex-wrap gap-2">
-            {[
-              'ISP / Hosting Provider', 'ASN Number', 'Country & City', 
-              'Abuse Confidence Score', 'Blocklist Presence', 'Reverse DNS', 
-              'Proxy / VPN Detection', 'Threat Tags'
-            ].map((p, i) => (
-              <div key={i} className="px-3 py-1.5 bg-[#0d1117] border border-[#1a2332] rounded-full flex items-center gap-2">
-                <span className="text-[#00ff8866] text-[10px]">▸</span>
-                <span className="font-mono text-[11px] text-[#64748b]">{p}</span>
-              </div>
-            ))}
+          <h2 className="font-mono text-[12px] tracking-[3px] uppercase text-[#94a3b8] mb-6">// DATA POINTS WE COLLECT</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="p-5 bg-[#0d1117] border border-[#1a2332] rounded-xl">
+              <h3 className="text-[#00ff88] font-mono text-sm uppercase mb-2">Infrastructure Data</h3>
+              <ul className="text-sm text-gray-400 space-y-2 font-mono list-disc pl-4">
+                <li>ISP & Hosting Provider detection</li>
+                <li>ASN (Autonomous System Number)</li>
+                <li>Reverse DNS (PTR records)</li>
+                <li>Datacenter & Cloud hosting flags</li>
+              </ul>
+            </div>
+            <div className="p-5 bg-[#0d1117] border border-[#1a2332] rounded-xl">
+              <h3 className="text-[#00ff88] font-mono text-sm uppercase mb-2">Threat Reputation</h3>
+              <ul className="text-sm text-gray-400 space-y-2 font-mono list-disc pl-4">
+                <li>Abuse Confidence Scores</li>
+                <li>Global Blocklist Presence (Spamhaus, AbuseIPDB, etc.)</li>
+                <li>Proxy, VPN, & Tor Node detection</li>
+                <li>Malware & Botnet tag association</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ Section for better organic indexing and featured snippets */}
+        <div className="mt-16 border-t border-white/5 pt-12">
+          <h2 className="text-xl font-display font-bold text-white mb-8 uppercase tracking-wider">
+            Frequently Asked Questions
+          </h2>
+          
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-bold text-gray-200 mb-2">Is this IP Scanner completely passive?</h3>
+              <p className="text-sm font-sans">
+                Yes. ReconShield operates strictly through passive reconnaissance. We query our own threat intelligence aggregators, public registries, and DNS records. No direct packets or active payloads are ever sent to the target IP address, ensuring your research remains 100% stealthy and compliant with ethical boundaries.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-bold text-gray-200 mb-2">How accurate is the IP Geolocation data?</h3>
+              <p className="text-sm font-sans">
+                Our geolocation engine aggregates data from multiple top-tier providers (such as MaxMind and IP2Location) to ensure city-level accuracy for most public IP addresses. However, keep in mind that VPNs, Proxies, and Anycast routing can spoof or alter the physical location data.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-gray-200 mb-2">What does an "Abuse Confidence Score" mean?</h3>
+              <p className="text-sm font-sans">
+                The Abuse Confidence Score is an aggregated metric out of 100 that indicates how likely an IP address is engaging in malicious activity. A score above 50 typically indicates recent reports of spamming, brute-force attempts, or malware distribution originating from that host.
+              </p>
+            </div>
           </div>
         </div>
       </div>

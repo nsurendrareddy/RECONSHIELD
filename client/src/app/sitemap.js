@@ -58,12 +58,6 @@ export default async function sitemap() {
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/threat-intelligence`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
       url: `${BASE_URL}/vulnerability-scanner`,
       lastModified: new Date(),
       changeFrequency: 'weekly',

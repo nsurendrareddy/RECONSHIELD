@@ -51,18 +51,6 @@ export const TOOL_CONFIG = {
         </p>
       </div>
     )
-  },
-  'threat-intelligence': {
-    title: 'Threat Intel & Reputation',
-    desc: 'IP reputation, blacklist status, and ASN intelligence.',
-    seoContent: (
-      <div className="mt-16 prose prose-invert max-w-none border-t border-white/5 pt-12">
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Global Threat Intelligence</h2>
-        <p className="text-gray-400 leading-relaxed mb-6 font-mono text-sm">
-          Knowing who you are interacting with is vital for proactive defense.
-        </p>
-      </div>
-    )
   }
 };
 
