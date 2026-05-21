@@ -18,11 +18,9 @@ export const metadata = {
   authors: [{ name: "ReconShield Team" }],
   icons: {
     icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon.png", type: "image/png" },
       { url: "/favicon.svg", type: "image/svg+xml" },
     ],
-    shortcut: "/favicon.ico",
+    shortcut: "/favicon.svg",
     apple: "/apple-icon.png",
   },
   manifest: "/manifest.json",
