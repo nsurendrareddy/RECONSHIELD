@@ -4,15 +4,15 @@ const IpScannerClient = dynamic(() => import('@/components/ip-scanner/IpScannerC
 });
 
 export const metadata = {
-  title: "Advanced IP Intelligence & Reputation Scanner",
-  description: "Perform deep-packet inspection and passive footprinting on any IP address. Analyze ISP data, ASN reputation, geolocation, and security threats in real-time.",
+  title: "Free IP Address Lookup & Reputation Checker — ReconShield",
+  description: "Check any IP address for geolocation, ISP, abuse score, VPN/proxy detection, and blocklist presence. Free IP reputation checker — no login needed.",
   keywords: ["ip scanner", "ip intelligence", "threat reputation", "asn lookup", "ip geolocation", "network reconnaissance"],
   alternates: {
     canonical: 'https://reconshield.in/ip-scanner',
   },
   openGraph: {
-    title: "Advanced IP Intelligence & Reputation Scanner",
-    description: "Perform deep-packet inspection and passive footprinting on any IP address. Analyze ISP data, ASN reputation, geolocation, and security threats in real-time.",
+    title: "Free IP Address Lookup & Reputation Checker — ReconShield",
+    description: "Check any IP address for geolocation, ISP, abuse score, VPN/proxy detection, and blocklist presence. Free IP reputation checker — no login needed.",
     url: 'https://reconshield.in/ip-scanner',
     type: 'website',
   }
@@ -26,10 +26,9 @@ export default function Page() {
           Visible to Google even before JavaScript executes.
       */}
       <div className="sr-only">
-        <h1>Advanced IP Intelligence & Threat Reputation Scanner</h1>
+        <h1>Free IP Address Lookup — Check Reputation, Geolocation & Threats</h1>
         <p>
-          ReconShield's IP Intelligence Scanner provides comprehensive deep-packet inspection and passive footprinting 
-          for any IP address or domain. Analyze infrastructure, security headers, and threat reputation in real-time using our AI-driven reconnaissance engine.
+          ReconShield's free IP checker lets you instantly look up any IP address or domain. Get real-time data on ISP, country, city, abuse confidence score, VPN/proxy detection, Tor exit node status, and presence on 50+ global threat blocklists.
         </p>
         <h2>Features of our IP Scanner</h2>
         <ul>
@@ -55,6 +54,12 @@ export default function Page() {
       </div>
 
       <IpScannerClient />
+      
+      <div className="text-center mt-4 mb-8">
+        <a href="/" className="text-[#00ff88] hover:underline text-sm font-medium">
+          Also scan full websites for vulnerabilities →
+        </a>
+      </div>
       
       {/* Comprehensive SEO content for better indexing & preventing canonical duplicate issues */}
       <div className="max-w-4xl mx-auto px-4 pb-20 prose prose-invert prose-p:text-gray-400 prose-a:text-[#00ff88]">
@@ -120,6 +125,20 @@ export default function Page() {
               <h3 className="text-lg font-bold text-gray-200 mb-2">What does an "Abuse Confidence Score" mean?</h3>
               <p className="text-sm font-sans">
                 The Abuse Confidence Score is an aggregated metric out of 100 that indicates how likely an IP address is engaging in malicious activity. A score above 50 typically indicates recent reports of spamming, brute-force attempts, or malware distribution originating from that host.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-gray-200 mb-2">Can I check if an IP is on a blacklist?</h3>
+              <p className="text-sm font-sans">
+                Yes. ReconShield checks your IP against 50+ global blocklists including Spamhaus, AbuseIPDB, and others in real-time.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-bold text-gray-200 mb-2">Can I check if an IP is a VPN or proxy?</h3>
+              <p className="text-sm font-sans">
+                Yes. Our scanner detects VPN providers, proxy servers, and Tor exit nodes automatically.
               </p>
             </div>
           </div>

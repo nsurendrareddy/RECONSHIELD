@@ -5,7 +5,7 @@ import { Shield, Target, Activity, Cpu } from 'lucide-react';
 
 export const metadata = {
   title: "Free Website Vulnerability Scanner — ReconShield",
-  description: "Scan any website for vulnerabilities, DNS misconfigs, open ports, and SSL issues — free passive scanner powered by AI. No login required.",
+  description: "Scan any website for open ports, DNS issues, SSL problems, and security headers — free, passive, no login required. Instant AI-powered results.",
   keywords: [
     "cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield",
     "free website scanner", "vulnerability scanner online", "DNS checker", "SSL checker", "IP reputation checker", "website security scan"
@@ -16,7 +16,7 @@ export const metadata = {
   openGraph: {
     title: "Free Website Vulnerability Scanner — ReconShield",
     siteName: "ReconShield",
-    description: "Scan any website for vulnerabilities, DNS misconfigs, open ports, and SSL issues — free passive scanner powered by AI. No login required.",
+    description: "Scan any website for open ports, DNS issues, SSL problems, and security headers — free, passive, no login required. Instant AI-powered results.",
     url: 'https://reconshield.in',
     type: 'website',
   }
@@ -47,7 +47,7 @@ export default async function Page() {
         }}
       />
       <div className="sr-only">
-        <h1>Scan Any Website for Vulnerabilities, DNS Issues & SSL Risks — Free</h1>
+        <h1>Free Website Security Scanner — Scan for Vulnerabilities Instantly</h1>
         <p>
           Advanced reconnaissance and threat intelligence at your fingertips. 
           Scan websites, analyze IP threats, detect vulnerabilities, and monitor cyber risks in real time.
@@ -63,61 +63,49 @@ export default async function Page() {
 
       <DynamicDashboardClient />
 
-      <section className="max-w-[1200px] mx-auto px-6 py-12 animate-fade-in">
-        <div className="flex items-center gap-4 mb-12">
-          <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold">// WHAT DOES RECONSHIELD SCAN?</h2>
-          <div className="h-[1px] flex-1 bg-[#1a2332]" />
-        </div>
+      <div className="text-center mt-4 mb-8">
+        <a href="/ip-scanner" className="text-[#00ff88] hover:underline text-sm font-medium">
+          Also check our Free IP Reputation Scanner →
+        </a>
+      </div>
 
-        <div className="mb-12">
-          <p className="text-[14px] text-[#94a3b8] leading-[1.8] font-sans font-light max-w-4xl">
-            ReconShield provides a comprehensive, non-intrusive analysis of your digital infrastructure. Our platform meticulously checks open ports for potential entry points, analyzes DNS records for misconfigurations, and validates SSL/TLS certificates to ensure your encryption meets modern standards. Furthermore, we inspect HTTP security headers to protect against common web vulnerabilities, evaluate IP reputation against global threat intelligence databases, and verify mail server configurations to prevent spoofing and spam. All of these checks are performed entirely passively—meaning no active payloads, intrusive requests, or hostile traffic are ever sent to the target system. This ensures a safe, compliant, and detailed evaluation of your attack surface without risking disruption.
-          </p>
-        </div>
+      <section className="max-w-[800px] mx-auto px-6 py-12 animate-fade-in text-[#94a3b8]">
+        <h2 className="text-2xl font-bold text-white mb-6">What Does ReconShield Scan?</h2>
+        <p className="mb-4">Enter any domain and get instant results on:</p>
+        <ul className="list-disc pl-6 mb-6 space-y-2">
+          <li>Open Ports & Services</li>
+          <li>DNS Record Health (A, MX, TXT, NS)</li>
+          <li>SSL/TLS Certificate Validity</li>
+          <li>HTTP Security Headers (CSP, HSTS, X-Frame)</li>
+          <li>IP Reputation & Blocklist Presence</li>
+          <li>Mail Server (SPF, DKIM, DMARC) Configuration</li>
+        </ul>
+        <p className="mb-12">
+          All scans are 100% passive. No active payloads sent.<br/>
+          No login required. Free forever.
+        </p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          <div className="p-8 rounded-[6px] bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8822] transition-all shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
-            <h3 className="font-display text-base font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-3">
-              <Shield className="w-5 h-5 text-[#00ff88]" />
-              How It Works
-            </h3>
-            <div className="space-y-6">
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00ff88]/10 flex items-center justify-center border border-[#00ff88]/20 text-[#00ff88] font-mono text-sm">1</div>
-                <div>
-                  <h4 className="text-white text-sm font-bold mb-1">Enter Target</h4>
-                  <p className="text-xs text-[#94a3b8]">Enter any domain or IP address into the scanning tool.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00ff88]/10 flex items-center justify-center border border-[#00ff88]/20 text-[#00ff88] font-mono text-sm">2</div>
-                <div>
-                  <h4 className="text-white text-sm font-bold mb-1">Passive Analysis</h4>
-                  <p className="text-xs text-[#94a3b8]">ReconShield queries public registries, blocklists, and global DNS infrastructure.</p>
-                </div>
-              </div>
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#00ff88]/10 flex items-center justify-center border border-[#00ff88]/20 text-[#00ff88] font-mono text-sm">3</div>
-                <div>
-                  <h4 className="text-white text-sm font-bold mb-1">Actionable Results</h4>
-                  <p className="text-xs text-[#94a3b8]">Get an AI-powered risk score with actionable fix recommendations.</p>
-                </div>
-              </div>
-            </div>
+        <h2 className="text-2xl font-bold text-white mb-6">Frequently Asked Questions</h2>
+        
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-white font-semibold mb-2">Q: Is this website scanner free?</h3>
+            <p>A: Yes, ReconShield is completely free with no registration required.</p>
           </div>
-
-          <div className="p-8 rounded-[6px] bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8822] transition-all shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
-            <h3 className="font-display text-base font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-3">
-              <Activity className="w-5 h-5 text-[#00ff88]" />
-              What Your Results Mean
-            </h3>
-            <div className="space-y-4 text-xs text-[#94a3b8]">
-              <p><strong className="text-white font-medium">Risk Score:</strong> An AI-calculated overall metric indicating your security posture based on discovered vulnerabilities.</p>
-              <p><strong className="text-white font-medium">Open Ports:</strong> Highlights unnecessarily exposed network services that attackers could exploit.</p>
-              <p><strong className="text-white font-medium">DNS Health:</strong> Identifies misconfigurations in your domain records, preventing hijacking and email spoofing.</p>
-              <p><strong className="text-white font-medium">SSL Status:</strong> Verifies certificate validity, cipher strength, and encryption integrity.</p>
-              <p><strong className="text-white font-medium">Header Grade:</strong> Evaluates HTTP security headers protecting against XSS, clickjacking, and other web threats.</p>
-            </div>
+          
+          <div>
+            <h3 className="text-white font-semibold mb-2">Q: Will scanning alert the target website?</h3>
+            <p>A: No. All scans are passive. We only query public registries and DNS databases — no direct traffic is sent to the target.</p>
+          </div>
+          
+          <div>
+            <h3 className="text-white font-semibold mb-2">Q: What can I scan with ReconShield?</h3>
+            <p>A: Any public domain or IP address. You can check SSL certificates, DNS records, open ports, security headers, and IP reputation.</p>
+          </div>
+          
+          <div>
+            <h3 className="text-white font-semibold mb-2">Q: Is this legal to use?</h3>
+            <p>A: Yes, for authorized security research and educational purposes. Scanning assets you own or have permission to test is legal.</p>
           </div>
         </div>
       </section>
