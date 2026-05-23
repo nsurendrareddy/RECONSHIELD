@@ -32,17 +32,80 @@ export default async function Page() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "name": "ReconShield Vulnerability Scanner",
-            "url": "https://reconshield.in",
-            "description": "Free passive website vulnerability scanner. Check DNS, SSL, open ports, IP reputation and security headers.",
-            "applicationCategory": "SecurityApplication",
-            "operatingSystem": "Web",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "USD"
-            }
+            "@graph": [
+              {
+                "@type": "WebApplication",
+                "@id": "https://reconshield.in/#software",
+                "name": "ReconShield Vulnerability Scanner",
+                "url": "https://reconshield.in",
+                "description": "Free passive website vulnerability scanner. Check DNS, SSL, open ports, IP reputation and security headers.",
+                "applicationCategory": "SecurityApplication",
+                "operatingSystem": "Web",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "USD"
+                }
+              },
+              {
+                "@type": "Organization",
+                "@id": "https://reconshield.in/#organization",
+                "name": "ReconShield",
+                "url": "https://reconshield.in",
+                "logo": "https://reconshield.in/logo.png",
+                "sameAs": []
+              },
+              {
+                "@type": "BreadcrumbList",
+                "@id": "https://reconshield.in/#breadcrumb",
+                "itemListElement": [
+                  {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "Home",
+                    "item": "https://reconshield.in"
+                  }
+                ]
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://reconshield.in/#faq",
+                "mainEntity": [
+                  {
+                    "@type": "Question",
+                    "name": "Is this website scanner free?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes, ReconShield is a completely free website vulnerability scanner with no registration or login required."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Will scanning alert the target website?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "No. All scans are passive. We only query public registries, DNS databases, and perform passive endpoint discovery — no direct active payloads are sent to the target."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What can I scan with ReconShield?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Any public domain or IP address. You can check SSL/TLS certificates, DNS records, open ports, security headers, and overall IP reputation."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Is this legal to use?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes, for authorized security research and educational purposes. ReconShield operates via passive infrastructure analysis, making it safe for continuous monitoring."
+                    }
+                  }
+                ]
+              }
+            ]
           })
         }}
       />
@@ -69,43 +132,75 @@ export default async function Page() {
         </a>
       </div>
 
-      <section className="max-w-[800px] mx-auto px-6 py-12 animate-fade-in text-[#94a3b8]">
-        <h2 className="text-2xl font-bold text-white mb-6">What Does ReconShield Scan?</h2>
-        <p className="mb-4">Enter any domain and get instant results on:</p>
-        <ul className="list-disc pl-6 mb-6 space-y-2">
-          <li>Open Ports & Services</li>
-          <li>DNS Record Health (A, MX, TXT, NS)</li>
-          <li>SSL/TLS Certificate Validity</li>
-          <li>HTTP Security Headers (CSP, HSTS, X-Frame)</li>
-          <li>IP Reputation & Blocklist Presence</li>
-          <li>Mail Server (SPF, DKIM, DMARC) Configuration</li>
-        </ul>
-        <p className="mb-12">
-          All scans are 100% passive. No active payloads sent.<br/>
-          No login required. Free forever.
+      <section className="max-w-[1000px] mx-auto px-6 py-16 animate-fade-in text-[#94a3b8] prose prose-invert max-w-none prose-p:leading-relaxed prose-h2:text-white prose-h2:font-bold prose-h2:text-2xl prose-h3:text-white prose-h3:font-semibold prose-h3:text-xl">
+        <h2 className="mb-6 border-b border-[#1a2332] pb-4">Comprehensive Website Security Scanner</h2>
+        
+        <p className="mb-6">
+          In today's evolving threat landscape, understanding your <strong>attack surface</strong> is critical. ReconShield is a state-of-the-art, free website vulnerability scanner designed to help developers, system administrators, and security researchers conduct deep <strong>infrastructure analysis</strong>. Our AI-powered cybersecurity scanner performs rigorous <strong>passive scanning</strong> to identify security weaknesses without alerting the target.
         </p>
 
-        <h2 className="text-2xl font-bold text-white mb-6">Frequently Asked Questions</h2>
-        
+        <h3 className="mt-12 mb-4">What Is Website Vulnerability Scanning?</h3>
+        <p className="mb-6">
+          A website vulnerability scanner is an automated diagnostic tool that reviews web applications, networks, and IT infrastructure to identify potential security loopholes. It acts as an early warning system. By simulating the <strong>reconnaissance</strong> phase of a cyber attack, it helps organizations spot misconfigurations, unpatched software, and <strong>exposed services</strong> before malicious actors can exploit them. Learn how to scan a website for vulnerabilities safely with our automated tools.
+        </p>
+
+        <h3 className="mt-12 mb-4">How Our AI Cybersecurity Scanner Works</h3>
+        <p className="mb-6">
+          ReconShield utilizes a non-intrusive approach known as passive scanning. Instead of sending malicious payloads, our system relies on public records, DNS registries, and open-source intelligence (OSINT). This allows for deep <strong>endpoint discovery</strong> and <strong>subdomain enumeration</strong> entirely safely. Our SSL and DNS security scanner aggregates data on:
+        </p>
+        <ul className="list-disc pl-6 mb-8 space-y-2">
+          <li><strong>Open Port Detection:</strong> Checks for unnecessarily exposed network services that attackers could use as entry points.</li>
+          <li><strong>DNS Misconfiguration Detection:</strong> Analyzes A, MX, TXT, and NS records to prevent email spoofing and domain hijacking.</li>
+          <li><strong>SSL/TLS Security Checks:</strong> Evaluates your <strong>TLS configuration</strong>, certificate validity, and cipher strength to ensure encrypted communications.</li>
+          <li><strong>Security Header Analysis:</strong> Audits <strong>HTTP header analysis</strong> (like CSP, HSTS, X-Frame-Options) to protect against XSS and clickjacking.</li>
+        </ul>
+
+        <div className="bg-[#0d1117] border border-[#1a2332] p-6 rounded-lg my-12 shadow-lg">
+          <h3 className="text-white mb-4 mt-0">Example Scan Results: What ReconShield Detects</h3>
+          <p className="mb-4 text-sm">When you run a scan, our engine provides a structured risk report:</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+            <div className="bg-[#0a0d14] p-4 rounded border border-[#1a2332]">
+              <span className="text-[#00ff88] font-mono mb-2 block">✓ Secure Configuration</span>
+              Strict-Transport-Security (HSTS) is enforced.<br/>
+              TLS 1.3 is enabled with strong ciphers.
+            </div>
+            <div className="bg-[#1a0f14] p-4 rounded border border-red-900/30">
+              <span className="text-red-400 font-mono mb-2 block">⚠️ Critical Vulnerability</span>
+              Port 3306 (MySQL) is publicly exposed.<br/>
+              DMARC records are missing.
+            </div>
+          </div>
+        </div>
+
+        <h3 className="mt-12 mb-4">Why Continuous Attack Surface Monitoring Matters</h3>
+        <p className="mb-6">
+          The internet is dynamic; infrastructure changes daily. A one-time check is insufficient. Continuous monitoring ensures that newly deployed endpoints, sudden DNS alterations, or expiring SSL certificates are caught immediately. ReconShield serves as your reliable <strong>IP intelligence tool</strong> and vulnerability dashboard.
+        </p>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 my-12 text-center text-xs font-mono">
+          <div className="p-4 border border-[#1a2332] rounded bg-[#0d1117]"><Shield className="w-6 h-6 mx-auto mb-2 text-[#00ff88]" />Passive Scanning Only</div>
+          <div className="p-4 border border-[#1a2332] rounded bg-[#0d1117]"><Target className="w-6 h-6 mx-auto mb-2 text-[#00ff88]" />Privacy-Focused</div>
+          <div className="p-4 border border-[#1a2332] rounded bg-[#0d1117]"><Activity className="w-6 h-6 mx-auto mb-2 text-[#00ff88]" />Responsible Disclosure</div>
+          <div className="p-4 border border-[#1a2332] rounded bg-[#0d1117]"><Cpu className="w-6 h-6 mx-auto mb-2 text-[#00ff88]" />Researcher-Friendly</div>
+        </div>
+
+        <h2 className="mt-16 mb-6 border-b border-[#1a2332] pb-4">Frequently Asked Questions</h2>
         <div className="space-y-6">
           <div>
-            <h3 className="text-white font-semibold mb-2">Q: Is this website scanner free?</h3>
-            <p>A: Yes, ReconShield is completely free with no registration required.</p>
+            <h3 className="text-white font-semibold mb-2 text-lg">Q: Is this website scanner free?</h3>
+            <p>A: Yes, ReconShield is completely free with no registration required. We believe in democratizing access to professional security diagnostics.</p>
           </div>
-          
           <div>
-            <h3 className="text-white font-semibold mb-2">Q: Will scanning alert the target website?</h3>
-            <p>A: No. All scans are passive. We only query public registries and DNS databases — no direct traffic is sent to the target.</p>
+            <h3 className="text-white font-semibold mb-2 text-lg">Q: Will scanning alert the target website?</h3>
+            <p>A: No. All scans are passive. We only query public registries and DNS databases — no direct traffic is sent to the target, ensuring invisible <strong>reconnaissance</strong>.</p>
           </div>
-          
           <div>
-            <h3 className="text-white font-semibold mb-2">Q: What can I scan with ReconShield?</h3>
+            <h3 className="text-white font-semibold mb-2 text-lg">Q: What can I scan with ReconShield?</h3>
             <p>A: Any public domain or IP address. You can check SSL certificates, DNS records, open ports, security headers, and IP reputation.</p>
           </div>
-          
           <div>
-            <h3 className="text-white font-semibold mb-2">Q: Is this legal to use?</h3>
-            <p>A: Yes, for authorized security research and educational purposes. Scanning assets you own or have permission to test is legal.</p>
+            <h3 className="text-white font-semibold mb-2 text-lg">Q: Is this legal to use?</h3>
+            <p>A: Yes, for authorized security research and educational purposes. Scanning assets you own or have permission to test is completely legal.</p>
           </div>
         </div>
       </section>
