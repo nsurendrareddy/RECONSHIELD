@@ -4,19 +4,20 @@ import { client, homepageBlogQuery } from '@/utils/sanity';
 import { Shield, Target, Activity, Cpu } from 'lucide-react';
 
 export const metadata = {
-  title: "Free Website Vulnerability Scanner — ReconShield",
-  description: "Scan any website for open ports, DNS issues, SSL problems, and security headers — free, passive, no login required. Instant AI-powered results.",
+  title: "Free Website Vulnerability Scanner & AI Security Analysis | ReconShield",
+  description: "Scan websites for vulnerabilities, SSL issues, DNS misconfigurations, open ports, security headers, and infrastructure exposure using ReconShield’s AI-powered cybersecurity scanner.",
   keywords: [
     "cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield",
-    "free website scanner", "vulnerability scanner online", "DNS checker", "SSL checker", "IP reputation checker", "website security scan"
+    "free website scanner", "vulnerability scanner online", "DNS checker", "SSL checker", "IP reputation checker", "website security scan",
+    "attack surface", "infrastructure analysis", "passive scanning", "endpoint discovery", "TLS configuration", "exposed services"
   ],
   alternates: {
     canonical: 'https://reconshield.in',
   },
   openGraph: {
-    title: "Free Website Vulnerability Scanner — ReconShield",
+    title: "Free Website Vulnerability Scanner & AI Security Analysis | ReconShield",
     siteName: "ReconShield",
-    description: "Scan any website for open ports, DNS issues, SSL problems, and security headers — free, passive, no login required. Instant AI-powered results.",
+    description: "Scan websites for vulnerabilities, SSL issues, DNS misconfigurations, open ports, security headers, and infrastructure exposure using ReconShield’s AI-powered cybersecurity scanner.",
     url: 'https://reconshield.in',
     type: 'website',
   }
@@ -73,34 +74,82 @@ export default async function Page() {
                 "mainEntity": [
                   {
                     "@type": "Question",
-                    "name": "Is this website scanner free?",
+                    "name": "Is website vulnerability scanning legal?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "Yes, ReconShield is a completely free website vulnerability scanner with no registration or login required."
+                      "text": "Yes, passive website vulnerability scanning is legal. ReconShield uses only passive reconnaissance techniques, collecting publicly available OSINT data without sending active payloads to the target infrastructure."
                     }
                   },
                   {
                     "@type": "Question",
-                    "name": "Will scanning alert the target website?",
+                    "name": "What vulnerabilities can ReconShield detect?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "No. All scans are passive. We only query public registries, DNS databases, and perform passive endpoint discovery — no direct active payloads are sent to the target."
+                      "text": "ReconShield detects exposed open ports, SSL/TLS misconfigurations, missing security headers (like HSTS and CSP), DNS vulnerabilities (missing DMARC/SPF), and poor IP reputation."
                     }
                   },
                   {
                     "@type": "Question",
-                    "name": "What can I scan with ReconShield?",
+                    "name": "What is passive reconnaissance?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "Any public domain or IP address. You can check SSL/TLS certificates, DNS records, open ports, security headers, and overall IP reputation."
+                      "text": "Passive reconnaissance involves gathering information about a target system from public databases, DNS records, and third-party scanners without directly interacting with the target's servers."
                     }
                   },
                   {
                     "@type": "Question",
-                    "name": "Is this legal to use?",
+                    "name": "How often should websites be scanned?",
                     "acceptedAnswer": {
                       "@type": "Answer",
-                      "text": "Yes, for authorized security research and educational purposes. ReconShield operates via passive infrastructure analysis, making it safe for continuous monitoring."
+                      "text": "Websites should be scanned continuously. The digital attack surface changes daily as new ports are opened, certificates expire, or DNS records are modified. Regular monitoring is essential."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What are HTTP security headers?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "HTTP security headers are directives passed between the server and the browser to mitigate vulnerabilities like Cross-Site Scripting (XSS), Clickjacking, and packet sniffing."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "How does SSL scanning work?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Our SSL scanning analyzes the target's TLS configuration to ensure certificates are valid, not expired, and support strong cryptographic ciphers (e.g., TLS 1.2/1.3) while rejecting deprecated protocols."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What is DNS enumeration?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "DNS enumeration is the process of locating all DNS records (A, MX, TXT, NS) for a domain to map out the infrastructure and identify security weaknesses like lack of email spoofing protection."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Can open ports expose websites to attacks?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes. Unnecessarily open ports (like database ports 3306 or unencrypted FTP 21) provide direct entry points for attackers to exploit vulnerable services."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "What is attack surface monitoring?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Attack surface monitoring is the continuous discovery, analysis, and management of an organization's digital footprint to identify and remediate exposed IT assets."
+                    }
+                  },
+                  {
+                    "@type": "Question",
+                    "name": "Is ReconShield free to use?",
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": "Yes, ReconShield is a completely free vulnerability scanning and cybersecurity utility platform designed to democratize access to security intelligence."
                     }
                   }
                 ]
@@ -133,74 +182,141 @@ export default async function Page() {
       </div>
 
       <section className="max-w-[1000px] mx-auto px-6 py-16 animate-fade-in text-[#94a3b8] prose prose-invert max-w-none prose-p:leading-relaxed prose-h2:text-white prose-h2:font-bold prose-h2:text-2xl prose-h3:text-white prose-h3:font-semibold prose-h3:text-xl">
-        <h2 className="mb-6 border-b border-[#1a2332] pb-4">Comprehensive Website Security Scanner</h2>
+        <h2 className="mb-6 border-b border-[#1a2332] pb-4">The Ultimate Website Vulnerability Scanner & Cybersecurity Platform</h2>
         
         <p className="mb-6">
-          In today's evolving threat landscape, understanding your <strong>attack surface</strong> is critical. ReconShield is a state-of-the-art, free website vulnerability scanner designed to help developers, system administrators, and security researchers conduct deep <strong>infrastructure analysis</strong>. Our AI-powered cybersecurity scanner performs rigorous <strong>passive scanning</strong> to identify security weaknesses without alerting the target.
+          In an era of relentless cyber threats, maintaining visibility over your <strong>digital footprint</strong> is non-negotiable. Organizations frequently leave critical infrastructure exposed due to misconfigurations, expired certificates, or shadow IT. ReconShield serves as a professional-grade, AI-powered <strong>website vulnerability scanner</strong> engineered to conduct exhaustive <strong>attack surface analysis</strong> without alerting the target. Through advanced <strong>passive reconnaissance</strong>, our platform aggregates critical intelligence on your endpoints, empowering security teams to achieve a fortified <strong>cybersecurity posture</strong>.
         </p>
 
         <h3 className="mt-12 mb-4">What Is Website Vulnerability Scanning?</h3>
         <p className="mb-6">
-          A website vulnerability scanner is an automated diagnostic tool that reviews web applications, networks, and IT infrastructure to identify potential security loopholes. It acts as an early warning system. By simulating the <strong>reconnaissance</strong> phase of a cyber attack, it helps organizations spot misconfigurations, unpatched software, and <strong>exposed services</strong> before malicious actors can exploit them. Learn how to scan a website for vulnerabilities safely with our automated tools.
+          Website vulnerability scanning is the automated process of evaluating web applications, networks, and hosting environments to uncover security loopholes. It simulates the initial phases of a cyberattack—specifically <strong>endpoint discovery</strong> and <strong>reconnaissance automation</strong>—to identify misconfigured assets before malicious actors can exploit them. ReconShield goes beyond traditional scanning by offering continuous <strong>asset intelligence</strong> and structured remediation steps.
         </p>
 
-        <h3 className="mt-12 mb-4">How Our AI Cybersecurity Scanner Works</h3>
+        <h3 className="mt-12 mb-4">How ReconShield Scans Websites (Passive Reconnaissance)</h3>
         <p className="mb-6">
-          ReconShield utilizes a non-intrusive approach known as passive scanning. Instead of sending malicious payloads, our system relies on public records, DNS registries, and open-source intelligence (OSINT). This allows for deep <strong>endpoint discovery</strong> and <strong>subdomain enumeration</strong> entirely safely. Our SSL and DNS security scanner aggregates data on:
+          Unlike aggressive vulnerability scanners that send malicious payloads or disruptive network packets, ReconShield operates strictly via <strong>passive scanning</strong>. We aggregate data from global DNS registries, public threat intelligence databases, certificate transparency logs, and OSINT (Open Source Intelligence) providers. This allows us to perform deep <strong>infrastructure analysis</strong> and <strong>subdomain enumeration</strong> with zero impact on the target's uptime or bandwidth.
         </p>
-        <ul className="list-disc pl-6 mb-8 space-y-2">
-          <li><strong>Open Port Detection:</strong> Checks for unnecessarily exposed network services that attackers could use as entry points.</li>
-          <li><strong>DNS Misconfiguration Detection:</strong> Analyzes A, MX, TXT, and NS records to prevent email spoofing and domain hijacking.</li>
-          <li><strong>SSL/TLS Security Checks:</strong> Evaluates your <strong>TLS configuration</strong>, certificate validity, and cipher strength to ensure encrypted communications.</li>
-          <li><strong>Security Header Analysis:</strong> Audits <strong>HTTP header analysis</strong> (like CSP, HSTS, X-Frame-Options) to protect against XSS and clickjacking.</li>
-        </ul>
 
+        <h3 className="mt-12 mb-4">Why Attack Surface Monitoring Matters</h3>
+        <p className="mb-6">
+          An organization's attack surface consists of all internet-facing hardware, software, and cloud assets. As businesses scale, their attack surface naturally expands, often introducing unmanaged or forgotten endpoints. Continuous <strong>attack surface monitoring</strong> ensures that newly exposed APIs, sudden DNS alterations, or vulnerable <strong>exposed services</strong> are detected in real-time. This proactive approach shifts the security paradigm from reactive incident response to preemptive risk management.
+        </p>
+
+        <h3 className="mt-12 mb-4">SSL/TLS Misconfigurations Explained</h3>
+        <p className="mb-6">
+          A secure <strong>TLS configuration</strong> is the backbone of encrypted web traffic. ReconShield's SSL checker meticulously audits your certificates. We verify expiration dates, assess the strength of cryptographic ciphers, and check for the presence of outdated protocols like SSLv3 or TLS 1.0. Proper SSL/TLS security ensures that sensitive user data remains protected against Man-in-the-Middle (MitM) attacks and packet sniffing.
+        </p>
+
+        <h3 className="mt-12 mb-4">DNS Exposure Risks & Security</h3>
+        <p className="mb-6">
+          DNS acts as the phonebook of the internet, but misconfigured records can lead to catastrophic breaches. Our DNS scanner evaluates A, AAAA, MX, TXT, and NS records to uncover vulnerabilities such as subdomain takeover risks and email spoofing. By validating the presence of SPF, DKIM, and DMARC records, we help organizations secure their email infrastructure against phishing campaigns and domain impersonation.
+        </p>
+
+        <h3 className="mt-12 mb-4">Security Header Analysis</h3>
+        <p className="mb-6">
+          <strong>HTTP header analysis</strong> is critical for modern web application security. Security headers instruct the browser on how to behave when interacting with your site. ReconShield audits for essential headers including Content-Security-Policy (CSP) to prevent Cross-Site Scripting (XSS), Strict-Transport-Security (HSTS) to enforce HTTPS, and X-Frame-Options to mitigate clickjacking attacks. Missing these headers severely weakens your client-side security architecture.
+        </p>
+
+        <h3 className="mt-12 mb-4">Open Port Detection & Exposed Services</h3>
+        <p className="mb-6">
+          Every open port is a potential gateway into your network. Our port scanning technology cross-references your IP address to identify unnecessarily <strong>exposed services</strong> such as SSH (Port 22), MySQL (Port 3306), or RDP (Port 3389). Leaving administrative interfaces accessible to the public internet is one of the most common vectors for ransomware operators and initial access brokers.
+        </p>
+
+        <h3 className="mt-12 mb-4">Threat Intelligence & Risk Scoring</h3>
+        <p className="mb-6">
+          Raw data without context leads to alert fatigue. ReconShield integrates proprietary AI models with global threat intelligence feeds to assign a clear, actionable Risk Score to your infrastructure. We evaluate your assets against 50+ global blocklists, providing instant insights into your IP reputation and identifying if your infrastructure is part of a known botnet or malware distribution network.
+        </p>
+
+        {/* Detailed Example Scans */}
         <div className="bg-[#0d1117] border border-[#1a2332] p-6 rounded-lg my-12 shadow-lg">
-          <h3 className="text-white mb-4 mt-0">Example Scan Results: What ReconShield Detects</h3>
-          <p className="mb-4 text-sm">When you run a scan, our engine provides a structured risk report:</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <h3 className="text-white mb-4 mt-0 border-b border-[#1a2332] pb-4">Example Scan Results</h3>
+          <p className="mb-6 text-sm">Below is a detailed representation of what a ReconShield cybersecurity analysis report looks like.</p>
+          
+          <div className="space-y-6 text-sm">
+            {/* DNS Results */}
             <div className="bg-[#0a0d14] p-4 rounded border border-[#1a2332]">
-              <span className="text-[#00ff88] font-mono mb-2 block">✓ Secure Configuration</span>
-              Strict-Transport-Security (HSTS) is enforced.<br/>
-              TLS 1.3 is enabled with strong ciphers.
+              <div className="flex justify-between mb-2">
+                <span className="font-bold text-white">DNS Security Analysis</span>
+                <span className="text-[#00ff88] font-mono">PASS</span>
+              </div>
+              <p className="text-gray-400 mb-2">DMARC policy is set to 'reject'. SPF records strictly enforce approved mail servers.</p>
+              <div className="bg-black/50 p-2 rounded font-mono text-xs text-gray-500">v=DMARC1; p=reject; rua=mailto:dmarc@domain.com;</div>
             </div>
+
+            {/* SSL Results */}
+            <div className="bg-[#0a0d14] p-4 rounded border border-[#1a2332]">
+              <div className="flex justify-between mb-2">
+                <span className="font-bold text-white">SSL/TLS Configuration</span>
+                <span className="text-amber-400 font-mono">WARNING</span>
+              </div>
+              <p className="text-gray-400 mb-2">Certificate is valid, but server supports deprecated TLS 1.1 protocol.</p>
+              <p className="text-xs text-amber-500">Remediation: Disable TLS 1.0 and TLS 1.1 in your web server configuration (Nginx/Apache).</p>
+            </div>
+
+            {/* Port Results */}
             <div className="bg-[#1a0f14] p-4 rounded border border-red-900/30">
-              <span className="text-red-400 font-mono mb-2 block">⚠️ Critical Vulnerability</span>
-              Port 3306 (MySQL) is publicly exposed.<br/>
-              DMARC records are missing.
+              <div className="flex justify-between mb-2">
+                <span className="font-bold text-white">Open Port Detection</span>
+                <span className="text-red-400 font-mono">CRITICAL</span>
+              </div>
+              <p className="text-gray-400 mb-2">Database port 5432 (PostgreSQL) is exposed to the public internet.</p>
+              <p className="text-xs text-red-400">Remediation: Restrict access via firewall to internal IPs or trusted VPN subnets only.</p>
+            </div>
+
+            {/* Header Results */}
+            <div className="bg-[#0a0d14] p-4 rounded border border-[#1a2332]">
+              <div className="flex justify-between mb-2">
+                <span className="font-bold text-white">HTTP Security Headers</span>
+                <span className="text-amber-400 font-mono">WARNING</span>
+              </div>
+              <p className="text-gray-400 mb-2">Missing Content-Security-Policy (CSP) header.</p>
+              <p className="text-xs text-amber-500">Remediation: Implement a strict CSP to prevent Cross-Site Scripting (XSS) attacks.</p>
             </div>
           </div>
-        </div>
-
-        <h3 className="mt-12 mb-4">Why Continuous Attack Surface Monitoring Matters</h3>
-        <p className="mb-6">
-          The internet is dynamic; infrastructure changes daily. A one-time check is insufficient. Continuous monitoring ensures that newly deployed endpoints, sudden DNS alterations, or expiring SSL certificates are caught immediately. ReconShield serves as your reliable <strong>IP intelligence tool</strong> and vulnerability dashboard.
-        </p>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 my-12 text-center text-xs font-mono">
-          <div className="p-4 border border-[#1a2332] rounded bg-[#0d1117]"><Shield className="w-6 h-6 mx-auto mb-2 text-[#00ff88]" />Passive Scanning Only</div>
-          <div className="p-4 border border-[#1a2332] rounded bg-[#0d1117]"><Target className="w-6 h-6 mx-auto mb-2 text-[#00ff88]" />Privacy-Focused</div>
-          <div className="p-4 border border-[#1a2332] rounded bg-[#0d1117]"><Activity className="w-6 h-6 mx-auto mb-2 text-[#00ff88]" />Responsible Disclosure</div>
-          <div className="p-4 border border-[#1a2332] rounded bg-[#0d1117]"><Cpu className="w-6 h-6 mx-auto mb-2 text-[#00ff88]" />Researcher-Friendly</div>
         </div>
 
         <h2 className="mt-16 mb-6 border-b border-[#1a2332] pb-4">Frequently Asked Questions</h2>
         <div className="space-y-6">
           <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">Q: Is this website scanner free?</h3>
-            <p>A: Yes, ReconShield is completely free with no registration required. We believe in democratizing access to professional security diagnostics.</p>
+            <h3 className="text-white font-semibold mb-2 text-lg">Is website vulnerability scanning legal?</h3>
+            <p>Yes, passive website vulnerability scanning is legal. ReconShield uses only passive reconnaissance techniques, collecting publicly available OSINT data without sending active payloads to the target infrastructure.</p>
           </div>
           <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">Q: Will scanning alert the target website?</h3>
-            <p>A: No. All scans are passive. We only query public registries and DNS databases — no direct traffic is sent to the target, ensuring invisible <strong>reconnaissance</strong>.</p>
+            <h3 className="text-white font-semibold mb-2 text-lg">What vulnerabilities can ReconShield detect?</h3>
+            <p>ReconShield detects exposed open ports, SSL/TLS misconfigurations, missing security headers (like HSTS and CSP), DNS vulnerabilities (missing DMARC/SPF), and poor IP reputation.</p>
           </div>
           <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">Q: What can I scan with ReconShield?</h3>
-            <p>A: Any public domain or IP address. You can check SSL certificates, DNS records, open ports, security headers, and IP reputation.</p>
+            <h3 className="text-white font-semibold mb-2 text-lg">What is passive reconnaissance?</h3>
+            <p>Passive reconnaissance involves gathering information about a target system from public databases, DNS records, and third-party scanners without directly interacting with the target's servers.</p>
           </div>
           <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">Q: Is this legal to use?</h3>
-            <p>A: Yes, for authorized security research and educational purposes. Scanning assets you own or have permission to test is completely legal.</p>
+            <h3 className="text-white font-semibold mb-2 text-lg">How often should websites be scanned?</h3>
+            <p>Websites should be scanned continuously. The digital attack surface changes daily as new ports are opened, certificates expire, or DNS records are modified. Regular monitoring is essential.</p>
+          </div>
+          <div>
+            <h3 className="text-white font-semibold mb-2 text-lg">What are HTTP security headers?</h3>
+            <p>HTTP security headers are directives passed between the server and the browser to mitigate vulnerabilities like Cross-Site Scripting (XSS), Clickjacking, and packet sniffing.</p>
+          </div>
+          <div>
+            <h3 className="text-white font-semibold mb-2 text-lg">How does SSL scanning work?</h3>
+            <p>Our SSL scanning analyzes the target's TLS configuration to ensure certificates are valid, not expired, and support strong cryptographic ciphers (e.g., TLS 1.2/1.3) while rejecting deprecated protocols.</p>
+          </div>
+          <div>
+            <h3 className="text-white font-semibold mb-2 text-lg">What is DNS enumeration?</h3>
+            <p>DNS enumeration is the process of locating all DNS records (A, MX, TXT, NS) for a domain to map out the infrastructure and identify security weaknesses like lack of email spoofing protection.</p>
+          </div>
+          <div>
+            <h3 className="text-white font-semibold mb-2 text-lg">Can open ports expose websites to attacks?</h3>
+            <p>Yes. Unnecessarily open ports (like database ports 3306 or unencrypted FTP 21) provide direct entry points for attackers to exploit vulnerable services.</p>
+          </div>
+          <div>
+            <h3 className="text-white font-semibold mb-2 text-lg">What is attack surface monitoring?</h3>
+            <p>Attack surface monitoring is the continuous discovery, analysis, and management of an organization's digital footprint to identify and remediate exposed IT assets.</p>
+          </div>
+          <div>
+            <h3 className="text-white font-semibold mb-2 text-lg">Is ReconShield free to use?</h3>
+            <p>Yes, ReconShield is a completely free vulnerability scanning and cybersecurity utility platform designed to democratize access to security intelligence.</p>
           </div>
         </div>
       </section>
