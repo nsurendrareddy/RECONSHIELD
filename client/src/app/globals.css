@@ -3,10 +3,10 @@
 /* ===== RECONSHIELD — Hacker-Themed Design System ===== */
 
 @theme {
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
-  --font-display: 'Orbitron', 'Rajdhani', sans-serif;
-  --font-heading: 'Rajdhani', 'Inter', sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-display: var(--font-orbitron), var(--font-rajdhani), sans-serif;
+  --font-heading: var(--font-rajdhani), var(--font-inter), sans-serif;
 
   /* Hacker color palette */
   --color-matrix-50: #f0fdf4;

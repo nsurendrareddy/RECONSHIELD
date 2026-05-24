@@ -1,9 +1,10 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { m, LazyMotion, domAnimation } from 'framer-motion';
 import { Shield, Zap, Target, Activity, Globe } from 'lucide-react';
 
 export default function Hero({ onStartScan }) {
   return (
+    <LazyMotion features={domAnimation}>
     <div className="relative pt-20 pb-16 overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 overflow-hidden pointer-events-none">
@@ -12,7 +13,7 @@ export default function Hero({ onStartScan }) {
       </div>
 
       <div className="max-w-6xl mx-auto px-6 text-center">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -22,7 +23,7 @@ export default function Hero({ onStartScan }) {
           <span className="text-[10px] font-mono text-matrix-400 font-bold uppercase tracking-[0.2em]">
             Next-Gen Threat Intelligence
           </span>
-        </motion.div>
+        </m.div>
 
         <h1
           className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display font-black text-white leading-tight mb-6"
@@ -31,16 +32,16 @@ export default function Hero({ onStartScan }) {
           & Threat Intelligence Platform
         </h1>
 
-        <motion.p
+        <m.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed font-light"
         >
           Scan websites, analyze IP threats, detect vulnerabilities, and monitor cyber risks in real time using advanced AI security analytics.
-        </motion.p>
+        </m.p>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
@@ -58,10 +59,10 @@ export default function Hero({ onStartScan }) {
           >
             <Target className="w-5 h-5 text-matrix-400" /> Exploration Mode
           </button>
-        </motion.div>
+        </m.div>
 
         {/* Animated Stats Ticker */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
@@ -71,10 +72,10 @@ export default function Hero({ onStartScan }) {
           <StatBox label="Nodes Monitored" value="84.2K" icon={<Globe />} />
           <StatBox label="Daily Scans" value="12.5K" icon={<Target />} />
           <StatBox label="Security Score" value="98.4" icon={<Shield />} />
-        </motion.div>
+        </m.div>
 
         {/* About ReconShield Section */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
@@ -120,9 +121,10 @@ export default function Hero({ onStartScan }) {
               </p>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </div>
+    </LazyMotion>
   );
 }
 

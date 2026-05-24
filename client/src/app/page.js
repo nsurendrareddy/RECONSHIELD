@@ -1,4 +1,4 @@
-import DynamicHomeSections from '@/components/DynamicHomeSections';
+import HomeSections from '@/components/HomeSections';
 import DynamicDashboardClient from '@/components/DynamicDashboardClient';
 import { client, homepageBlogQuery } from '@/utils/sanity';
 import { Shield, Target, Activity, Cpu } from 'lucide-react';
@@ -320,7 +320,7 @@ export default async function Page() {
           </div>
         </div>
       </section>
-      <DynamicHomeSections posts={posts || []} />
+      <HomeSections posts={posts || []} />
 
       {/* Highly visible & crawlable About, Mission, & Ethics grid for Google AdSense compliance */}
       <section className="max-w-[1200px] mx-auto px-6 pb-24 animate-fade-in">

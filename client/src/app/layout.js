@@ -2,7 +2,13 @@ import Layout from "@/components/Layout";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
+import { Inter, JetBrains_Mono, Orbitron, Rajdhani } from "next/font/google";
 import "./globals.css";
+
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
+const jetbrains = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-jetbrains" });
+const orbitron = Orbitron({ subsets: ["latin"], weight: ["700", "900"], display: "swap", variable: "--font-orbitron" });
+const rajdhani = Rajdhani({ subsets: ["latin"], weight: ["500", "600", "700"], display: "swap", variable: "--font-rajdhani" });
 
 export const metadata = {
   metadataBase: new URL("https://reconshield.in"),
@@ -41,24 +47,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="dark h-full antialiased">
+    <html lang="en" className={`dark h-full antialiased ${inter.variable} ${jetbrains.variable} ${orbitron.variable} ${rajdhani.variable}`}>
       <head>
-        {/* Preconnect and Preload Critical Fonts & Assets */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="preload"
-          as="style"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@700;900&family=Rajdhani:wght@500;600;700&display=swap"
-        />
+        {/* Fonts are managed by next/font/google */}
 
         {/* Subscribe with Google */}
-        <script async type="application/javascript" src="https://news.google.com/swg/js/v1/swg-basic.js"></script>
-        <script
+        <Script strategy="lazyOnload" src="https://news.google.com/swg/js/v1/swg-basic.js" />
+        <Script
+          id="google-news-init"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
@@ -75,12 +72,12 @@ export default function RootLayout({ children }) {
 
         {/* Google Analytics */}
         <Script
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           src="https://www.googletagmanager.com/gtag/js?id=G-C1L15RFXXR"
         />
         <Script
           id="google-analytics"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
