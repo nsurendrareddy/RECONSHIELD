@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "eslint"
   },
-
   "dependencies": {
     "@portabletext/react": "^6.2.0",
     "@sanity/image-url": "^2.1.1",
@@ -30,6 +29,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/node": "25.9.1",
     "eslint": "^9",
     "eslint-config-next": "latest",
     "tailwindcss": "^4"

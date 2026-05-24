@@ -16,13 +16,7 @@ export const metadata = {
   description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
   keywords: ["cybersecurity", "vulnerability scanner", "IP intelligence", "threat detection", "SSL checker", "DNS lookup"],
   authors: [{ name: "ReconShield Team" }],
-  icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-    ],
-    shortcut: "/favicon.svg",
-    apple: "/apple-icon.png",
-  },
+
   manifest: "/manifest.json",
   openGraph: {
     title: "ReconShield - AI Cybersecurity Platform",

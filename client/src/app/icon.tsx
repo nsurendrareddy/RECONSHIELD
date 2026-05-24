@@ -1,0 +1,38 @@
+import { ImageResponse } from 'next/og'
+
+export const size = {
+  width: 48,
+  height: 48,
+}
+
+export const contentType = 'image/png'
+
+export default function Icon() {
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'transparent',
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 48 48"
+          style={{ width: '48px', height: '48px' }}
+        >
+          <rect x="4" y="4" width="40" height="40" rx="10" fill="rgba(0, 255, 156, 0.1)" stroke="rgba(0, 255, 156, 0.3)" strokeWidth="1.5" />
+          <g transform="translate(12, 12)">
+            <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" fill="none" stroke="#00FF9C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </g>
+          <circle cx="41" cy="7" r="4.5" fill="#00FF9C" />
+        </svg>
+      </div>
+    ),
+    { ...size }
+  )
+}
