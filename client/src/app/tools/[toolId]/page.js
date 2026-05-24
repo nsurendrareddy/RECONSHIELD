@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ChevronRight, Share2, Twitter, Linkedin, Facebook } from 'lucide-react';
+import { ChevronRight, Share2 } from 'lucide-react';
 import ToolScannerClient from '@/components/ToolScannerClient';
 import { TOOLS, TOOL_SEO_CONTENT } from '@/utils/toolsData';
 
@@ -47,14 +47,14 @@ const ShareButtons = ({ toolId, toolName }) => {
       <span className="text-sm font-mono text-gray-500 flex items-center gap-2">
         <Share2 className="w-4 h-4" /> Share:
       </span>
-      <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer" className="p-2 bg-white/[0.02] border border-white/5 rounded-lg hover:bg-blue-500/10 hover:text-blue-400 transition-colors">
-        <Twitter className="w-4 h-4" />
+      <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`} target="_blank" rel="noreferrer" className="px-3 py-1 bg-white/[0.02] border border-white/5 rounded-lg hover:bg-blue-500/10 hover:text-blue-400 transition-colors text-xs font-bold font-mono">
+        X
       </a>
-      <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(toolName)}`} target="_blank" rel="noreferrer" className="p-2 bg-white/[0.02] border border-white/5 rounded-lg hover:bg-blue-600/10 hover:text-blue-500 transition-colors">
-        <Linkedin className="w-4 h-4" />
+      <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(toolName)}`} target="_blank" rel="noreferrer" className="px-3 py-1 bg-white/[0.02] border border-white/5 rounded-lg hover:bg-blue-600/10 hover:text-blue-500 transition-colors text-xs font-bold font-mono">
+        IN
       </a>
-      <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`} target="_blank" rel="noreferrer" className="p-2 bg-white/[0.02] border border-white/5 rounded-lg hover:bg-blue-600/10 hover:text-blue-500 transition-colors">
-        <Facebook className="w-4 h-4" />
+      <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`} target="_blank" rel="noreferrer" className="px-3 py-1 bg-white/[0.02] border border-white/5 rounded-lg hover:bg-blue-600/10 hover:text-blue-500 transition-colors text-xs font-bold font-mono">
+        FB
       </a>
     </div>
   );
