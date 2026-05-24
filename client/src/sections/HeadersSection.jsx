@@ -40,17 +40,46 @@ export default function HeadersSection({ data }) {
       </div>
 
       {/* Headers checklist */}
-      <div className="space-y-2">
+      <div className="space-y-3">
         {(h.headers || []).map((header, i) => (
-          <div key={i} className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-surface-800/30 hover:bg-surface-800/50 transition-colors">
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-200">{header.header}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{header.description}</p>
+          <div key={i} className="py-2.5 px-3 rounded-lg bg-surface-800/30 hover:bg-surface-800/50 transition-colors">
+            <div className="flex items-center justify-between mb-1">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-200">{header.header}</p>
+                <p className="text-xs text-gray-500 mt-0.5">{header.description}</p>
+              </div>
+              <StatusBadge status={header.status} label={header.present ? 'Present' : 'Missing'} />
             </div>
-            <StatusBadge status={header.status} label={header.present ? 'Present' : 'Missing'} />
+            {header.browser_compatibility && (
+              <p className="text-[10px] font-mono text-gray-600 mt-1 uppercase tracking-wider">
+                Compatibility: {header.browser_compatibility}
+              </p>
+            )}
+            {!header.present && header.recommendation && (
+              <div className="mt-2 p-2 bg-red-500/5 border border-red-500/10 rounded-md">
+                <p className="text-xs text-red-400 font-mono">FIX: {header.recommendation}</p>
+              </div>
+            )}
           </div>
         ))}
       </div>
+
+      {/* CSP Breakdown */}
+      {h.csp_breakdown && Object.keys(h.csp_breakdown).length > 0 && (
+        <div className="mt-6 border-t border-white/5 pt-5">
+          <h4 className="text-sm font-semibold text-white mb-3">Content Security Policy (CSP) Breakdown</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {Object.entries(h.csp_breakdown).map(([directive, values]) => (
+              <div key={directive} className="p-2 rounded bg-[#0d1117] border border-white/5">
+                <span className="text-xs font-mono font-bold text-cyber-400">{directive}</span>
+                <p className="text-[10px] text-gray-400 mt-1 font-mono break-all">
+                  {values && values.length > 0 ? values.join(' ') : "'none' / empty"}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </ModuleCard>
   )
 }

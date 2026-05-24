@@ -1,7 +1,27 @@
 """IP intelligence and geolocation service."""
 import socket
 import httpx
+import asyncio
+import dns.resolver
 from utils.logger import logger
+
+DNSBL_FEEDS = {
+    "zen.spamhaus.org": "Spamhaus ZEN",
+    "b.barracudacentral.org": "Barracuda",
+    "cbl.abuseat.org": "CBL Abuseat",
+    "dnsbl.sorbs.net": "SORBS",
+    "bl.spamcop.net": "SpamCop"
+}
+
+async def _check_dnsbl(ip: str, domain: str) -> dict:
+    rev_ip = ".".join(reversed(ip.split(".")))
+    try:
+        # Run synchronous dns resolution in thread or just use async wrapper
+        # Since dns.resolver is synchronous, we'll wrap it in asyncio.to_thread
+        answers = await asyncio.to_thread(dns.resolver.resolve, f"{rev_ip}.{domain}", "A")
+        return {"feed": DNSBL_FEEDS[domain], "listed": True, "result": str(answers[0])}
+    except Exception:
+        return {"feed": DNSBL_FEEDS[domain], "listed": False}
 
 
 async def ip_intelligence(domain: str) -> dict:
@@ -27,7 +47,29 @@ async def ip_intelligence(domain: str) -> dict:
 
         proxy = data.get("proxy", False)
         if proxy:
-            issues.append("IP detected as proxy/VPN — may indicate evasion")
+            issues.append("IP detected as proxy/VPN/TOR — may indicate evasion")
+
+        # Reverse DNS
+        try:
+            rev_dns = await asyncio.to_thread(socket.gethostbyaddr, ip)
+            reverse = rev_dns[0]
+        except Exception:
+            reverse = data.get("reverse", "Unknown")
+
+        # Blacklist checks
+        bl_tasks = [_check_dnsbl(ip, feed) for feed in DNSBL_FEEDS.keys()]
+        bl_results = await asyncio.gather(*bl_tasks, return_exceptions=True)
+        
+        blacklists = []
+        abuse_score = 0
+        for res in bl_results:
+            if isinstance(res, dict) and res.get("listed"):
+                blacklists.append(res["feed"])
+                abuse_score += 20
+                issues.append(f"IP is listed on threat feed: {res['feed']}")
+        
+        if abuse_score > 100:
+            abuse_score = 100
 
         return {
             "ip": ip,
@@ -43,11 +85,14 @@ async def ip_intelligence(domain: str) -> dict:
             "org": data.get("org", "Unknown"),
             "as_number": data.get("as", ""),
             "as_name": data.get("asname", ""),
+            "reverse_dns": reverse,
             "is_hosting": hosting,
             "is_proxy": proxy,
             "is_mobile": data.get("mobile", False),
+            "blacklists": blacklists,
+            "abuse_score": abuse_score,
             "issues": issues,
-            "risk_level": "Medium" if issues else "Low",
+            "risk_level": "High" if abuse_score > 0 else "Medium" if issues else "Low",
         }
 
     except Exception as e:
