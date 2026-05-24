@@ -25,13 +25,11 @@ export default function ToolsHubClient() {
       {/* Search and Filter Controls */}
       <div className="flex flex-col lg:flex-row gap-6 mb-12">
         {/* Search Bar */}
-        <div className="relative flex-1">
-          <div className="absolute top-1/2 -translate-y-1/2 left-4 flex items-center pointer-events-none">
-            <Search className="w-5 h-5 text-gray-500" />
-          </div>
+        <div className="flex-1 flex items-center bg-[#0d1117] border border-white/10 rounded-2xl px-4 transition-all focus-within:border-[#00ff88]/50 focus-within:ring-1 focus-within:ring-[#00ff88]/50">
+          <Search className="w-5 h-5 text-gray-500 shrink-0" />
           <input
             type="text"
-            className="w-full bg-[#0d1117] border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white focus:outline-none focus:border-[#00ff88]/50 focus:ring-1 focus:ring-[#00ff88]/50 transition-all font-mono placeholder:font-sans placeholder:text-gray-500"
+            className="w-full bg-transparent py-4 pl-3 pr-4 text-white focus:outline-none font-mono placeholder:font-sans placeholder:text-gray-500"
             placeholder="Search tools, IPs, DNS, vulnerabilities..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
