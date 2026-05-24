@@ -51,11 +51,11 @@ export default function RootLayout({ children }) {
       <head>
         {/* Fonts are managed by next/font/google */}
 
-        {/* Subscribe with Google */}
-        <Script strategy="lazyOnload" src="https://news.google.com/swg/js/v1/swg-basic.js" />
+        {/* Subscribe with Google (Offloaded to Web Worker) */}
+        <Script strategy="worker" src="https://news.google.com/swg/js/v1/swg-basic.js" />
         <Script
           id="google-news-init"
-          strategy="lazyOnload"
+          strategy="worker"
           dangerouslySetInnerHTML={{
             __html: `
               (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
@@ -70,14 +70,14 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* Google Analytics */}
+        {/* Google Analytics (Offloaded to Web Worker) */}
         <Script
-          strategy="lazyOnload"
+          strategy="worker"
           src="https://www.googletagmanager.com/gtag/js?id=G-C1L15RFXXR"
         />
         <Script
           id="google-analytics"
-          strategy="lazyOnload"
+          strategy="worker"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];

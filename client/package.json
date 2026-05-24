@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@builder.io/partytown": "^0.10.3",
     "@portabletext/react": "^6.2.0",
     "@sanity/image-url": "^2.1.1",
     "@vercel/analytics": "^2.0.1",
