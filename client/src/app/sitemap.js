@@ -1,3 +1,5 @@
+import { TOOLS } from '@/utils/toolsData'
+
 const BASE_URL = 'https://reconshield.in'
 const SANITY_PROJECT_ID = 'etmnx6kx'
 const SANITY_DATASET = 'production'
@@ -52,34 +54,16 @@ export default async function sitemap() {
       priority: 0.9,
     },
     {
+      url: `${BASE_URL}/tools`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
+    },
+    {
       url: `${BASE_URL}/ip-scanner`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/vulnerability-scanner`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/ssl-checker`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/dns-lookup`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/security-headers`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
     },
     {
       url: `${BASE_URL}/about`,
@@ -107,5 +91,12 @@ export default async function sitemap() {
     },
   ]
 
-  return [...staticUrls, ...blogUrls]
+  const toolUrls = TOOLS.map((tool) => ({
+    url: `${BASE_URL}/tools/${tool.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: tool.popular ? 0.9 : 0.8,
+  }))
+
+  return [...staticUrls, ...toolUrls, ...blogUrls]
 }

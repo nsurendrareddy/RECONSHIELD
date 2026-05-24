@@ -12,13 +12,23 @@ import SslSection from '@/sections/SslSection';
 import HeadersSection from '@/sections/HeadersSection';
 import VulnSimSection from '@/sections/VulnSimSection';
 import IpSection from '@/sections/IpSection';
+import DomainSection from '@/sections/DomainSection';
+import SubdomainSection from '@/sections/SubdomainSection';
+import PortSection from '@/sections/PortSection';
+import TechSection from '@/sections/TechSection';
 
 const SECTION_MAP = {
+  'ip-lookup': { section: IpSection, icon: Globe, dataKey: 'ip' },
+  'whois-checker': { section: DomainSection, icon: Activity, dataKey: 'whois' },
   'dns-lookup': { section: DnsSection, icon: Globe, dataKey: 'dns' },
   'ssl-checker': { section: SslSection, icon: Lock, dataKey: 'ssl' },
+  'subdomain-finder': { section: SubdomainSection, icon: Layers, dataKey: 'subdomains' },
+  'port-scanner': { section: PortSection, icon: Activity, dataKey: 'ports' },
   'security-headers': { section: HeadersSection, icon: Layers, dataKey: 'headers' },
-  'vulnerability-scanner': { section: VulnSimSection, icon: Shield, dataKey: 'vuln_sim' },
+  'email-security-checker': { section: DnsSection, icon: Shield, dataKey: 'dns' },
   'threat-intelligence': { section: IpSection, icon: Activity, dataKey: 'ip' },
+  'tech-detector': { section: TechSection, icon: Layers, dataKey: 'tech' },
+  'vulnerability-scanner': { section: VulnSimSection, icon: Shield, dataKey: 'vuln_sim' },
 };
 
 export default function ToolScannerClient({ toolId, title, desc }) {
