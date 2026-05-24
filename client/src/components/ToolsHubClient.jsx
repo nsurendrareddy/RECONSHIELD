@@ -26,7 +26,7 @@ export default function ToolsHubClient() {
       <div className="flex flex-col lg:flex-row gap-6 mb-12">
         {/* Search Bar */}
         <div className="relative flex-1">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+          <div className="absolute top-1/2 -translate-y-1/2 left-4 flex items-center pointer-events-none">
             <Search className="w-5 h-5 text-gray-500" />
           </div>
           <input
