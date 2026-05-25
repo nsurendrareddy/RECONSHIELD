@@ -22,7 +22,7 @@ async function getCveIntelligence(cveId) {
       publishedDate: isLog4j ? '2021-12-10' : '2023-10-10',
       description: isLog4j 
         ? 'Apache Log4j2 JNDI features used in configuration, log messages, and parameters do not protect against attacker controlled LDAP and other JNDI related endpoints. An attacker who can control log messages or log message parameters can execute arbitrary code loaded from LDAP servers when message lookup substitution is enabled.'
-        ? 'The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly, as exploited in the wild in August through October 2023.' : 'The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly.',
+        : 'The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly.',
       aiSummary: `ReconShield Intelligence identifies ${normalizedId} as a ${isLog4j ? 'CRITICAL' : 'HIGH'} severity vulnerability actively exploited in the wild. Threat actors frequently utilize this vulnerability to achieve ${isLog4j ? 'remote code execution (RCE)' : 'denial of service (DDoS)'} against exposed internet infrastructure.`,
       affectedSoftware: isLog4j ? ['Apache Log4j 2.x'] : ['Multiple HTTP/2 Implementations (NGINX, HAProxy, IIS)'],
       relatedActors: ['Lazarus Group', 'Nemesis Bear'],
