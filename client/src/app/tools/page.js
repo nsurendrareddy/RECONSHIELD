@@ -4,12 +4,12 @@ import ToolsHubClient from '@/components/ToolsHubClient';
 import { TOOLS, CATEGORIES, COLOR_MAP } from '@/utils/toolsData';
 
 export const metadata = {
-  title: 'Free Cybersecurity Tools — IP Lookup, DNS, SSL, WHOIS & More | ReconShield',
-  description: 'Explore 10+ free cybersecurity tools: IP Lookup, WHOIS Checker, DNS Lookup, SSL Checker, Subdomain Finder, Port Scanner, HTTP Headers, Email Security, Blacklist Checker & Tech Detector.',
+  title: 'Free Cybersecurity Tools — IP Lookup, DNS, SSL & OSINT | ReconShield',
+  description: 'Explore our ultimate free cybersecurity tools ecosystem. IP Lookup, WHOIS Checker, DNS Lookup, SSL Checker, Subdomain Finder, Port Scanner, HTTP Headers, and threat intelligence. No signup required.',
   keywords: [
     'cybersecurity tools', 'free security tools', 'IP lookup', 'WHOIS checker', 'DNS lookup tool',
     'SSL checker', 'subdomain finder', 'port scanner', 'HTTP headers checker', 'email security checker',
-    'IP blacklist checker', 'technology detector', 'network security tools', 'online security scanner'
+    'IP blacklist checker', 'technology detector', 'network security tools', 'online security scanner', 'OSINT tools'
   ],
   alternates: { canonical: 'https://reconshield.in/tools' },
   openGraph: {
@@ -80,16 +80,21 @@ export default function ToolsHubPage() {
                 }
               },
               {
-                '@type': 'SoftwareApplication',
+                '@type': 'WebApplication',
                 '@id': 'https://reconshield.in/tools/#software',
                 name: 'ReconShield Security Tools Suite',
                 applicationCategory: 'SecurityApplication',
-                operatingSystem: 'Web',
+                operatingSystem: 'All',
+                browserRequirements: 'Requires JavaScript. Requires HTML5.',
                 url: 'https://reconshield.in/tools',
                 offers: {
                   '@type': 'Offer',
                   price: '0',
                   priceCurrency: 'USD'
+                },
+                author: {
+                  '@type': 'Organization',
+                  name: 'ReconShield Security'
                 }
               },
               {

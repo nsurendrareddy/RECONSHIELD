@@ -22,6 +22,8 @@ export async function generateMetadata({ params }) {
       title: `${tool.name} | Free Cybersecurity Tool | ReconShield`,
       description: tool.desc,
       type: 'website',
+      siteName: 'ReconShield',
+      locale: 'en_US',
       images: [
         {
           url: '/og-image.png',
@@ -75,17 +77,22 @@ export function ToolPageContent({ toolId }) {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'SoftwareApplication',
+        '@type': 'WebApplication',
         '@id': `https://reconshield.in/tools/${toolId}/#software`,
-        name: `${tool.name} - ReconShield`,
+        name: `${tool.name} - Free Online Security Tool by ReconShield`,
         description: tool.desc,
         applicationCategory: 'SecurityApplication',
-        operatingSystem: 'Web',
+        operatingSystem: 'All',
+        browserRequirements: 'Requires JavaScript. Requires HTML5.',
         url: `https://reconshield.in/tools/${toolId}`,
         offers: {
           '@type': 'Offer',
           price: '0',
           priceCurrency: 'USD'
+        },
+        author: {
+          '@type': 'Organization',
+          name: 'ReconShield Security'
         }
       },
       {
