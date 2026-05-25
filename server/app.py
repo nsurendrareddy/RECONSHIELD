@@ -55,6 +55,7 @@ allowed_origins = [
     "http://localhost:5173",
     "http://localhost:3000",
     "https://reconshield.in",
+    "https://www.reconshield.in",
     frontend_url.rstrip("/") if frontend_url else None
 ]
 
@@ -63,6 +64,7 @@ allowed_origins = list(set([o for o in allowed_origins if o]))
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
