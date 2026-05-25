@@ -12,9 +12,6 @@ const rajdhani = Rajdhani({ subsets: ["latin"], weight: ["500", "600", "700"], d
 
 export const metadata = {
   metadataBase: new URL("https://reconshield.in"),
-  alternates: {
-    canonical: "https://reconshield.in",
-  },
   title: {
     default: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
     template: "%s | ReconShield"
