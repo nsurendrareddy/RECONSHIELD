@@ -3,8 +3,6 @@ import Link from 'next/link';
 import { Shield, Lock, Server, Globe, ChevronRight, CheckCircle2 } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
-export const runtime = 'edge'; // Edge runtime for fast TTFB
-
 const isValidDomain = (domain) => {
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
   return domainRegex.test(domain);
