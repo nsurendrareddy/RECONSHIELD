@@ -3,16 +3,33 @@ console.log(`>>> API INITIALIZED: BASE_URL='${BASE_URL}'`);
 export const API_BASE = `${BASE_URL}/api`
 
 export async function startScan(domain, consent) {
-  const res = await fetch(`${API_BASE}/scan`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ domain, consent }),
-  })
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err.detail || err.error || 'Scan failed')
+  let res;
+  try {
+    res = await fetch(`${API_BASE}/scan`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ domain, consent }),
+    });
+  } catch (err) {
+    if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
+      throw new Error('Server unreachable. The backend may be waking up from sleep (takes ~50s) or your ad-blocker is blocking it. Please wait and retry.');
+    }
+    throw err;
   }
-  return res.json()
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    let errorMessage = 'Scan failed';
+    if (Array.isArray(err.detail)) {
+      errorMessage = err.detail[0].msg || JSON.stringify(err.detail);
+    } else if (err.detail) {
+      errorMessage = err.detail;
+    } else if (err.error) {
+      errorMessage = err.error;
+    }
+    throw new Error(errorMessage);
+  }
+  return res.json();
 }
 
 export async function getScan(id) {
@@ -100,14 +117,31 @@ export async function getWatchedDomains(token) {
 }
 
 export async function scanIp(target) {
-  const res = await fetch(`${API_BASE}/ip-scanner`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ target }),
-  })
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err.detail || 'IP scan failed')
+  let res;
+  try {
+    res = await fetch(`${API_BASE}/ip-scanner`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ target }),
+    });
+  } catch (err) {
+    if (err.name === 'TypeError' && err.message === 'Failed to fetch') {
+      throw new Error('Server unreachable. The backend may be waking up from sleep (takes ~50s). Please wait and retry.');
+    }
+    throw err;
   }
-  return res.json()
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    let errorMessage = 'IP scan failed';
+    if (Array.isArray(err.detail)) {
+      errorMessage = err.detail[0].msg || JSON.stringify(err.detail);
+    } else if (err.detail) {
+      errorMessage = err.detail;
+    } else if (err.error) {
+      errorMessage = err.error;
+    }
+    throw new Error(errorMessage);
+  }
+  return res.json();
 }
