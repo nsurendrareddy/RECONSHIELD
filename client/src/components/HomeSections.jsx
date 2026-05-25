@@ -6,6 +6,7 @@ import {
   AlertTriangle, Cpu, ArrowRight 
 } from 'lucide-react'
 import { urlFor } from '@/utils/sanity'
+import TopActiveThreats from './TopActiveThreats'
 
 export default function HomeSections({ posts }) {
   const features = [
@@ -31,6 +32,9 @@ export default function HomeSections({ posts }) {
 
   return (
     <div className="space-y-32 py-20 max-w-[1200px] mx-auto px-6">
+      {/* Live Threat Feed (Phase 3 & 7 Integration) */}
+      <TopActiveThreats />
+
       {/* Section 1: What We Scan */}
       <section>
         <div className="flex items-center gap-4 mb-12">
