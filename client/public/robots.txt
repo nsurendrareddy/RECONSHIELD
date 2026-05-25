@@ -1,5 +1,54 @@
-User-agent: *
-Allow: /
-Disallow: /api/
+# -------------------------------------------------------------
+# Enterprise robots.txt for ReconShield Threat Intelligence
+# -------------------------------------------------------------
 
+# General directives for standard web crawlers
+User-agent: *
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /*?search=
+Disallow: /*?sort=
+# Protect Serverless Compute budget from excessive scanner queries
+Disallow: /scanner?target=
+Allow: /
+
+# -------------------------------------------------------------
+# AI Search Discoverability Optimizations
+# We want LLMs to ingest our Intelligence Reports for citations
+# -------------------------------------------------------------
+User-agent: Google-Extended
+Allow: /
+Crawl-delay: 1
+
+User-agent: GPTBot
+Allow: /
+Crawl-delay: 2
+
+User-agent: anthropic-ai
+Allow: /
+Crawl-delay: 2
+
+User-agent: PerplexityBot
+Allow: /
+
+# -------------------------------------------------------------
+# Aggressive Bot Mitigation
+# -------------------------------------------------------------
+User-agent: AhrefsBot
+Crawl-delay: 5
+
+User-agent: SemrushBot
+Crawl-delay: 5
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+# -------------------------------------------------------------
+# Sitemap Declaration
+# Points to our scalable Sitemap Index for millions of entities
+# -------------------------------------------------------------
 Sitemap: https://reconshield.in/sitemap.xml
