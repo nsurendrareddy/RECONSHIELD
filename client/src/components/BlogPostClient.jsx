@@ -98,7 +98,12 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
   const formatDate = (dateString) => {
     if (!dateString) return ''
     const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
+    return new Intl.DateTimeFormat('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric',
+      timeZone: 'UTC' 
+    }).format(date).toUpperCase()
   }
 
   const calculateReadTime = (body) => {
@@ -127,6 +132,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
               alt={post.title}
               fill
               priority
+              fetchPriority="high"
               sizes="(max-width: 1440px) 100vw, 1440px"
               quality={75}
               className="object-cover"

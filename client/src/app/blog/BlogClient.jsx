@@ -60,14 +60,17 @@ export default function BlogClient({ posts }) {
   const formatDate = (dateString) => {
     if (!dateString) return ''
     const date = new Date(dateString)
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
+    return new Intl.DateTimeFormat('en-US', { 
+      month: 'short', 
+      day: 'numeric', 
+      year: 'numeric',
+      timeZone: 'UTC' 
+    }).format(date).toUpperCase()
   }
 
-  const calculateReadTime = (body) => {
-    if (!body) return 1
-    const text = body.map(block => block.children?.map(child => child.text).join(' ')).join(' ')
-    const wordCount = text.split(/\s+/).length
-    return Math.ceil(wordCount / 200)
+  const calculateReadTime = (post) => {
+    if (post.estimatedWordCount) return Math.max(1, Math.ceil(post.estimatedWordCount / 5 / 200));
+    return 1;
   }
 
   return (
@@ -91,6 +94,7 @@ export default function BlogClient({ posts }) {
                       alt={featuredPost.title}
                       fill
                       priority
+                      fetchPriority="high"
                       sizes="(max-width: 1024px) 100vw, 1088px"
                       quality={75}
                       className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -114,7 +118,7 @@ export default function BlogClient({ posts }) {
                     <div className="font-mono text-[9px] tracking-[2px] uppercase flex gap-4 text-gray-500">
                       <span className="text-white tracking-[1px]">{featuredPost.author?.name || 'RECON TEAM'}</span>
                       <span className="tracking-[2px]">{formatDate(featuredPost.publishedAt || featuredPost._createdAt)}</span>
-                      <span className="tracking-[2px]">{calculateReadTime(featuredPost.body)} MIN READ</span>
+                      <span className="tracking-[2px]">{calculateReadTime(featuredPost)} MIN READ</span>
                     </div>
                   </div>
                 </div>
@@ -158,24 +162,7 @@ export default function BlogClient({ posts }) {
         </div>
       </div>
 
-      {/* Live Ticker Bar */}
-      <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-[#0d1117] border-y border-[#1a2332] h-12 flex items-center mb-16 overflow-hidden">
-        <div className="px-6 h-full flex items-center border-r border-[#1a2332] bg-[#0d1117] z-10 shrink-0">
-          <span className="font-mono text-[10px] tracking-[3px] uppercase text-[#00ff88] font-bold whitespace-nowrap">LIVE FEED</span>
-        </div>
-        <div className="flex-1 overflow-hidden">
-          <div className="flex items-center whitespace-nowrap animate-ticker">
-            {[...posts.slice(0, 5), ...posts.slice(0, 5)].map((post, i) => (
-              <div key={`${post._id}-${i}`} className="flex items-center px-8">
-                <Link href={`/blog/${post.slug}`} className="font-mono text-[10px] tracking-[1px] uppercase text-gray-400 hover:text-[#00ff88] transition-colors">
-                  {post.title}
-                </Link>
-                <span className="mx-8 text-[#00ff88]">▸</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+
 
       {/* Article Grid Section */}
       <div className="mb-20">

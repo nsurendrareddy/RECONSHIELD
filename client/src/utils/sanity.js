@@ -26,7 +26,7 @@ export const blogListQuery = `*[_type == "post" && defined(slug.current) && !(_i
   "categories": categories[]->{ title },
   excerpt,
   "author": author->{ name },
-  body
+  "estimatedWordCount": length(pt::text(body))
 }`;
 
 export const blogDetailQuery = `*[_type == "post" && slug.current == $slug][0] {
