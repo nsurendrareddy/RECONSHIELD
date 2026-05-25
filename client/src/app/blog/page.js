@@ -1,7 +1,7 @@
 import { client, blogListQuery } from '@/utils/sanity'
 import BlogClient from './BlogClient'
 
-export const revalidate = 3600; // ISR revalidate every hour
+export const revalidate = 60; // ISR revalidate every 1 minute
 
 export const metadata = {
   title: "Cyber Threat Intelligence Blog | ReconShield Research",

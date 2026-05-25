@@ -2,7 +2,7 @@ import BlogPostClient from '@/components/BlogPostClient';
 import { ShieldAlert, ArrowLeft, WifiOff } from 'lucide-react';
 import Link from 'next/link';
 import { client, blogDetailQuery, urlFor, recentPostsQuery, categoriesWithCountQuery, relatedPostsQuery } from '@/utils/sanity';
-export const revalidate = 3600;
+export const revalidate = 60;
 
 async function getPost(slug) {
   if (!slug || slug === 'undefined') return null;
