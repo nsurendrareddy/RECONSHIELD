@@ -26,7 +26,8 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const category = CATEGORIES.find(c => c.slug === params.slug);
+  const resolvedParams = await params;
+  const category = CATEGORIES.find(c => c.slug === resolvedParams.slug);
   
   if (!category) {
     return { title: 'Category Not Found | ReconShield' };
@@ -48,7 +49,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CategoryPage({ params }) {
-  const { slug } = params;
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   const categoryDef = CATEGORIES.find(c => c.slug === slug);
 
   if (!categoryDef) {

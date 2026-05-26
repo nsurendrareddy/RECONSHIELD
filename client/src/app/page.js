@@ -32,7 +32,7 @@ export default async function Page() {
     { name: 'DNS Lookup', icon: Network, href: '/dns-lookup', desc: 'Enumerate DNS records and analyze SPF/DMARC for email spoofing risks.' },
     { name: 'Vulnerability Scanner', icon: Shield, href: '/vulnerability-scanner', desc: 'Scan websites passively for misconfigurations and exposed vulnerabilities.' },
     { name: 'WHOIS Lookup', icon: Search, href: '/whois', desc: 'Identify domain ownership, registration dates, and infrastructure providers.' },
-    { name: 'Port Scanner', icon: Terminal, href: '/ports', desc: 'Detect exposed services, database ports, and unencrypted administrative interfaces.' },
+    { name: 'Port Scanner', icon: Terminal, href: '/port-scanner', desc: 'Detect exposed services, database ports, and unencrypted administrative interfaces.' },
     { name: 'SSL Checker', icon: Lock, href: '/ssl-checker', desc: 'Analyze TLS certificates for expiration, cipher strength, and deprecated protocols.' },
     { name: 'Security Headers', icon: Layers, href: '/security-headers', desc: 'Audit CSP, HSTS, and X-Frame-Options to prevent XSS and clickjacking.' },
   ];

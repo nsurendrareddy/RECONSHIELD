@@ -30,12 +30,12 @@ export const metadata = {
 };
 
 const CATEGORIES = [
-  { name: "Threat Intelligence", icon: Target, color: "text-red-500", bg: "bg-red-500/10", border: "border-red-500/20", slug: "threat-intelligence" },
-  { name: "OSINT & Recon", icon: Search, color: "text-matrix-400", bg: "bg-matrix-500/10", border: "border-matrix-500/20", slug: "osint-reconnaissance" },
-  { name: "Web Security", icon: Shield, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", slug: "web-security" },
-  { name: "AI Cybersecurity", icon: Cpu, color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/20", slug: "ai-cybersecurity" },
-  { name: "Vulnerability Research", icon: AlertTriangle, color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/20", slug: "vulnerability-research" },
-  { name: "Attack Surface", icon: Network, color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", slug: "attack-surface-analysis" }
+  { name: "Threat Intelligence", icon: Target, color: "text-red-500", bg: "bg-red-500/10", border: "border-red-500/20", hover: "hover:border-red-500/20", slug: "threat-intelligence" },
+  { name: "OSINT & Recon", icon: Search, color: "text-matrix-400", bg: "bg-matrix-500/10", border: "border-matrix-500/20", hover: "hover:border-matrix-500/20", slug: "osint-reconnaissance" },
+  { name: "Web Security", icon: Shield, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", hover: "hover:border-blue-500/20", slug: "web-security" },
+  { name: "AI Cybersecurity", icon: Cpu, color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/20", hover: "hover:border-purple-500/20", slug: "ai-cybersecurity" },
+  { name: "Vulnerability Research", icon: AlertTriangle, color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/20", hover: "hover:border-orange-500/20", slug: "vulnerability-research" },
+  { name: "Attack Surface", icon: Network, color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", hover: "hover:border-cyan-500/20", slug: "attack-surface-analysis" }
 ];
 
 export default async function BlogPage() {
@@ -121,7 +121,7 @@ export default async function BlogPage() {
               {CATEGORIES.map((cat, idx) => {
                 const Icon = cat.icon;
                 return (
-                  <Link href={`/blog/category/${cat.slug}`} key={idx} className={`p-4 rounded-2xl bg-surface-900 border border-white/5 hover:${cat.border} transition-all group flex flex-col items-center text-center`}>
+                  <Link href={`/blog/category/${cat.slug}`} key={idx} className={`p-4 rounded-2xl bg-surface-900 border border-white/5 ${cat.hover} transition-all group flex flex-col items-center text-center`}>
                     <div className={`w-12 h-12 rounded-xl ${cat.bg} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
                       <Icon className={`w-6 h-6 ${cat.color}`} />
                     </div>
