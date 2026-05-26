@@ -4,7 +4,7 @@ import { client, blogListQuery, urlFor } from '@/utils/sanity';
 import { 
   Shield, Target, Terminal, Activity, Network, 
   Search, BookOpen, AlertTriangle, ChevronRight, 
-  Clock, CheckCircle2, Zap, Mail, Cpu
+  Clock, CheckCircle2, Zap, Mail, Cpu, Star
 } from 'lucide-react';
 import BlogClient from './BlogClient';
 
