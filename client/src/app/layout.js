@@ -2,12 +2,11 @@ import Layout from "@/components/Layout";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
-import { Inter, JetBrains_Mono, Orbitron, Rajdhani } from "next/font/google";
+import { Inter, JetBrains_Mono, Rajdhani } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-jetbrains" });
-const orbitron = Orbitron({ subsets: ["latin"], weight: ["700", "900"], display: "swap", variable: "--font-orbitron" });
 const rajdhani = Rajdhani({ subsets: ["latin"], weight: ["500", "600", "700"], display: "swap", variable: "--font-rajdhani" });
 
 export const metadata = {
@@ -44,7 +43,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`dark h-full antialiased ${inter.variable} ${jetbrains.variable} ${orbitron.variable} ${rajdhani.variable}`}>
+    <html lang="en" className={`dark h-full antialiased ${inter.variable} ${jetbrains.variable} ${rajdhani.variable}`}>
       <head>
         {/* Fonts are managed by next/font/google */}
 
