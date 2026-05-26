@@ -96,7 +96,7 @@ export default async function Page() {
             <span>Passive OSINT Engine Online</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 tracking-tight leading-tight">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-6 tracking-tight leading-tight">
             AI-Powered Cybersecurity <br className="hidden md:block"/> 
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#00e5ff]">
               & Threat Intelligence
