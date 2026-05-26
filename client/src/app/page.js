@@ -1,11 +1,12 @@
 import HomeSections from '@/components/HomeSections';
 import DynamicDashboardClient from '@/components/DynamicDashboardClient';
 import { client, homepageBlogQuery } from '@/utils/sanity';
-import { Shield, Target, Activity, Cpu } from 'lucide-react';
+import { Shield, Target, Activity, Cpu, MapPin, Network, Search, Terminal, Lock, Layers, Mail, CheckCircle2, Globe, Database, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 export const metadata = {
-  title: "Free Website Vulnerability Scanner & AI Security Analysis | ReconShield",
-  description: "Scan websites for vulnerabilities, SSL issues, DNS misconfigurations, open ports, security headers, and infrastructure exposure using ReconShield’s AI-powered cybersecurity scanner.",
+  title: "AI-Powered Cybersecurity & Threat Intelligence Platform | ReconShield",
+  description: "ReconShield is a free, passive OSINT cybersecurity platform. Scan websites, analyze infrastructure, and detect vulnerabilities instantly with our threat intelligence engine.",
   keywords: [
     "cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield",
     "free website scanner", "vulnerability scanner online", "DNS checker", "SSL checker", "IP reputation checker", "website security scan",
@@ -15,9 +16,9 @@ export const metadata = {
     canonical: 'https://reconshield.in',
   },
   openGraph: {
-    title: "Free Website Vulnerability Scanner & AI Security Analysis | ReconShield",
+    title: "AI-Powered Cybersecurity & Threat Intelligence Platform | ReconShield",
     siteName: "ReconShield",
-    description: "Scan websites for vulnerabilities, SSL issues, DNS misconfigurations, open ports, security headers, and infrastructure exposure using ReconShield’s AI-powered cybersecurity scanner.",
+    description: "Scan websites, analyze infrastructure, and detect vulnerabilities instantly with our threat intelligence engine.",
     url: 'https://reconshield.in',
     type: 'website',
   }
@@ -25,6 +26,16 @@ export const metadata = {
 
 export default async function Page() {
   const posts = await client.fetch(homepageBlogQuery);
+
+  const tools = [
+    { name: 'IP Lookup Tool', icon: MapPin, href: '/ip-scanner', desc: 'Trace IP addresses, detect VPNs/proxies, and check 50+ threat blocklists.' },
+    { name: 'DNS Lookup', icon: Network, href: '/dns-lookup', desc: 'Enumerate DNS records and analyze SPF/DMARC for email spoofing risks.' },
+    { name: 'Vulnerability Scanner', icon: Shield, href: '/vulnerability-scanner', desc: 'Scan websites passively for misconfigurations and exposed vulnerabilities.' },
+    { name: 'WHOIS Lookup', icon: Search, href: '/whois', desc: 'Identify domain ownership, registration dates, and infrastructure providers.' },
+    { name: 'Port Scanner', icon: Terminal, href: '/ports', desc: 'Detect exposed services, database ports, and unencrypted administrative interfaces.' },
+    { name: 'SSL Checker', icon: Lock, href: '/ssl-checker', desc: 'Analyze TLS certificates for expiration, cipher strength, and deprecated protocols.' },
+    { name: 'Security Headers', icon: Layers, href: '/security-headers', desc: 'Audit CSP, HSTS, and X-Frame-Options to prevent XSS and clickjacking.' },
+  ];
 
   return (
     <>
@@ -37,9 +48,9 @@ export default async function Page() {
               {
                 "@type": "WebApplication",
                 "@id": "https://reconshield.in/#software",
-                "name": "ReconShield Vulnerability Scanner",
+                "name": "ReconShield Threat Intelligence Platform",
                 "url": "https://reconshield.in",
-                "description": "Free passive website vulnerability scanner. Check DNS, SSL, open ports, IP reputation and security headers.",
+                "description": "Free passive website vulnerability scanner and OSINT platform.",
                 "applicationCategory": "SecurityApplication",
                 "operatingSystem": "Web",
                 "offers": {
@@ -67,326 +78,247 @@ export default async function Page() {
                     "item": "https://reconshield.in"
                   }
                 ]
-              },
-              {
-                "@type": "FAQPage",
-                "@id": "https://reconshield.in/#faq",
-                "mainEntity": [
-                  {
-                    "@type": "Question",
-                    "name": "Is website vulnerability scanning legal?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Yes, passive website vulnerability scanning is legal. ReconShield uses only passive reconnaissance techniques, collecting publicly available OSINT data without sending active payloads to the target infrastructure."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "What vulnerabilities can ReconShield detect?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "ReconShield detects exposed open ports, SSL/TLS misconfigurations, missing security headers (like HSTS and CSP), DNS vulnerabilities (missing DMARC/SPF), and poor IP reputation."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "What is passive reconnaissance?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Passive reconnaissance involves gathering information about a target system from public databases, DNS records, and third-party scanners without directly interacting with the target's servers."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "How often should websites be scanned?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Websites should be scanned continuously. The digital attack surface changes daily as new ports are opened, certificates expire, or DNS records are modified. Regular monitoring is essential."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "What are HTTP security headers?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "HTTP security headers are directives passed between the server and the browser to mitigate vulnerabilities like Cross-Site Scripting (XSS), Clickjacking, and packet sniffing."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "How does SSL scanning work?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Our SSL scanning analyzes the target's TLS configuration to ensure certificates are valid, not expired, and support strong cryptographic ciphers (e.g., TLS 1.2/1.3) while rejecting deprecated protocols."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "What is DNS enumeration?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "DNS enumeration is the process of locating all DNS records (A, MX, TXT, NS) for a domain to map out the infrastructure and identify security weaknesses like lack of email spoofing protection."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Can open ports expose websites to attacks?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Yes. Unnecessarily open ports (like database ports 3306 or unencrypted FTP 21) provide direct entry points for attackers to exploit vulnerable services."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "What is attack surface monitoring?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Attack surface monitoring is the continuous discovery, analysis, and management of an organization's digital footprint to identify and remediate exposed IT assets."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Is ReconShield free to use?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Yes, ReconShield is a completely free vulnerability scanning and cybersecurity utility platform designed to democratize access to security intelligence."
-                    }
-                  }
-                ]
               }
             ]
           })
         }}
       />
-      <div className="sr-only">
-        <h1>Free Website Security Scanner — Scan for Vulnerabilities Instantly</h1>
-        <p>
-          Advanced reconnaissance and threat intelligence at your fingertips. 
-          Scan websites, analyze IP threats, detect vulnerabilities, and monitor cyber risks in real time.
-        </p>
-        <ul>
-          <li>Vulnerability Scanning</li>
-          <li>DNS & Infrastructure Analysis</li>
-          <li>SSL/TLS Security Auditing</li>
-          <li>IP Reputation & Threat Intel</li>
-          <li>AI-Powered Risk Assessment</li>
-        </ul>
-      </div>
 
-      <DynamicDashboardClient />
-
-      <div className="text-center mt-4 mb-8">
-        <a href="/ip-scanner" className="text-[#00ff88] hover:underline text-sm font-medium">
-          Also check our Free IP Reputation Scanner →
-        </a>
-      </div>
-
-      <section className="max-w-[1000px] mx-auto px-6 py-16 animate-fade-in text-[#94a3b8] prose prose-invert max-w-none prose-p:leading-relaxed prose-h2:text-white prose-h2:font-bold prose-h2:text-2xl prose-h3:text-white prose-h3:font-semibold prose-h3:text-xl">
-        <h2 className="mb-6 border-b border-[#1a2332] pb-4">The Ultimate Website Vulnerability Scanner & Cybersecurity Platform</h2>
+      {/* 1. Hero Section */}
+      <section className="relative pt-24 pb-32 overflow-hidden border-b border-white/5">
+        <div className="absolute inset-0 bg-[#0a0d14] -z-20" />
+        <div className="absolute inset-0 bg-[url('/matrix-bg.png')] bg-repeat opacity-5 -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full bg-[#00ff88]/5 blur-[120px] rounded-full pointer-events-none -z-10" />
         
-        <p className="mb-6">
-          In an era of relentless cyber threats, maintaining visibility over your <strong>digital footprint</strong> is non-negotiable. Organizations frequently leave critical infrastructure exposed due to misconfigurations, expired certificates, or shadow IT. ReconShield serves as a professional-grade, AI-powered <strong>website vulnerability scanner</strong> engineered to conduct exhaustive <strong>attack surface analysis</strong> without alerting the target. Through advanced <strong>passive reconnaissance</strong>, our platform aggregates critical intelligence on your endpoints, empowering security teams to achieve a fortified <strong>cybersecurity posture</strong>.
-        </p>
-
-        <h3 className="mt-12 mb-4">What Is Website Vulnerability Scanning?</h3>
-        <p className="mb-6">
-          Website vulnerability scanning is the automated process of evaluating web applications, networks, and hosting environments to uncover security loopholes. It simulates the initial phases of a cyberattack—specifically <strong>endpoint discovery</strong> and <strong>reconnaissance automation</strong>—to identify misconfigured assets before malicious actors can exploit them. ReconShield goes beyond traditional scanning by offering continuous <strong>asset intelligence</strong> and structured remediation steps.
-        </p>
-
-        <h3 className="mt-12 mb-4">How ReconShield Scans Websites (Passive Reconnaissance)</h3>
-        <p className="mb-6">
-          Unlike aggressive vulnerability scanners that send malicious payloads or disruptive network packets, ReconShield operates strictly via <strong>passive scanning</strong>. We aggregate data from global DNS registries, public threat intelligence databases, certificate transparency logs, and OSINT (Open Source Intelligence) providers. This allows us to perform deep <strong>infrastructure analysis</strong> and <strong>subdomain enumeration</strong> with zero impact on the target's uptime or bandwidth.
-        </p>
-
-        <h3 className="mt-12 mb-4">Why Attack Surface Monitoring Matters</h3>
-        <p className="mb-6">
-          An organization's attack surface consists of all internet-facing hardware, software, and cloud assets. As businesses scale, their attack surface naturally expands, often introducing unmanaged or forgotten endpoints. Continuous <strong>attack surface monitoring</strong> ensures that newly exposed APIs, sudden DNS alterations, or vulnerable <strong>exposed services</strong> are detected in real-time. This proactive approach shifts the security paradigm from reactive incident response to preemptive risk management.
-        </p>
-
-        <h3 className="mt-12 mb-4">SSL/TLS Misconfigurations Explained</h3>
-        <p className="mb-6">
-          A secure <strong>TLS configuration</strong> is the backbone of encrypted web traffic. ReconShield's SSL checker meticulously audits your certificates. We verify expiration dates, assess the strength of cryptographic ciphers, and check for the presence of outdated protocols like SSLv3 or TLS 1.0. Proper SSL/TLS security ensures that sensitive user data remains protected against Man-in-the-Middle (MitM) attacks and packet sniffing.
-        </p>
-
-        <h3 className="mt-12 mb-4">DNS Exposure Risks & Security</h3>
-        <p className="mb-6">
-          DNS acts as the phonebook of the internet, but misconfigured records can lead to catastrophic breaches. Our DNS scanner evaluates A, AAAA, MX, TXT, and NS records to uncover vulnerabilities such as subdomain takeover risks and email spoofing. By validating the presence of SPF, DKIM, and DMARC records, we help organizations secure their email infrastructure against phishing campaigns and domain impersonation.
-        </p>
-
-        <h3 className="mt-12 mb-4">Security Header Analysis</h3>
-        <p className="mb-6">
-          <strong>HTTP header analysis</strong> is critical for modern web application security. Security headers instruct the browser on how to behave when interacting with your site. ReconShield audits for essential headers including Content-Security-Policy (CSP) to prevent Cross-Site Scripting (XSS), Strict-Transport-Security (HSTS) to enforce HTTPS, and X-Frame-Options to mitigate clickjacking attacks. Missing these headers severely weakens your client-side security architecture.
-        </p>
-
-        <h3 className="mt-12 mb-4">Open Port Detection & Exposed Services</h3>
-        <p className="mb-6">
-          Every open port is a potential gateway into your network. Our port scanning technology cross-references your IP address to identify unnecessarily <strong>exposed services</strong> such as SSH (Port 22), MySQL (Port 3306), or RDP (Port 3389). Leaving administrative interfaces accessible to the public internet is one of the most common vectors for ransomware operators and initial access brokers.
-        </p>
-
-        <h3 className="mt-12 mb-4">Threat Intelligence & Risk Scoring</h3>
-        <p className="mb-6">
-          Raw data without context leads to alert fatigue. ReconShield integrates proprietary AI models with global threat intelligence feeds to assign a clear, actionable Risk Score to your infrastructure. We evaluate your assets against 50+ global blocklists, providing instant insights into your IP reputation and identifying if your infrastructure is part of a known botnet or malware distribution network.
-        </p>
-
-        {/* Detailed Example Scans */}
-        <div className="bg-[#0d1117] border border-[#1a2332] p-6 rounded-lg my-12 shadow-lg">
-          <h3 className="text-white mb-4 mt-0 border-b border-[#1a2332] pb-4">Example Scan Results</h3>
-          <p className="mb-6 text-sm">Below is a detailed representation of what a ReconShield cybersecurity analysis report looks like.</p>
+        <div className="max-w-[1200px] mx-auto px-6 relative z-10 text-center animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00ff88]/10 border border-[#00ff88]/20 text-[#00ff88] text-xs font-mono uppercase tracking-widest mb-8">
+            <Activity className="w-4 h-4" />
+            <span>Passive OSINT Engine Online</span>
+          </div>
           
-          <div className="space-y-6 text-sm">
-            {/* DNS Results */}
-            <div className="bg-[#0a0d14] p-4 rounded border border-[#1a2332]">
-              <div className="flex justify-between mb-2">
-                <span className="font-bold text-white">DNS Security Analysis</span>
-                <span className="text-[#00ff88] font-mono">PASS</span>
-              </div>
-              <p className="text-gray-400 mb-2">DMARC policy is set to 'reject'. SPF records strictly enforce approved mail servers.</p>
-              <div className="bg-black/50 p-2 rounded font-mono text-xs text-gray-500">v=DMARC1; p=reject; rua=mailto:dmarc@domain.com;</div>
-            </div>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 tracking-tight leading-tight">
+            AI-Powered Cybersecurity <br className="hidden md:block"/> 
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#00e5ff]">
+              & Threat Intelligence
+            </span> Platform
+          </h1>
+          
+          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed">
+            Scan websites, analyze infrastructure, and detect vulnerabilities instantly with our free, enterprise-grade passive reconnaissance engine. Protect your attack surface before adversaries strike.
+          </p>
 
-            {/* SSL Results */}
-            <div className="bg-[#0a0d14] p-4 rounded border border-[#1a2332]">
-              <div className="flex justify-between mb-2">
-                <span className="font-bold text-white">SSL/TLS Configuration</span>
-                <span className="text-amber-400 font-mono">WARNING</span>
-              </div>
-              <p className="text-gray-400 mb-2">Certificate is valid, but server supports deprecated TLS 1.1 protocol.</p>
-              <p className="text-xs text-amber-500">Remediation: Disable TLS 1.0 and TLS 1.1 in your web server configuration (Nginx/Apache).</p>
-            </div>
+          <div className="max-w-3xl mx-auto bg-surface-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4 shadow-2xl">
+            <DynamicDashboardClient />
+          </div>
 
-            {/* Port Results */}
-            <div className="bg-[#1a0f14] p-4 rounded border border-red-900/30">
-              <div className="flex justify-between mb-2">
-                <span className="font-bold text-white">Open Port Detection</span>
-                <span className="text-red-400 font-mono">CRITICAL</span>
-              </div>
-              <p className="text-gray-400 mb-2">Database port 5432 (PostgreSQL) is exposed to the public internet.</p>
-              <p className="text-xs text-red-400">Remediation: Restrict access via firewall to internal IPs or trusted VPN subnets only.</p>
-            </div>
-
-            {/* Header Results */}
-            <div className="bg-[#0a0d14] p-4 rounded border border-[#1a2332]">
-              <div className="flex justify-between mb-2">
-                <span className="font-bold text-white">HTTP Security Headers</span>
-                <span className="text-amber-400 font-mono">WARNING</span>
-              </div>
-              <p className="text-gray-400 mb-2">Missing Content-Security-Policy (CSP) header.</p>
-              <p className="text-xs text-amber-500">Remediation: Implement a strict CSP to prevent Cross-Site Scripting (XSS) attacks.</p>
-            </div>
-          </div>
-        </div>
-
-        <h2 className="mt-16 mb-6 border-b border-[#1a2332] pb-4">Frequently Asked Questions</h2>
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">Is website vulnerability scanning legal?</h3>
-            <p>Yes, passive website vulnerability scanning is legal. ReconShield uses only passive reconnaissance techniques, collecting publicly available OSINT data without sending active payloads to the target infrastructure.</p>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">What vulnerabilities can ReconShield detect?</h3>
-            <p>ReconShield detects exposed open ports, SSL/TLS misconfigurations, missing security headers (like HSTS and CSP), DNS vulnerabilities (missing DMARC/SPF), and poor IP reputation.</p>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">What is passive reconnaissance?</h3>
-            <p>Passive reconnaissance involves gathering information about a target system from public databases, DNS records, and third-party scanners without directly interacting with the target's servers.</p>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">How often should websites be scanned?</h3>
-            <p>Websites should be scanned continuously. The digital attack surface changes daily as new ports are opened, certificates expire, or DNS records are modified. Regular monitoring is essential.</p>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">What are HTTP security headers?</h3>
-            <p>HTTP security headers are directives passed between the server and the browser to mitigate vulnerabilities like Cross-Site Scripting (XSS), Clickjacking, and packet sniffing.</p>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">How does SSL scanning work?</h3>
-            <p>Our SSL scanning analyzes the target's TLS configuration to ensure certificates are valid, not expired, and support strong cryptographic ciphers (e.g., TLS 1.2/1.3) while rejecting deprecated protocols.</p>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">What is DNS enumeration?</h3>
-            <p>DNS enumeration is the process of locating all DNS records (A, MX, TXT, NS) for a domain to map out the infrastructure and identify security weaknesses like lack of email spoofing protection.</p>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">Can open ports expose websites to attacks?</h3>
-            <p>Yes. Unnecessarily open ports (like database ports 3306 or unencrypted FTP 21) provide direct entry points for attackers to exploit vulnerable services.</p>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">What is attack surface monitoring?</h3>
-            <p>Attack surface monitoring is the continuous discovery, analysis, and management of an organization's digital footprint to identify and remediate exposed IT assets.</p>
-          </div>
-          <div>
-            <h3 className="text-white font-semibold mb-2 text-lg">Is ReconShield free to use?</h3>
-            <p>Yes, ReconShield is a completely free vulnerability scanning and cybersecurity utility platform designed to democratize access to security intelligence.</p>
+          <div className="mt-12 flex items-center justify-center gap-8 text-sm font-mono text-gray-500 uppercase tracking-widest">
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> 100% Passive</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> No Paywalls</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> Real-Time OSINT</div>
           </div>
         </div>
       </section>
-      <HomeSections posts={posts || []} />
 
-      {/* Highly visible & crawlable About, Mission, & Ethics grid for Google AdSense compliance */}
-      <section className="max-w-[1200px] mx-auto px-6 pb-24 animate-fade-in">
-        <div className="flex items-center gap-4 mb-12">
-          <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold">// ABOUT & MISSION</h2>
-          <div className="h-[1px] flex-1 bg-[#1a2332]" />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Mission Card */}
-          <div className="p-8 rounded-[6px] bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8822] transition-all flex flex-col justify-between shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-[#00ff88]/5 border border-[#00ff88]/15 flex items-center justify-center">
-                  <Target className="w-5 h-5 text-[#00ff88]" />
-                </div>
-                <h3 className="font-display text-base font-bold text-white uppercase tracking-wider">Our Core Mission</h3>
-              </div>
-              <p className="text-[12px] text-[#94a3b8] leading-[1.8] font-sans font-light">
-                ReconShield is a next-generation cybersecurity platform and Open Source Intelligence (OSINT) research hub engineered to provide unparalleled visibility into the digital attack surface. In an era where cyber threats are becoming increasingly systemic and complex, securing digital assets requires proactive, continuous vigilance. Our mission is to democratize advanced security analytics by offering professional-grade, automated passive scanning tools to independent developers, security researchers, and small businesses. We believe that security begins with comprehensive visibility, and by providing open access to sophisticated domain, DNS, and IP intelligence tools, we help researchers expose critical vulnerabilities and misconfigurations before adversaries can exploit them.
-              </p>
-            </div>
-            <div className="mt-8 border-t border-[#1a2332]/50 pt-4 flex items-center gap-2 text-[9px] font-mono text-[#8a9bb0] uppercase tracking-widest">
-              <Activity className="w-3.5 h-3.5 text-[#00ff88]/60" />
-              <span>Democratizing Security</span>
-            </div>
+      {/* 2. Threat Intelligence Tools Grid */}
+      <section className="py-24 bg-[#05080f] border-b border-white/5 relative">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Enterprise Threat Intelligence Tools</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">Access our suite of open-source intelligence utilities to map infrastructure, uncover hidden endpoints, and secure your digital footprint.</p>
           </div>
-
-          {/* Ethics Card */}
-          <div className="p-8 rounded-[6px] bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8822] transition-all flex flex-col justify-between shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-[#00ff88]/5 border border-[#00ff88]/15 flex items-center justify-center">
-                  <Shield className="w-5 h-5 text-[#00ff88]" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {tools.map((tool, i) => (
+              <Link href={tool.href} key={i} className="group p-6 bg-surface-900/40 border border-white/5 hover:border-[#00ff88]/30 rounded-2xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,136,0.1)] flex flex-col h-full">
+                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <tool.icon className="w-6 h-6 text-[#00ff88]" />
                 </div>
-                <h3 className="font-display text-base font-bold text-white uppercase tracking-wider">Ethical Standards</h3>
-              </div>
-              <p className="text-[12px] text-[#94a3b8] leading-[1.8] font-sans font-light">
-                As pioneers in open-access intelligence, ReconShield operates under a strict ethical framework that prioritizes internet safety, compliance, and responsible security research. All diagnostic scans performed through our interface are 100% passive. We strictly query public global infrastructure registries, security headers, verified blocklists, and open database APIs. Our platform never sends active payloads, intrusive requests, or hostile traffic directly to the target systems. This passive methodology ensures that our users can conduct thorough educational analysis and attack surface mapping without violating legal boundaries or disrupting target business operations. We stand as a safe harbor for ethical hacking, providing the high-fidelity telemetry needed to audit DNS records, SSL/TLS certificates, open ports, and mail server health responsibly.
-              </p>
-            </div>
-            <div className="mt-8 border-t border-[#1a2332]/50 pt-4 flex items-center gap-2 text-[9px] font-mono text-[#8a9bb0] uppercase tracking-widest">
-              <Shield className="w-3.5 h-3.5 text-[#00ff88]/60" />
-              <span>100% Passive Scanning</span>
-            </div>
-          </div>
-
-          {/* Analytics Card */}
-          <div className="p-8 rounded-[6px] bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8822] transition-all flex flex-col justify-between shadow-[0_4px_30px_rgba(0,0,0,0.3)]">
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-[#00ff88]/5 border border-[#00ff88]/15 flex items-center justify-center">
-                  <Cpu className="w-5 h-5 text-[#00ff88]" />
+                <h3 className="text-lg font-bold text-white mb-3 group-hover:text-[#00ff88] transition-colors">{tool.name}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed mb-6 flex-1">{tool.desc}</p>
+                <div className="font-mono text-xs text-matrix-400 flex items-center gap-2 uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+                  Launch Tool <ArrowRight className="w-3 h-3" />
                 </div>
-                <h3 className="font-display text-base font-bold text-white uppercase tracking-wider">AI Security Insights</h3>
-              </div>
-              <p className="text-[12px] text-[#94a3b8] leading-[1.8] font-sans font-light">
-                What distinguishes ReconShield is our integration of advanced AI analytics with raw network telemetry. Traditional scanners output overwhelming walls of cryptographic and infrastructure data that are difficult to interpret. ReconShield translates complex port scans, SSL certificate logs, and header configurations into clear, structured, and actionable risk assessments. By presenting a unified risk score alongside step-by-step mitigation guidelines, we bridge the gap between technical data and real-world defense. In addition to our real-time scanner, our Threat Intelligence Blog offers expert analysis, security advisories, and investigative reports on global malware campaigns and supply-chain vulnerabilities, keeping our community informed and prepared against the threats of tomorrow.
-              </p>
-            </div>
-            <div className="mt-8 border-t border-[#1a2332]/50 pt-4 flex items-center gap-2 text-[9px] font-mono text-[#8a9bb0] uppercase tracking-widest">
-              <Cpu className="w-3.5 h-3.5 text-[#00ff88]/60" />
-              <span>AI-Driven Interpretation</span>
-            </div>
+              </Link>
+            ))}
           </div>
         </div>
+      </section>
+
+      {/* 3. Website Vulnerability Scanner & 4. OSINT Research */}
+      <section className="py-24 bg-[#0a0d14] relative">
+        <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-widest mb-6">
+              <Globe className="w-4 h-4" />
+              <span>Attack Surface Mapping</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6 leading-tight">
+              Website Vulnerability <br/> Scanner & OSINT Engine
+            </h2>
+            <p className="text-gray-400 mb-8 leading-relaxed">
+              Traditional scanners rely on aggressive payloads that risk downtime. ReconShield utilizes strict <strong>passive reconnaissance</strong> and OSINT methodologies to map out your digital infrastructure stealthily. We analyze DNS propagation, perform deep domain intelligence, and uncover forgotten attack surfaces.
+            </p>
+            <ul className="space-y-4 mb-8">
+              {['Real-time threat detection and vulnerability analysis', 'Zero-impact passive reconnaissance scanning', 'Continuous attack surface monitoring and discovery', 'Domain intelligence and shadow IT exposure tracking'].map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-[#00ff88]/10 flex items-center justify-center mt-0.5 shrink-0">
+                    <CheckCircle2 className="w-3 h-3 text-[#00ff88]" />
+                  </div>
+                  <span className="text-gray-300">{item}</span>
+                </li>
+              ))}
+            </ul>
+            <Link href="/vulnerability-scanner" className="px-6 py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl font-medium transition-colors inline-flex items-center gap-2">
+              Learn about our Scanner <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#00ff88]/10 to-blue-500/10 rounded-3xl blur-2xl" />
+            <div className="relative bg-[#0d1117] border border-white/10 rounded-3xl p-8 shadow-2xl">
+              <div className="flex items-center justify-between mb-8 border-b border-white/5 pb-4">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/50" />
+                </div>
+                <div className="font-mono text-xs text-gray-500">terminal@reconshield:~$</div>
+              </div>
+              <div className="font-mono text-sm space-y-4">
+                <p className="text-gray-400"><span className="text-blue-400">➜</span> <span className="text-white">reconshield</span> --target example.com --passive</p>
+                <p className="text-[#00ff88]">[+] Initializing OSINT modules...</p>
+                <p className="text-gray-400">[i] Resolving DNS infrastructure...</p>
+                <p className="text-amber-400">[!] Warning: SPF record uses soft-fail (~all)</p>
+                <p className="text-gray-400">[i] Verifying SSL/TLS certificates...</p>
+                <p className="text-[#00ff88]">[+] Certificate valid (TLS 1.3 supported)</p>
+                <p className="text-gray-400">[i] Cross-referencing 50+ threat databases...</p>
+                <p className="text-[#00ff88]">[+] IP reputation is clean. 0/54 blocklists.</p>
+                <p className="text-white mt-4">Scan complete. 1 vulnerability found. Risk Level: <span className="text-amber-400 font-bold">MEDIUM</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Security Analysis Platform & 7. AI Security Intelligence */}
+      <section className="py-24 bg-[#05080f] border-t border-b border-white/5 relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[400px] bg-blue-500/5 blur-[120px] rounded-full pointer-events-none" />
+        <div className="max-w-[1200px] mx-auto px-6 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">AI Security Intelligence Platform</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">We process raw network telemetry through advanced AI algorithms to generate human-readable cyber risk assessments and security monitoring protocols.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-[#0d1117] border border-[#1a2332] rounded-2xl p-8">
+              <Cpu className="w-8 h-8 text-blue-400 mb-6" />
+              <h3 className="text-xl font-bold text-white mb-4">AI Threat Analysis</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Raw data causes alert fatigue. Our engine translates complex port scans, SSL logs, and header configurations into actionable, intelligent scanning insights that prioritize critical risks.
+              </p>
+            </div>
+            <div className="bg-[#0d1117] border border-[#1a2332] rounded-2xl p-8">
+              <Activity className="w-8 h-8 text-[#00ff88] mb-6" />
+              <h3 className="text-xl font-bold text-white mb-4">Cyber Risk Assessment</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                Receive an aggregated Abuse Confidence Score based on our proprietary algorithms. We evaluate infrastructure against global threat feeds to determine your true organizational cyber risk.
+              </p>
+            </div>
+            <div className="bg-[#0d1117] border border-[#1a2332] rounded-2xl p-8">
+              <Database className="w-8 h-8 text-purple-400 mb-6" />
+              <h3 className="text-xl font-bold text-white mb-4">Security Monitoring</h3>
+              <p className="text-sm text-gray-400 leading-relaxed">
+                The attack surface changes daily. Continuous automated security insights ensure that newly exposed APIs, expired certificates, or DNS alterations are detected in real-time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. Trust & Authority Section (EEAT) */}
+      <section className="py-20 bg-[#0a0d14]">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="bg-gradient-to-r from-surface-900 to-[#0d1117] border border-white/10 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-12 shadow-2xl">
+            <div className="flex-1 space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-gray-300 text-xs font-mono uppercase tracking-widest">
+                <Shield className="w-4 h-4" />
+                <span>Security-First Foundation</span>
+              </div>
+              <h2 className="text-3xl font-display font-bold text-white">Built for Security Researchers & Ethical Hackers</h2>
+              <p className="text-gray-400 leading-relaxed">
+                ReconShield operates under a strict ethical framework prioritizing internet safety and responsible research. Built by <strong>Surendra Reddy</strong>, a dedicated cybersecurity engineer focused on vulnerability intelligence and OSINT. Our platform serves as a safe harbor for mapping infrastructure stealthily without violating legal boundaries.
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-white/10">
+                <div>
+                  <div className="text-2xl font-bold text-white font-mono">1M+</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-widest mt-1">IPs Analyzed</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-white font-mono">50+</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-widest mt-1">Threat Feeds</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-white font-mono">100%</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-widest mt-1">Passive OSINT</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-[#00ff88] font-mono">Free</div>
+                  <div className="text-xs text-gray-500 uppercase tracking-widest mt-1">Platform</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Cybersecurity News & Research */}
+      {posts && posts.length > 0 && (
+        <section className="py-24 bg-[#05080f] border-t border-white/5">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
+              <div>
+                <h2 className="text-3xl font-display font-bold text-white mb-2">Cybersecurity News & Research</h2>
+                <p className="text-gray-400">Latest threat intelligence reports, CVE analysis, and AI security insights.</p>
+              </div>
+              <Link href="/blog" className="px-6 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white font-medium transition-colors text-sm shrink-0">
+                View All Research
+              </Link>
+            </div>
+            
+            <HomeSections posts={posts} />
+          </div>
+        </section>
+      )}
+
+      {/* 9. Newsletter Section */}
+      <section className="py-24 bg-[#0a0d14] relative overflow-hidden">
+        <div className="absolute inset-0 bg-matrix-400/5 -z-10" />
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <Mail className="w-12 h-12 text-[#00ff88] mx-auto mb-6" />
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Stay Ahead of Emerging Threats</h2>
+          <p className="text-gray-400 mb-8">Join thousands of security professionals receiving our weekly threat intelligence updates, zero-day security alerts, and exclusive research reports.</p>
+          
+          <form className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+            <input 
+              type="email" 
+              placeholder="Enter your email address" 
+              className="flex-1 bg-surface-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00ff88]/50 transition-colors"
+              required
+            />
+            <button type="submit" className="px-8 py-3 bg-[#00ff88] hover:bg-[#00cc6a] text-black font-bold rounded-xl transition-colors shrink-0">
+              Subscribe
+            </button>
+          </form>
+          <p className="text-xs text-gray-600 mt-4">We respect your privacy. No spam, just high-fidelity intelligence.</p>
+        </div>
+      </section>
+
+      {/* SEO Content Silo (Visible to crawlers, unobtrusive to users) */}
+      <section className="max-w-[1000px] mx-auto px-6 py-16 text-[#94a3b8] prose prose-invert max-w-none prose-p:leading-relaxed prose-a:text-[#00ff88]">
+        <h2 className="sr-only">Comprehensive Cybersecurity Intelligence Platform</h2>
+        <p className="text-sm border-t border-[#1a2332] pt-8">
+          ReconShield is the premier destination for network administrators, penetration testers, and security researchers seeking reliable <strong>passive reconnaissance</strong>. Unlike aggressive scanners that disrupt services, our <strong>website vulnerability scanner</strong> operates stealthily to compile <strong>domain intelligence</strong> and verify your infrastructure against global security standards. By evaluating your <strong>attack surface</strong> through our suite of utilities—including the <strong>IP lookup tool</strong>, <strong>DNS intelligence</strong> checker, and <strong>SSL checker</strong>—you gain critical foresight into misconfigurations before they are exploited. 
+        </p>
       </section>
     </>
   );

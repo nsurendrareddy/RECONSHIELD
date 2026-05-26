@@ -1,106 +1,104 @@
-import Link from 'next/link'
+import Link from 'next/link';
+import { Shield, FileText, AlertOctagon, ChevronRight } from 'lucide-react';
 
 export const metadata = {
-  title: "Terms of Use | ReconShield Engagement & Services",
-  description: "Read the Terms of Use for ReconShield. Review the rules for authorized use, data accuracy, and ethical security research on our intelligence platform.",
+  title: 'Terms of Service | ReconShield Cybersecurity',
+  description: 'Terms of Service and Acceptable Use Policy for ReconShield. Understand the rules for using our passive cybersecurity and threat intelligence tools.',
   alternates: {
     canonical: 'https://reconshield.in/terms',
-  },
-  openGraph: {
-    title: "Terms of Service | ReconShield Intelligence",
-    description: "Terms and conditions for using the ReconShield platform for security research and reconnaissance.",
-    url: 'https://reconshield.in/terms',
-    type: 'website',
   }
 };
 
-export default function Terms() {
+export default function TermsOfServicePage() {
+  const lastUpdated = "May 26, 2026";
+
   return (
-    <div className="animate-fade-in max-w-4xl mx-auto py-12">
-      <div className="glass-card p-10 md:p-16">
-        <div className="font-mono text-[10px] text-[#94a3b8] uppercase tracking-[2px] mb-8">
-          LAST UPDATED: MAY 10, 2026
-        </div>
-        <h1 className="text-3xl font-display font-bold text-white tracking-widest uppercase mb-10 border-b border-white/5 pb-6">
-          Terms of <span className="text-matrix-400">Engagement</span>
-        </h1>
+    <div className="bg-[#05080f] min-h-screen pb-24">
+      {/* Header */}
+      <section className="relative pt-24 pb-16 border-b border-white/5 overflow-hidden">
+        <div className="absolute inset-0 bg-[#0a0d14] -z-20" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[400px] bg-cyan-500/5 blur-[100px] rounded-full pointer-events-none -z-10" />
         
-        <div className="space-y-12 font-mono text-sm leading-relaxed text-gray-400">
-          <section>
-            <h3 className="text-white font-bold mb-4 flex items-center gap-3">
-              <span className="text-matrix-400">01.</span> AUTHORIZED USE
-            </h3>
-            <p>
-              ReconShield is a platform designed for authorized security testing and educational research. You agree to only use our tools against assets you own or have explicit written permission to test. Unauthorized scanning of third-party networks is strictly prohibited and may be illegal.
-            </p>
-          </section>
-
-          <section>
-            <h3 className="text-white font-bold mb-4 flex items-center gap-3">
-              <span className="text-matrix-400">02.</span> DATA ACCURACY
-            </h3>
-            <p>
-              While we strive for 100% precision, intelligence reports are generated based on passive data collection and third-party feeds. ReconShield makes no warranties regarding the absolute accuracy of threat ratings or vulnerability detections.
-            </p>
-          </section>
-
-          <section>
-            <h3 className="text-white font-bold mb-4 flex items-center gap-3">
-              <span className="text-matrix-400">03.</span> INTELLECTUAL PROPERTY
-            </h3>
-            <p>
-              The platform architecture, AI scanning algorithms, and user interface are the exclusive property of ReconShield. You may use generated reports for internal security purposes but may not resell our intelligence feeds without prior authorization.
-            </p>
-          </section>
-
-          <section>
-            <h3 className="text-white font-bold mb-4 flex items-center gap-3">
-              <span className="text-matrix-400">04.</span> TERMINATION
-            </h3>
-            <p>
-              We reserve the right to terminate access to any user found violating ethical hacking standards or using the platform to facilitate malicious activity.
-            </p>
-          </section>
-
-          <section>
-            <h3 className="text-white font-bold mb-4 flex items-center gap-3">
-              <span className="text-matrix-400">05.</span> GOVERNING LAW
-            </h3>
-            <p>
-              This agreement is governed by the laws of India. Any disputes shall be resolved under Indian jurisdiction.
-            </p>
-          </section>
-
-          <section>
-            <h3 className="text-white font-bold mb-4 flex items-center gap-3">
-              <span className="text-matrix-400">06.</span> ADVERTISING
-            </h3>
-            <p>
-              ReconShield displays third-party advertisements provided by Google AdSense. We do not personally select or endorse the products or services advertised, and we are not responsible for the content of these third-party ads. Users who wish to control the personalization of the ads they see can opt out or manage their preferences via Google Ad Settings.
-            </p>
-          </section>
-
-          <section>
-            <h3 className="text-white font-bold mb-4 flex items-center gap-3">
-              <span className="text-matrix-400">07.</span> USER CONDUCT
-            </h3>
-            <p>
-              ReconShield is strictly an educational platform built for defensive security research. You must not use our services to facilitate unauthorized access, launch denial-of-service attacks, or conduct any illegal activities. Any misuse of our platform to target systems without proper authorization will result in immediate termination of your access and potential reporting to relevant authorities.
-            </p>
-          </section>
-        </div>
-
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <Link href="/privacy" className="text-xs font-mono text-[#94a3b8] hover:text-[#00ff88] transition-colors uppercase tracking-[1px]">
-            For information on data handling, see our Privacy Policy →
-          </Link>
-          <div className="p-4 bg-matrix-400/5 border border-matrix-400/20 rounded-xl flex-1 md:flex-none">
-            <p className="text-[10px] text-matrix-400/70 font-mono text-center uppercase tracking-[0.3em]">
-              Ethical research is a shared responsibility.
-            </p>
+        <div className="max-w-[1000px] mx-auto px-6">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center shrink-0">
+              <FileText className="w-6 h-6 text-cyan-400" />
+            </div>
+            <div>
+              <h1 className="text-3xl md:text-5xl font-display font-bold text-white mb-2">Terms of Service</h1>
+              <p className="text-gray-400 font-mono text-xs uppercase tracking-widest">Last Updated: {lastUpdated}</p>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Content */}
+      <section className="max-w-[1000px] mx-auto px-6 pt-16">
+        <div className="prose prose-invert max-w-none prose-h2:text-2xl prose-h2:font-display prose-h2:text-white prose-h2:mt-12 prose-h2:mb-6 prose-p:text-gray-400 prose-p:leading-relaxed prose-a:text-cyan-400 prose-li:text-gray-400">
+          
+          <div className="p-6 bg-surface-900 border border-red-500/20 rounded-2xl mb-12">
+            <h3 className="text-white font-bold mb-2 flex items-center gap-2"><AlertOctagon className="w-5 h-5 text-red-500" /> Acceptable Use & Authorization</h3>
+            <p className="text-sm text-gray-400 m-0">
+              ReconShield provides passive reconnaissance tools for educational, research, and defensive cybersecurity purposes. By using this platform, you agree that you are authorized to scan the target domains or IPs, or that you are collecting intelligence from public, open-source records (OSINT).
+            </p>
+          </div>
+
+          <h2>1. Acceptance of Terms</h2>
+          <p>
+            By accessing and using ReconShield (https://reconshield.in), you accept and agree to be bound by the terms and provision of this agreement. In addition, when using these particular services, you shall be subject to any posted guidelines or rules applicable to such services. Any participation in this service will constitute acceptance of this agreement.
+          </p>
+
+          <h2>2. Permitted Use</h2>
+          <p>
+            ReconShield provides tools including, but not limited to, IP Scanners, DNS Lookups, Port Scanners, and Vulnerability Analyzers. You agree to use these tools strictly for:
+          </p>
+          <ul>
+            <li>Securing infrastructure you own or have explicit authorization to test.</li>
+            <li>Conducting legitimate, lawful cybersecurity research.</li>
+            <li>Gathering Open Source Intelligence (OSINT) from public registries.</li>
+          </ul>
+
+          <h2>3. Prohibited Activities</h2>
+          <p>You strictly agree NOT to use the ReconShield platform to:</p>
+          <ul>
+            <li>Conduct unauthorized active scanning, exploitation, or penetration testing against third-party networks.</li>
+            <li>Engage in malicious activities, including reconnaissance for immediate criminal exploit.</li>
+            <li>Automate requests via bots, scrapers, or scripts that bypass our rate limits and degrade the service for other users.</li>
+            <li>Attempt to reverse engineer, bypass, or exploit the ReconShield infrastructure itself.</li>
+          </ul>
+          <p>Violation of these rules will result in an immediate and permanent IP ban from the platform, and potential reporting to relevant authorities.</p>
+
+          <h2>4. Intellectual Property</h2>
+          <p>
+            The platform and its original content, features, and functionality are owned by ReconShield and are protected by international copyright, trademark, patent, trade secret, and other intellectual property or proprietary rights laws.
+          </p>
+
+          <h2>5. Third-Party Links & Data</h2>
+          <p>
+            Our tools aggregate data from third-party APIs, threat intelligence feeds, and public registries. ReconShield does not assume responsibility for the accuracy or reliability of third-party data. Our site may contain links to third-party websites or services that are not owned or controlled by ReconShield.
+          </p>
+
+          <h2>6. Limitation of Liability</h2>
+          <p>
+            In no event shall ReconShield, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.
+          </p>
+
+          <h2>7. Contact Information</h2>
+          <p>
+            If you have any questions about these Terms, please contact us at legal@reconshield.in.
+          </p>
+
+        </div>
+
+        <div className="mt-16 pt-8 border-t border-white/5 flex gap-4">
+          <Link href="/privacy" className="text-sm font-mono text-gray-500 hover:text-white transition-colors flex items-center gap-2">
+             Privacy Policy <ChevronRight className="w-4 h-4" />
+          </Link>
+          <Link href="/disclaimer" className="text-sm font-mono text-gray-500 hover:text-white transition-colors flex items-center gap-2">
+             Legal Disclaimer <ChevronRight className="w-4 h-4" />
+          </Link>
+        </div>
+      </section>
     </div>
-  )
+  );
 }

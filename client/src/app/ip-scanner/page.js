@@ -1,30 +1,58 @@
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Shield, MapPin, Globe, Server, Lock, Terminal, CheckCircle2, ChevronRight, Search, Activity, Target, Network } from 'lucide-react';
+
 const IpScannerClient = dynamic(() => import('@/components/ip-scanner/IpScannerClient'), {
   loading: () => <div className="min-h-[600px] animate-pulse bg-surface-900/50 rounded-3xl" />
 });
 
 export const metadata = {
-  title: "Free IP Address Lookup & Reputation Checker — ReconShield",
-  description: "Check any IP address for geolocation, ISP, abuse score, VPN/proxy detection, and blocklist presence. Free IP reputation checker — no login needed.",
-  keywords: ["ip scanner", "ip intelligence", "threat reputation", "asn lookup", "ip geolocation", "network reconnaissance"],
+  title: "Free IP Lookup & Reputation Checker | ReconShield",
+  description: "Trace any IP address instantly. Our IP lookup tool checks 50+ global blocklists, detects VPNs, and provides accurate geolocation and ASN data.",
+  keywords: [
+    "IP lookup tool", "IP reputation checker", "trace IP address", "IP geolocation checker", 
+    "ASN lookup", "malicious IP checker", "IP intelligence tool", "threat intelligence"
+  ],
   alternates: {
     canonical: 'https://reconshield.in/ip-scanner',
   },
   openGraph: {
-    title: "Free IP Address Lookup & Reputation Checker — ReconShield",
-    description: "Check any IP address for geolocation, ISP, abuse score, VPN/proxy detection, and blocklist presence. Free IP reputation checker — no login needed.",
+    title: "Free IP Lookup & Reputation Checker",
+    description: "Trace any IP address instantly. Our IP lookup tool checks 50+ global blocklists, detects VPNs, and provides accurate geolocation and ASN data.",
     url: 'https://reconshield.in/ip-scanner',
-    type: 'website',
+    type: 'article',
+    images: [{ url: 'https://reconshield.in/og-ip-scanner.png' }]
   }
 };
 
-export default function Page() {
+export default function IpScannerPage() {
+  const faqs = [
+    {
+      q: "What is an IP reputation checker?",
+      a: "An IP reputation checker analyzes an IP address against dozens of global threat intelligence feeds and blocklists to determine if it has been involved in malicious activities like spamming, DDoS attacks, or malware distribution."
+    },
+    {
+      q: "How accurate is the IP geolocation checker?",
+      a: "Our IP geolocation checker aggregates data from top-tier regional internet registries (RIRs) and ISP routing databases to provide city-level accuracy for most public IP addresses. However, VPNs or proxies can mask true locations."
+    },
+    {
+      q: "Can this tool trace an IP address to a specific person?",
+      a: "No. Tracing an IP address publicly will only reveal the ISP (Internet Service Provider), ASN, and general geographic location (city/state). Identifying a specific individual requires a legal subpoena to the ISP."
+    },
+    {
+      q: "What does an Autonomous System Number (ASN) lookup tell me?",
+      a: "An ASN lookup reveals the overarching network organization that owns or routes the IP address. For example, it helps you identify if traffic is coming from a residential ISP (like Comcast) or a commercial cloud provider (like AWS or DigitalOcean)."
+    },
+    {
+      q: "How does the malicious IP checker detect VPNs and Proxies?",
+      a: "The tool cross-references the target IP against known datacenter subnets, Tor exit nodes, and commercial VPN provider IP ranges to determine if the user is attempting to mask their true identity."
+    }
+  ];
+
   return (
     <>
-      {/* 
-          SERVER-RENDERED SEO CONTENT
-          Visible to Google even before JavaScript executes.
-      */}
+      {/* Schemas */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -34,222 +62,248 @@ export default function Page() {
               {
                 "@type": "WebApplication",
                 "@id": "https://reconshield.in/ip-scanner#software",
-                "name": "ReconShield IP Intelligence Scanner",
+                "name": "ReconShield Free IP Lookup & Reputation Checker",
                 "url": "https://reconshield.in/ip-scanner",
-                "description": "Check any IP address for geolocation, ISP, abuse score, VPN/proxy detection, and blocklist presence.",
+                "description": "Enterprise-grade IP intelligence tool for geolocation, VPN detection, and threat reputation.",
                 "applicationCategory": "SecurityApplication",
                 "operatingSystem": "Web",
-                "offers": {
-                  "@type": "Offer",
-                  "price": "0",
-                  "priceCurrency": "USD"
-                }
+                "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
               },
               {
                 "@type": "BreadcrumbList",
                 "@id": "https://reconshield.in/ip-scanner#breadcrumb",
                 "itemListElement": [
-                  {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "https://reconshield.in"
-                  },
-                  {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "IP Scanner",
-                    "item": "https://reconshield.in/ip-scanner"
-                  }
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://reconshield.in" },
+                  { "@type": "ListItem", "position": 2, "name": "Tools", "item": "https://reconshield.in/tools" },
+                  { "@type": "ListItem", "position": 3, "name": "IP Scanner", "item": "https://reconshield.in/ip-scanner" }
                 ]
               },
               {
                 "@type": "FAQPage",
                 "@id": "https://reconshield.in/ip-scanner#faq",
-                "mainEntity": [
-                  {
-                    "@type": "Question",
-                    "name": "Is this IP Scanner completely passive?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Yes. ReconShield operates strictly through passive reconnaissance. We query our own threat intelligence aggregators, public registries, and DNS records without alerting the target IP."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "How accurate is the IP Geolocation data?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Our geolocation engine aggregates data from multiple top-tier providers to ensure city-level accuracy for most public IP addresses."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "What does an Abuse Confidence Score mean?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "The Abuse Confidence Score is an aggregated metric out of 100 that indicates how likely an IP address is engaging in malicious activity."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Can I check if an IP is on a blacklist?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Yes. ReconShield checks your IP against 50+ global blocklists including Spamhaus, AbuseIPDB, and others in real-time."
-                    }
-                  },
-                  {
-                    "@type": "Question",
-                    "name": "Can I check if an IP is a VPN or proxy?",
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": "Yes. Our scanner detects VPN providers, proxy servers, and Tor exit nodes automatically."
-                    }
-                  }
-                ]
+                "mainEntity": faqs.map(faq => ({
+                  "@type": "Question",
+                  "name": faq.q,
+                  "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+                }))
               }
             ]
           })
         }}
       />
-      <div className="sr-only">
-        <h1>Free IP Address Lookup — Check Reputation, Geolocation & Threats</h1>
-        <p>
-          ReconShield's free IP checker lets you instantly look up any IP address or domain. Get real-time data on ISP, country, city, abuse confidence score, VPN/proxy detection, Tor exit node status, and presence on 50+ global threat blocklists.
-        </p>
-        <h2>Features of our IP Scanner</h2>
-        <ul>
-          <li>Real-time ASN and ISP lookups</li>
-          <li>Geolocation mapping and timezone analysis</li>
-          <li>Global threat reputation scoring against 50+ blocklists</li>
-          <li>Proxy, VPN, and Tor exit node detection</li>
-          <li>Reverse DNS footprinting</li>
-        </ul>
-      </div>
 
-      {/* Prominent Legal Disclaimer Badge */}
-      <div className="max-w-4xl mx-auto px-4 pt-8">
-        <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 flex flex-col sm:flex-row items-center gap-3 text-[10px] sm:text-xs font-mono text-amber-500 mb-8 shadow-sm">
-          <div className="flex items-center gap-1.5 shrink-0 uppercase font-bold tracking-wider">
-            <span className="text-[14px]">⚠️</span> LEGAL DISCLAIMER:
+      {/* 1. Hero Section */}
+      <section className="relative pt-24 pb-20 overflow-hidden border-b border-white/5">
+        <div className="absolute inset-0 bg-[#0a0d14] -z-20" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full bg-[#00ff88]/5 blur-[100px] rounded-full pointer-events-none -z-10" />
+        
+        <div className="max-w-[1200px] mx-auto px-6 relative z-10 text-center animate-fade-in-up">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-900 border border-white/10 text-gray-400 text-xs font-mono uppercase tracking-widest mb-6 shadow-sm">
+            <Search className="w-4 h-4 text-[#00ff88]" />
+            <span>Passive Reconnaissance Module</span>
           </div>
-          <p className="flex-1 leading-relaxed font-sans text-gray-400">
-            ReconShield is intended for authorized security research and educational purposes only. Unauthorized scanning is illegal.
-            <a href="/disclaimer" className="text-amber-500 underline ml-1.5 hover:text-amber-400 font-mono text-[10px]">View Policy</a>
-          </p>
-        </div>
-      </div>
-
-      <IpScannerClient />
-      
-      <div className="text-center mt-4 mb-8">
-        <a href="/" className="text-[#00ff88] hover:underline text-sm font-medium">
-          Also scan full websites for vulnerabilities →
-        </a>
-      </div>
-      
-      {/* Comprehensive SEO content for better indexing & preventing canonical duplicate issues */}
-      <div className="max-w-4xl mx-auto px-4 pb-20 prose prose-invert prose-p:text-gray-400 prose-a:text-[#00ff88]">
-        <div className="mt-16 border-t border-white/5 pt-12">
-          <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">
-            About IP Intelligence Reconnaissance
-          </h2>
-          <p className="font-mono text-sm leading-relaxed mb-6">
-            IP intelligence is the critical first step in any modern security investigation. By gathering actionable data about an IP address, security researchers can understand a target's origin, hosting provider reputation, and associated cyber risks. Our free, advanced IP scanner combines exact <strong>geolocation intelligence</strong>, Autonomous System Number (<strong>ASN lookup</strong>) intelligence, and cross-referenced <strong>IP reputation checker</strong> databases to provide a 360-degree view of any network endpoint on the internet.
-          </p>
-          <p className="font-mono text-sm leading-relaxed mb-8">
-            Whether you are analyzing suspicious traffic in your server logs, verifying the authenticity of an email sender, or mapping out a bug bounty target, ReconShield's passive footprinting ensures you get maximum visibility without alerting the target infrastructure. Use our tool as a reliable <strong>IP scanner</strong> and <strong>IP intelligence tool</strong>.
-          </p>
-        </div>
-
-        {/* Educational Breakdown */}
-        <div className="mt-12">
-          <h2 className="text-xl font-display font-bold text-white mb-6 uppercase tracking-wider">Understanding IP Intelligence Data</h2>
           
-          <h3 className="text-white font-bold mb-2">What is an ASN Lookup?</h3>
-          <p className="mb-6 text-sm">An Autonomous System Number (ASN) identifies the network provider routing the IP address. Knowing the ASN helps you determine if an IP belongs to a residential ISP (like Comcast), a cloud provider (like AWS or DigitalOcean), or a known bulletproof hosting provider used by cybercriminals.</p>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
+            Free <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-emerald-400">IP Lookup</span> & Reputation Checker
+          </h1>
+          
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+            Trace any IP address instantly with our enterprise-grade <strong>IP intelligence tool</strong>. Detect VPNs, map geolocation, verify ASN routing, and check IP reputation against 50+ global threat blocklists.
+          </p>
 
-          <h3 className="text-white font-bold mb-2">What is an IP Reputation Checker?</h3>
-          <p className="mb-6 text-sm">IP reputation relies on historical behavior. We cross-reference the target against 50+ global threat blocklists (such as Spamhaus and AbuseIPDB). If an IP has recently engaged in phishing, spamming, or brute-force attacks, our scanner flags it with a high Abuse Confidence Score.</p>
+          <div className="max-w-4xl mx-auto mb-12">
+            {/* The actual Client Component doing the heavy lifting */}
+            <IpScannerClient />
+          </div>
 
-          <h3 className="text-white font-bold mb-2">What is a Reverse DNS Lookup (PTR)?</h3>
-          <p className="mb-6 text-sm">A reverse DNS lookup translates an IP address back into its associated hostname. This is critical for verifying mail server authenticity (e.g., confirming that an IP actually belongs to Google or Microsoft) and identifying the core infrastructure of a target.</p>
-
-          <h3 className="text-white font-bold mb-2">Why is VPN/Proxy Detection Important?</h3>
-          <p className="mb-6 text-sm">Attackers rarely use their real IP addresses. Our scanner performs deep <strong>VPN/proxy detection</strong> to identify if the traffic originates from a commercial VPN, an open proxy, or the Tor anonymity network. This context is vital for fraud prevention and incident response.</p>
-        </div>
-
-        {/* Example Scan Report */}
-        <div className="bg-[#0d1117] border border-[#1a2332] p-6 rounded-lg my-12 shadow-lg">
-          <h3 className="text-[#00ff88] mb-4 mt-0 font-mono text-sm uppercase tracking-wider">Example IP Scan Report</h3>
-          <div className="text-sm font-mono space-y-3">
-            <div className="flex justify-between border-b border-[#1a2332] pb-2">
-              <span className="text-gray-500">Target IP</span>
-              <span className="text-white">198.51.100.42</span>
-            </div>
-            <div className="flex justify-between border-b border-[#1a2332] pb-2">
-              <span className="text-gray-500">ISP / ASN</span>
-              <span className="text-white">AS15169 (Google LLC)</span>
-            </div>
-            <div className="flex justify-between border-b border-[#1a2332] pb-2">
-              <span className="text-gray-500">Geolocation</span>
-              <span className="text-white">Mountain View, US 🇺🇸</span>
-            </div>
-            <div className="flex justify-between border-b border-[#1a2332] pb-2">
-              <span className="text-gray-500">Reverse DNS</span>
-              <span className="text-white">dns.google</span>
-            </div>
-            <div className="flex justify-between pb-2">
-              <span className="text-gray-500">Threat Flags</span>
-              <span className="text-[#00ff88]">Clean (0/54 Blocklists)</span>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-gray-500 uppercase tracking-widest">
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> 50+ Blocklists</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> VPN/Proxy Detection</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> ASN Resolution</div>
           </div>
         </div>
+      </section>
 
-        {/* FAQ Section for better organic indexing and featured snippets */}
-        <div className="mt-16 border-t border-white/5 pt-12">
-          <h2 className="text-xl font-display font-bold text-white mb-8 uppercase tracking-wider">
-            Frequently Asked Questions
-          </h2>
-          
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-lg font-bold text-gray-200 mb-2">Is this IP Scanner completely passive?</h3>
-              <p className="text-sm font-sans">
-                Yes. ReconShield operates strictly through passive reconnaissance. We query our own threat intelligence aggregators, public registries, and DNS records. No direct packets or active payloads are ever sent to the target IP address, ensuring your research remains 100% stealthy and compliant with ethical boundaries.
+      {/* SEO Content Silo Container */}
+      <div className="bg-[#05080f]">
+        
+        {/* 2. What Is an IP Lookup Tool? & 3. How IP Intelligence Works */}
+        <section className="py-20 border-b border-white/5">
+          <div className="max-w-[900px] mx-auto px-6 prose prose-invert max-w-none prose-p:leading-relaxed prose-p:text-gray-400 prose-headings:text-white prose-a:text-[#00ff88] hover:prose-a:text-[#00cc6a]">
+            
+            <h2 className="text-3xl font-display font-bold mt-0 mb-6 flex items-center gap-3">
+              <Activity className="w-8 h-8 text-[#00ff88]" />
+              What Is an IP Lookup Tool?
+            </h2>
+            <p>
+              An <strong>IP lookup tool</strong> is a fundamental cybersecurity utility used to gather actionable intelligence about a specific Internet Protocol (IP) address. Every device connected to the internet is assigned an IP address, which acts as a digital return address. By performing an IP lookup, security researchers, network administrators, and threat hunters can extract vital metadata associated with that address—including its physical geolocation, Internet Service Provider (ISP), and underlying network architecture.
+            </p>
+            <p>
+              ReconShield elevates the standard lookup by functioning as a comprehensive <strong>IP intelligence tool</strong>. Rather than simply returning a city or country, our engine cross-references the target against massive OSINT databases to provide a holistic view of the endpoint's identity and risk profile.
+            </p>
+
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6 flex items-center gap-3">
+              <Network className="w-8 h-8 text-blue-400" />
+              How IP Intelligence Works
+            </h2>
+            <p>
+              The moment you query an IP address, ReconShield initiates a series of strict, passive reconnaissance checks. First, the <strong>IP geolocation checker</strong> queries Regional Internet Registries (like ARIN or RIPE) to determine the geographical assignment of the subnet. Concurrently, an <strong>ASN lookup</strong> (Autonomous System Number) is performed to identify the organization routing the traffic. 
+            </p>
+            <p>
+              An ASN is critical for context: an IP belonging to AS15169 (Google) behaves very differently from an IP originating from a bulletproof hosting provider known for harboring cybercriminals. Our platform aggregates this data silently, ensuring the target is never alerted to the investigation.
+            </p>
+
+          </div>
+        </section>
+
+        {/* 4. Why IP Reputation Matters & 5. Real-World Security Use Cases */}
+        <section className="py-20 bg-[#0a0d14] border-b border-white/5">
+          <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16">
+            
+            <div className="prose prose-invert max-w-none prose-p:text-gray-400">
+              <h2 className="text-3xl font-display font-bold text-white mb-6">Why IP Reputation Matters</h2>
+              <p>
+                In the realm of cybersecurity, context is everything. An <strong>IP reputation checker</strong> analyzes the historical behavior of an IP address across the global internet. If an IP has been recently observed orchestrating brute-force attacks, distributing malware, or sending massive phishing campaigns, it is flagged by threat intelligence networks.
               </p>
+              <p>
+                Monitoring IP reputation allows organizations to preemptively block malicious traffic. By utilizing our <strong>malicious IP checker</strong>, network defenders can filter out high-risk endpoints before they interact with internal systems, significantly reducing the attack surface.
+              </p>
+
+              <h3 className="text-xl text-white font-bold mt-8 mb-4">VPN & Proxy Detection Explained</h3>
+              <p>
+                Cybercriminals rarely use their actual residential IP addresses. Instead, they mask their traffic through Tor exit nodes, open proxies, or commercial VPNs. ReconShield's engine automatically detects these anonymization services. If an IP lookup reveals a datacenter ASN but the user claims to be a residential shopper, it's a massive red flag for fraud detection.
+              </p>
+            </div>
+
+            {/* Real World Use Cases Card */}
+            <div className="bg-surface-900 border border-white/10 rounded-3xl p-8 shadow-2xl">
+              <h3 className="text-xl font-display font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
+                <Target className="w-5 h-5 text-[#00ff88]" /> Real-World Use Cases
+              </h3>
+              
+              <div className="space-y-6">
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0">
+                    <span className="font-mono font-bold text-blue-400">01</span>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold mb-1">Incident Response</h4>
+                    <p className="text-sm text-gray-400">Quickly trace suspicious IP addresses found in server logs to determine if they belong to known threat actors or automated botnets.</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center shrink-0">
+                    <span className="font-mono font-bold text-amber-400">02</span>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold mb-1">Fraud Prevention</h4>
+                    <p className="text-sm text-gray-400">E-commerce platforms use IP intelligence to flag transactions originating from high-risk VPNs or offshore hosting providers.</p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center shrink-0">
+                    <span className="font-mono font-bold text-purple-400">03</span>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold mb-1">Network Security</h4>
+                    <p className="text-sm text-gray-400">Firewall administrators can cross-reference inbound connections against our threat blocklists to establish dynamic deny rules.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* 6. Step-by-Step Tutorial & 7. Threat Intelligence */}
+        <section className="py-20 border-b border-white/5">
+          <div className="max-w-[900px] mx-auto px-6 prose prose-invert max-w-none prose-p:text-gray-400">
+            <h2 className="text-3xl font-display font-bold text-white mb-8">Step-by-Step Tutorial: Tracing an IP Address</h2>
+            <div className="bg-[#0d1117] border border-[#1a2332] rounded-2xl p-6 mb-12">
+              <ol className="list-decimal list-inside space-y-4 text-gray-300">
+                <li><strong>Locate the Target:</strong> Extract the suspicious IP address from your firewall, email headers, or access logs.</li>
+                <li><strong>Initiate Scan:</strong> Paste the IPv4 or IPv6 address into the ReconShield terminal above.</li>
+                <li><strong>Analyze Geolocation:</strong> Review the city, region, and timezone to verify if the traffic origin makes logical sense for your business.</li>
+                <li><strong>Check the ASN:</strong> Look at the ISP/Organization. If a consumer app is receiving traffic from a server hosting provider (like DigitalOcean), investigate further.</li>
+                <li><strong>Review Threat Intelligence:</strong> Check the "Abuse Confidence Score". If the IP is flagged by Spamhaus, AbuseIPDB, or others, consider blocking it at the WAF level.</li>
+              </ol>
+            </div>
+          </div>
+        </section>
+
+        {/* 9. FAQ Section */}
+        <section className="py-20 bg-[#0a0d14] border-b border-white/5">
+          <div className="max-w-[900px] mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
+            <div className="space-y-6">
+              {faqs.map((faq, index) => (
+                <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6">
+                  <h3 className="text-lg font-bold text-white mb-3">{faq.q}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 11. EEAT Author Bio */}
+        <section className="py-16">
+          <div className="max-w-[900px] mx-auto px-6">
+            <div className="flex flex-col md:flex-row items-center gap-8 p-8 bg-gradient-to-r from-[#0d1117] to-surface-900 border border-white/10 rounded-3xl shadow-xl">
+              <div className="w-24 h-24 rounded-full bg-[#1a2332] border-2 border-[#00ff88]/30 flex items-center justify-center shrink-0 overflow-hidden">
+                {/* Fallback avatar if no image is present */}
+                <Shield className="w-10 h-10 text-[#00ff88]" />
+              </div>
+              <div>
+                <div className="inline-flex items-center gap-2 px-2 py-1 rounded bg-[#00ff88]/10 text-[#00ff88] text-[10px] font-mono uppercase tracking-widest mb-2">
+                  <CheckCircle2 className="w-3 h-3" /> Fact Checked & Verified
+                </div>
+                <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
+                <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
+                <p className="text-gray-400 text-sm leading-relaxed mb-4">
+                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                </p>
+                <div className="flex gap-6 text-sm font-mono">
+                  <a href="#" className="text-blue-400 hover:text-blue-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
+                  <a href="#" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 10. Related Tools & 12. Internal Linking Hub */}
+        <section className="py-20 bg-[#0a0d14]">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="flex items-center gap-4 mb-10">
+              <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold">// EXPLORE RELATED INTELLIGENCE TOOLS</h2>
+              <div className="h-[1px] flex-1 bg-[#1a2332]" />
             </div>
             
-            <div>
-              <h3 className="text-lg font-bold text-gray-200 mb-2">How accurate is the IP Geolocation data?</h3>
-              <p className="text-sm font-sans">
-                Our geolocation engine aggregates data from multiple top-tier providers (such as MaxMind and IP2Location) to ensure city-level accuracy for most public IP addresses. However, keep in mind that VPNs, Proxies, and Anycast routing can spoof or alter the physical location data.
-              </p>
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Link href="/dns-lookup" className="p-6 bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 rounded-2xl group transition-all">
+                <Network className="w-6 h-6 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="text-white font-bold mb-2 group-hover:text-[#00ff88] transition-colors">DNS Lookup Tool</h3>
+                <p className="text-xs text-gray-400">Map out A, MX, and TXT records to discover misconfigured domains.</p>
+              </Link>
 
-            <div>
-              <h3 className="text-lg font-bold text-gray-200 mb-2">What does an "Abuse Confidence Score" mean?</h3>
-              <p className="text-sm font-sans">
-                The Abuse Confidence Score is an aggregated metric out of 100 that indicates how likely an IP address is engaging in malicious activity. A score above 50 typically indicates recent reports of spamming, brute-force attempts, or malware distribution originating from that host.
-              </p>
-            </div>
+              <Link href="/vulnerability-scanner" className="p-6 bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 rounded-2xl group transition-all">
+                <Shield className="w-6 h-6 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="text-white font-bold mb-2 group-hover:text-[#00ff88] transition-colors">Website Vulnerability Scanner</h3>
+                <p className="text-xs text-gray-400">Perform a full attack surface analysis passively on any domain.</p>
+              </Link>
 
-            <div>
-              <h3 className="text-lg font-bold text-gray-200 mb-2">Can I check if an IP is on a blacklist?</h3>
-              <p className="text-sm font-sans">
-                Yes. ReconShield checks your IP against 50+ global blocklists including Spamhaus, AbuseIPDB, and others in real-time.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-bold text-gray-200 mb-2">Can I check if an IP is a VPN or proxy?</h3>
-              <p className="text-sm font-sans">
-                Yes. Our scanner detects VPN providers, proxy servers, and Tor exit nodes automatically.
-              </p>
+              <Link href="/ports" className="p-6 bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 rounded-2xl group transition-all">
+                <Terminal className="w-6 h-6 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                <h3 className="text-white font-bold mb-2 group-hover:text-[#00ff88] transition-colors">Open Port Scanner</h3>
+                <p className="text-xs text-gray-400">Check IP addresses for exposed database and administrative ports.</p>
+              </Link>
             </div>
           </div>
-        </div>
+        </section>
+
       </div>
     </>
   );
