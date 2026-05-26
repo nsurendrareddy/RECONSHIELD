@@ -102,7 +102,11 @@ app.include_router(contact_router, prefix="/api/contact", tags=["Contact"])
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 from pydantic import BaseModel
+import asyncio
 from services.ip_intel import ip_intelligence
+from services.dns_service import dns_lookup
+from services.ssl_service import ssl_analysis
+from services.port_check import port_check
 
 class IpScanRequest(BaseModel):
     target: str
@@ -110,7 +114,52 @@ class IpScanRequest(BaseModel):
 @app.post("/api/ip-scanner")
 @limiter.limit("20/minute")
 async def api_ip_scanner(request: Request, body: IpScanRequest):
-    return await ip_intelligence(body.target)
+    domain = body.target
+    
+    # Run core IP/Domain reconnaissance concurrently
+    results = await asyncio.gather(
+        ip_intelligence(domain),
+        dns_lookup(domain),
+        ssl_analysis(domain),
+        port_check(domain),
+        return_exceptions=True
+    )
+    
+    ip_data = results[0] if not isinstance(results[0], Exception) else {}
+    dns_data = results[1] if not isinstance(results[1], Exception) else {}
+    ssl_data = results[2] if not isinstance(results[2], Exception) else {}
+    port_data = results[3] if not isinstance(results[3], Exception) else {}
+
+    # Format exactly to what IpScannerClient.jsx expects
+    return {
+        "risk_score": {
+            "score": ip_data.get("abuse_score", 0),
+            "level": ip_data.get("risk_level", "Low")
+        },
+        "ip_info": {
+            "ip": ip_data.get("ip", domain),
+            "lat": ip_data.get("lat"),
+            "lon": ip_data.get("lon"),
+            "city": ip_data.get("city", "Unknown"),
+            "country": ip_data.get("country", "Unknown"),
+            "isp": ip_data.get("isp", "Unknown"),
+            "org": ip_data.get("org", "Unknown"),
+            "asn": ip_data.get("as_number", "Unknown"),
+            "as_name": ip_data.get("as_name", "Unknown")
+        },
+        "ssl": {
+            "grade": ssl_data.get("grade", "N/A") if isinstance(ssl_data, dict) else "N/A"
+        },
+        "ports": {
+            "open_count": len(port_data.get("open_ports", [])) if isinstance(port_data, dict) else 0
+        },
+        "dns_info": {
+            "reverse_dns": dns_data.get("reverse_dns", []),
+            "spf": dns_data.get("spf", {"found": False, "status": "fail"}),
+            "dmarc": dns_data.get("dmarc", {"found": False, "status": "fail"})
+        },
+        "recommendations": ip_data.get("issues", []) + dns_data.get("issues", [])
+    }
 
 if __name__ == "__main__":
     import uvicorn
