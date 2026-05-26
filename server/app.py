@@ -101,6 +101,17 @@ app.include_router(scan_router, prefix="/api/scan", tags=["Scan"])
 app.include_router(contact_router, prefix="/api/contact", tags=["Contact"])
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
+from pydantic import BaseModel
+from services.ip_intel import ip_intelligence
+
+class IpScanRequest(BaseModel):
+    target: str
+
+@app.post("/api/ip-scanner")
+@limiter.limit("20/minute")
+async def api_ip_scanner(request: Request, body: IpScanRequest):
+    return await ip_intelligence(body.target)
+
 if __name__ == "__main__":
     import uvicorn
     # Use reload=False for production readiness if run directly
