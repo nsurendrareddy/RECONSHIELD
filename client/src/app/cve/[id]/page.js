@@ -44,10 +44,11 @@ export async function generateMetadata({ params }) {
   if (!intel) return { title: 'CVE Not Found' };
 
   return {
-    title: `${intel.id} Vulnerability Analysis & Exploit Intelligence | ReconShield`,
+    title: `${intel.id} Vulnerability Analysis & Exploit Intelligence`,
     description: intel.aiSummary,
     keywords: [intel.id, 'Vulnerability', 'Exploit', 'CVSS', 'CVE', intel.title, 'Cyber Intelligence'],
     alternates: { canonical: `https://reconshield.in/cve/${cveId.toLowerCase()}` },
+    robots: { index: false, follow: true },
     openGraph: {
       title: `${intel.id} - ${intel.severity} Vulnerability (CVSS: ${intel.cvss})`,
       description: intel.aiSummary,

@@ -7,7 +7,7 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 });
 
 export const metadata = {
-  title: "DNS Lookup Tool & DNS Security Analysis | ReconShield",
+  title: "DNS Lookup Tool & DNS Security Analysis ",
   description: "Free DNS lookup tool to check all domain records instantly. Perform DNS security analysis, verify SPF/DMARC, and track DNS propagation worldwide.",
   keywords: [
     "DNS lookup tool", "DNS propagation checker", "domain intelligence tool", 
@@ -282,8 +282,8 @@ export default function DnsLookupPage() {
                   Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
-                  <a href="#" className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
-                  <a href="#" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
+                  <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
+                  <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
                 </div>
               </div>
             </div>

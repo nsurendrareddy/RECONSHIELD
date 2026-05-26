@@ -23,9 +23,10 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/dns/${domain}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/dns/${domain}`,
-      title: `${domain} DNS Profile | ReconShield`,
+      title: `${domain} DNS Profile`,
       description: `Analyze the DNS records and infrastructure topology for ${domain}.`,
       type: 'article',
     },

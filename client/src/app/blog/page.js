@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import NewsletterForm from '@/components/NewsletterForm';
 import { client, blogListQuery, urlFor } from '@/utils/sanity';
 import { 
   Shield, Target, Terminal, Activity, Network, 
@@ -11,7 +12,7 @@ import BlogClient from './BlogClient';
 export const revalidate = 60; // ISR revalidate every 1 minute
 
 export const metadata = {
-  title: "Cybersecurity Research & Threat Intelligence Publication | ReconShield",
+  title: "Cybersecurity Research & Threat Intelligence Publication",
   description: "Enterprise cybersecurity publication. Deep-dive OSINT research, vulnerability analysis, AI security intelligence, and attack surface mapping tutorials.",
   keywords: [
     "cybersecurity research", "threat intelligence blog", "OSINT reconnaissance",
@@ -192,24 +193,36 @@ export default async function BlogPage() {
             </div>
           </section>
 
-          {/* 5. Trending CVEs & 6. OSINT Guides */}
+          {/* 5. Latest Research & OSINT Guides */}
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 border-t border-white/5 pt-20">
             <div>
               <div className="flex items-center gap-3 mb-8">
                 <AlertTriangle className="w-6 h-6 text-red-500" />
-                <h3 className="text-2xl font-display font-bold text-white">Trending CVEs</h3>
+                <h3 className="text-2xl font-display font-bold text-white">Vulnerability Research</h3>
               </div>
               <div className="space-y-4">
-                {[1, 2, 3].map((_, i) => (
-                  <Link href={`/blog/category/vulnerability-research`} key={i} className="block p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-red-500/30 transition-colors group">
+                {posts.slice(0, 3).length > 0 ? posts.slice(0, 3).map((post, i) => (
+                  <Link href={`/blog/${post.slug?.current || post.slug}`} key={i} className="block p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-red-500/30 transition-colors group">
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-xs font-mono text-red-500 font-bold">CVE-2026-00{i+1}4</span>
-                      <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Critical (9.8)</span>
+                      <span className="text-xs font-mono text-red-500 font-bold uppercase tracking-widest">
+                        {post.categories?.[0]?.title || 'Research'}
+                      </span>
+                      <span className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
+                        {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : ''}
+                      </span>
                     </div>
-                    <h4 className="text-white font-bold mb-2 group-hover:text-red-400 transition-colors">Enterprise Gateway Auth Bypass</h4>
-                    <p className="text-sm text-gray-400">Analysis of the recent authentication bypass vulnerability affecting edge routing infrastructure.</p>
+                    <h4 className="text-white font-bold mb-2 group-hover:text-red-400 transition-colors">{post.title}</h4>
+                    <p className="text-sm text-gray-400 line-clamp-2">{post.excerpt || 'Read the full research report.'}</p>
                   </Link>
-                ))}
+                )) : (
+                  <Link href="/blog" className="block p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-red-500/30 transition-colors group">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="text-xs font-mono text-red-500 font-bold uppercase tracking-widest">Research</span>
+                    </div>
+                    <h4 className="text-white font-bold mb-2 group-hover:text-red-400 transition-colors">Explore our Vulnerability Research Library</h4>
+                    <p className="text-sm text-gray-400">In-depth analysis of security vulnerabilities, CVE breakdowns, and defensive countermeasures.</p>
+                  </Link>
+                )}
               </div>
             </div>
 
@@ -252,7 +265,7 @@ export default async function BlogPage() {
               <p className="text-gray-400 leading-relaxed mb-8">
                 Explore our cutting-edge research on how Large Language Models (LLMs) and machine learning algorithms are revolutionizing threat hunting, automated triage, and defensive posture generation.
               </p>
-              <Link href="/blog/category/ai-cybersecurity" className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl transition-colors">
+              <Link href="/blog" className="inline-flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-xl transition-colors">
                 Read AI Research <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
@@ -265,17 +278,12 @@ export default async function BlogPage() {
             <p className="text-gray-400 mb-8">
               Get zero-day alerts, OSINT tradecraft, and exclusive threat intelligence reports delivered directly to your inbox. No spam. Unsubscribe anytime.
             </p>
-            <form className="flex flex-col sm:flex-row gap-4 justify-center">
-              <input 
-                type="email" 
-                placeholder="Enter your enterprise email..." 
-                className="px-6 py-4 bg-surface-900 border border-white/10 rounded-xl text-white placeholder:text-gray-600 focus:outline-none focus:border-matrix-500/50 w-full sm:w-96"
-                required
-              />
-              <button type="submit" className="px-8 py-4 bg-matrix-600 hover:bg-matrix-500 text-white font-bold rounded-xl transition-colors shrink-0">
-                Subscribe
-              </button>
-            </form>
+            <NewsletterForm
+              accentColor="bg-matrix-600 hover:bg-matrix-500"
+              buttonTextColor="text-white"
+              inputClass="px-6 py-4 w-full sm:w-96"
+              buttonClass="px-8 py-4"
+            />
           </section>
 
           {/* 10. Internal Linking Hub */}

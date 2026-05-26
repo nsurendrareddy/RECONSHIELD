@@ -24,9 +24,10 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/ssl/${domain}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/ssl/${domain}`,
-      title: `${domain} SSL Profile | ReconShield`,
+      title: `${domain} SSL Profile`,
       description: `Cryptographic security and TLS protocol analysis for ${domain}.`,
       type: 'article',
     },

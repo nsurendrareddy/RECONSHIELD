@@ -25,7 +25,7 @@ export async function generateMetadata({ params }) {
     },
     openGraph: {
       url: `https://reconshield.in/tools/whois/${domain}`,
-      title: `${domain} WHOIS Profile | ReconShield`,
+      title: `${domain} WHOIS Profile`,
       description: `Analyze domain ownership and registration history for ${domain}.`,
       type: 'article',
     },

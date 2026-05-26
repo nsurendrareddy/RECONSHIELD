@@ -7,7 +7,7 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 });
 
 export const metadata = {
-  title: "Security Headers Analyzer & Website Hardening Tool | ReconShield",
+  title: "Security Headers Analyzer & Website Hardening Tool ",
   description: "Free security headers checker. Audit HTTP security headers, analyze your Content-Security-Policy (CSP), and enforce HSTS to protect against XSS and clickjacking.",
   keywords: [
     "security headers checker", "HTTP security headers", "CSP checker", 
@@ -275,8 +275,8 @@ export default function SecurityHeadersPage() {
                   Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
-                  <a href="#" className="text-amber-500 hover:text-amber-400 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
-                  <a href="#" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
+                  <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-amber-500 hover:text-amber-400 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
+                  <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
                 </div>
               </div>
             </div>

@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 
 export const metadata = {
-  title: "Cybersecurity Tools & Threat Intelligence Platform | ReconShield",
+  title: "Cybersecurity Tools & Threat Intelligence Platform ",
   description: "Enterprise suite of free cybersecurity tools. Perform attack surface analysis, OSINT reconnaissance, vulnerability scanning, and infrastructure intelligence.",
   keywords: [
     "cybersecurity tools", "threat intelligence platform", "OSINT tools", 
@@ -334,8 +334,8 @@ export default function ToolsHubPage() {
                     Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
                   </p>
                   <div className="flex gap-6 text-sm font-mono">
-                    <a href="#" className="text-matrix-400 hover:text-matrix-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
-                    <a href="#" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
+                    <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-matrix-400 hover:text-matrix-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
+                    <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
                   </div>
                 </div>
               </div>

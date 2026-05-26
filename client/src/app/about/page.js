@@ -2,16 +2,16 @@ import { Shield, Target, Activity, Users, Globe, Lock, Cpu, ExternalLink } from 
 import Link from 'next/link'
 
 export const metadata = {
-  title: "About Surendra Reddy | Founder of ReconShield",
+  title: "About Surendra Reddy — Founder of ReconShield",
   description: "Meet Surendra Reddy, founder of ReconShield. Learn about his mission to provide researchers with AI-driven cybersecurity tools and advanced threat intelligence.",
   alternates: {
     canonical: 'https://reconshield.in/about',
   },
   openGraph: {
-    title: "ReconShield | AI-Powered Cybersecurity Research",
+    title: "About Surendra Reddy — Founder of ReconShield",
     description: "Learn about the mission of ReconShield: providing advanced, AI-driven visibility into global attack surfaces for security researchers.",
     url: 'https://reconshield.in/about',
-    type: 'website',
+    type: 'profile',
   }
 };
 
@@ -31,12 +31,53 @@ export default function About() {
 
   return (
     <div className="animate-fade-in max-w-5xl mx-auto py-10">
+      {/* Person + ProfilePage structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "ProfilePage",
+                "@id": "https://reconshield.in/about",
+                "url": "https://reconshield.in/about",
+                "name": "About Surendra Reddy — Founder of ReconShield",
+                "mainEntity": {
+                  "@type": "Person",
+                  "@id": "https://reconshield.in/about#person",
+                  "name": "Surendra Reddy",
+                  "url": "https://reconshield.in/about",
+                  "jobTitle": "Cybersecurity Researcher & Founder",
+                  "description": "Cybersecurity researcher specializing in OSINT, vulnerability intelligence, and AI-driven threat analysis. Founder of ReconShield.",
+                  "sameAs": [
+                    "https://linkedin.com/in/surendrareddy3",
+                    "https://github.com/nsurendrareddy"
+                  ],
+                  "worksFor": {
+                    "@type": "Organization",
+                    "name": "ReconShield",
+                    "url": "https://reconshield.in"
+                  }
+                }
+              },
+              {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://reconshield.in" },
+                  { "@type": "ListItem", "position": 2, "name": "About", "item": "https://reconshield.in/about" }
+                ]
+              }
+            ]
+          })
+        }}
+      />
       <div className="text-center mb-16">
         <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-matrix-400/10 border border-matrix-400/20 mb-6">
           <Shield className="w-10 h-10 text-matrix-400" />
         </div>
         <h1 className="text-4xl md:text-6xl font-display font-bold text-white tracking-widest uppercase mb-6">
-          The <span className="text-matrix-400">ReconShield</span> Mission
+          About <span className="text-matrix-400">Surendra Reddy</span>
         </h1>
         <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed font-mono">
           Empowering the next generation of security researchers with AI-driven visibility into the digital attack surface.
@@ -128,7 +169,7 @@ export default function About() {
                  </div>
                ))}
              </div>
-             <p className="text-xs font-mono text-gray-500 tracking-tighter">JOINED BY 2,500+ RESEARCHERS GLOBALLY</p>
+             <p className="text-xs font-mono text-gray-500 tracking-tighter">TRUSTED BY SECURITY RESEARCHERS GLOBALLY</p>
           </div>
         </div>
       </div>

@@ -28,15 +28,16 @@ export async function generateMetadata({ params }) {
   const formattedAsn = `AS${asnNum}`;
 
   return {
-    title: `${formattedAsn} Routing Details & IP Blocks | Network Intelligence`,
+    title: `${formattedAsn} Routing Details & IP Blocks`,
     description: `Complete BGP routing and threat intelligence profile for Autonomous System ${formattedAsn}. View associated IP prefixes, peering relationships, and abuse reports.`,
     keywords: [`${formattedAsn}`, `who owns ${formattedAsn}`, `asn ${asnNum} lookup`, `${formattedAsn} ip blocks`, `bgp routing ${formattedAsn}`, `autonomous system ${asnNum}`],
     alternates: {
       canonical: `https://reconshield.in/asn/${formattedAsn}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/asn/${formattedAsn}`,
-      title: `${formattedAsn} Network Profile | ReconShield`,
+      title: `${formattedAsn} Network Profile`,
       description: `Analyze the routing infrastructure and security reputation of ${formattedAsn}.`,
       type: 'article',
     },

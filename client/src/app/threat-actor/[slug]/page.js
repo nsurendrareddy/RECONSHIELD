@@ -43,10 +43,11 @@ export async function generateMetadata({ params }) {
   if (!intel) return { title: 'Threat Actor Not Found' };
 
   return {
-    title: `${intel.name} (${intel.aliases[0]}) - Threat Actor Profile | ReconShield`,
+    title: `${intel.name} (${intel.aliases[0]}) - Threat Actor Profile`,
     description: intel.aiSummary,
     keywords: [intel.name, ...intel.aliases, 'Threat Actor', 'APT', intel.origin, 'Cyber Intelligence'],
     alternates: { canonical: `https://reconshield.in/threat-actor/${slug}` },
+    robots: { index: false, follow: true },
     openGraph: {
       title: `Intelligence Profile: ${intel.name}`,
       description: intel.aiSummary,

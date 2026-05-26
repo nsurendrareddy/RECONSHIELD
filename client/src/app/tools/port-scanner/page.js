@@ -7,7 +7,7 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 });
 
 export const metadata = {
-  title: "Port Scanner & Network Attack Surface Analysis Tool | ReconShield",
+  title: "Port Scanner & Network Attack Surface Analysis Tool ",
   description: "Free TCP port scanner and open port checker. Scan open ports, map your attack surface, and detect vulnerable network services passively.",
   keywords: [
     "port scanner", "open port checker", "network port scanner", 
@@ -276,8 +276,8 @@ export default function PortScannerPage() {
                   Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
-                  <a href="#" className="text-red-500 hover:text-red-400 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
-                  <a href="#" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
+                  <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-400 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
+                  <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
                 </div>
               </div>
             </div>

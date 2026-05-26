@@ -1,11 +1,12 @@
 import HomeSections from '@/components/HomeSections';
 import DynamicDashboardClient from '@/components/DynamicDashboardClient';
+import NewsletterForm from '@/components/NewsletterForm';
 import { client, homepageBlogQuery } from '@/utils/sanity';
 import { Shield, Target, Activity, Cpu, MapPin, Network, Search, Terminal, Lock, Layers, Mail, CheckCircle2, Globe, Database, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {
-  title: "AI-Powered Cybersecurity & Threat Intelligence Platform | ReconShield",
+  title: "AI-Powered Cybersecurity & Threat Intelligence Platform",
   description: "ReconShield is a free, passive OSINT cybersecurity platform. Scan websites, analyze infrastructure, and detect vulnerabilities instantly with our threat intelligence engine.",
   keywords: [
     "cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield",
@@ -16,7 +17,7 @@ export const metadata = {
     canonical: 'https://reconshield.in',
   },
   openGraph: {
-    title: "AI-Powered Cybersecurity & Threat Intelligence Platform | ReconShield",
+    title: "AI-Powered Cybersecurity & Threat Intelligence Platform",
     siteName: "ReconShield",
     description: "Scan websites, analyze infrastructure, and detect vulnerabilities instantly with our threat intelligence engine.",
     url: 'https://reconshield.in',
@@ -298,28 +299,12 @@ export default async function Page() {
           <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Stay Ahead of Emerging Threats</h2>
           <p className="text-gray-400 mb-8">Join thousands of security professionals receiving our weekly threat intelligence updates, zero-day security alerts, and exclusive research reports.</p>
           
-          <form className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
-            <input 
-              type="email" 
-              placeholder="Enter your email address" 
-              className="flex-1 bg-surface-900 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00ff88]/50 transition-colors"
-              required
-            />
-            <button type="submit" className="px-8 py-3 bg-[#00ff88] hover:bg-[#00cc6a] text-black font-bold rounded-xl transition-colors shrink-0">
-              Subscribe
-            </button>
-          </form>
+          <NewsletterForm />
           <p className="text-xs text-gray-600 mt-4">We respect your privacy. No spam, just high-fidelity intelligence.</p>
         </div>
       </section>
 
-      {/* SEO Content Silo (Visible to crawlers, unobtrusive to users) */}
-      <section className="max-w-[1000px] mx-auto px-6 py-16 text-[#94a3b8] prose prose-invert max-w-none prose-p:leading-relaxed prose-a:text-[#00ff88]">
-        <h2 className="sr-only">Comprehensive Cybersecurity Intelligence Platform</h2>
-        <p className="text-sm border-t border-[#1a2332] pt-8">
-          ReconShield is the premier destination for network administrators, penetration testers, and security researchers seeking reliable <strong>passive reconnaissance</strong>. Unlike aggressive scanners that disrupt services, our <strong>website vulnerability scanner</strong> operates stealthily to compile <strong>domain intelligence</strong> and verify your infrastructure against global security standards. By evaluating your <strong>attack surface</strong> through our suite of utilities—including the <strong>IP lookup tool</strong>, <strong>DNS intelligence</strong> checker, and <strong>SSL checker</strong>—you gain critical foresight into misconfigurations before they are exploited. 
-        </p>
-      </section>
+
     </>
   );
 }

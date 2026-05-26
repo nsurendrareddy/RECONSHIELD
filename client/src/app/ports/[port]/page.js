@@ -46,9 +46,10 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/ports/${port}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/ports/${port}`,
-      title: `Port ${port} Security Analysis | ReconShield`,
+      title: `Port ${port} Security Analysis`,
       description: `Comprehensive threat intelligence for port ${port} (${serviceName}).`,
       type: 'article',
     },

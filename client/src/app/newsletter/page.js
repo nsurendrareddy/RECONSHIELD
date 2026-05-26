@@ -4,7 +4,7 @@ import { client, homepageBlogQuery } from '@/utils/sanity';
 import NewsletterForm from '@/components/NewsletterForm';
 
 export const metadata = {
-  title: 'Newsletter | ReconShield Intelligence',
+  title: 'Weekly Threat Briefing Newsletter',
   description: 'Subscribe to the ReconShield Intelligence Newsletter for weekly threat intelligence, CVE alerts, AI security updates, and malware trends.',
   alternates: {
     canonical: 'https://reconshield.in/newsletter',

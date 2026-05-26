@@ -23,9 +23,10 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/headers/${domain}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/headers/${domain}`,
-      title: `${domain} Security Headers Profile | ReconShield`,
+      title: `${domain} Security Headers Profile`,
       description: `Analyze the application-layer security posture of ${domain}.`,
       type: 'article',
     },

@@ -23,9 +23,10 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/subdomains/${domain}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/subdomains/${domain}`,
-      title: `${domain} Attack Surface Profile | ReconShield`,
+      title: `${domain} Attack Surface Profile`,
       description: `Passive reconnaissance and subdomain enumeration for ${domain}.`,
       type: 'article',
     },

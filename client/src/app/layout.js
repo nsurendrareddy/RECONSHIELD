@@ -148,7 +148,11 @@ export default function RootLayout({ children }) {
                 "@type": "Organization",
                 "name": "ReconShield",
                 "url": "https://reconshield.in",
-                "logo": "https://reconshield.in/og-image.png"
+                "logo": "https://reconshield.in/og-image.png",
+                "sameAs": [
+                  "https://github.com/nsurendrareddy",
+                  "https://linkedin.com/in/surendrareddy3"
+                ]
               },
 
               {

@@ -7,7 +7,7 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 });
 
 export const metadata = {
-  title: "SSL Checker & TLS Security Analysis Tool | ReconShield",
+  title: "SSL Checker & TLS Security Analysis Tool ",
   description: "Free SSL checker and TLS configuration analyzer. Verify SSL certificates, check expiration dates, and test for HTTPS vulnerabilities instantly.",
   keywords: [
     "SSL checker", "TLS checker", "SSL certificate checker", 
@@ -281,8 +281,8 @@ export default function SslCheckerPage() {
                   Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
-                  <a href="#" className="text-purple-400 hover:text-purple-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
-                  <a href="#" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
+                  <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
+                  <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
                 </div>
               </div>
             </div>

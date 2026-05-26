@@ -11,7 +11,7 @@ export async function generateMetadata({ params }) {
   const tool = TOOLS.find(t => t.id === toolId) || TOOLS.find(t => t.id === 'dns-lookup');
   
   return {
-    title: `${tool.name} | Free Online ${tool.name} Tool | ReconShield`,
+    title: `${tool.name} - Free Online ${tool.name} Tool`,
     description: tool.desc,
     keywords: tool.keywords,
     alternates: {
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
     },
     openGraph: {
       url: `https://reconshield.in/tools/${toolId}`,
-      title: `${tool.name} | Free Cybersecurity Tool | ReconShield`,
+      title: `${tool.name} - Free Cybersecurity Tool`,
       description: tool.desc,
       type: 'website',
       siteName: 'ReconShield',

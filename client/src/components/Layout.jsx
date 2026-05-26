@@ -5,6 +5,8 @@ import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Gl
 import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 
+import NewsletterForm from '@/components/NewsletterForm'
+
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
 
 export default function Layout({ children }) {
@@ -209,16 +211,15 @@ export default function Layout({ children }) {
             <div>
               <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>// WEEKLY INTEL</h4>
               <p className="text-[11px] text-[#94a3b8] mb-4 leading-relaxed">Get the latest threat intelligence and OSINT guides.</p>
-              <form action="#" className="space-y-2">
-                <input 
-                  type="email" 
-                  placeholder="agent@agency.gov" 
-                  className="w-full bg-surface-900 border border-white/10 rounded-lg px-3 py-2 text-[11px] text-white focus:outline-none focus:border-matrix-400/50 transition-all font-mono"
-                />
-                <button className="w-full bg-matrix-400/10 hover:bg-matrix-400/20 text-matrix-400 border border-matrix-400/30 rounded-lg py-2 font-mono text-[10px] tracking-widest uppercase transition-all">
-                  SUBSCRIBE
-                </button>
-              </form>
+              <NewsletterForm
+                accentColor="bg-matrix-400/10 hover:bg-matrix-400/20"
+                buttonTextColor="text-matrix-400"
+                inputClass="w-full bg-surface-900 border border-white/10 rounded-lg px-3 py-2 text-[11px] text-white focus:outline-none focus:border-matrix-400/50 transition-all font-mono"
+                buttonClass="w-full border border-matrix-400/30 rounded-lg py-2 font-mono text-[10px] tracking-widest uppercase transition-all"
+                layout="stacked"
+                placeholder="agent@agency.gov"
+                buttonText="SUBSCRIBE"
+              />
             </div>
 
             <div>

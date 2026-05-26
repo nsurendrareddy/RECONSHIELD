@@ -8,7 +8,7 @@ const IpScannerClient = dynamic(() => import('@/components/ip-scanner/IpScannerC
 });
 
 export const metadata = {
-  title: "Free IP Lookup & Reputation Checker | ReconShield",
+  title: "Free IP Lookup & Reputation Checker ",
   description: "Trace any IP address instantly. Our IP lookup tool checks 50+ global blocklists, detects VPNs, and provides accurate geolocation and ASN data.",
   keywords: [
     "IP lookup tool", "IP reputation checker", "trace IP address", "IP geolocation checker", 
@@ -266,8 +266,8 @@ export default function IpScannerPage() {
                   Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
-                  <a href="#" className="text-blue-400 hover:text-blue-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
-                  <a href="#" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
+                  <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
+                  <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3"/></a>
                 </div>
               </div>
             </div>
