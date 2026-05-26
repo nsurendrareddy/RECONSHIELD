@@ -5,14 +5,14 @@ import { notFound } from 'next/navigation';
 
 // ASN Validation (e.g. AS15169 or 15169)
 const isValidASN = (asn) => {
-  const match = asn.match(/^(?:AS)?(\d+)$/i);
+  const match = asn?.match(/^(?:AS)?(\d+)$/i);
   if (!match) return false;
   const num = parseInt(match[1], 10);
   return num > 0 && num <= 4294967295; // Max 32-bit ASN
 };
 
 const extractAsnNumber = (asn) => {
-  const match = asn.match(/^(?:AS)?(\d+)$/i);
+  const match = asn?.match(/^(?:AS)?(\d+)$/i);
   return match ? match[1] : null;
 };
 

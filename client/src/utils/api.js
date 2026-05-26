@@ -75,8 +75,8 @@ export async function downloadExport(id, format, token) {
   const disposition = res.headers.get('Content-Disposition')
   let filename = `reconshield_export_${id}.${format}`
   if (disposition && disposition.includes('filename=')) {
-    const match = disposition.match(/filename="?([^"]+)"?/)
-    if (match && match[1]) filename = match[1]
+    const match = disposition?.match(/filename="?([^"]+)"?/);
+    if (match && match[1]) filename = match[1];
   }
   
   a.download = filename

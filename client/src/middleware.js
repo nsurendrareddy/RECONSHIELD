@@ -42,7 +42,7 @@ const isValidPort = (portStr) => {
 };
 
 const isValidASN = (asnStr) => {
-  const match = asnStr.match(/^(?:AS)?(\d+)$/i);
+  const match = asnStr?.match(/^(?:AS)?(\d+)$/i);
   if (!match) return false;
   const num = parseInt(match[1], 10);
   return num > 0 && num <= 4294967295;
