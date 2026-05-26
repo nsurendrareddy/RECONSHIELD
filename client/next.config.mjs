@@ -54,14 +54,23 @@ const nextConfig = {
     return [
       {
         source: '/threat-intelligence',
-        destination: '/ip-scanner',
+        destination: '/tools/ip-lookup',
         permanent: true,
       },
       {
         source: '/tools/threat-intelligence',
-        destination: '/ip-scanner',
+        destination: '/tools/ip-lookup',
         permanent: true,
       },
+      { source: '/ip-scanner', destination: '/tools/ip-lookup', permanent: true },
+      { source: '/ip-lookup', destination: '/tools/ip-lookup', permanent: true },
+      { source: '/whois', destination: '/tools/whois', permanent: true },
+      { source: '/dns-lookup', destination: '/tools/dns-lookup', permanent: true },
+      { source: '/port-scanner', destination: '/tools/port-scanner', permanent: true },
+      { source: '/security-headers', destination: '/tools/http-headers', permanent: true },
+      { source: '/ssl-checker', destination: '/tools/ssl-checker', permanent: true },
+      { source: '/vulnerability-scanner', destination: '/tools/vulnerability-scanner', permanent: true },
+      { source: '/subdomains', destination: '/tools/subdomain-finder', permanent: true }
     ];
   },
 };

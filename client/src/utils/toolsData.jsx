@@ -30,7 +30,7 @@ export const TOOLS = [
     keywords: 'ip lookup, ip geolocation, ip address tracker, find ip location, ip threat intelligence',
   },
   {
-    id: 'whois-checker',
+    id: 'whois',
     name: 'WHOIS Checker',
     icon: Search,
     color: 'purple',
@@ -85,7 +85,7 @@ export const TOOLS = [
     keywords: 'port scanner, open port checker, network port scan, scan open ports, service detection',
   },
   {
-    id: 'security-headers',
+    id: 'http-headers',
     name: 'HTTP Headers',
     icon: Shield,
     color: 'yellow',
@@ -96,7 +96,7 @@ export const TOOLS = [
     keywords: 'http headers checker, security headers, csp checker, hsts checker, x-frame-options',
   },
   {
-    id: 'email-security-checker',
+    id: 'email-security',
     name: 'Email Security',
     icon: Mail,
     color: 'pink',
@@ -257,7 +257,7 @@ export const TOOL_SEO_CONTENT = {
       </div>
     )
   },
-  'security-headers': {
+  'http-headers': {
     faqs: [
       { q: "What are HTTP Security Headers?", a: "Security headers are directives sent by a web server in HTTP responses that tell the browser how to behave to mitigate vulnerabilities like XSS and Clickjacking." },
       { q: "What is HSTS?", a: "HTTP Strict Transport Security (HSTS) forces browsers to only connect to your website over HTTPS, preventing downgrade attacks and cookie hijacking." },
@@ -314,7 +314,7 @@ export const TOOL_SEO_CONTENT = {
       </div>
     )
   },
-  'whois-checker': {
+  'whois': {
     faqs: [
       { q: "What is a WHOIS lookup?", a: "WHOIS is a query and response protocol used to query databases that store the registered users or assignees of an Internet resource, such as a domain name." },
       { q: "Why is WHOIS data hidden?", a: "Due to privacy regulations like GDPR, many registrars redact personal information from WHOIS records by default, replacing it with privacy protection service details." },
@@ -398,7 +398,7 @@ export const TOOL_SEO_CONTENT = {
       </div>
     )
   },
-  'email-security-checker': {
+  'email-security': {
     faqs: [
       { q: "What is SPF?", a: "Sender Policy Framework (SPF) is a DNS record that lists the IP addresses and mail servers authorized to send email on behalf of your domain." },
       { q: "What is DMARC?", a: "Domain-based Message Authentication, Reporting, and Conformance (DMARC) instructs receiving servers on what to do if an email fails SPF or DKIM checks (e.g., reject or quarantine)." },

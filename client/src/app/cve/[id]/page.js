@@ -251,7 +251,7 @@ export default async function CveEntityPage({ params }) {
 
                   <div>
                     <h3 className="text-xs text-[#e2e8f0] font-semibold mb-3">Action Center</h3>
-                    <Link href={`/vulnerability-scanner`} className="flex items-center gap-3 p-3 rounded-lg bg-[#1a2332]/50 hover:bg-[#1a2332] transition-colors border border-transparent hover:border-white/5 group">
+                    <Link href={`/tools/vulnerability-scanner`} className="flex items-center gap-3 p-3 rounded-lg bg-[#1a2332]/50 hover:bg-[#1a2332] transition-colors border border-transparent hover:border-white/5 group">
                       <Shield className="w-4 h-4 text-[#00ff88] group-hover:scale-110 transition-transform" />
                       <span className="text-sm text-gray-300 group-hover:text-white transition-colors">Scan Infrastructure for {intel.id}</span>
                     </Link>

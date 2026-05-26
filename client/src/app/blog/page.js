@@ -220,9 +220,9 @@ export default async function BlogPage() {
               </div>
               <div className="space-y-4">
                 {[
-                  { title: "Automating Infrastructure Attribution with RDAP", target: "/whois" },
-                  { title: "Hunting Phishing Campaigns via Passive DNS", target: "/dns-lookup" },
-                  { title: "Mapping Shadow IT using Attack Surface Scanners", target: "/port-scanner" }
+                  { title: "Automating Infrastructure Attribution with RDAP", target: "/tools/whois" },
+                  { title: "Hunting Phishing Campaigns via Passive DNS", target: "/tools/dns-lookup" },
+                  { title: "Mapping Shadow IT using Attack Surface Scanners", target: "/tools/port-scanner" }
                 ].map((guide, i) => (
                   <Link href={guide.target} key={i} className="block p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-colors group">
                     <div className="flex justify-between items-center mb-3">
@@ -286,25 +286,25 @@ export default async function BlogPage() {
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Link href="/vulnerability-scanner" className="text-sm font-mono text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
+              <Link href="/tools/vulnerability-scanner" className="text-sm font-mono text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> Vulnerability Scanner
               </Link>
-              <Link href="/ip-scanner" className="text-sm font-mono text-gray-400 hover:text-matrix-400 transition-colors flex items-center gap-2">
+              <Link href="/tools/ip-lookup" className="text-sm font-mono text-gray-400 hover:text-matrix-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> IP Intelligence
               </Link>
-              <Link href="/dns-lookup" className="text-sm font-mono text-gray-400 hover:text-cyan-400 transition-colors flex items-center gap-2">
+              <Link href="/tools/dns-lookup" className="text-sm font-mono text-gray-400 hover:text-cyan-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> DNS Security Analysis
               </Link>
-              <Link href="/whois" className="text-sm font-mono text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2">
+              <Link href="/tools/whois" className="text-sm font-mono text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> WHOIS Lookup
               </Link>
-              <Link href="/security-headers" className="text-sm font-mono text-gray-400 hover:text-amber-500 transition-colors flex items-center gap-2">
+              <Link href="/tools/http-headers" className="text-sm font-mono text-gray-400 hover:text-amber-500 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> Security Headers
               </Link>
-              <Link href="/port-scanner" className="text-sm font-mono text-gray-400 hover:text-red-500 transition-colors flex items-center gap-2">
+              <Link href="/tools/port-scanner" className="text-sm font-mono text-gray-400 hover:text-red-500 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> Port Scanner
               </Link>
-              <Link href="/ssl-checker" className="text-sm font-mono text-gray-400 hover:text-purple-400 transition-colors flex items-center gap-2">
+              <Link href="/tools/ssl-checker" className="text-sm font-mono text-gray-400 hover:text-purple-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> SSL/TLS Checker
               </Link>
               <Link href="/tools" className="text-sm font-mono text-gray-400 hover:text-white transition-colors flex items-center gap-2">

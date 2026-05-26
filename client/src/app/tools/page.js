@@ -132,7 +132,7 @@ export default function ToolsHubPage() {
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Link href="/dns-lookup" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all overflow-hidden">
+              <Link href="/tools/dns-lookup" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all overflow-hidden">
                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-20 transition-opacity">
                   <Network className="w-32 h-32 text-cyan-500" />
                 </div>
@@ -143,7 +143,7 @@ export default function ToolsHubPage() {
                 </p>
               </Link>
 
-              <Link href="/whois" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-teal-500/30 transition-all overflow-hidden">
+              <Link href="/tools/whois" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-teal-500/30 transition-all overflow-hidden">
                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-20 transition-opacity">
                   <Globe className="w-32 h-32 text-teal-500" />
                 </div>
@@ -169,7 +169,7 @@ export default function ToolsHubPage() {
             </p>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <Link href="/vulnerability-scanner" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-blue-500/30 transition-all">
+              <Link href="/tools/vulnerability-scanner" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-blue-500/30 transition-all">
                 <Shield className="w-8 h-8 text-blue-400 mb-6" />
                 <h3 className="text-lg font-bold text-white mb-3">Vulnerability Scanner</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
@@ -177,7 +177,7 @@ export default function ToolsHubPage() {
                 </p>
               </Link>
 
-              <Link href="/security-headers" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-amber-500/30 transition-all">
+              <Link href="/tools/http-headers" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-amber-500/30 transition-all">
                 <Lock className="w-8 h-8 text-amber-500 mb-6" />
                 <h3 className="text-lg font-bold text-white mb-3">Security Headers Auditor</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
@@ -185,7 +185,7 @@ export default function ToolsHubPage() {
                 </p>
               </Link>
 
-              <Link href="/ssl-checker" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all">
+              <Link href="/tools/ssl-checker" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all">
                 <Key className="w-8 h-8 text-purple-400 mb-6" />
                 <h3 className="text-lg font-bold text-white mb-3">SSL/TLS Crypto Checker</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
@@ -208,7 +208,7 @@ export default function ToolsHubPage() {
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Link href="/ip-scanner" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-matrix-500/30 transition-all overflow-hidden">
+              <Link href="/tools/ip-lookup" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-matrix-500/30 transition-all overflow-hidden">
                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-20 transition-opacity">
                   <Search className="w-32 h-32 text-matrix-500" />
                 </div>
@@ -219,7 +219,7 @@ export default function ToolsHubPage() {
                 </p>
               </Link>
 
-              <Link href="/port-scanner" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-red-500/30 transition-all overflow-hidden">
+              <Link href="/tools/port-scanner" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-red-500/30 transition-all overflow-hidden">
                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-20 transition-opacity">
                   <Terminal className="w-32 h-32 text-red-500" />
                 </div>
@@ -350,25 +350,25 @@ export default function ToolsHubPage() {
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Link href="/ip-scanner" className="text-sm font-mono text-gray-400 hover:text-matrix-400 transition-colors flex items-center gap-2">
+              <Link href="/tools/ip-lookup" className="text-sm font-mono text-gray-400 hover:text-matrix-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> IP Scanner
               </Link>
-              <Link href="/dns-lookup" className="text-sm font-mono text-gray-400 hover:text-cyan-400 transition-colors flex items-center gap-2">
+              <Link href="/tools/dns-lookup" className="text-sm font-mono text-gray-400 hover:text-cyan-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> DNS Lookup
               </Link>
-              <Link href="/whois" className="text-sm font-mono text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2">
+              <Link href="/tools/whois" className="text-sm font-mono text-gray-400 hover:text-teal-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> WHOIS Intelligence
               </Link>
-              <Link href="/vulnerability-scanner" className="text-sm font-mono text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
+              <Link href="/tools/vulnerability-scanner" className="text-sm font-mono text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> Vulnerability Scanner
               </Link>
-              <Link href="/security-headers" className="text-sm font-mono text-gray-400 hover:text-amber-500 transition-colors flex items-center gap-2">
+              <Link href="/tools/http-headers" className="text-sm font-mono text-gray-400 hover:text-amber-500 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> Security Headers
               </Link>
-              <Link href="/ssl-checker" className="text-sm font-mono text-gray-400 hover:text-purple-400 transition-colors flex items-center gap-2">
+              <Link href="/tools/ssl-checker" className="text-sm font-mono text-gray-400 hover:text-purple-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> SSL/TLS Checker
               </Link>
-              <Link href="/port-scanner" className="text-sm font-mono text-gray-400 hover:text-red-500 transition-colors flex items-center gap-2">
+              <Link href="/tools/port-scanner" className="text-sm font-mono text-gray-400 hover:text-red-500 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> Port Scanner
               </Link>
               <Link href="/blog" className="text-sm font-mono text-gray-400 hover:text-white transition-colors flex items-center gap-2">

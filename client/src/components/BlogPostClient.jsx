@@ -256,7 +256,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
 
               {/* CTAs */}
               <div className="space-y-6">
-                <Link href="/ip-scanner" className="block bg-[#0d1117] border border-[#00ff8833] p-4 rounded group hover:border-[#00ff8866] transition-all">
+                <Link href="/tools/ip-lookup" className="block bg-[#0d1117] border border-[#00ff8833] p-4 rounded group hover:border-[#00ff8866] transition-all">
                   <h4 className="font-mono text-[12px] text-[#00ff88] uppercase tracking-[2px] mb-2 flex items-center gap-2">
                     <Globe className="w-3 h-3" /> IP INTELLIGENCE
                   </h4>

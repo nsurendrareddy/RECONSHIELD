@@ -29,7 +29,7 @@ export default function Layout({ children }) {
   const navItems = [
     { path: '/', label: 'Scanner', icon: Terminal },
     { path: '/tools', label: 'Tools', icon: Shield },
-    { path: '/ip-scanner', label: 'IP Intel', icon: Globe },
+    { path: '/tools/ip-lookup', label: 'IP Intel', icon: Globe },
     { path: '/blog', label: 'Blog' },
     { path: '/about', label: 'About' },
     { path: '/contact', label: 'Contact' },

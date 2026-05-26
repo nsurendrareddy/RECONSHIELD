@@ -28,13 +28,13 @@ export default async function Page() {
   const posts = await client.fetch(homepageBlogQuery);
 
   const tools = [
-    { name: 'IP Lookup Tool', icon: MapPin, href: '/ip-scanner', desc: 'Trace IP addresses, detect VPNs/proxies, and check 50+ threat blocklists.' },
-    { name: 'DNS Lookup', icon: Network, href: '/dns-lookup', desc: 'Enumerate DNS records and analyze SPF/DMARC for email spoofing risks.' },
-    { name: 'Vulnerability Scanner', icon: Shield, href: '/vulnerability-scanner', desc: 'Scan websites passively for misconfigurations and exposed vulnerabilities.' },
-    { name: 'WHOIS Lookup', icon: Search, href: '/whois', desc: 'Identify domain ownership, registration dates, and infrastructure providers.' },
-    { name: 'Port Scanner', icon: Terminal, href: '/port-scanner', desc: 'Detect exposed services, database ports, and unencrypted administrative interfaces.' },
-    { name: 'SSL Checker', icon: Lock, href: '/ssl-checker', desc: 'Analyze TLS certificates for expiration, cipher strength, and deprecated protocols.' },
-    { name: 'Security Headers', icon: Layers, href: '/security-headers', desc: 'Audit CSP, HSTS, and X-Frame-Options to prevent XSS and clickjacking.' },
+    { name: 'IP Lookup Tool', icon: MapPin, href: '/tools/ip-lookup', desc: 'Trace IP addresses, detect VPNs/proxies, and check 50+ threat blocklists.' },
+    { name: 'DNS Lookup', icon: Network, href: '/tools/dns-lookup', desc: 'Enumerate DNS records and analyze SPF/DMARC for email spoofing risks.' },
+    { name: 'Vulnerability Scanner', icon: Shield, href: '/tools/vulnerability-scanner', desc: 'Scan websites passively for misconfigurations and exposed vulnerabilities.' },
+    { name: 'WHOIS Lookup', icon: Search, href: '/tools/whois', desc: 'Identify domain ownership, registration dates, and infrastructure providers.' },
+    { name: 'Port Scanner', icon: Terminal, href: '/tools/port-scanner', desc: 'Detect exposed services, database ports, and unencrypted administrative interfaces.' },
+    { name: 'SSL Checker', icon: Lock, href: '/tools/ssl-checker', desc: 'Analyze TLS certificates for expiration, cipher strength, and deprecated protocols.' },
+    { name: 'Security Headers', icon: Layers, href: '/tools/http-headers', desc: 'Audit CSP, HSTS, and X-Frame-Options to prevent XSS and clickjacking.' },
   ];
 
   return (
@@ -168,7 +168,7 @@ export default async function Page() {
                 </li>
               ))}
             </ul>
-            <Link href="/vulnerability-scanner" className="px-6 py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl font-medium transition-colors inline-flex items-center gap-2">
+            <Link href="/tools/vulnerability-scanner" className="px-6 py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl font-medium transition-colors inline-flex items-center gap-2">
               Learn about our Scanner <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
