@@ -89,16 +89,47 @@ export async function GET(request, { params }) {
           });
 
           if (backendRes.ok) {
-             const backendXml = await backendRes.text();
+             const textData = await backendRes.text();
+             let extractedUrls = [];
              
-             // Verify the XML is valid and contains actual URLs
-             if (backendXml && backendXml.includes('<loc>')) {
-               return new NextResponse(backendXml, {
-                 headers: {
-                   'Content-Type': 'application/xml',
-                   'Cache-Control': `public, s-maxage=${cacheTime}, stale-while-revalidate=${cacheTime * 2}`
-                 }
-               });
+             try {
+                // Try parsing as JSON first
+                const jsonData = JSON.parse(textData);
+                if (Array.isArray(jsonData)) {
+                    extractedUrls = jsonData;
+                }
+             } catch (e) {
+                // If it's XML, extract the <loc> values manually
+                const locMatches = [...textData.matchAll(/<loc>(.*?)<\/loc>/gi)];
+                extractedUrls = locMatches.map(m => ({ url: m[1].trim() }));
+             }
+
+             // Apply strict filter logic
+             const validUrls = extractedUrls.filter(
+                (u) =>
+                u &&
+                typeof u.url === 'string' &&
+                u.url.startsWith('https://') &&
+                !u.url.includes('undefined') &&
+                !u.url.includes('null')
+             );
+
+             if (validUrls.length > 0) {
+                 hasData = true;
+                 
+                 // Deduplicate URLs to prevent duplicate URL nodes
+                 const uniqueUrls = new Map();
+                 validUrls.forEach(u => uniqueUrls.set(u.url, u));
+                 
+                 Array.from(uniqueUrls.values()).forEach(u => {
+                    // Escape XML entities
+                    const safeUrl = u.url.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+                    const lastmod = u.lastmod || STATIC_LAST_MODIFIED;
+                    const changefreq = u.changefreq || 'weekly';
+                    const priority = u.priority || '0.6';
+                    
+                    xml += `  <url>\n    <loc>${safeUrl}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
+                 });
              }
           }
         } catch(e) {
@@ -128,6 +159,11 @@ export async function GET(request, { params }) {
 
     xml += `</urlset>`;
     
+    // Critical validation: NEVER output an empty <urlset>
+    if (!xml.includes('<url>')) {
+        return new NextResponse('Not Found', { status: 404 });
+    }
+    
     return new NextResponse(xml, {
       status: 200,
       headers: {
@@ -137,12 +173,7 @@ export async function GET(request, { params }) {
     });
   } catch (error) {
     console.error('Fatal Sitemap Error:', error);
-    // Ultimate fallback: Return empty but VALID xml to prevent Search Console errors
-    return new NextResponse('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>', {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/xml'
-      }
-    });
+    // Returning 404 is safer than returning an empty <urlset> which triggers GSC malformed errors
+    return new NextResponse('Not Found', { status: 404 });
   }
 }

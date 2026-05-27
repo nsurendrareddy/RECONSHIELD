@@ -31,8 +31,9 @@ export async function GET() {
     for (const type of SITEMAP_TYPES) {
       if (['core', 'tools', 'blog'].includes(type)) continue; // Handled statically above
 
-      // Default to 1 chunk for Phase 1 if backend doesn't provide it yet
-      const chunkCount = chunks[type] || 1; 
+      // Use chunk count from backend, default to 1 if undefined, but respect 0 if explicitly returned.
+      const chunkCount = chunks[type] !== undefined ? chunks[type] : 1;
+      if (chunkCount === 0) continue;
       for (let i = 1; i <= chunkCount; i++) {
         xml += `  <sitemap>\n`;
         xml += `    <loc>${BASE_URL}/sitemaps/${type}-${i}.xml</loc>\n`;
@@ -52,11 +53,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Fatal Sitemap Index Error:', error);
-    return new NextResponse('<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></sitemapindex>', {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/xml'
-      }
-    });
+    return new NextResponse('Not Found', { status: 404 });
   }
 }
