@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import { Shield, FileText, AlertOctagon, ChevronRight } from 'lucide-react';
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: 'Terms of Service & Acceptable Use Policy',
   description: 'Terms of Service and Acceptable Use Policy for ReconShield. Understand the rules for using our passive cybersecurity and threat intelligence tools.',
-  alternates: {
-    canonical: 'https://reconshield.in/terms',
-  }
-};
+  path: '/terms'
+});
 
 export default function TermsOfServicePage() {
   const lastUpdated = "May 27, 2026";

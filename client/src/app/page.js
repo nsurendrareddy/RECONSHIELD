@@ -5,20 +5,13 @@ import { client, homepageBlogQuery } from '@/utils/sanity';
 import { Shield, Target, Activity, Cpu, MapPin, Network, Search, Terminal, Lock, Layers, Mail, CheckCircle2, Globe, Database, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: "AI-Powered Cybersecurity & Threat Intelligence Platform",
   description: "ReconShield is a free, passive OSINT cybersecurity platform. Scan websites, analyze infrastructure, and detect configuration risks instantly with our threat intelligence engine.",
-  alternates: {
-    canonical: 'https://reconshield.in',
-  },
-  openGraph: {
-    title: "AI-Powered Cybersecurity & Threat Intelligence Platform",
-    siteName: "ReconShield",
-    description: "Scan websites, analyze infrastructure, and detect configuration risks instantly with our threat intelligence engine.",
-    url: 'https://reconshield.in',
-    type: 'website',
-  }
-};
+  path: '/'
+});
 
 export default async function Page() {
   const posts = await client.fetch(homepageBlogQuery);

@@ -148,7 +148,7 @@ export default async function ThreatActorPage({ params }) {
             <ol className="flex items-center gap-2 text-xs font-mono text-[#8a9bb0]">
               <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
-              <li><Link href="/threat-actor" className="hover:text-[#00ff88] transition-colors">Threat Actors</Link></li>
+              <li><Link href="/blog" className="hover:text-[#00ff88] transition-colors">Threat Intel Blog</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
               <li className="text-[#00ff88]">{intel.name}</li>
             </ol>

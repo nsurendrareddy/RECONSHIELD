@@ -1,19 +1,13 @@
 import { Shield, Target, Activity, Users, Globe, Lock, Cpu, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: "About Surendra Reddy — Founder of ReconShield",
   description: "Meet Surendra Reddy, founder of ReconShield. Learn about his mission to provide researchers with AI-driven cybersecurity tools and advanced threat intelligence.",
-  alternates: {
-    canonical: 'https://reconshield.in/about',
-  },
-  openGraph: {
-    title: "About Surendra Reddy — Founder of ReconShield",
-    description: "Learn about the mission of ReconShield: providing advanced, AI-driven visibility into global internet-facing assets for security researchers.",
-    url: 'https://reconshield.in/about',
-    type: 'profile',
-  }
-};
+  path: '/about'
+});
 
 export default function About() {
   const features = [

@@ -12,19 +12,13 @@ import { slugify } from '@/utils/slugify';
 
 export const revalidate = 60; // ISR revalidate every 1 minute
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: "Cybersecurity Research & Threat Intelligence Publication",
   description: "Enterprise cybersecurity publication. Deep-dive OSINT research, vulnerability analysis, AI security intelligence, and internet-facing assets mapping tutorials.",
-  alternates: {
-    canonical: 'https://reconshield.in/blog',
-  },
-  openGraph: {
-    title: "Cybersecurity Research & Threat Intelligence Publication",
-    description: "Enterprise cybersecurity publication. Deep-dive OSINT research, vulnerability analysis, AI security intelligence, and internet-facing assets mapping tutorials.",
-    url: 'https://reconshield.in/blog',
-    type: 'website',
-  }
-};
+  path: '/blog'
+});
 
 const CATEGORIES = [
   { name: "Threat Intelligence", icon: Target, color: "text-red-500", bg: "bg-red-500/10", border: "border-red-500/20", hover: "hover:border-red-500/20" },

@@ -10,7 +10,11 @@ const CATEGORIES = {
   'threat-intelligence': 'Threat Intelligence',
   'vulnerability-research': 'Vulnerability Research',
   'web-security': 'Web Security',
-  'ai-cybersecurity': 'AI Cybersecurity'
+  'ai-cybersecurity': 'AI Cybersecurity',
+  'attack-surface-analysis': 'Attack Surface Analysis',
+  'online-fraud': 'Online Fraud',
+  'attack-surface-management': 'Attack Surface Management',
+  'cyber-awareness': 'Cyber Awareness'
 };
 
 export async function generateMetadata({ params }) {

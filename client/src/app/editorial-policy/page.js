@@ -1,13 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: 'Editorial Policy',
   description: 'Learn about ReconShield\'s editorial standards, fact-checking, and ethical guidelines for our cybersecurity intelligence content.',
-  alternates: {
-    canonical: 'https://reconshield.in/editorial-policy',
-  },
-};
+  path: '/editorial-policy'
+});
 
 export default function EditorialPolicyPage() {
   return (

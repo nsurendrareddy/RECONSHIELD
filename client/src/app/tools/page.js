@@ -5,19 +5,13 @@ import {
   Globe, Key, Zap, Database, CheckCircle2 
 } from 'lucide-react';
 
-export const metadata = {
-  title: "Cybersecurity Tools & Threat Intelligence Platform ",
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
+  title: "Cybersecurity Tools & Threat Intelligence Platform",
   description: "Enterprise suite of free cybersecurity tools. Perform internet-facing assets analysis, OSINT infrastructure visibility, exposure assessment, and infrastructure intelligence.",
-  alternates: {
-    canonical: 'https://reconshield.in/tools',
-  },
-  openGraph: {
-    title: "Cybersecurity Tools & Threat Intelligence Platform",
-    description: "Enterprise suite of free cybersecurity tools. Perform internet-facing assets analysis, OSINT infrastructure visibility, exposure assessment, and infrastructure intelligence.",
-    url: 'https://reconshield.in/tools',
-    type: 'website',
-  }
-};
+  path: '/tools'
+});
 
 export default function ToolsHubPage() {
   const faqs = [

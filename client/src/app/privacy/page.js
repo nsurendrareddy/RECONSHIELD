@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import { Shield, Lock, FileText, ChevronRight } from 'lucide-react';
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: 'Privacy Policy & Data Protection',
   description: 'Privacy Policy for ReconShield. Learn how we handle your data, comply with GDPR/CCPA, and partner with ad networks like Google AdSense.',
-  alternates: {
-    canonical: 'https://reconshield.in/privacy',
-  }
-};
+  path: '/privacy'
+});
 
 export default function PrivacyPolicyPage() {
   const lastUpdated = "May 27, 2026";

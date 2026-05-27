@@ -150,7 +150,7 @@ export default async function CveEntityPage({ params }) {
             <ol className="flex items-center gap-2 text-xs font-mono text-[#8a9bb0]">
               <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
-              <li><Link href="/cve" className="hover:text-[#00ff88] transition-colors">CVE Database</Link></li>
+              <li><Link href="/tools/vulnerability-scanner" className="hover:text-[#00ff88] transition-colors">CVE Scanner</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
               <li className="text-[#00ff88]">{intel.id}</li>
             </ol>

@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import { AlertTriangle, ChevronRight } from 'lucide-react';
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: 'Legal Disclaimer & Educational Purpose',
   description: 'Legal disclaimer for ReconShield. Information provided is for educational and defensive cybersecurity purposes only.',
-  alternates: {
-    canonical: 'https://reconshield.in/disclaimer',
-  }
-};
+  path: '/disclaimer'
+});
 
 export default function DisclaimerPage() {
   const lastUpdated = "May 27, 2026";
