@@ -6,19 +6,13 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
   loading: () => <div className="min-h-[600px] animate-pulse bg-surface-900/50 rounded-3xl" />
 });
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: "SSL Checker & TLS Security Analysis Tool ",
   description: "Free SSL checker and TLS configuration analyzer. Verify SSL certificates, check expiration dates, and test for HTTPS configuration risks instantly.",
-  alternates: {
-    canonical: 'https://reconshield.in/tools/ssl-checker',
-  },
-  openGraph: {
-    title: "SSL Checker & TLS Security Analysis Tool",
-    description: "Free SSL checker and TLS configuration analyzer. Verify SSL certificates, check expiration dates, and test for HTTPS configuration risks instantly.",
-    url: 'https://reconshield.in/tools/ssl-checker',
-    type: 'article',
-  }
-};
+  path: "/tools/ssl-checker"
+});
 
 export default function SslCheckerPage() {
   const faqs = [

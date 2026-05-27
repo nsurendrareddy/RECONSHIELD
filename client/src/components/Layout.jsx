@@ -222,7 +222,7 @@ export default function Layout({ children }) {
           : 'bg-white border-gray-200 text-gray-600'
         } backdrop-blur-md`}>
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-10">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-8 md:gap-12 mb-12">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center gap-2 mb-4">
                 <Shield className={`w-5 h-5 ${theme === 'dark' ? 'text-matrix-400' : 'text-matrix-600'}`} />
@@ -265,6 +265,16 @@ export default function Layout({ children }) {
                 <li><Link href="/disclaimer" className="hover:text-[#00ff88] transition-colors text-amber-500/80 hover:text-amber-500">Legal Disclaimer</Link></li>
                 <li><Link href="/editorial-policy" className="hover:text-matrix-400 transition-colors">Editorial Policy</Link></li>
                 <li><Link href="/contact" className="hover:text-matrix-400 transition-colors">Contact Support</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Entity Intel</h4>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/ports/22" className="hover:text-matrix-400 transition-colors">Port 22 Analysis</Link></li>
+                <li><Link href="/ports/80" className="hover:text-matrix-400 transition-colors">Port 80 Analysis</Link></li>
+                <li><Link href="/asn/15169" className="hover:text-matrix-400 transition-colors">ASN 15169 (Google)</Link></li>
+                <li><Link href="/ip/8.8.8.8" className="hover:text-matrix-400 transition-colors">IP 8.8.8.8</Link></li>
+                <li><Link href="/cve/CVE-2021-44228" className="hover:text-matrix-400 transition-colors">Log4Shell (CVE-2021-44228)</Link></li>
               </ul>
             </div>
           </div>

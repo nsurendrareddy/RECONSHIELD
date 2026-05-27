@@ -6,19 +6,13 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
   loading: () => <div className="min-h-[600px] animate-pulse bg-surface-900/50 rounded-3xl" />
 });
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: "DNS Lookup Tool & DNS Security Analysis ",
   description: "Free DNS lookup tool to check all domain records instantly. Perform DNS security analysis, verify SPF/DMARC, and track DNS propagation worldwide.",
-  alternates: {
-    canonical: 'https://reconshield.in/tools/dns-lookup',
-  },
-  openGraph: {
-    title: "DNS Lookup Tool & DNS Security Analysis",
-    description: "Free DNS lookup tool to check all domain records instantly. Perform DNS security analysis, verify SPF/DMARC, and track DNS propagation worldwide.",
-    url: 'https://reconshield.in/tools/dns-lookup',
-    type: 'article',
-  }
-};
+  path: "/tools/dns-lookup"
+});
 
 export default function DnsLookupPage() {
   const faqs = [

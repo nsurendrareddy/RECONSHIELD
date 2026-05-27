@@ -6,19 +6,13 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
   loading: () => <div className="min-h-[600px] animate-pulse bg-surface-900/50 rounded-3xl" />
 });
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: "Port Scanner & Network internet-facing assets Analysis Tool ",
   description: "Free TCP port scanner and open port checker. Scan open ports, map your internet-facing assets, and detect vulnerable network services passively.",
-  alternates: {
-    canonical: 'https://reconshield.in/tools/port-scanner',
-  },
-  openGraph: {
-    title: "Port Scanner & Network internet-facing assets Analysis Tool",
-    description: "Free TCP port scanner and open port checker. Scan open ports, map your internet-facing assets, and detect vulnerable network services passively.",
-    url: 'https://reconshield.in/tools/port-scanner',
-    type: 'article',
-  }
-};
+  path: "/tools/port-scanner"
+});
 
 export default function PortScannerPage() {
   const faqs = [

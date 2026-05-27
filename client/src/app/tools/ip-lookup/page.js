@@ -7,20 +7,13 @@ const IpScannerClient = dynamic(() => import('@/components/ip-scanner/IpScannerC
   loading: () => <div className="min-h-[600px] animate-pulse bg-surface-900/50 rounded-3xl" />
 });
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: "Free IP Lookup & Reputation Checker ",
   description: "Trace any IP address instantly. Our IP lookup tool checks 50+ global blocklists, detects VPNs, and provides accurate geolocation and ASN data.",
-  alternates: {
-    canonical: 'https://reconshield.in/tools/ip-lookup',
-  },
-  openGraph: {
-    title: "Free IP Lookup & Reputation Checker",
-    description: "Trace any IP address instantly. Our IP lookup tool checks 50+ global blocklists, detects VPNs, and provides accurate geolocation and ASN data.",
-    url: 'https://reconshield.in/tools/ip-lookup',
-    type: 'article',
-    images: [{ url: 'https://reconshield.in/og-ip-scanner.png' }]
-  }
-};
+  path: "/tools/ip-lookup"
+});
 
 export default function IpScannerPage() {
   const faqs = [

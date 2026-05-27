@@ -21,11 +21,11 @@ export async function generateMetadata({ params }) {
       title: `${domain} WHOIS & Domain Ownership Intelligence`,
       description: `Complete WHOIS domain ownership analysis for ${domain}. View registrar, registration dates, authoritative nameservers, and uncover domain infrastructure details.`,
       alternates: {
-        canonical: `https://reconshield.in/whois/${domain}`,
+        canonical: `https://reconshield.in/tools/whois/${domain}`,
       },
       robots: { index: true, follow: true },
       openGraph: {
-        url: `https://reconshield.in/whois/${domain}`,
+        url: `https://reconshield.in/tools/whois/${domain}`,
         title: `${domain} WHOIS Profile`,
         description: `Analyze the WHOIS records and domain ownership for ${domain}.`,
         type: 'article',
@@ -55,21 +55,21 @@ export default async function WhoisIntelligencePage({ params }) {
     '@graph': [
       {
         '@type': 'TechArticle',
-        '@id': `https://reconshield.in/whois/${domain}/#article`,
+        '@id': `https://reconshield.in/tools/whois/${domain}/#article`,
         headline: `${domain} WHOIS Registration Security Report`,
         description: `Detailed analysis of the domain registration configuration and authoritative registrar for ${domain}.`,
         publisher: {
           '@type': 'Organization',
           name: 'ReconShield Threat Research'
         },
-        url: `https://reconshield.in/whois/${domain}`
+        url: `https://reconshield.in/tools/whois/${domain}`
       },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
           { '@type': 'ListItem', position: 2, name: 'WHOIS Intelligence', item: 'https://reconshield.in/tools/whois' },
-          { '@type': 'ListItem', position: 3, name: domain, item: `https://reconshield.in/whois/${domain}` },
+          { '@type': 'ListItem', position: 3, name: domain, item: `https://reconshield.in/tools/whois/${domain}` },
         ],
       },
       {

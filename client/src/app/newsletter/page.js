@@ -3,16 +3,13 @@ import { Mail, Shield, AlertTriangle, Cpu, Bug, Activity, Rss } from 'lucide-rea
 import { client, homepageBlogQuery } from '@/utils/sanity';
 import NewsletterForm from '@/components/NewsletterForm';
 
-export const metadata = {
-  title: 'Weekly Threat Briefing Newsletter',
-  description: 'Subscribe to the ReconShield Intelligence Newsletter for weekly threat intelligence, CVE alerts, AI security updates, and malware trends.',
-  alternates: {
-    canonical: 'https://reconshield.in/newsletter',
-    types: {
-      'application/rss+xml': 'https://reconshield.in/rss.xml',
-    },
-  },
-};
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
+  title: "Weekly Threat Briefing Newsletter",
+  description: "Subscribe to the ReconShield Intelligence Newsletter for weekly threat intelligence, CVE alerts, AI security updates, and malware trends.",
+  path: "/newsletter"
+});
 
 export default async function NewsletterPage() {
   const recentPosts = await client.fetch(homepageBlogQuery);

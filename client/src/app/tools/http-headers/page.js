@@ -6,19 +6,13 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
   loading: () => <div className="min-h-[600px] animate-pulse bg-surface-900/50 rounded-3xl" />
 });
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: "Security Headers Analyzer & Website Hardening Tool ",
   description: "Free security headers checker. Audit HTTP security headers, analyze your Content-Security-Policy (CSP), and enforce HSTS to protect against XSS and clickjacking.",
-  alternates: {
-    canonical: 'https://reconshield.in/tools/http-headers',
-  },
-  openGraph: {
-    title: "Security Headers Analyzer & Website Hardening Tool",
-    description: "Free security headers checker. Audit HTTP security headers, analyze your Content-Security-Policy (CSP), and enforce HSTS to protect against XSS and clickjacking.",
-    url: 'https://reconshield.in/tools/http-headers',
-    type: 'article',
-  }
-};
+  path: "/tools/http-headers"
+});
 
 export default function SecurityHeadersPage() {
   const faqs = [

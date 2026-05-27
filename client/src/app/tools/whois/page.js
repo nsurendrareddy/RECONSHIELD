@@ -6,19 +6,13 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
   loading: () => <div className="min-h-[600px] animate-pulse bg-surface-900/50 rounded-3xl" />
 });
 
-export const metadata = {
+import { generateBaseMetadata } from '@/utils/metadata';
+
+export const metadata = generateBaseMetadata({
   title: "WHOIS Lookup & Domain Intelligence Tool ",
   description: "Free WHOIS checker and RDAP lookup tool. Perform domain ownership lookup, analyze registration data, and uncover domain intelligence instantly.",
-  alternates: {
-    canonical: 'https://reconshield.in/tools/whois',
-  },
-  openGraph: {
-    title: "WHOIS Lookup & Domain Intelligence Tool",
-    description: "Free WHOIS checker and RDAP lookup tool. Perform domain ownership lookup, analyze registration data, and uncover domain intelligence instantly.",
-    url: 'https://reconshield.in/tools/whois',
-    type: 'article',
-  }
-};
+  path: "/tools/whois"
+});
 
 export default function WhoisPage() {
   const faqs = [
