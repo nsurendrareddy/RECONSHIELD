@@ -101,7 +101,7 @@ export default function Hero({ onStartScan }) {
                 <Shield className="w-4 h-4 text-matrix-400" /> Who is it for?
               </h3>
               <p>
-                Our platform is specifically built for cybersecurity researchers, SOC analysts, compliance auditors, and authorized security professionals who require high-fidelity intelligence and automated infrastructure visibility. Whether you are conducting proactive security auditing or monitoring complex infrastructure networks, ReconShield provides the actionable data needed to stay ahead of evolving cyber threats.
+                Our platform is specifically built for security teams, administrators, researchers, and compliance professionals who require high-fidelity intelligence and automated infrastructure visibility. Whether you are conducting proactive security auditing or monitoring complex infrastructure networks, ReconShield provides the actionable data needed to stay ahead of evolving cyber threats.
               </p>
             </div>
             

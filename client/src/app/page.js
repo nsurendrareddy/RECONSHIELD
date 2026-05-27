@@ -124,7 +124,7 @@ export default async function Page() {
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Enterprise Threat Intelligence Tools</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">Access our suite of open-source intelligence utilities to map infrastructure, uncover hidden endpoints, and secure your digital footprint.</p>
+            <p className="text-gray-400 max-w-2xl mx-auto">Access our suite of open-source intelligence utilities to map infrastructure, identify internet-facing assets, and secure your digital footprint.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
