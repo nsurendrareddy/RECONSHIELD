@@ -264,7 +264,7 @@ export default function Layout({ children }) {
             <div className="flex items-center gap-2 px-4 py-2 bg-amber-500/5 border border-amber-500/10 rounded-xl">
               <Lock className="w-3.5 h-3.5 text-amber-500/60" />
               <p className="text-[11px] text-amber-500/80 font-mono italic">
-                AUTHORIZED RESEARCH ONLY — Authorized security professionals only.
+                AUTHORIZED DEFENSIVE SECURITY USE ONLY
               </p>
             </div>
           </div>

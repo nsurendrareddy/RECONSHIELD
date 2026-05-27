@@ -189,11 +189,11 @@ export default function ToolsHubPage() {
             </div>
           </section>
 
-          {/* 4. internet-facing assets & infrastructure visibility Tools */}
+          {/* 4. Infrastructure Visibility Tools */}
           <section>
             <div className="flex items-center gap-4 mb-10">
               <h2 className="text-2xl font-display font-bold text-white flex items-center gap-3">
-                <Target className="w-6 h-6 text-red-500" /> internet-facing assets infrastructure visibility
+                <Target className="w-6 h-6 text-red-500" /> Infrastructure Visibility Tools
               </h2>
               <div className="h-px flex-1 bg-gradient-to-r from-red-500/20 to-transparent" />
             </div>
@@ -218,9 +218,9 @@ export default function ToolsHubPage() {
                   <Terminal className="w-32 h-32 text-red-500" />
                 </div>
                 <Terminal className="w-8 h-8 text-red-500 mb-6 relative z-10" />
-                <h3 className="text-xl font-bold text-white mb-3 relative z-10">TCP Port Scanner</h3>
+                <h3 className="text-xl font-bold text-white mb-3 relative z-10">TCP Port Analyzer</h3>
                 <p className="text-sm text-gray-400 leading-relaxed relative z-10">
-                  Scan for open TCP ports to map your network boundaries. Identify inadvertently exposed services like SSH, RDP, or databases instantly.
+                  Analyze open TCP ports to map your network boundaries. Identify inadvertently exposed services like SSH, RDP, or databases instantly.
                 </p>
               </Link>
             </div>
