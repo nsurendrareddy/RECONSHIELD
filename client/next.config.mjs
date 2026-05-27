@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
+    unoptimized: true,
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
@@ -35,6 +36,10 @@ const nextConfig = {
         source: '/fonts/(.*)',
         headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
       },
+      {
+        source: '/sanity-cdn/(.*)',
+        headers: [{ key: 'Cache-Control', value: 'public, immutable, max-age=31536000' }],
+      },
     ];
   },
   async rewrites() {
@@ -43,6 +48,10 @@ const nextConfig = {
       {
         source: '/api/:path*',
         destination: `${backendUrl}/api/:path*`,
+      },
+      {
+        source: '/sanity-cdn/:path*',
+        destination: 'https://cdn.sanity.io/:path*',
       },
       {
         source: '/uploads/:path*',
