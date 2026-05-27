@@ -68,7 +68,7 @@ export default async function WhoisIntelligencePage({ params }) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
-          { '@type': 'ListItem', position: 2, name: 'WHOIS Intelligence', item: 'https://reconshield.in/tools/whois-checker' },
+          { '@type': 'ListItem', position: 2, name: 'WHOIS Intelligence', item: 'https://reconshield.in/tools/whois' },
           { '@type': 'ListItem', position: 3, name: domain, item: `https://reconshield.in/whois/${domain}` },
         ],
       },
@@ -109,7 +109,7 @@ export default async function WhoisIntelligencePage({ params }) {
             <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
               <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
-              <li><Link href="/tools/whois-checker" className="hover:text-[#00ff88] transition-colors">WHOIS Analysis</Link></li>
+              <li><Link href="/tools/whois" className="hover:text-[#00ff88] transition-colors">WHOIS Analysis</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
               <li className="text-[#00ff88]">{domain}</li>
             </ol>
@@ -161,7 +161,7 @@ export default async function WhoisIntelligencePage({ params }) {
                   Perform an active resolution against authoritative registrars to extract the full public WHOIS record for <strong>{domain}</strong>.
                 </p>
                 
-                <Link href={`/tools/whois-checker?target=${domain}`} className="inline-flex items-center justify-center gap-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-6 py-3 rounded-xl font-bold transition-all">
+                <Link href={`/tools/whois?target=${domain}`} className="inline-flex items-center justify-center gap-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-6 py-3 rounded-xl font-bold transition-all">
                   <Globe className="w-4 h-4" />
                   Query WHOIS Records for {domain}
                 </Link>
@@ -182,23 +182,33 @@ export default async function WhoisIntelligencePage({ params }) {
                 <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">Entity Graph Relations</h3>
                 
                 <div className="space-y-3">
-                  <Link href={`/tools/dns-lookup`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/dns-records/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20">
                       <Server className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-white">DNS Lookup</div>
+                      <div className="text-sm font-semibold text-white">DNS Intelligence</div>
                       <div className="text-xs text-gray-500">Query domain records</div>
                     </div>
                   </Link>
 
-                  <Link href={`/tools/subdomain-finder`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/subdomains/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:bg-orange-500/20">
                       <Globe className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-white">Subdomain Finder</div>
+                      <div className="text-sm font-semibold text-white">Subdomains</div>
                       <div className="text-xs text-gray-500">Discover hidden assets</div>
+                    </div>
+                  </Link>
+                  
+                  <Link href={`/ssl/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                    <div className="w-8 h-8 rounded-md bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover:bg-pink-500/20">
+                      <AlertTriangle className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-white">SSL Certificates</div>
+                      <div className="text-xs text-gray-500">Validate Crypto Trust</div>
                     </div>
                   </Link>
                 </div>

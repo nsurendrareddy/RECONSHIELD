@@ -111,7 +111,10 @@ export async function GET(request, { params }) {
                 typeof u.url === 'string' &&
                 u.url.startsWith('https://') &&
                 !u.url.includes('undefined') &&
-                !u.url.includes('null')
+                !u.url.includes('null') &&
+                !u.url.includes(' ') &&
+                !u.url.includes('(') &&
+                !u.url.includes(')')
              );
 
              if (validUrls.length > 0) {

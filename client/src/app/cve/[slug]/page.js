@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Shield, Globe, Server, Activity, AlertTriangle, Cpu, Network, Lock, Search, FileCode2, ChevronRight } from 'lucide-react';
+import { slugify } from '@/utils/slugify';
 
 // Phase 11: Edge/ISR Configuration
 export const revalidate = 21600; // Cache for 6 hours (CVE base stats don't change frequently, but exploitation status might)
@@ -253,13 +254,17 @@ export default async function CveEntityPage({ params }) {
                   <div>
                     <h3 className="text-xs text-[#e2e8f0] font-semibold mb-3">Threat Actors Using {intel.id}</h3>
                     <ul className="space-y-2">
-                      {intel.relatedActors.map(actor => (
+                      {intel.relatedActors.map(actor => {
+                        const safeSlug = slugify(actor);
+                        if (!safeSlug || safeSlug.includes('(') || safeSlug.includes(' ')) return null;
+                        return (
                         <li key={actor}>
-                          <Link href={`/threat-actor/${actor.toLowerCase().replace(' ', '-')}`} className="text-sm text-[#ffaa00] hover:underline font-mono inline-flex items-center gap-2 bg-[#ffaa00]/5 px-2 py-1 rounded border border-[#ffaa00]/10 w-full transition-colors hover:bg-[#ffaa00]/10">
+                          <Link href={`/threat-actor/${safeSlug}`} className="text-sm text-[#ffaa00] hover:underline font-mono inline-flex items-center gap-2 bg-[#ffaa00]/5 px-2 py-1 rounded border border-[#ffaa00]/10 w-full transition-colors hover:bg-[#ffaa00]/10">
                             {actor}
                           </Link>
                         </li>
-                      ))}
+                        );
+                      })}
                     </ul>
                   </div>
 

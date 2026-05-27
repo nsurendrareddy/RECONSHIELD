@@ -210,33 +210,33 @@ export default async function DnsIntelligencePage({ params }) {
                 <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">Entity Graph Relations</h3>
                 
                 <div className="space-y-3">
-                  <Link href={`/tools/whois-checker`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/whois/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20">
                       <Server className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-white">WHOIS Lookup</div>
+                      <div className="text-sm font-semibold text-white">WHOIS Intelligence</div>
                       <div className="text-xs text-gray-500">Query domain ownership</div>
                     </div>
                   </Link>
 
-                  <Link href={`/tools/subdomain-finder`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/subdomains/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:bg-orange-500/20">
                       <Globe className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-white">Subdomain Finder</div>
+                      <div className="text-sm font-semibold text-white">Subdomains</div>
                       <div className="text-xs text-gray-500">Discover hidden assets</div>
                     </div>
                   </Link>
 
-                  <Link href={`/tools/email-security-checker`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/ssl/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover:bg-pink-500/20">
                       <AlertTriangle className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-white">Email Security</div>
-                      <div className="text-xs text-gray-500">Validate DMARC policy</div>
+                      <div className="text-sm font-semibold text-white">SSL Certificates</div>
+                      <div className="text-xs text-gray-500">Validate Crypto Trust</div>
                     </div>
                   </Link>
                 </div>
