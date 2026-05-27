@@ -40,8 +40,8 @@ export async function generateMetadata({ params }) {
   const serviceName = portDetails ? portDetails.service : 'Unknown Service';
 
   return {
-    title: `Port ${port} (${serviceName}) Security Analysis & Vulnerabilities`,
-    description: `Complete cybersecurity analysis for network port ${port}. Learn what service runs on port ${port}, associated vulnerabilities, and whether it is safe to leave open.`,
+    title: `Port ${port} (${serviceName}) Security Analysis & configuration risks`,
+    description: `Complete cybersecurity analysis for network port ${port}. Learn what service runs on port ${port}, associated configuration risks, and whether it is safe to leave open.`,
     alternates: {
       canonical: `https://reconshield.in/ports/${port}`,
     },
@@ -107,7 +107,7 @@ export default async function PortIntelligencePage({ params }) {
           {
             '@type': 'Question',
             name: `Is port ${port} safe to open?`,
-            acceptedAnswer: { '@type': 'Answer', text: `Exposing port ${port} carries a ${portDetails.risk} risk. Public exposure of non-web administrative ports invites brute-force attacks and exploitation of unpatched vulnerabilities.` }
+            acceptedAnswer: { '@type': 'Answer', text: `Exposing port ${port} carries a ${portDetails.risk} risk. Public exposure of non-web administrative ports invites brute-force attacks and exploitation of unpatched configuration risks.` }
           },
           {
             '@type': 'Question',
@@ -150,7 +150,7 @@ export default async function PortIntelligencePage({ params }) {
               Port <span className="text-red-400">{port}</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
-              Vulnerability assessment, common exploits, and firewall configuration recommendations for TCP/UDP port {port}.
+              exposure assessment, common exploits, and firewall configuration recommendations for TCP/UDP port {port}.
             </p>
           </div>
 
@@ -203,7 +203,7 @@ export default async function PortIntelligencePage({ params }) {
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">Security Implications of Port {port}</h3>
                 <p className="text-gray-400 leading-relaxed">
                   The risk of exposing port {port} depends heavily on the underlying application and the network architecture. 
-                  Because {portDetails.service} is a known service, automated botnets and vulnerability scanners constantly sweep the internet for IPs listening on port {port}. 
+                  Because {portDetails.service} is a known service, automated botnets and exposure assessment tools constantly sweep the internet for IPs listening on port {port}. 
                   If the service is unpatched or relies on weak default credentials, an attacker can exploit the open port to gain Initial Access to the server environment.
                 </p>
 

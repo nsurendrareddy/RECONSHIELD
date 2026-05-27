@@ -249,7 +249,7 @@ export default async function ThreatActorPage({ params }) {
                 
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-xs text-[#e2e8f0] font-semibold mb-3">Weaponized Vulnerabilities (CVEs)</h3>
+                    <h3 className="text-xs text-[#e2e8f0] font-semibold mb-3">Weaponized configuration risks (CVEs)</h3>
                     <ul className="space-y-2">
                       {intel.associatedCVEs.map(cve => (
                         <li key={cve}>

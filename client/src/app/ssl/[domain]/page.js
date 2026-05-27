@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${domain} SSL/TLS Certificate Analysis & Security Profile`,
-    description: `Complete TLS security and certificate analysis for ${domain}. View cipher suites, protocol support, vulnerability assessments, and SSL expiry information.`,
+    description: `Complete TLS security and certificate analysis for ${domain}. View cipher suites, protocol support, exposure assessments, and SSL expiry information.`,
     alternates: {
       canonical: `https://reconshield.in/ssl/${domain}`,
     },
@@ -84,7 +84,7 @@ export default async function SslIntelligencePage({ params }) {
           },
           {
             '@type': 'Question',
-            name: `Are there vulnerabilities on ${domain}'s SSL?`,
+            name: `Are there configuration risks on ${domain}'s SSL?`,
             acceptedAnswer: { '@type': 'Answer', text: `If ${domain} supports obsolete protocols (like SSLv3 or TLS 1.0) or weak cipher suites (like RC4), it is susceptible to downgrade attacks and data decryption by malicious actors.` }
           }
         ],
@@ -172,7 +172,7 @@ export default async function SslIntelligencePage({ params }) {
                   When a client connects to <strong>{domain}</strong> via HTTPS, a complex cryptographic handshake occurs. The server presents a digital certificate proving its identity, and negotiates a cipher suite—a combination of algorithms for authentication, encryption, and message authentication—to secure the connection.
                 </p>
 
-                <h3 className="text-xl font-bold text-white mt-8 mb-3">Vulnerability Exposure</h3>
+                <h3 className="text-xl font-bold text-white mt-8 mb-3">Configuration Exposure</h3>
                 <p className="text-gray-400 leading-relaxed">
                   Misconfigurations on {domain}'s web server can lead to severe security breaches. If {domain} supports outdated protocols like SSLv3 or TLS 1.0, it may be vulnerable to attacks like POODLE or BEAST. Furthermore, if {domain} utilizes weak cipher suites (e.g., those using RC4 or 3DES), state-sponsored actors or sophisticated attackers positioned on the network could potentially decrypt the captured traffic.
                 </p>

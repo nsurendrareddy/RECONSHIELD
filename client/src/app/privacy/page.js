@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-  const lastUpdated = "May 26, 2026";
+  const lastUpdated = "May 27, 2026";
 
   return (
     <div className="bg-[#05080f] min-h-screen pb-24">

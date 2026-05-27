@@ -231,7 +231,7 @@ export default async function IpEntityPage({ params }) {
                   <div className="bg-[#1a0f14] border border-[#ff3366]/20 p-6 rounded-xl mb-6">
                     <h3 className="text-[#ff3366] text-lg font-bold mt-0 mb-3">Observed Scanner Behavior</h3>
                     <p className="text-[#e2e8f0]">
-                      This node exhibits automated mass-scanning behaviors typical of botnets searching for vulnerable infrastructure. Target payloads indicate exploitation attempts for known remote code execution (RCE) vulnerabilities.
+                      This node exhibits automated mass-scanning behaviors typical of botnets searching for vulnerable infrastructure. Target payloads indicate exploitation attempts for known remote code execution (RCE) configuration risks.
                     </p>
                   </div>
                   

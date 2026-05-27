@@ -12,16 +12,16 @@ const rajdhani = Rajdhani({ subsets: ["latin"], weight: ["500", "600", "700"], d
 export const metadata = {
   metadataBase: new URL("https://reconshield.in"),
   title: {
-    default: "ReconShield - AI Cybersecurity & Threat Intelligence Platform",
+    default: "ReconShield - Infrastructure Visibility & Threat Intelligence Platform",
     template: "%s | ReconShield"
   },
-  description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
+  description: "ReconShield — Passive cybersecurity platform for threat intelligence, OSINT, exposure management, and IP analysis. Professional-grade security auditing tools, free.",
   authors: [{ name: "ReconShield Team" }],
 
   manifest: "/manifest.json",
   openGraph: {
-    title: "ReconShield - AI Cybersecurity Platform",
-    description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
+    title: "ReconShield - Infrastructure Visibility Platform",
+    description: "ReconShield — Passive cybersecurity platform for threat intelligence, OSINT, exposure management, and IP analysis. Professional-grade security auditing tools, free.",
     url: "https://reconshield.in/",
     siteName: "ReconShield",
     images: [
@@ -169,7 +169,7 @@ export default function RootLayout({ children }) {
                   "IP Reputation",
                   "DNS Analysis",
                   "SSL Auditing",
-                  "Vulnerability Scanning",
+                  "exposure assessment",
                   "AI Risk Assessment"
                 ]
               }

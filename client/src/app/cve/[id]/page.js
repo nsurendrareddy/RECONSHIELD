@@ -72,7 +72,7 @@ export default async function CveEntityPage({ params }) {
     '@graph': [
       {
         '@type': 'TechArticle',
-        headline: `Vulnerability Intelligence: ${intel.id}`,
+        headline: `exposure intelligence: ${intel.id}`,
         description: intel.aiSummary,
         abstract: intel.aiSummary,
         author: { '@type': 'Organization', name: 'ReconShield Threat Research' },
@@ -83,7 +83,7 @@ export default async function CveEntityPage({ params }) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
-          { '@type': 'ListItem', position: 2, name: 'Vulnerabilities', item: 'https://reconshield.in/cve' },
+          { '@type': 'ListItem', position: 2, name: 'configuration risks', item: 'https://reconshield.in/cve' },
           { '@type': 'ListItem', position: 3, name: intel.id, item: `https://reconshield.in/cve/${intel.id.toLowerCase()}` },
         ],
       },

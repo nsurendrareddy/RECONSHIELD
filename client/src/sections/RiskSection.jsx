@@ -19,10 +19,10 @@ export default function RiskSection({ data }) {
 
   return (
     <ModuleCard title="AI Risk Analysis" icon={BrainCircuit} status={risk.risk_level} defaultOpen={true}>
-      {/* Vulnerabilities */}
+      {/* vulnerabilities */}
       {risk.vulnerabilities?.length > 0 && (
         <div className="mb-6">
-          <h4 className="text-sm font-semibold text-gray-300 mb-3">Detected Vulnerabilities</h4>
+          <h4 className="text-sm font-semibold text-gray-300 mb-3">Detected configuration risks</h4>
           <div className="space-y-2">
             {risk.vulnerabilities.map((v, i) => (
               <div key={i} className={`rounded-lg px-4 py-3 ${severityStyles[v.severity] || severityStyles.info}`}>

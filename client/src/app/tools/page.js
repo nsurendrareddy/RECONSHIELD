@@ -7,13 +7,13 @@ import {
 
 export const metadata = {
   title: "Cybersecurity Tools & Threat Intelligence Platform ",
-  description: "Enterprise suite of free cybersecurity tools. Perform attack surface analysis, OSINT reconnaissance, vulnerability scanning, and infrastructure intelligence.",
+  description: "Enterprise suite of free cybersecurity tools. Perform attack surface analysis, OSINT reconnaissance, exposure assessment, and infrastructure intelligence.",
   alternates: {
     canonical: 'https://reconshield.in/tools',
   },
   openGraph: {
     title: "Cybersecurity Tools & Threat Intelligence Platform",
-    description: "Enterprise suite of free cybersecurity tools. Perform attack surface analysis, OSINT reconnaissance, vulnerability scanning, and infrastructure intelligence.",
+    description: "Enterprise suite of free cybersecurity tools. Perform attack surface analysis, OSINT reconnaissance, exposure assessment, and infrastructure intelligence.",
     url: 'https://reconshield.in/tools',
     type: 'website',
   }
@@ -39,7 +39,7 @@ export default function ToolsHubPage() {
     },
     {
       q: "Which cybersecurity tool should I start with?",
-      a: "We recommend starting with the Website Vulnerability Scanner to get a broad overview of your web application's security posture, then pivoting to the Security Headers and SSL Checker for deep hardening."
+      a: "We recommend starting with the Security Exposure Assessment Tool to get a broad overview of your web application's security posture, then pivoting to the Security Headers and SSL Checker for deep hardening."
     }
   ];
 
@@ -165,9 +165,9 @@ export default function ToolsHubPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <Link href="/tools/vulnerability-scanner" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-blue-500/30 transition-all">
                 <Shield className="w-8 h-8 text-blue-400 mb-6" />
-                <h3 className="text-lg font-bold text-white mb-3">Vulnerability Scanner</h3>
+                <h3 className="text-lg font-bold text-white mb-3">Exposure Assessment Tool</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
-                  Perform a massive passive scan to detect OWASP misconfigurations and attack vectors on your web server.
+                  Perform a passive analysis to detect OWASP misconfigurations and configuration risks on your web server.
                 </p>
               </Link>
 
@@ -325,7 +325,7 @@ export default function ToolsHubPage() {
                   <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                   <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                   <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                    Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                    Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
                   </p>
                   <div className="flex gap-6 text-sm font-mono">
                     <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-matrix-400 hover:text-matrix-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
@@ -354,7 +354,7 @@ export default function ToolsHubPage() {
                 <ChevronRight className="w-3 h-3" /> WHOIS Intelligence
               </Link>
               <Link href="/tools/vulnerability-scanner" className="text-sm font-mono text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
-                <ChevronRight className="w-3 h-3" /> Vulnerability Scanner
+                <ChevronRight className="w-3 h-3" /> Exposure Assessment Tool
               </Link>
               <Link href="/tools/http-headers" className="text-sm font-mono text-gray-400 hover:text-amber-500 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> Security Headers

@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Terminal as TerminalIcon, X, Maximize2, Minimize2, Cpu, Shield, Zap } from 'lucide-react'
 
 const HACK_STEPS = [
-  { cmd: 'nmap -sV --script=vuln {target}', output: 'Scanning target services and vulnerabilities...', delay: 1000 },
+  { cmd: 'nmap -sV --script=vuln {target}', output: 'Scanning target services and configuration risks...', delay: 1000 },
   { cmd: 'gobuster dir -u https://{target} -w common.txt', output: 'Finding hidden directories...', delay: 1500 },
   { cmd: 'ffuf -u https://{target}/FUZZ -w subdomains.txt', output: 'Fuzzing for subdomains...', delay: 1200 },
   { cmd: 'sqlmap -u "https://{target}/api/user?id=1" --batch', output: 'Testing for SQL injection points...', delay: 2000 },

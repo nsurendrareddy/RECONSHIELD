@@ -18,7 +18,7 @@ export const metadata = {
 export default function About() {
   const features = [
     { icon: Globe, title: 'Global Intelligence', desc: 'Real-time monitoring of infrastructure and network reputation across 200+ countries.' },
-    { icon: Lock, title: 'Security Auditing', desc: 'Deep-packet inspection of SSL/TLS and security headers to ensure data encryption standards.' },
+    { icon: Lock, title: 'Security Auditing', desc: 'security configuration analysis of SSL/TLS and security headers to ensure data encryption standards.' },
     { icon: Cpu, title: 'AI-Powered Analysis', desc: 'Using advanced language models to interpret complex technical scans into human-readable risk reports.' },
     { icon: Target, title: 'Precision Recon', desc: 'High-fidelity mapping of DNS records and subdomain structures for comprehensive visibility.' },
   ]
@@ -49,7 +49,7 @@ export default function About() {
                   "name": "Surendra Reddy",
                   "url": "https://reconshield.in/about",
                   "jobTitle": "Cybersecurity Researcher & Founder",
-                  "description": "Cybersecurity researcher specializing in OSINT, vulnerability intelligence, and AI-driven threat analysis. Founder of ReconShield.",
+                  "description": "Cybersecurity researcher specializing in OSINT, exposure intelligence, and AI-driven threat analysis. Founder of ReconShield.",
                   "sameAs": [
                     "https://linkedin.com/in/surendrareddy3",
                     "https://github.com/nsurendrareddy"

@@ -103,7 +103,7 @@ export default async function WhoisIntelligencePage({ params }) {
             <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
               <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
-              <li><Link href="/tools/whois-checker" className="hover:text-[#00ff88] transition-colors">WHOIS Analysis</Link></li>
+              <li><Link href="/tools/whois" className="hover:text-[#00ff88] transition-colors">WHOIS Analysis</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
               <li className="text-[#00ff88]">{domain}</li>
             </ol>

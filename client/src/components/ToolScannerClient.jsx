@@ -19,13 +19,13 @@ import TechSection from '@/sections/TechSection';
 
 const SECTION_MAP = {
   'ip-lookup': { section: IpSection, icon: Globe, dataKey: 'ip' },
-  'whois-checker': { section: DomainSection, icon: Activity, dataKey: 'whois' },
+  'whois': { section: DomainSection, icon: Activity, dataKey: 'whois' },
   'dns-lookup': { section: DnsSection, icon: Globe, dataKey: 'dns' },
   'ssl-checker': { section: SslSection, icon: Lock, dataKey: 'ssl' },
   'subdomain-finder': { section: SubdomainSection, icon: Layers, dataKey: 'subdomains' },
   'port-scanner': { section: PortSection, icon: Activity, dataKey: 'ports' },
-  'security-headers': { section: HeadersSection, icon: Layers, dataKey: 'headers' },
-  'email-security-checker': { section: DnsSection, icon: Shield, dataKey: 'dns' },
+  'http-headers': { section: HeadersSection, icon: Layers, dataKey: 'headers' },
+  'email-security': { section: DnsSection, icon: Shield, dataKey: 'dns' },
   'threat-intelligence': { section: IpSection, icon: Activity, dataKey: 'ip' },
   'tech-detector': { section: TechSection, icon: Layers, dataKey: 'tech' },
   'vulnerability-scanner': { section: VulnSimSection, icon: Shield, dataKey: 'vuln_sim' },

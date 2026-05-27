@@ -129,16 +129,21 @@ export function ToolPageContent({ toolId }) {
       </div>
 
       <div className="max-w-5xl mx-auto px-4 pt-4">
-        {/* Breadcrumb Navigation */}
-        <nav aria-label="Breadcrumb" className="mb-4">
-          <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
-            <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
-            <li><ChevronRight className="w-3 h-3" /></li>
-            <li><Link href="/tools" className="hover:text-[#00ff88] transition-colors">Tools</Link></li>
-            <li><ChevronRight className="w-3 h-3" /></li>
-            <li className="text-[#00ff88]">{tool.name}</li>
-          </ol>
-        </nav>
+        {/* Breadcrumb Navigation and Meta */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
+              <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
+              <li><ChevronRight className="w-3 h-3" /></li>
+              <li><Link href="/tools" className="hover:text-[#00ff88] transition-colors">Tools</Link></li>
+              <li><ChevronRight className="w-3 h-3" /></li>
+              <li className="text-[#00ff88]">{tool.name}</li>
+            </ol>
+          </nav>
+          <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
+            LAST UPDATED: May 2026
+          </div>
+        </div>
 
         {/* Prominent Legal Disclaimer Badge */}
         <div className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-4 flex flex-col sm:flex-row items-center gap-3 text-[10px] sm:text-xs font-mono text-amber-500 mb-8 shadow-sm">

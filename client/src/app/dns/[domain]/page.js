@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${domain} DNS Records Analysis & Propagation Profile`,
-    description: `Complete DNS configuration analysis for ${domain}. View A, AAAA, MX, TXT, and NS records, and uncover potential DNS hijacking or spoofing vulnerabilities.`,
+    description: `Complete DNS configuration analysis for ${domain}. View A, AAAA, MX, TXT, and NS records, and uncover potential DNS hijacking or spoofing configuration risks.`,
     alternates: {
       canonical: `https://reconshield.in/dns/${domain}`,
     },
@@ -170,7 +170,7 @@ export default async function DnsIntelligencePage({ params }) {
                   The Domain Name System (DNS) translates the human-readable domain <strong>{domain}</strong> into machine-readable IP addresses. It is fundamentally the address book of the internet. A domain's DNS configuration is split across various record types, each serving a specific topological function.
                 </p>
 
-                <h3 className="text-xl font-bold text-white mt-8 mb-3">Threat Vectors & Vulnerabilities</h3>
+                <h3 className="text-xl font-bold text-white mt-8 mb-3">Threat Vectors & configuration risks</h3>
                 <p className="text-gray-400 leading-relaxed">
                   Attackers heavily target the DNS layer. <strong>Subdomain Takeover</strong> occurs when a CNAME record points to an external, unclaimed cloud resource. Furthermore, if {domain} does not employ DNSSEC, it is potentially vulnerable to cache poisoning, allowing attackers to route legitimate users to malicious infrastructure by falsifying DNS responses.
                 </p>

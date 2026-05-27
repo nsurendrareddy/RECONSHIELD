@@ -59,7 +59,7 @@ export default async function NewsletterPage() {
             <TopicCard 
               icon={<Shield className="w-5 h-5 text-[#00ff88]" />} 
               title="Threat Intelligence" 
-              desc="Deep dives into emerging APT groups, novel attack vectors, and geopolitical cyber activity." 
+              desc="Deep dives into emerging APT groups, novel configuration risks, and geopolitical cyber activity." 
             />
             <TopicCard 
               icon={<AlertTriangle className="w-5 h-5 text-yellow-500" />} 

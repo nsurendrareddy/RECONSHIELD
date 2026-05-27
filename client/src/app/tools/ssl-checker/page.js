@@ -8,13 +8,13 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 
 export const metadata = {
   title: "SSL Checker & TLS Security Analysis Tool ",
-  description: "Free SSL checker and TLS configuration analyzer. Verify SSL certificates, check expiration dates, and test for HTTPS vulnerabilities instantly.",
+  description: "Free SSL checker and TLS configuration analyzer. Verify SSL certificates, check expiration dates, and test for HTTPS configuration risks instantly.",
   alternates: {
     canonical: 'https://reconshield.in/tools/ssl-checker',
   },
   openGraph: {
     title: "SSL Checker & TLS Security Analysis Tool",
-    description: "Free SSL checker and TLS configuration analyzer. Verify SSL certificates, check expiration dates, and test for HTTPS vulnerabilities instantly.",
+    description: "Free SSL checker and TLS configuration analyzer. Verify SSL certificates, check expiration dates, and test for HTTPS configuration risks instantly.",
     url: 'https://reconshield.in/tools/ssl-checker',
     type: 'article',
   }
@@ -39,7 +39,7 @@ export default function SslCheckerPage() {
       a: "SSL certificates use public key cryptography. When a browser connects to a server, the server presents its certificate (containing its public key) signed by a trusted authority. The browser verifies this signature, and they negotiate a secure symmetric session key to encrypt all subsequent traffic."
     },
     {
-      q: "Can this tool act as an HTTPS vulnerability scanner?",
+      q: "Can this tool act as an HTTPS exposure assessment tool?",
       a: "Yes. By analyzing the supported protocols and cipher suites, the tool can infer if your server is vulnerable to known cryptographic attacks like POODLE, BEAST, or SWEET32, which rely on weak or outdated encryption standards."
     }
   ];
@@ -150,7 +150,7 @@ export default function SslCheckerPage() {
           </div>
         </section>
 
-        {/* 4. TLS Handshake & 5. Common Vulnerabilities */}
+        {/* 4. TLS Handshake & 5. Common configuration risks */}
         <section className="py-20 bg-[#0a0d14] border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16">
             
@@ -166,9 +166,9 @@ export default function SslCheckerPage() {
                 <li><strong>Key Exchange:</strong> A secure symmetric session key is generated for the connection.</li>
               </ol>
 
-              <h3 className="text-xl text-white font-bold mt-8 mb-4">Common SSL/TLS Vulnerabilities</h3>
+              <h3 className="text-xl text-white font-bold mt-8 mb-4">Common SSL/TLS configuration risks</h3>
               <p>
-                A <strong>TLS configuration analyzer</strong> is critical because simply having an SSL certificate is not enough. If your server supports legacy protocols (like SSLv3 or TLS 1.0) or weak ciphers (like RC4 or DES), attackers can force a protocol downgrade and decrypt the traffic. Our tool acts as an <strong>HTTPS vulnerability scanner</strong>, identifying misconfigurations that lead to attacks such as POODLE, BEAST, or CRIME.
+                A <strong>TLS configuration analyzer</strong> is critical because simply having an SSL certificate is not enough. If your server supports legacy protocols (like SSLv3 or TLS 1.0) or weak ciphers (like RC4 or DES), attackers can force a protocol downgrade and decrypt the traffic. Our tool acts as an <strong>HTTPS exposure assessment tool</strong>, identifying misconfigurations that lead to attacks such as POODLE, BEAST, or CRIME.
               </p>
             </div>
 
@@ -272,7 +272,7 @@ export default function SslCheckerPage() {
                 <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                 <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
                   <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
@@ -300,7 +300,7 @@ export default function SslCheckerPage() {
 
               <Link href="/tools/vulnerability-scanner" className="p-6 bg-surface-900 border border-white/5 hover:border-purple-500/30 rounded-2xl group transition-all">
                 <Activity className="w-6 h-6 text-purple-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-bold mb-2 group-hover:text-purple-400 transition-colors">Website Vulnerability Scanner</h3>
+                <h3 className="text-white font-bold mb-2 group-hover:text-purple-400 transition-colors">Security Exposure Assessment Tool</h3>
                 <p className="text-xs text-gray-400">Perform a comprehensive passive audit of the entire domain, including port and header analysis.</p>
               </Link>
 

@@ -150,7 +150,7 @@ export default function IpScannerClient() {
               IP <span className="text-glow-green text-matrix-400">Intelligence</span> Scanner
             </h1>
             <p className="text-gray-500 max-w-xl text-sm">
-              Comprehensive deep-packet inspection and passive footprinting for any IP address or domain.
+              Comprehensive security configuration analysis and passive footprinting for any IP address or domain.
               Analyze infrastructure, security headers, and threat reputation in real-time.
             </p>
           </div>

@@ -30,7 +30,7 @@ export default function ToolsHubClient() {
           <input
             type="text"
             className="w-full bg-transparent py-4 pl-3 pr-4 text-white focus:outline-none font-mono placeholder:font-sans placeholder:text-gray-500"
-            placeholder="Search tools, IPs, DNS, vulnerabilities..."
+            placeholder="Search tools, IPs, DNS, configuration risks..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />

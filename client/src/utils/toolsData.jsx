@@ -148,7 +148,7 @@ const CTABlock = () => (
       Need Advanced Threat Intelligence?
     </h3>
     <p className="text-gray-400 mb-6 max-w-2xl leading-relaxed">
-      Use ReconShield's full suite for real-time infrastructure intelligence, continuous attack surface monitoring, and automated vulnerability detection.
+      Use ReconShield's full suite for real-time infrastructure intelligence, continuous attack surface monitoring, and automated exposure detection.
     </p>
     <Link href="/contact">
       <button className="bg-cyan-500 hover:bg-cyan-400 text-black px-6 py-3 rounded-xl font-semibold transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]">
@@ -209,7 +209,7 @@ export const TOOL_SEO_CONTENT = {
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Attackers Exploit DNS</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          DNS is a prime target for attackers due to its fundamental role in internet routing. Attackers look for <strong>Subdomain Takeover</strong> vulnerabilities where a CNAME record points to an unclaimed cloud service (like an expired AWS S3 bucket or GitHub Pages site). They also actively scan for domains lacking proper SPF (Sender Policy Framework) and DMARC records, allowing them to easily spoof the domain and launch highly convincing phishing campaigns against employees or customers.
+          DNS is a prime target for attackers due to its fundamental role in internet routing. Attackers look for <strong>Subdomain Takeover</strong> configuration risks where a CNAME record points to an unclaimed cloud service (like an expired AWS S3 bucket or GitHub Pages site). They also actively scan for domains lacking proper SPF (Sender Policy Framework) and DMARC records, allowing them to easily spoof the domain and launch highly convincing phishing campaigns against employees or customers.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">DNS Lookup vs Subdomain Finder</h2>
@@ -232,7 +232,7 @@ export const TOOL_SEO_CONTENT = {
     faqs: [
       { q: "What does an SSL Checker do?", a: "An SSL Checker audits a website's SSL/TLS certificate to ensure it is valid, trusted by browsers, not expired, and securely configured with strong cryptography." },
       { q: "What is a cipher suite?", a: "A cipher suite is a set of cryptographic algorithms used to secure the network connection (TLS). Weak cipher suites can be cracked by attackers." },
-      { q: "Why should I disable TLS 1.0 and 1.1?", a: "TLS 1.0 and 1.1 are obsolete protocols with known cryptographic vulnerabilities (like BEAST and POODLE). Modern security standards require TLS 1.2 or 1.3." }
+      { q: "Why should I disable TLS 1.0 and 1.1?", a: "TLS 1.0 and 1.1 are obsolete protocols with known cryptographic configuration risks (like BEAST and POODLE). Modern security standards require TLS 1.2 or 1.3." }
     ],
     content: (
       <div className="prose prose-invert max-w-none mt-12">
@@ -259,7 +259,7 @@ export const TOOL_SEO_CONTENT = {
   },
   'http-headers': {
     faqs: [
-      { q: "What are HTTP Security Headers?", a: "Security headers are directives sent by a web server in HTTP responses that tell the browser how to behave to mitigate vulnerabilities like XSS and Clickjacking." },
+      { q: "What are HTTP Security Headers?", a: "Security headers are directives sent by a web server in HTTP responses that tell the browser how to behave to mitigate configuration risks like XSS and Clickjacking." },
       { q: "What is HSTS?", a: "HTTP Strict Transport Security (HSTS) forces browsers to only connect to your website over HTTPS, preventing downgrade attacks and cookie hijacking." },
       { q: "Why is CSP important?", a: "Content Security Policy (CSP) restricts where scripts and resources can be loaded from, drastically reducing the impact of Cross-Site Scripting (XSS) attacks." }
     ],
@@ -290,15 +290,15 @@ export const TOOL_SEO_CONTENT = {
   },
   'vulnerability-scanner': {
     faqs: [
-      { q: "What is passive vulnerability scanning?", a: "Passive scanning identifies vulnerabilities by analyzing server responses, headers, and public records without sending intrusive or malicious payloads to the target." },
-      { q: "Is vulnerability scanning legal?", a: "Passive scanning (which ReconShield uses) is generally legal as it only observes public configurations. Active scanning requires explicit authorization from the asset owner." },
-      { q: "How often should I scan my website?", a: "Continuous scanning is recommended. The attack surface changes daily as new vulnerabilities (CVEs) are discovered, certificates expire, and infrastructure is modified." }
+      { q: "What is passive exposure assessment?", a: "Passive scanning identifies configuration risks by analyzing server responses, headers, and public records without sending intrusive or malicious payloads to the target." },
+      { q: "Is exposure assessment legal?", a: "Passive scanning (which ReconShield uses) is generally legal as it only observes public configurations. Active scanning requires explicit authorization from the asset owner." },
+      { q: "How often should I scan my website?", a: "Continuous scanning is recommended. The attack surface changes daily as new configuration risks (CVEs) are discovered, certificates expire, and infrastructure is modified." }
     ],
     content: (
       <div className="prose prose-invert max-w-none mt-12">
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Automated Attack Surface Analysis</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          ReconShield's Security Exposure Assessment Tool acts as an automated reconnaissance engine. It maps your external attack surface by aggregating data across DNS, SSL/TLS configurations, open ports, HTTP headers, and exposed technologies. By correlating this data against known threat patterns and common misconfigurations, the engine identifies potential entry points before attackers can exploit them.
+          ReconShield's Security Exposure Assessment Tool acts as an automated infrastructure visibility engine. It maps your external attack surface by aggregating data across DNS, SSL/TLS configurations, open ports, HTTP headers, and exposed technologies. By correlating this data against known threat patterns and common misconfigurations, the engine identifies potential entry points before attackers can exploit them.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">How It Works: Passive Reconnaissance</h2>
@@ -360,7 +360,7 @@ export const TOOL_SEO_CONTENT = {
           Subdomains frequently host out-of-date software, unpatched WordPress installations, or exposed administrative panels. Because these assets are often unmanaged by the central IT team (Shadow IT), they represent a path of least resistance for attackers. Discovering and securing these forgotten subdomains is a critical phase of any Bug Bounty or penetration testing engagement.
         </p>
 
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Mitigating Subdomain Vulnerabilities</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Mitigating Subdomain configuration risks</h2>
         <ul className="text-gray-400 leading-relaxed mb-6 list-disc pl-6 space-y-2">
           <li><strong>Implement strict inventory control:</strong> Maintain a centralized, automated inventory of all DNS records and subdomains associated with your organization.</li>
           <li><strong>Audit third-party integrations:</strong> Regularly check subdomains that CNAME to external services (Zendesk, GitHub, Heroku) and ensure those accounts are active and secure.</li>
@@ -515,14 +515,14 @@ export const TOOL_SEO_CONTENT = {
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Attackers Profile Technology</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Technology fingerprinting is a critical step in the cyber kill chain. If an attacker identifies that a target is running an outdated version of jQuery, a vulnerable WordPress plugin, or an unpatched Microsoft IIS server, they can search Exploit-DB or Metasploit for a pre-written exploit (CVE) specifically designed for that version. Security through obscurity is not enough, but leaking precise version numbers hands attackers a blueprint of your vulnerabilities.
+          Technology fingerprinting is a critical step in the cyber kill chain. If an attacker identifies that a target is running an outdated version of jQuery, a vulnerable WordPress plugin, or an unpatched Microsoft IIS server, they can search Exploit-DB or Metasploit for a pre-written exploit (CVE) specifically designed for that version. Security through obscurity is not enough, but leaking precise version numbers hands attackers a blueprint of your configuration risks.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Defending Against Fingerprinting</h2>
         <ul className="text-gray-400 leading-relaxed mb-6 list-disc pl-6 space-y-2">
           <li><strong>Remove Server Banners:</strong> Configure your web server (Nginx, Apache, IIS) to stop broadcasting its version number in the <code>Server</code> HTTP header.</li>
           <li><strong>Strip Framework Headers:</strong> Disable headers like <code>X-Powered-By: Express</code> or <code>X-AspNet-Version</code> in your application configuration.</li>
-          <li><strong>Use a Web Application Firewall (WAF):</strong> Deploy a WAF like Cloudflare or AWS WAF to obscure your origin server IP and filter malicious probes looking for specific technology vulnerabilities.</li>
+          <li><strong>Use a Web Application Firewall (WAF):</strong> Deploy a WAF like Cloudflare or AWS WAF to obscure your origin server IP and filter malicious probes looking for specific technology configuration risks.</li>
         </ul>
         <CTABlock />
       </div>

@@ -227,7 +227,7 @@ export default function Layout({ children }) {
               <ul className="space-y-2 text-sm">
                 <li><Link href="/" className="hover:text-matrix-400 transition-colors">Security Scanner</Link></li>
                 <li><Link href="/blog" className="hover:text-matrix-400 transition-colors">Security Blog</Link></li>
-                <li><Link href="/about" className="hover:text-matrix-400 transition-colors">About Research</Link></li>
+                <li><Link href="/about" className="hover:text-matrix-400 transition-colors">About Us</Link></li>
               </ul>
             </div>
             <div>
@@ -236,6 +236,7 @@ export default function Layout({ children }) {
                 <li><Link href="/terms" className="hover:text-matrix-400 transition-colors">Terms of Use</Link></li>
                 <li><Link href="/privacy" className="hover:text-matrix-400 transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/disclaimer" className="hover:text-[#00ff88] transition-colors text-amber-500/80 hover:text-amber-500">Legal Disclaimer</Link></li>
+                <li><Link href="/editorial-policy" className="hover:text-matrix-400 transition-colors">Editorial Policy</Link></li>
                 <li><Link href="/contact" className="hover:text-matrix-400 transition-colors">Contact Support</Link></li>
               </ul>
             </div>
@@ -263,7 +264,7 @@ export default function Layout({ children }) {
             <div className="flex items-center gap-2 px-4 py-2 bg-amber-500/5 border border-amber-500/10 rounded-xl">
               <Lock className="w-3.5 h-3.5 text-amber-500/60" />
               <p className="text-[11px] text-amber-500/80 font-mono italic">
-                AUTHORIZED RESEARCH ONLY — Ethical hackers only.
+                AUTHORIZED RESEARCH ONLY — Authorized security professionals only.
               </p>
             </div>
           </div>

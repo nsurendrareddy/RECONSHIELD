@@ -104,7 +104,7 @@ export default async function HeadersIntelligencePage({ params }) {
             <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
               <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
-              <li><Link href="/tools/security-headers" className="hover:text-[#00ff88] transition-colors">Web Security</Link></li>
+              <li><Link href="/tools/http-headers" className="hover:text-[#00ff88] transition-colors">Web Security</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
               <li className="text-[#00ff88]">{domain}</li>
             </ol>
@@ -163,7 +163,7 @@ export default async function HeadersIntelligencePage({ params }) {
                   Web Application Security for {domain}
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
-                  While SSL secures the pipe between the user and the server, HTTP Security Headers secure the application itself inside the user's browser. By properly configuring headers, the administrators of <strong>{domain}</strong> can neutralize entire classes of web vulnerabilities without changing a single line of frontend code.
+                  While SSL secures the pipe between the user and the server, HTTP Security Headers secure the application itself inside the user's browser. By properly configuring headers, the administrators of <strong>{domain}</strong> can neutralize entire classes of web configuration risks without changing a single line of frontend code.
                 </p>
 
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">Critical Protections</h3>

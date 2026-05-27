@@ -88,7 +88,7 @@ export default function ScanTerminalLog({ scanning, data, target }) {
         {scanning && (
           <div className="space-y-2">
             <div className="text-matrix-400 opacity-80">
-              <p className="mb-1 text-xs font-bold tracking-tight">INITIALIZING RECONNAISSANCE ENGINE...</p>
+              <p className="mb-1 text-xs font-bold tracking-tight">INITIALIZING infrastructure visibility engine...</p>
               <p className="text-matrix-400/60">TARGET_VECTOR: {target || 'BROADCAST'}</p>
               <p className="text-matrix-400/60">TIMESTAMP: {new Date().toISOString()}</p>
             </div>

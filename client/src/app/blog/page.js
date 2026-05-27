@@ -161,7 +161,7 @@ export default async function BlogPage() {
                       {featuredPost.title}
                     </h3>
                     <p className="text-gray-400 text-base leading-relaxed mb-8">
-                      {featuredPost.excerpt || "Read our latest comprehensive research report detailing emerging attack vectors and mitigation strategies for enterprise infrastructure."}
+                      {featuredPost.excerpt || "Read our latest comprehensive research report detailing emerging configuration risks and mitigation strategies for enterprise infrastructure."}
                     </p>
                     <div className="flex items-center gap-4 text-xs font-mono text-gray-500 uppercase tracking-widest">
                       <span className="flex items-center gap-1"><Clock className="w-3 h-3"/> {new Date(featuredPost.publishedAt || featuredPost._createdAt).toLocaleDateString()}</span>
@@ -215,7 +215,7 @@ export default async function BlogPage() {
                       <span className="text-xs font-mono text-red-500 font-bold uppercase tracking-widest">Research</span>
                     </div>
                     <h4 className="text-white font-bold mb-2 group-hover:text-red-400 transition-colors">Explore our Vulnerability Research Library</h4>
-                    <p className="text-sm text-gray-400">In-depth analysis of security vulnerabilities, CVE breakdowns, and defensive countermeasures.</p>
+                    <p className="text-sm text-gray-400">In-depth analysis of security configuration risks, CVE breakdowns, and defensive countermeasures.</p>
                   </Link>
                 )}
               </div>
@@ -290,7 +290,7 @@ export default async function BlogPage() {
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <Link href="/tools/vulnerability-scanner" className="text-sm font-mono text-gray-400 hover:text-blue-400 transition-colors flex items-center gap-2">
-                <ChevronRight className="w-3 h-3" /> Vulnerability Scanner
+                <ChevronRight className="w-3 h-3" /> Exposure Assessment Tool
               </Link>
               <Link href="/tools/ip-lookup" className="text-sm font-mono text-gray-400 hover:text-matrix-400 transition-colors flex items-center gap-2">
                 <ChevronRight className="w-3 h-3" /> IP Intelligence

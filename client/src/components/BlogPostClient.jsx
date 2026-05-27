@@ -158,7 +158,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
             </Link>
             <div className="flex items-center gap-1.5">
               <Calendar className="w-3 h-3" />
-              <span>{formatDate(post.publishedAt || post._createdAt)}</span>
+              <span>LAST UPDATED: {formatDate(post.updatedAt || post.publishedAt || post._createdAt)}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Clock className="w-3 h-3" />
@@ -386,7 +386,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
             </div>
           </div>
           <div className="text-center font-mono text-[9px] tracking-[3px] text-[#1a2332] font-bold uppercase">
-            AUTHORIZED RESEARCH ONLY — ETHICAL HACKERS ONLY
+            AUTHORIZED RESEARCH ONLY — Authorized security professionals only
           </div>
         </div>
       </footer>

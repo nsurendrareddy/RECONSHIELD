@@ -9,7 +9,7 @@ export default function ChartsSection({ data }) {
   const headers = data?.headers || {}
   const ports = data?.ports || {}
 
-  // Vulnerability distribution pie
+  // Risk distribution pie
   const vulnData = [
     { name: 'Critical', value: stats.critical || 0, color: COLORS.critical },
     { name: 'Warnings', value: stats.warnings || 0, color: COLORS.warning },
@@ -105,7 +105,7 @@ export default function ChartsSection({ data }) {
           </div>
         </div>
 
-        {/* Vulnerability Distribution */}
+        {/* Risk distribution */}
         <div className="relative group/chart">
           <div className="flex items-center justify-between mb-4">
             <span className="text-[10px] font-mono text-gray-500 uppercase tracking-[0.2em]">Threat Vectors</span>

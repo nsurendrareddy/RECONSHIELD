@@ -174,7 +174,7 @@ export default async function SubdomainIntelligencePage({ params }) {
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">Investigation Workflows</h3>
                 <ul className="text-gray-400 leading-relaxed list-disc pl-5 space-y-2">
                   <li><strong>Port Scanning:</strong> Once a list of subdomains is generated, the next step is running a port scan against each unique IP to identify running services.</li>
-                  <li><strong>CNAME Resolution:</strong> Analyzing the DNS records of each subdomain to check for Subdomain Takeover vulnerabilities on services like AWS, GitHub Pages, or Heroku.</li>
+                  <li><strong>CNAME Resolution:</strong> Analyzing the DNS records of each subdomain to check for Subdomain Takeover configuration risks on services like AWS, GitHub Pages, or Heroku.</li>
                 </ul>
               </div>
 

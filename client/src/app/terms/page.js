@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default function TermsOfServicePage() {
-  const lastUpdated = "May 26, 2026";
+  const lastUpdated = "May 27, 2026";
 
   return (
     <div className="bg-[#05080f] min-h-screen pb-24">
@@ -50,7 +50,7 @@ export default function TermsOfServicePage() {
 
           <h2>2. Permitted Use</h2>
           <p>
-            ReconShield provides tools including, but not limited to, IP Scanners, DNS Lookups, Port Scanners, and Vulnerability Analyzers. You agree to use these tools strictly for:
+            ReconShield provides tools including, but not limited to, IP Scanners, DNS Lookups, Port Scanners, and Exposure Analyzers. You agree to use these tools strictly for:
           </p>
           <ul>
             <li>Securing infrastructure you own or have explicit authorization to test.</li>

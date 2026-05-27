@@ -7,14 +7,14 @@ import Link from 'next/link';
 
 export const metadata = {
   title: "AI-Powered Cybersecurity & Threat Intelligence Platform",
-  description: "ReconShield is a free, passive OSINT cybersecurity platform. Scan websites, analyze infrastructure, and detect vulnerabilities instantly with our threat intelligence engine.",
+  description: "ReconShield is a free, passive OSINT cybersecurity platform. Scan websites, analyze infrastructure, and detect configuration risks instantly with our threat intelligence engine.",
   alternates: {
     canonical: 'https://reconshield.in',
   },
   openGraph: {
     title: "AI-Powered Cybersecurity & Threat Intelligence Platform",
     siteName: "ReconShield",
-    description: "Scan websites, analyze infrastructure, and detect vulnerabilities instantly with our threat intelligence engine.",
+    description: "Scan websites, analyze infrastructure, and detect configuration risks instantly with our threat intelligence engine.",
     url: 'https://reconshield.in',
     type: 'website',
   }
@@ -26,7 +26,7 @@ export default async function Page() {
   const tools = [
     { name: 'IP Lookup Tool', icon: MapPin, href: '/tools/ip-lookup', desc: 'Trace IP addresses, detect VPNs/proxies, and check 50+ threat blocklists.' },
     { name: 'DNS Lookup', icon: Network, href: '/tools/dns-lookup', desc: 'Enumerate DNS records and analyze SPF/DMARC for email spoofing risks.' },
-    { name: 'Vulnerability Scanner', icon: Shield, href: '/tools/vulnerability-scanner', desc: 'Scan websites passively for misconfigurations and exposed vulnerabilities.' },
+    { name: 'Exposure Assessment Tool', icon: Shield, href: '/tools/vulnerability-scanner', desc: 'Scan websites passively for misconfigurations and exposed configuration risks.' },
     { name: 'WHOIS Lookup', icon: Search, href: '/tools/whois', desc: 'Identify domain ownership, registration dates, and infrastructure providers.' },
     { name: 'Port Scanner', icon: Terminal, href: '/tools/port-scanner', desc: 'Detect exposed services, database ports, and unencrypted administrative interfaces.' },
     { name: 'SSL Checker', icon: Lock, href: '/tools/ssl-checker', desc: 'Analyze TLS certificates for expiration, cipher strength, and deprecated protocols.' },
@@ -46,7 +46,7 @@ export default async function Page() {
                 "@id": "https://reconshield.in/#software",
                 "name": "ReconShield Threat Intelligence Platform",
                 "url": "https://reconshield.in",
-                "description": "Free passive website vulnerability scanner and OSINT platform.",
+                "description": "Free passive security exposure assessment tool and OSINT platform.",
                 "applicationCategory": "SecurityApplication",
                 "operatingSystem": "Web",
                 "offers": {
@@ -93,14 +93,14 @@ export default async function Page() {
           </div>
           
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 tracking-tight leading-tight">
-            AI-Powered Cybersecurity <br className="hidden md:block"/> 
+            Infrastructure Visibility <br className="hidden md:block"/> 
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#00e5ff]">
               & Threat Intelligence
             </span> Platform
           </h1>
           
           <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed">
-            Scan websites, analyze infrastructure, and detect vulnerabilities instantly with our free, enterprise-grade passive reconnaissance engine. Protect your attack surface before adversaries strike.
+            Audit configurations, analyze infrastructure, and identify exposure instantly with our free, professional-grade passive infrastructure visibility engine. Identify infrastructure exposure before issues impact operations.
           </p>
 
           <div className="bg-red-500/10 border border-red-500/20 text-red-200 text-sm py-3 px-6 rounded-xl max-w-2xl mx-auto mb-8 font-mono inline-block">
@@ -144,22 +144,22 @@ export default async function Page() {
         </div>
       </section>
 
-      {/* 3. Website Vulnerability Scanner & 4. OSINT Research */}
+      {/* 3. Website Exposure Assessment & 4. OSINT Research */}
       <section className="py-24 bg-[#0a0d14] relative">
         <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-widest mb-6">
               <Globe className="w-4 h-4" />
-              <span>Attack Surface Mapping</span>
+              <span>Infrastructure Visibility</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6 leading-tight">
-              Website Vulnerability <br/> Scanner & OSINT Engine
+              Security Exposure <br/> Assessment & OSINT Engine
             </h2>
             <p className="text-gray-400 mb-8 leading-relaxed">
-              Traditional scanners rely on aggressive payloads that risk downtime. ReconShield utilizes strict <strong>passive reconnaissance</strong> and OSINT methodologies to map out your digital infrastructure stealthily. We analyze DNS propagation, perform deep domain intelligence, and uncover forgotten attack surfaces.
+              Traditional assessment tools can generate disruptive traffic. ReconShield utilizes strict <strong>passive intelligence gathering</strong> and OSINT methodologies to map out your digital infrastructure stealthily. We analyze DNS propagation, perform deep domain intelligence, and uncover forgotten configuration risks.
             </p>
             <ul className="space-y-4 mb-8">
-              {['Real-time threat detection and vulnerability analysis', 'Zero-impact passive reconnaissance scanning', 'Continuous attack surface monitoring and discovery', 'Domain intelligence and shadow IT exposure tracking'].map((item, i) => (
+              {['Real-time threat detection and exposure analysis', 'Zero-impact passive intelligence gathering', 'Continuous infrastructure monitoring and discovery', 'Domain intelligence and shadow IT exposure tracking'].map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-[#00ff88]/10 flex items-center justify-center mt-0.5 shrink-0">
                     <CheckCircle2 className="w-3 h-3 text-[#00ff88]" />
@@ -169,7 +169,7 @@ export default async function Page() {
               ))}
             </ul>
             <Link href="/tools/vulnerability-scanner" className="px-6 py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-xl font-medium transition-colors inline-flex items-center gap-2">
-              Learn about our Scanner <ArrowRight className="w-4 h-4" />
+              Learn about Exposure Assessment <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           
@@ -193,7 +193,7 @@ export default async function Page() {
                 <p className="text-[#00ff88]">[+] Certificate valid (TLS 1.3 supported)</p>
                 <p className="text-gray-400">[i] Cross-referencing 50+ threat databases...</p>
                 <p className="text-[#00ff88]">[+] IP reputation is clean. 0/54 blocklists.</p>
-                <p className="text-white mt-4">Scan complete. 1 vulnerability found. Risk Level: <span className="text-amber-400 font-bold">MEDIUM</span></p>
+                <p className="text-white mt-4">Assessment complete. 1 configuration risk found. Exposure Level: <span className="text-amber-400 font-bold">MEDIUM</span></p>
               </div>
             </div>
           </div>
@@ -244,9 +244,9 @@ export default async function Page() {
                 <Shield className="w-4 h-4" />
                 <span>Security-First Foundation</span>
               </div>
-              <h2 className="text-3xl font-display font-bold text-white">Built for Security Researchers & Ethical Hackers</h2>
+              <h2 className="text-3xl font-display font-bold text-white">Built for Security Researchers & authorized security professionals</h2>
               <p className="text-gray-400 leading-relaxed">
-                ReconShield operates under a strict ethical framework prioritizing internet safety and responsible research. Built by <strong>Surendra Reddy</strong>, a dedicated cybersecurity engineer focused on vulnerability intelligence and OSINT. Our platform serves as a safe harbor for mapping infrastructure stealthily without violating legal boundaries.
+                ReconShield operates under a strict ethical framework prioritizing internet safety and responsible research. Built by <strong>Surendra Reddy</strong>, a dedicated cybersecurity engineer focused on exposure intelligence and OSINT. Our platform serves as a safe harbor for mapping infrastructure stealthily without violating legal boundaries.
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-white/10">
                 <div>

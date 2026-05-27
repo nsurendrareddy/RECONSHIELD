@@ -259,7 +259,7 @@ export default function IpScannerPage() {
                 <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                 <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
                   <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
@@ -287,7 +287,7 @@ export default function IpScannerPage() {
 
               <Link href="/tools/vulnerability-scanner" className="p-6 bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 rounded-2xl group transition-all">
                 <Shield className="w-6 h-6 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-bold mb-2 group-hover:text-[#00ff88] transition-colors">Website Vulnerability Scanner</h3>
+                <h3 className="text-white font-bold mb-2 group-hover:text-[#00ff88] transition-colors">Security Exposure Assessment Tool</h3>
                 <p className="text-xs text-gray-400">Perform a full attack surface analysis passively on any domain.</p>
               </Link>
 

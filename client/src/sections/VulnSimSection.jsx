@@ -145,7 +145,7 @@ export default function VulnSimSection({ data }) {
             </div>
           </div>
           <div>
-            <h3 className="text-base font-display font-bold text-white tracking-wide uppercase">Vulnerability Assessment</h3>
+            <h3 className="text-base font-display font-bold text-white tracking-wide uppercase">exposure assessment</h3>
             <p className="text-[11px] font-mono text-gray-500 mt-0.5">SIMULATED CHECKS — EDUCATIONAL ONLY</p>
           </div>
         </div>

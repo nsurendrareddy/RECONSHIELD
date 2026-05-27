@@ -38,7 +38,7 @@ export async function GET() {
       <channel>
         <title>ReconShield Intelligence</title>
         <link>${siteUrl}</link>
-        <description>AI-powered cybersecurity platform for threat intelligence, OSINT, and vulnerability scanning.</description>
+        <description>AI-powered cybersecurity platform for threat intelligence, OSINT, and exposure assessment.</description>
         <language>en</language>
         <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml"/>
         ${rssItems}

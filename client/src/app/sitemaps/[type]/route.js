@@ -113,7 +113,7 @@ export async function GET(request, { params }) {
             let pathPrefix = entityType;
             if (entityType === 'dns') pathPrefix = 'dns-records';
             if (entityType === 'malicious-ips') pathPrefix = 'ip';
-            if (entityType === 'cve') pathPrefix = 'vulnerabilities'; // if cve sitemap exists
+            if (entityType === 'cve') pathPrefix = 'cve'; // if cve sitemap exists
             
             if (fallbackItems.length > 0) {
               fallbackItems.forEach(item => {

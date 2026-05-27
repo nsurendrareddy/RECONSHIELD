@@ -222,7 +222,7 @@ export default function PortScannerPage() {
             <h2 className="text-3xl font-display font-bold text-white mb-6">Real-World Security Use Cases</h2>
             <ul>
               <li><strong>Zero Trust Verification:</strong> Security engineers use an <strong>open port checker</strong> to verify that strict "default-deny" firewall rules are correctly implemented.</li>
-              <li><strong>Red Teaming & Reconnaissance:</strong> Ethical hackers use a <strong>TCP port scanner</strong> as the very first step of an engagement to map out where vulnerabilities might exist.</li>
+              <li><strong>Red Teaming & Reconnaissance:</strong> authorized security professionals use a <strong>TCP port scanner</strong> as the very first step of an engagement to map out where configuration risks might exist.</li>
               <li><strong>Incident Response:</strong> If a server is behaving anomalously, incident responders will scan for unauthorized open ports that may indicate a malicious backdoor listener.</li>
             </ul>
 
@@ -268,7 +268,7 @@ export default function PortScannerPage() {
                 <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                 <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), vulnerability intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
                   <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-400 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
@@ -290,7 +290,7 @@ export default function PortScannerPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Link href="/tools/vulnerability-scanner" className="p-6 bg-surface-900 border border-white/5 hover:border-red-500/30 rounded-2xl group transition-all">
                 <Shield className="w-6 h-6 text-red-500 mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-bold mb-2 group-hover:text-red-500 transition-colors">Website Vulnerability Scanner</h3>
+                <h3 className="text-white font-bold mb-2 group-hover:text-red-500 transition-colors">Security Exposure Assessment Tool</h3>
                 <p className="text-xs text-gray-400">Combine port intelligence with deep web application security auditing.</p>
               </Link>
 
