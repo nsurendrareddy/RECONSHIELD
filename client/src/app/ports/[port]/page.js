@@ -42,7 +42,6 @@ export async function generateMetadata({ params }) {
   return {
     title: `Port ${port} (${serviceName}) Security Analysis & Vulnerabilities`,
     description: `Complete cybersecurity analysis for network port ${port}. Learn what service runs on port ${port}, associated vulnerabilities, and whether it is safe to leave open.`,
-    keywords: [`port ${port}`, `what is port ${port}`, `is port ${port} safe`, `port ${port} vulnerability`, `${serviceName} port`, `scan port ${port}`],
     alternates: {
       canonical: `https://reconshield.in/ports/${port}`,
     },

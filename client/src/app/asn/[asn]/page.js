@@ -30,7 +30,6 @@ export async function generateMetadata({ params }) {
   return {
     title: `${formattedAsn} Routing Details & IP Blocks`,
     description: `Complete BGP routing and threat intelligence profile for Autonomous System ${formattedAsn}. View associated IP prefixes, peering relationships, and abuse reports.`,
-    keywords: [`${formattedAsn}`, `who owns ${formattedAsn}`, `asn ${asnNum} lookup`, `${formattedAsn} ip blocks`, `bgp routing ${formattedAsn}`, `autonomous system ${asnNum}`],
     alternates: {
       canonical: `https://reconshield.in/asn/${formattedAsn}`,
     },

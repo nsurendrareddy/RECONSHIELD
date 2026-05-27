@@ -16,7 +16,6 @@ export const metadata = {
     template: "%s | ReconShield"
   },
   description: "ReconShield — AI-powered cybersecurity platform for threat intelligence, OSINT, vulnerability scanning, and IP analysis. Professional-grade security tools, free.",
-  keywords: ["cybersecurity", "vulnerability scanner", "IP intelligence", "threat detection", "SSL checker", "DNS lookup"],
   authors: [{ name: "ReconShield Team" }],
 
   manifest: "/manifest.json",

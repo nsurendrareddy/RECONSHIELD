@@ -9,11 +9,6 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 export const metadata = {
   title: "WHOIS Lookup & Domain Intelligence Tool ",
   description: "Free WHOIS checker and RDAP lookup tool. Perform domain ownership lookup, analyze registration data, and uncover domain intelligence instantly.",
-  keywords: [
-    "WHOIS lookup", "domain intelligence tool", "domain ownership lookup", 
-    "WHOIS checker", "RDAP lookup", "domain registration lookup", 
-    "domain intelligence analysis", "registrar lookup"
-  ],
   alternates: {
     canonical: 'https://reconshield.in/tools/whois',
   },

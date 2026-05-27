@@ -20,7 +20,6 @@ export async function generateMetadata({ params }) {
   return {
     title: `${domain} SSL/TLS Certificate Analysis & Security Profile`,
     description: `Complete TLS security and certificate analysis for ${domain}. View cipher suites, protocol support, vulnerability assessments, and SSL expiry information.`,
-    keywords: [`${domain} ssl`, `${domain} tls security`, `check ssl ${domain}`, `${domain} certificate expiry`, `${domain} vulnerabilities`, `tls 1.3 ${domain}`],
     alternates: {
       canonical: `https://reconshield.in/ssl/${domain}`,
     },

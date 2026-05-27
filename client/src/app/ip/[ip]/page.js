@@ -51,7 +51,6 @@ export async function generateMetadata({ params }) {
   return {
     title: `${ip} Threat Intelligence & Risk Report`,
     description: intel.aiSummary,
-    keywords: [`${ip}`, `ip ${ip}`, `${ip} threat intel`, `${ip} abuse check`, `${ip} blacklist`, `AS${intel.asn}`, intel.organization, `who owns ${ip}`],
     alternates: { canonical: `https://reconshield.in/ip/${ip}` },
     // noindex until backend supplies real (non-mocked) threat data
     robots: { index: false, follow: true },
@@ -120,7 +119,6 @@ export default async function IpEntityPage({ params }) {
         '@type': 'Dataset',
         name: `Threat Data for ${ip}`,
         description: `Open ports, malware associations, and abuse history for ${ip}.`,
-        keywords: [ip, 'Threat Intelligence', 'Port Scan']
       }
     ]
   };

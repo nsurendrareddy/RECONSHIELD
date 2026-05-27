@@ -19,7 +19,6 @@ export async function generateMetadata({ params }) {
   return {
     title: `${domain} HTTP Security Headers Analysis | Web Security`,
     description: `Evaluate the HTTP security headers for ${domain}. Check Content-Security-Policy (CSP), HSTS, X-Frame-Options, and defend against XSS & Clickjacking.`,
-    keywords: [`${domain} security headers`, `${domain} csp`, `hsts ${domain}`, `x-frame-options ${domain}`, `check headers ${domain}`, `${domain} xss protection`],
     alternates: {
       canonical: `https://reconshield.in/headers/${domain}`,
     },

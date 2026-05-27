@@ -14,11 +14,6 @@ export const revalidate = 60; // ISR revalidate every 1 minute
 export const metadata = {
   title: "Cybersecurity Research & Threat Intelligence Publication",
   description: "Enterprise cybersecurity publication. Deep-dive OSINT research, vulnerability analysis, AI security intelligence, and attack surface mapping tutorials.",
-  keywords: [
-    "cybersecurity research", "threat intelligence blog", "OSINT reconnaissance",
-    "vulnerability analysis", "AI cybersecurity", "attack surface analysis",
-    "CVE reports", "security tutorials", "threat hunting"
-  ],
   alternates: {
     canonical: 'https://reconshield.in/blog',
   },

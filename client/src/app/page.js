@@ -8,11 +8,6 @@ import Link from 'next/link';
 export const metadata = {
   title: "AI-Powered Cybersecurity & Threat Intelligence Platform",
   description: "ReconShield is a free, passive OSINT cybersecurity platform. Scan websites, analyze infrastructure, and detect vulnerabilities instantly with our threat intelligence engine.",
-  keywords: [
-    "cybersecurity", "threat intelligence", "vulnerability scanner", "IP intelligence", "AI security", "ReconShield",
-    "free website scanner", "vulnerability scanner online", "DNS checker", "SSL checker", "IP reputation checker", "website security scan",
-    "attack surface", "infrastructure analysis", "passive scanning", "endpoint discovery", "TLS configuration", "exposed services"
-  ],
   alternates: {
     canonical: 'https://reconshield.in',
   },
@@ -107,6 +102,10 @@ export default async function Page() {
           <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed">
             Scan websites, analyze infrastructure, and detect vulnerabilities instantly with our free, enterprise-grade passive reconnaissance engine. Protect your attack surface before adversaries strike.
           </p>
+
+          <div className="bg-red-500/10 border border-red-500/20 text-red-200 text-sm py-3 px-6 rounded-xl max-w-2xl mx-auto mb-8 font-mono inline-block">
+            <strong>NOTICE:</strong> ReconShield provides passive cybersecurity and OSINT tools intended solely for authorized security research, infrastructure self-assessment, and defensive analysis. Please review our usage guidelines before using any platform features. <Link href="/disclaimer" className="text-white underline hover:text-red-100 transition-colors">Read Authorized Use Policy</Link>
+          </div>
 
           <div className="max-w-3xl mx-auto bg-surface-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4 shadow-2xl">
             <DynamicDashboardClient />

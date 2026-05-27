@@ -19,7 +19,6 @@ export async function generateMetadata({ params }) {
   return {
     title: `${domain} Subdomain Enumeration & Attack Surface Mapping`,
     description: `Discover hidden subdomains and map the external attack surface of ${domain}. Detect forgotten development servers, staging environments, and potential subdomain takeovers.`,
-    keywords: [`${domain} subdomains`, `subdomain finder ${domain}`, `enumerate subdomains ${domain}`, `attack surface ${domain}`, `find subdomains ${domain}`, `osint ${domain}`],
     alternates: {
       canonical: `https://reconshield.in/subdomains/${domain}`,
     },

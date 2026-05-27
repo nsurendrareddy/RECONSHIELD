@@ -184,6 +184,22 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
               <div rrm-inline-cta="edf53e34-4989-4bd4-b28e-d1c0e30b9fd4"></div>
             </div>
 
+            {/* Author Byline */}
+            <div className="mt-12 p-6 bg-[#0d1117] border border-[#1a2332] rounded-lg flex flex-col md:flex-row gap-6 items-start">
+              <div className="w-16 h-16 rounded-full bg-[#1a2332] flex items-center justify-center text-[#00ff88] font-bold text-xl shrink-0">
+                {getInitials(post.author?.name)}
+              </div>
+              <div>
+                <h3 className="text-white font-bold mb-1">{post.author?.name || 'Surendra Reddy'}</h3>
+                <p className="text-[13px] text-gray-400 leading-relaxed mb-3">
+                  Surendra Reddy is a cybersecurity researcher and founder of ReconShield, specializing in OSINT and defensive infrastructure analysis.
+                </p>
+                <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noreferrer" className="text-[11px] font-mono text-[#00ff88] uppercase tracking-widest hover:underline">
+                  Connect on LinkedIn ↗
+                </a>
+              </div>
+            </div>
+
             {/* Article Tags */}
             <div className="mt-12 pt-8 border-t border-[#1a2332] flex flex-wrap gap-2">
               {(post.tags || post.categories || []).map((tag, i) => (

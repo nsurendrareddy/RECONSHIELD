@@ -8,12 +8,6 @@ import {
 export const metadata = {
   title: "Cybersecurity Tools & Threat Intelligence Platform ",
   description: "Enterprise suite of free cybersecurity tools. Perform attack surface analysis, OSINT reconnaissance, vulnerability scanning, and infrastructure intelligence.",
-  keywords: [
-    "cybersecurity tools", "threat intelligence platform", "OSINT tools", 
-    "attack surface analysis", "cybersecurity reconnaissance tools", 
-    "website security tools", "infrastructure intelligence tools",
-    "network security tools", "free security scanners"
-  ],
   alternates: {
     canonical: 'https://reconshield.in/tools',
   },

@@ -130,14 +130,14 @@ export const TOOLS = [
   },
   {
     id: 'vulnerability-scanner',
-    name: 'Vulnerability Scanner',
+    name: 'Security Exposure Assessment Tool',
     icon: Shield,
     color: 'red',
-    desc: 'Passive vulnerability assessment for web applications and infrastructure.',
-    tags: ['Vulnerability', 'Simulation', 'Passive Scan'],
+    desc: 'Assess your infrastructure for security exposure, configuration risks, and compliance gaps using free no sign-up defensive tools.',
+    tags: ['Security Assessment', 'Exposure Check', 'Passive Scan'],
     popular: true,
     category: 'Web Security',
-    keywords: 'vulnerability scanner, passive vulnerability assessment, website vulnerability test',
+    keywords: 'security exposure assessment, infrastructure security check, configuration risks scanner',
   }
 ];
 
@@ -298,7 +298,7 @@ export const TOOL_SEO_CONTENT = {
       <div className="prose prose-invert max-w-none mt-12">
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Automated Attack Surface Analysis</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          ReconShield's Vulnerability Scanner acts as an automated reconnaissance engine. It maps your external attack surface by aggregating data across DNS, SSL/TLS configurations, open ports, HTTP headers, and exposed technologies. By correlating this data against known threat patterns and common misconfigurations, the engine identifies potential entry points before attackers can exploit them.
+          ReconShield's Security Exposure Assessment Tool acts as an automated reconnaissance engine. It maps your external attack surface by aggregating data across DNS, SSL/TLS configurations, open ports, HTTP headers, and exposed technologies. By correlating this data against known threat patterns and common misconfigurations, the engine identifies potential entry points before attackers can exploit them.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">How It Works: Passive Reconnaissance</h2>
@@ -308,7 +308,7 @@ export const TOOL_SEO_CONTENT = {
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Continuous Assessment Matters</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Security is not a point-in-time state. A configuration change deployed by a junior developer can inadvertently expose a database port to the internet. A marketing team might point a subdomain to a SaaS tool and later cancel the subscription, leaving a Subdomain Takeover vulnerability. Continuous vulnerability scanning ensures you maintain visibility over infrastructure drift and shadow IT.
+          Security is not a point-in-time state. A configuration change deployed by a junior developer can inadvertently expose a database port to the internet. A marketing team might point a subdomain to a SaaS tool and later cancel the subscription, leaving a Subdomain Takeover vulnerability. Continuous exposure assessment ensures you maintain visibility over infrastructure drift and shadow IT.
         </p>
         <CTABlock />
       </div>
@@ -378,22 +378,68 @@ export const TOOL_SEO_CONTENT = {
     ],
     content: (
       <div className="prose prose-invert max-w-none mt-12">
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Mapping Network Exposures</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">What is a Port Scanner?</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Every device on the internet uses ports to differentiate between distinct services (e.g., web traffic on port 443, email on port 25). Our Port Scanner probes the target IP address across common TCP ports to identify which services are actively listening. This process, known as service enumeration, is fundamental to understanding network architecture and identifying misconfigured firewalls.
+          A port scanner is a network visibility tool used to identify open, closed, or filtered ports on internet-connected systems and internal infrastructure. Organizations use port scanning during authorized security assessments to understand which services are exposed and whether unnecessary ports may increase security risk.
         </p>
-
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Exposed Ports Are Dangerous</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Ransomware operators and Initial Access Brokers (IABs) continuously scan the internet for exposed administrative ports. Leaving Remote Desktop Protocol (RDP - port 3389), Secure Shell (SSH - port 22), or database ports (MySQL - 3306, PostgreSQL - 5432) accessible to the public internet allows attackers to launch brute-force credential attacks or exploit known CVEs in the exposed service software.
+          ReconShield’s Port Scanner is designed for defensive security auditing and infrastructure monitoring. By reviewing exposed services, administrators can improve firewall configurations, reduce unnecessary exposure, and strengthen overall network hygiene.
         </p>
-
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Best Practices for Network Security</h2>
+        <p className="text-gray-400 leading-relaxed mb-4">Port scanning is commonly used as part of:</p>
         <ul className="text-gray-400 leading-relaxed mb-6 list-disc pl-6 space-y-2">
-          <li><strong>Implement Zero Trust / VPN:</strong> Administrative interfaces and databases should never face the public internet. Require users to connect to a VPN or Zero Trust Network Access (ZTNA) gateway first.</li>
-          <li><strong>Use Security Groups / Firewalls:</strong> Configure cloud security groups (AWS, Azure) to drop all incoming traffic by default (Default Deny), explicitly allowing only necessary ports.</li>
-          <li><strong>Obfuscate services:</strong> While not a primary defense, moving services like SSH to non-standard ports can reduce noise from automated botnet scanners.</li>
+          <li>Security audits</li>
+          <li>Compliance assessments</li>
+          <li>Firewall verification</li>
+          <li>Network troubleshooting</li>
+          <li>Asset inventory management</li>
         </ul>
+        <p className="text-gray-400 leading-relaxed mb-6">
+          Understanding which ports are publicly accessible helps organizations maintain better visibility into their infrastructure and reduce unintended exposure.
+        </p>
+
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Who Should Use This Tool?</h2>
+        <p className="text-gray-400 leading-relaxed mb-4">This tool is intended for:</p>
+        <ul className="text-gray-400 leading-relaxed mb-6 list-disc pl-6 space-y-2">
+          <li>Network administrators</li>
+          <li>IT operations teams</li>
+          <li>Security analysts</li>
+          <li>Compliance auditors</li>
+          <li>Authorized penetration testers</li>
+          <li>Managed security providers</li>
+        </ul>
+        <p className="text-gray-400 leading-relaxed mb-6">
+          Organizations often use port scanning to validate firewall policies, identify outdated services, confirm secure configurations, and document externally exposed systems.
+        </p>
+        <p className="text-gray-400 leading-relaxed mb-6">
+          ReconShield supports passive, responsible security research and encourages ethical usage aligned with organizational authorization policies.
+        </p>
+
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">How to Interpret Your Results</h2>
+        <p className="text-gray-400 leading-relaxed mb-6">Port scan results typically fall into three categories:</p>
+        
+        <h3 className="text-xl font-bold text-white mb-2">Open Ports</h3>
+        <p className="text-gray-400 leading-relaxed mb-4">
+          An open port indicates that a service is actively accepting connections. Examples may include HTTPS (443), DNS (53), or SSH (22).
+        </p>
+        
+        <h3 className="text-xl font-bold text-white mb-2">Closed Ports</h3>
+        <p className="text-gray-400 leading-relaxed mb-4">
+          A closed port is reachable but not actively accepting connections. This usually indicates the service is disabled or unavailable.
+        </p>
+        
+        <h3 className="text-xl font-bold text-white mb-2">Filtered Ports</h3>
+        <p className="text-gray-400 leading-relaxed mb-6">
+          Filtered ports are protected by firewalls or filtering controls that restrict visibility or block responses.
+        </p>
+        
+        <p className="text-gray-400 leading-relaxed mb-6">
+          Reviewing these results can help organizations identify unnecessary exposure and strengthen defensive configurations.
+        </p>
+
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Authorized Use Policy</h2>
+        <p className="text-gray-400 leading-relaxed font-semibold mb-6 border-l-4 border-[#00ff88] pl-4 bg-[#00ff88]/10 p-4 rounded-r">
+          This tool is for authorized use only. Only scan infrastructure you own or have explicit written permission to test. Unauthorized scanning or network probing may violate applicable laws, regulations, or organizational policies. Users are solely responsible for ensuring their activities comply with all legal and ethical requirements.
+        </p>
         <CTABlock />
       </div>
     )

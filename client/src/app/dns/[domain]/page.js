@@ -19,7 +19,6 @@ export async function generateMetadata({ params }) {
   return {
     title: `${domain} DNS Records Analysis & Propagation Profile`,
     description: `Complete DNS configuration analysis for ${domain}. View A, AAAA, MX, TXT, and NS records, and uncover potential DNS hijacking or spoofing vulnerabilities.`,
-    keywords: [`${domain} dns`, `${domain} a records`, `check mx records ${domain}`, `${domain} txt records`, `${domain} nslookup`, `dig ${domain}`],
     alternates: {
       canonical: `https://reconshield.in/dns/${domain}`,
     },

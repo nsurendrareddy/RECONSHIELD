@@ -9,11 +9,6 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 export const metadata = {
   title: "Port Scanner & Network Attack Surface Analysis Tool ",
   description: "Free TCP port scanner and open port checker. Scan open ports, map your attack surface, and detect vulnerable network services passively.",
-  keywords: [
-    "port scanner", "open port checker", "network port scanner", 
-    "scan open ports", "TCP port scanner", "attack surface analysis", 
-    "open ports security checker"
-  ],
   alternates: {
     canonical: 'https://reconshield.in/tools/port-scanner',
   },

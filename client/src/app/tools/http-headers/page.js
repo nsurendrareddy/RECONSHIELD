@@ -9,11 +9,6 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 export const metadata = {
   title: "Security Headers Analyzer & Website Hardening Tool ",
   description: "Free security headers checker. Audit HTTP security headers, analyze your Content-Security-Policy (CSP), and enforce HSTS to protect against XSS and clickjacking.",
-  keywords: [
-    "security headers checker", "HTTP security headers", "CSP checker", 
-    "HSTS checker", "website security headers", "Content-Security-Policy analyzer", 
-    "website hardening tool", "X-Frame-Options", "XSS protection"
-  ],
   alternates: {
     canonical: 'https://reconshield.in/tools/http-headers',
   },

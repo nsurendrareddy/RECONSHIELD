@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ChevronRight, Share2 } from 'lucide-react';
 import ToolScannerClient from '@/components/ToolScannerClient';
 import { TOOLS, TOOL_SEO_CONTENT } from '@/utils/toolsData';
+import AuthorizedUseBanner from '@/components/AuthorizedUseBanner';
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
@@ -120,6 +121,7 @@ export function ToolPageContent({ toolId }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
       />
+      <AuthorizedUseBanner />
       
       <div className="sr-only">
         <h1>{tool.name}</h1>

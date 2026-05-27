@@ -90,7 +90,12 @@ export default async function Page({ params }) {
     "dateModified": post.publishedAt,
     "author": {
       "@type": "Person",
-      "name": post.author?.name ?? "ReconShield Team"
+      "name": post.author?.name || "Surendra Reddy",
+      "url": "https://reconshield.in/about",
+      "sameAs": [
+        "https://linkedin.com/in/surendrareddy3",
+        "https://github.com/nsurendrareddy"
+      ]
     },
     "publisher": {
       "@type": "Organization",

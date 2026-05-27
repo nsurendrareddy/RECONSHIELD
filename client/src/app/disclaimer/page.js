@@ -36,35 +36,69 @@ export default function DisclaimerPage() {
       <section className="max-w-[1000px] mx-auto px-6 pt-16">
         <div className="prose prose-invert max-w-none prose-h2:text-2xl prose-h2:font-display prose-h2:text-white prose-h2:mt-12 prose-h2:mb-6 prose-p:text-gray-400 prose-p:leading-relaxed prose-a:text-red-400 prose-li:text-gray-400">
           
-          <h2>Educational & Defensive Purpose Only</h2>
+          <h2>Purpose</h2>
           <p>
-            The information, tools, methodologies, and scripts provided on ReconShield (the "Platform") are intended strictly for <strong>educational, research, and defensive cybersecurity purposes</strong>. 
+            ReconShield is a passive OSINT and cybersecurity intelligence platform created exclusively for lawful, ethical, and authorized security research purposes. The platform provides defensive security tools intended to help organizations, administrators, researchers, and IT professionals better understand publicly accessible infrastructure, improve visibility, and strengthen security posture.
           </p>
           <p>
-            ReconShield was built to help system administrators, security engineers, and developers understand their external attack surface and secure their infrastructure against modern cyber threats.
-          </p>
-
-          <h2>No Liability</h2>
-          <p>
-            The creator(s), author(s), and publisher(s) of this Platform accept <strong>NO RESPONSIBILITY OR LIABILITY</strong> for any misuse, damage, or illegal actions caused directly or indirectly by the information or tools provided. 
+            ReconShield is designed for educational use, infrastructure self-assessment, compliance validation, and defensive cybersecurity operations only.
           </p>
           <p>
-            By using this Platform, you acknowledge that you are using these tools at your own risk. It is the end user's responsibility to obey all applicable local, state, and federal laws regarding network scanning, reconnaissance, and data privacy.
+            Users may only utilize ReconShield tools and services on systems, networks, domains, or infrastructure they own or for which they have explicit written authorization to assess.
           </p>
 
-          <h2>Authorization Requirement</h2>
+          <h2>Prohibited Uses</h2>
+          <p>Users are strictly prohibited from using ReconShield for:</p>
+          <ul>
+            <li>Unauthorized network scanning</li>
+            <li>Illegal reconnaissance activities</li>
+            <li>Attempting unauthorized access to systems or services</li>
+            <li>Circumventing security controls</li>
+            <li>Harassment, disruption, or abuse of third-party infrastructure</li>
+            <li>Violating organizational security policies</li>
+            <li>Activities that violate applicable local, national, or international laws</li>
+          </ul>
           <p>
-            You must have explicit, written authorization from the target network/domain owner before utilizing any active scanning methodologies. While ReconShield relies on passive, non-intrusive Open Source Intelligence (OSINT) and DNS queries, the user assumes all liability regarding the targets they choose to investigate.
+            ReconShield does not support offensive cyber operations, malicious activity, exploit deployment, credential attacks, or unauthorized penetration attempts.
+          </p>
+          <p>Any misuse of the platform is solely the responsibility of the individual user.</p>
+
+          <h2>User Responsibility</h2>
+          <p>
+            By accessing or using ReconShield, users acknowledge and agree that they are fully responsible for ensuring their activities comply with all applicable laws, regulations, and organizational policies.
+          </p>
+          <p>
+            Users must obtain proper authorization before conducting any security assessments, audits, or testing activities involving third-party systems or infrastructure.
+          </p>
+          <p>
+            ReconShield and its operators assume no liability for misuse of the platform, unauthorized activity performed by users, or any damages resulting from improper use of the services provided.
           </p>
 
-          <h2>"As-Is" Provision</h2>
+          <h2>Legal References</h2>
+          <p>Unauthorized access attempts, scanning, or interference with systems may violate laws including but not limited to:</p>
+          <ul>
+            <li>The Computer Fraud and Abuse Act (CFAA) in the United States</li>
+            <li>The Computer Misuse Act in the United Kingdom</li>
+            <li>The Information Technology Act, 2000 in India</li>
+            <li>Other applicable cybersecurity and privacy regulations worldwide</li>
+          </ul>
+          <p>Users are responsible for understanding and complying with all laws applicable in their jurisdiction.</p>
+
+          <h2>Data Collection</h2>
           <p>
-            All intelligence, vulnerability definitions, and security scores generated by ReconShield are provided on an "AS-IS" basis without warranties of any kind, either express or implied. Threat intelligence is dynamic; therefore, ReconShield does not guarantee the complete accuracy, timeliness, or reliability of any scan results or third-party threat feeds.
+            ReconShield prioritizes privacy-focused and passive security research methodologies. The platform does not intentionally collect sensitive scan data from users and does not conduct intrusive exploitation activity against target infrastructure.
+          </p>
+          <p>
+            ReconShield tools are designed to support visibility, analysis, and defensive research workflows while minimizing unnecessary interaction with third-party systems.
           </p>
 
-          <h2>Advertising & Affiliate Disclaimer</h2>
+          <h2>Contact</h2>
           <p>
-            ReconShield utilizes third-party advertising networks (such as Google AdSense) to fund the server infrastructure required to keep these tools free. The presence of an advertisement does not imply an endorsement of the advertised product or service by ReconShield.
+            If you have questions regarding this Disclaimer or believe ReconShield services are being misused, please contact: <br/>
+            nsurendrareddy3@gmail.com
+          </p>
+          <p>
+            By continuing to use ReconShield, you acknowledge that you have read, understood, and agreed to this Disclaimer and all applicable terms governing authorized platform usage.
           </p>
 
         </div>

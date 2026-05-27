@@ -10,10 +10,6 @@ const IpScannerClient = dynamic(() => import('@/components/ip-scanner/IpScannerC
 export const metadata = {
   title: "Free IP Lookup & Reputation Checker ",
   description: "Trace any IP address instantly. Our IP lookup tool checks 50+ global blocklists, detects VPNs, and provides accurate geolocation and ASN data.",
-  keywords: [
-    "IP lookup tool", "IP reputation checker", "trace IP address", "IP geolocation checker", 
-    "ASN lookup", "malicious IP checker", "IP intelligence tool", "threat intelligence"
-  ],
   alternates: {
     canonical: 'https://reconshield.in/tools/ip-lookup',
   },

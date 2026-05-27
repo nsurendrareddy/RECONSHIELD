@@ -19,7 +19,6 @@ export async function generateMetadata({ params }) {
   return {
     title: `${domain} WHOIS Record | Registrar & Expiry Intelligence`,
     description: `Lookup the WHOIS registration data for ${domain}. Discover the domain registrar, creation date, expiry date, status codes, and name servers.`,
-    keywords: [`${domain} whois`, `who owns ${domain}`, `check whois ${domain}`, `${domain} expiry date`, `${domain} registry status`, `domain registrar ${domain}`],
     alternates: {
       canonical: `https://reconshield.in/tools/whois/${domain}`,
     },

@@ -9,12 +9,6 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 export const metadata = {
   title: "SSL Checker & TLS Security Analysis Tool ",
   description: "Free SSL checker and TLS configuration analyzer. Verify SSL certificates, check expiration dates, and test for HTTPS vulnerabilities instantly.",
-  keywords: [
-    "SSL checker", "TLS checker", "SSL certificate checker", 
-    "HTTPS security checker", "SSL expiration checker", 
-    "TLS configuration analyzer", "HTTPS vulnerability scanner",
-    "certificate chain analysis", "TLS handshake test"
-  ],
   alternates: {
     canonical: 'https://reconshield.in/tools/ssl-checker',
   },

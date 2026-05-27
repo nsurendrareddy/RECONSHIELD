@@ -117,20 +117,31 @@ export default function About() {
       <section className="mb-24">
         <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold mb-8">// ABOUT THE AUTHOR & FOUNDER</h2>
         <div className="space-y-6 text-[14px] text-gray-400 leading-[1.8] font-mono max-w-3xl">
+          <div className="mb-6">[PHOTO]</div>
           <p>
-            Surendra Reddy is a cybersecurity researcher, threat intelligence analyst, and the founder of ReconShield. With a deep passion for offensive security and defensive architecture, Surendra has dedicated his career to understanding the intricate mechanisms of modern digital attack surfaces. His background spans across Open Source Intelligence (OSINT), vulnerability research, and advanced network reconnaissance, making him a trusted voice in the cybersecurity community.
+            Surendra Reddy is a cybersecurity researcher, OSINT analyst, and founder of ReconShield, a free passive reconnaissance and cybersecurity intelligence platform focused on defensive security research and infrastructure visibility.
           </p>
           <p>
-            The motivation for building ReconShield stemmed from a critical observation: enterprise-grade intelligence tools were increasingly locked behind corporate paywalls, leaving independent researchers and ethical hackers at a disadvantage. Surendra envisioned a platform that democratized access to high-fidelity, actionable intelligence. By integrating cutting-edge AI analytics with a strict "passive-only" reconnaissance methodology, he created ReconShield—a platform that empowers the security community to conduct proactive threat hunting safely, legally, and ethically.
+            With a strong interest in network intelligence, attack surface analysis, and open-source intelligence (OSINT), Surendra built ReconShield to make enterprise-style security tools more accessible to researchers, IT teams, students, and organizations seeking better visibility into their own digital infrastructure. His work focuses on ethical and authorized cybersecurity practices that help organizations identify exposure, strengthen configurations, and improve operational security.
           </p>
           <p>
-            Surendra's primary areas of expertise lie in automating complex reconnaissance workflows, interpreting zero-day vulnerability disclosures, and mapping global threat landscapes. Through his research, he actively contributes to uncovering sophisticated exploit chains and developing defensive countermeasures that help organizations secure their infrastructure.
+            ReconShield was created to simplify security research workflows through lightweight, privacy-focused tools for DNS analysis, SSL inspection, WHOIS intelligence, IP visibility, and passive reconnaissance. The platform is designed around responsible use principles and does not support offensive or unauthorized activities.
           </p>
+          <div className="mt-6 mb-2">Surendra’s research interests include:</div>
+          <ul className="list-disc pl-6 space-y-2 mb-6 text-[#94a3b8]">
+            <li>Threat intelligence</li>
+            <li>Passive OSINT methodologies</li>
+            <li>Network reconnaissance</li>
+            <li>Internet infrastructure analysis</li>
+            <li>Security automation</li>
+            <li>Defensive cybersecurity operations</li>
+          </ul>
           <p>
-            Whether he is dissecting the latest malware payload, auditing SSL/TLS compliance, or developing new OSINT tools, Surendra remains committed to advancing the field of cybersecurity. He believes that continuous learning and community collaboration are the cornerstones of effective defense.
+            He actively studies evolving attack surface trends and publishes educational cybersecurity content intended to support awareness, compliance, and responsible security auditing. Surendra believes cybersecurity knowledge should be accessible, transparent, and ethically applied. Through ReconShield, he continues working toward democratizing security visibility tools while promoting lawful and authorized research practices.
           </p>
           <p className="text-[#00ff88] mt-8">
-            Connect with Surendra to discuss threat intelligence, security research, or potential collaborations on <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noreferrer" className="underline hover:text-white transition-colors">LinkedIn</a> and <a href="https://github.com/nsurendrareddy" target="_blank" rel="noreferrer" className="underline hover:text-white transition-colors">GitHub</a>.
+            Connect with Surendra on LinkedIn: <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noreferrer" className="underline hover:text-white transition-colors">linkedin.com/in/surendrareddy3</a><br/>
+            GitHub: <a href="https://github.com/nsurendrareddy" target="_blank" rel="noreferrer" className="underline hover:text-white transition-colors">github.com/nsurendrareddy</a>
           </p>
         </div>
       </section>

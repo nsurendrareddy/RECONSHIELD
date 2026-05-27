@@ -45,7 +45,6 @@ export async function generateMetadata({ params }) {
   return {
     title: `${intel.name} (${intel.aliases[0]}) - Threat Actor Profile`,
     description: intel.aiSummary,
-    keywords: [intel.name, ...intel.aliases, 'Threat Actor', 'APT', intel.origin, 'Cyber Intelligence'],
     alternates: { canonical: `https://reconshield.in/threat-actor/${slug}` },
     robots: { index: false, follow: true },
     openGraph: {

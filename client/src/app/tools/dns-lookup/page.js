@@ -9,11 +9,6 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 export const metadata = {
   title: "DNS Lookup Tool & DNS Security Analysis ",
   description: "Free DNS lookup tool to check all domain records instantly. Perform DNS security analysis, verify SPF/DMARC, and track DNS propagation worldwide.",
-  keywords: [
-    "DNS lookup tool", "DNS propagation checker", "domain intelligence tool", 
-    "DNS security analysis", "MX lookup", "SPF checker", "DNS records checker",
-    "DMARC analyzer", "TXT record lookup"
-  ],
   alternates: {
     canonical: 'https://reconshield.in/tools/dns-lookup',
   },
