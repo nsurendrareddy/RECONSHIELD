@@ -12,7 +12,7 @@ const FALLBACK_DATA = {
   ports: ['80', '443', '21', '22', '25', '53', '3306', '5432', '8080', '8443'],
   headers: ['strict-transport-security', 'content-security-policy', 'x-frame-options', 'x-content-type-options', 'server'],
   ssl: ['google.com', 'reconshield.in', 'github.com'],
-  asn: ['15169', '13335', '714', '32934', '16509'],
+  asn: ['AS15169', 'AS13335', 'AS714', 'AS32934', 'AS16509'],
   ip: ['8.8.8.8', '1.1.1.1', '9.9.9.9'],
   dns: ['google.com', 'cloudflare.com', 'microsoft.com'],
   whois: ['google.com', 'cloudflare.com'],

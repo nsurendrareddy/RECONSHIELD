@@ -1,7 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { Server, Shield, Activity, ChevronRight, Lock, AlertTriangle } from 'lucide-react';
+import { Server, Shield, Activity, ChevronRight, Lock, AlertTriangle, Globe } from 'lucide-react';
 import { notFound } from 'next/navigation';
+
+export const revalidate = 86400;
 
 // Validate Port format
 const isValidPort = (portStr) => {
@@ -45,7 +47,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/ports/${port}`,
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       url: `https://reconshield.in/ports/${port}`,
       title: `Port ${port} Security Analysis`,
@@ -61,14 +63,15 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function PortIntelligencePage({ params }) {
-  const resolvedParams = await params;
-  const port = resolvedParams?.port;
+  try {
+    const resolvedParams = await params;
+    const port = resolvedParams?.port;
 
-  if (!port || !isValidPort(port)) {
-    notFound();
-  }
+    if (!port || !isValidPort(port)) {
+      notFound();
+    }
 
-  const portDetails = PORT_DATA[port] || { service: 'Custom/Dynamic Service', risk: 'Variable', protocol: 'TCP/UDP' };
+    const portDetails = PORT_DATA[port] || { service: 'Custom/Dynamic Service', risk: 'Variable', protocol: 'TCP/UDP' };
 
   // Schema Generation
   const schemaJson = {
@@ -267,4 +270,8 @@ export default async function PortIntelligencePage({ params }) {
       </div>
     </>
   );
+  } catch (error) {
+    console.error('Error in PortIntelligencePage:', error);
+    throw error;
+  }
 }

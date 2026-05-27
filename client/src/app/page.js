@@ -31,6 +31,7 @@ export default async function Page() {
     { name: 'Port Scanner', icon: Terminal, href: '/tools/port-scanner', desc: 'Detect exposed services, database ports, and unencrypted administrative interfaces.' },
     { name: 'SSL Checker', icon: Lock, href: '/tools/ssl-checker', desc: 'Analyze TLS certificates for expiration, cipher strength, and deprecated protocols.' },
     { name: 'Security Headers', icon: Layers, href: '/tools/http-headers', desc: 'Audit CSP, HSTS, and X-Frame-Options to prevent XSS and clickjacking.' },
+    { name: 'Email Security', icon: Mail, href: '/tools/email-security', desc: 'Validate SPF, DKIM, and DMARC records to assess mail server security and phishing protection.' },
   ];
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Network, Shield, AlertTriangle, ChevronRight, Globe, Server } from 'lucide-react';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 // ASN Validation (e.g. AS15169 or 15169)
 const isValidASN = (asn) => {
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/asn/${formattedAsn}`,
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       url: `https://reconshield.in/asn/${formattedAsn}`,
       title: `${formattedAsn} Network Profile`,
@@ -58,6 +58,10 @@ export default async function AsnIntelligencePage({ params }) {
 
   const asnNum = extractAsnNumber(rawAsn);
   const formattedAsn = `AS${asnNum}`;
+
+  if (rawAsn !== formattedAsn) {
+    redirect(`/asn/${formattedAsn}`);
+  }
 
   // Schema Generation: Dataset & FAQPage
   const schemaJson = {

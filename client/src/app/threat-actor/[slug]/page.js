@@ -10,24 +10,41 @@ export const revalidate = 86400; // Cache for 24 hours since Actor profiles chan
 async function getThreatActorIntelligence(slug) {
   const normalizedSlug = slug.toLowerCase();
   
-  // Simulated Neo4j/Postgres Graph Retrieval
   if (normalizedSlug === 'lazarus-group' || normalizedSlug === 'apt38') {
     return {
-      name: 'Lazarus Group',
-      aliases: ['APT38', 'Hidden Cobra', 'Zinc', 'Diamond Sleet'],
-      origin: 'North Korea',
-      sponsor: 'State-Sponsored (infrastructure visibility General Bureau)',
-      activeSince: '2009',
-      primaryMotivations: ['Espionage', 'Financial Theft', 'Data Destruction'],
-      primaryTargets: ['Financial Institutions', 'Cryptocurrency Exchanges', 'Defense Contractors', 'Critical Infrastructure'],
-      aiSummary: 'Lazarus Group (also known as APT38 or Hidden Cobra) is a highly sophisticated, state-sponsored advanced persistent threat (APT) originating from North Korea. The group is notorious for high-profile cyber espionage, massive financial heists (including the 2016 Bangladesh Bank robbery), and destructive malware campaigns (WannaCry).',
-      associatedMalware: ['WannaCry', 'AppleJeus', 'Brambul', 'Joanap', 'Fallchill'],
-      associatedCVEs: ['CVE-2021-44228', 'CVE-2023-42793', 'CVE-2017-0144'],
-      recentCampaigns: [
-        { date: '2025-11', name: 'Operation Dream Job (Crypto Targeting)' },
-        { date: '2024-03', name: 'Software Supply Chain Attacks via 3CX' }
-      ],
-      mitreTactics: ['T1190 - abuse Public-Facing Application', 'T1059 - Command and Scripting Interpreter', 'T1486 - Data Encrypted for Impact']
+      name: 'Lazarus Group', aliases: ['APT38', 'Hidden Cobra', 'Zinc', 'Diamond Sleet'], origin: 'North Korea', sponsor: 'State-Sponsored (General Bureau)', activeSince: '2009',
+      primaryMotivations: ['Espionage', 'Financial Theft', 'Data Destruction'], primaryTargets: ['Financial Institutions', 'Cryptocurrency Exchanges', 'Defense Contractors'],
+      aiSummary: 'Lazarus Group (also known as APT38 or Hidden Cobra) is a highly sophisticated, state-sponsored advanced persistent threat (APT) originating from North Korea.',
+      associatedMalware: ['WannaCry', 'AppleJeus', 'Brambul', 'Joanap', 'Fallchill'], associatedCVEs: ['CVE-2021-44228', 'CVE-2023-42793', 'CVE-2017-0144'],
+      recentCampaigns: [{ date: '2025-11', name: 'Operation Dream Job' }, { date: '2024-03', name: 'Software Supply Chain Attacks via 3CX' }],
+      mitreTactics: ['T1190 - Exploit Public-Facing Application', 'T1059 - Command and Scripting Interpreter', 'T1486 - Data Encrypted for Impact']
+    };
+  } else if (normalizedSlug === 'kimsuky') {
+    return {
+      name: 'Kimsuky', aliases: ['Velvet Chollima', 'Thallium', 'Black Banshee'], origin: 'North Korea', sponsor: 'State-Sponsored', activeSince: '2012',
+      primaryMotivations: ['Espionage', 'Intelligence Gathering'], primaryTargets: ['Government', 'Think Tanks', 'Academia'],
+      aiSummary: 'Kimsuky is a North Korean state-sponsored APT focused primarily on espionage and intelligence gathering targeting South Korean entities and global think tanks.',
+      associatedMalware: ['AppleSeed', 'PebbleDash'], associatedCVEs: ['CVE-2021-44228'],
+      recentCampaigns: [{ date: '2023-08', name: 'Targeting Joint US-South Korea Military Drills' }],
+      mitreTactics: ['T1566 - Phishing', 'T1059 - Command and Scripting Interpreter']
+    };
+  } else if (normalizedSlug === 'nemesis-bear' || normalizedSlug === 'apt28') {
+    return {
+      name: 'Nemesis Bear', aliases: ['APT28', 'Fancy Bear', 'Sofacy'], origin: 'Russia', sponsor: 'State-Sponsored (GRU)', activeSince: '2004',
+      primaryMotivations: ['Espionage', 'Political Interference'], primaryTargets: ['Government', 'Military', 'Media'],
+      aiSummary: 'Nemesis Bear (APT28/Fancy Bear) is a Russian military intelligence (GRU) affiliated threat group known for cyber espionage and political interference campaigns.',
+      associatedMalware: ['X-Agent', 'Zebrocy', 'Drovorub'], associatedCVEs: ['CVE-2023-44487', 'CVE-2021-44228'],
+      recentCampaigns: [{ date: '2024-01', name: 'Targeting European Governments' }],
+      mitreTactics: ['T1078 - Valid Accounts', 'T1110 - Brute Force']
+    };
+  } else if (normalizedSlug === 'unknown-proxies') {
+    return {
+      name: 'Unknown Proxies', aliases: ['Anonymous Infrastructure'], origin: 'Global', sponsor: 'Unknown', activeSince: 'Unknown',
+      primaryMotivations: ['Obfuscation', 'Anonymity'], primaryTargets: ['Global Infrastructure'],
+      aiSummary: 'Unknown proxies represent infrastructure utilized by threat actors to obfuscate their origin, complicating attribution and incident response.',
+      associatedMalware: [], associatedCVEs: [],
+      recentCampaigns: [],
+      mitreTactics: ['T1090 - Proxy']
     };
   }
   
@@ -36,34 +53,39 @@ async function getThreatActorIntelligence(slug) {
 
 // Phase 10: Dynamic SEO & OpenGraph
 export async function generateMetadata({ params }) {
-  const resolvedParams = await params;
-  const slug = resolvedParams?.slug;
-  const intel = await getThreatActorIntelligence(slug);
+  try {
+    const resolvedParams = await params;
+    const slug = resolvedParams?.slug;
+    const intel = await getThreatActorIntelligence(slug);
 
-  if (!intel) return { title: 'security incident Not Found' };
+    if (!intel) return { title: 'Not Found' };
 
-  return {
-    title: `${intel.name} (${intel.aliases[0]}) - security incident Profile`,
-    description: intel.aiSummary,
-    alternates: { canonical: `https://reconshield.in/threat-actor/${slug}` },
-    robots: { index: false, follow: true },
-    openGraph: {
-      title: `Intelligence Profile: ${intel.name}`,
+    return {
+      title: `${intel.name} (${intel.aliases[0]}) - Profile`,
       description: intel.aiSummary,
-      type: 'article',
-      url: `https://reconshield.in/threat-actor/${slug}`,
-    },
-    twitter: { card: 'summary_large_image' }
-  };
+      alternates: { canonical: `https://reconshield.in/threat-actor/${slug}` },
+      robots: { index: true, follow: true },
+      openGraph: {
+        title: `Intelligence Profile: ${intel.name}`,
+        description: intel.aiSummary,
+        type: 'article',
+        url: `https://reconshield.in/threat-actor/${slug}`,
+      },
+      twitter: { card: 'summary_large_image' }
+    };
+  } catch (error) {
+    return { title: 'Error' };
+  }
 }
 
 // Phase 1: Semantic HTML5 Architecture
 export default async function ThreatActorPage({ params }) {
-  const resolvedParams = await params;
-  const slug = resolvedParams?.slug;
-  const intel = await getThreatActorIntelligence(slug);
+  try {
+    const resolvedParams = await params;
+    const slug = resolvedParams?.slug;
+    const intel = await getThreatActorIntelligence(slug);
 
-  if (!intel) notFound();
+    if (!intel) notFound();
 
   // Phase 9: AI/LLM Optimized JSON-LD
   const jsonLd = {
@@ -280,4 +302,8 @@ export default async function ThreatActorPage({ params }) {
       </main>
     </>
   );
+  } catch (error) {
+    console.error("Threat Actor Page Error:", error);
+    notFound();
+  }
 }

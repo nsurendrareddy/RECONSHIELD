@@ -291,7 +291,7 @@ export default function IpScannerPage() {
                 <p className="text-xs text-gray-400">Perform a full internet-facing assets analysis passively on any domain.</p>
               </Link>
 
-              <Link href="/ports" className="p-6 bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 rounded-2xl group transition-all">
+              <Link href="/tools/port-scanner" className="p-6 bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 rounded-2xl group transition-all">
                 <Terminal className="w-6 h-6 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-white font-bold mb-2 group-hover:text-[#00ff88] transition-colors">Open Port Scanner</h3>
                 <p className="text-xs text-gray-400">Check IP addresses for exposed database and administrative ports.</p>

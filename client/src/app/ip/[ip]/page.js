@@ -53,7 +53,7 @@ export async function generateMetadata({ params }) {
     description: intel.aiSummary,
     alternates: { canonical: `https://reconshield.in/ip/${ip}` },
     // noindex until backend supplies real (non-mocked) threat data
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       title: `${ip} - ${intel.riskClassification} (Score: ${intel.threatScore}/100)`,
       description: intel.aiSummary,

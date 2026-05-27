@@ -10,25 +10,42 @@ export const revalidate = 21600; // Cache for 6 hours (CVE base stats don't chan
 async function getCveIntelligence(cveId) {
   const normalizedId = cveId.toUpperCase();
   
-  if (normalizedId === 'CVE-2023-44487' || normalizedId === 'CVE-2021-44228') {
+  if (normalizedId === 'CVE-2023-44487' || normalizedId === 'CVE-2021-44228' || normalizedId === 'CVE-2017-0144' || normalizedId === 'CVE-2023-42793') {
     const isLog4j = normalizedId === 'CVE-2021-44228';
+    const isWannaCry = normalizedId === 'CVE-2017-0144';
+    const isTeamCity = normalizedId === 'CVE-2023-42793';
+
+    let title, description, aiSummary, affectedSoftware, relatedActors, cvss, severity, epss, cisaKev, publishedDate, activeExploitation, ransomwareUse, patchAvailable;
+
+    if (isLog4j) {
+      title = 'Log4Shell: Apache Log4j RCE';
+      cvss = 10.0; epss = '97.4%'; severity = 'CRITICAL'; cisaKev = true; publishedDate = '2021-12-10';
+      description = 'Apache Log4j2 JNDI features used in configuration, log messages, and parameters do not protect against unauthorized actor controlled LDAP and other JNDI related endpoints.';
+      aiSummary = `ReconShield Intelligence identifies ${normalizedId} as a CRITICAL severity vulnerability actively exploited in the wild. Threat actors frequently utilize this vulnerability to achieve remote code execution (RCE).`;
+      affectedSoftware = ['Apache Log4j 2.x']; relatedActors = ['Lazarus Group', 'Nemesis Bear']; activeExploitation = true; ransomwareUse = true; patchAvailable = true;
+    } else if (isWannaCry) {
+      title = 'EternalBlue SMB Remote Code Execution';
+      cvss = 8.1; epss = '95.2%'; severity = 'HIGH'; cisaKev = true; publishedDate = '2017-03-16';
+      description = 'The SMBv1 server in various Microsoft Windows versions mishandles specially crafted packets, allowing remote attackers to execute arbitrary code (EternalBlue).';
+      aiSummary = `ReconShield Intelligence identifies ${normalizedId} as a HIGH severity vulnerability widely known as EternalBlue, heavily used in the WannaCry ransomware worm.`;
+      affectedSoftware = ['Microsoft Windows (SMBv1)']; relatedActors = ['Lazarus Group']; activeExploitation = true; ransomwareUse = true; patchAvailable = true;
+    } else if (isTeamCity) {
+      title = 'JetBrains TeamCity Authentication Bypass';
+      cvss = 9.8; epss = '93.1%'; severity = 'CRITICAL'; cisaKev = true; publishedDate = '2023-09-20';
+      description = 'Authentication bypass in JetBrains TeamCity allows unauthenticated attackers to perform RCE and gain administrative control.';
+      aiSummary = `ReconShield Intelligence identifies ${normalizedId} as a CRITICAL vulnerability in TeamCity used by state-sponsored actors to breach supply chains.`;
+      affectedSoftware = ['JetBrains TeamCity']; relatedActors = ['Lazarus Group (Diamond Sleet)']; activeExploitation = true; ransomwareUse = true; patchAvailable = true;
+    } else {
+      title = 'HTTP/2 Rapid Reset Vulnerability';
+      cvss = 7.5; epss = '65.2%'; severity = 'HIGH'; cisaKev = true; publishedDate = '2023-10-10';
+      description = 'The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly.';
+      aiSummary = `ReconShield Intelligence identifies ${normalizedId} as a HIGH severity vulnerability actively exploited for DDoS.`;
+      affectedSoftware = ['Multiple HTTP/2 Implementations']; relatedActors = ['Unknown DDoS operators']; activeExploitation = true; ransomwareUse = false; patchAvailable = true;
+    }
+
     return {
       id: normalizedId,
-      title: isLog4j ? 'Log4Shell: Apache Log4j RCE' : 'HTTP/2 Rapid Reset Vulnerability',
-      cvss: isLog4j ? 10.0 : 7.5,
-      epss: isLog4j ? '97.4%' : '65.2%',
-      severity: isLog4j ? 'CRITICAL' : 'HIGH',
-      cisaKev: true,
-      publishedDate: isLog4j ? '2021-12-10' : '2023-10-10',
-      description: isLog4j 
-        ? 'Apache Log4j2 JNDI features used in configuration, log messages, and parameters do not protect against unauthorized actor controlled LDAP and other JNDI related endpoints. An unauthorized actor who can control log messages or log message parameters can execute arbitrary code loaded from LDAP servers when message lookup substitution is enabled.'
-        : 'The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly.',
-      aiSummary: `ReconShield Intelligence identifies ${normalizedId} as a ${isLog4j ? 'CRITICAL' : 'HIGH'} severity vulnerability actively exploited in the wild. Threat actors frequently utilize this vulnerability to achieve ${isLog4j ? 'remote code execution (RCE)' : 'denial of service (DDoS)'} against exposed internet infrastructure.`,
-      affectedSoftware: isLog4j ? ['Apache Log4j 2.x'] : ['Multiple HTTP/2 Implementations (NGINX, HAProxy, IIS)'],
-      relatedActors: ['Lazarus Group', 'Nemesis Bear'],
-      activeExploitation: true,
-      ransomwareUse: isLog4j ? true : false,
-      patchAvailable: true
+      title, cvss, epss, severity, cisaKev, publishedDate, description, aiSummary, affectedSoftware, relatedActors, activeExploitation, ransomwareUse, patchAvailable
     };
   }
   
@@ -37,34 +54,42 @@ async function getCveIntelligence(cveId) {
 
 // Phase 10: Dynamic SEO & OpenGraph
 export async function generateMetadata({ params }) {
-  const resolvedParams = await params;
-  const cveId = resolvedParams?.id?.toUpperCase();
-  const intel = await getCveIntelligence(cveId);
+  try {
+    const resolvedParams = await params;
+    const cveId = resolvedParams?.slug?.toUpperCase();
+    if (!cveId) return { title: 'CVE Not Found' };
 
-  if (!intel) return { title: 'CVE Not Found' };
+    const intel = await getCveIntelligence(cveId);
+    if (!intel) return { title: 'CVE Not Found' };
 
-  return {
-    title: `${intel.id} Vulnerability Analysis & abuse Intelligence`,
-    description: intel.aiSummary,
-    alternates: { canonical: `https://reconshield.in/cve/${cveId.toLowerCase()}` },
-    robots: { index: false, follow: true },
-    openGraph: {
-      title: `${intel.id} - ${intel.severity} Vulnerability (CVSS: ${intel.cvss})`,
+    return {
+      title: `${intel.id} Vulnerability Analysis & abuse Intelligence`,
       description: intel.aiSummary,
-      type: 'article',
-      url: `https://reconshield.in/cve/${cveId.toLowerCase()}`,
-    },
-    twitter: { card: 'summary_large_image' }
-  };
+      alternates: { canonical: `https://reconshield.in/cve/${cveId.toLowerCase()}` },
+      robots: { index: true, follow: true },
+      openGraph: {
+        title: `${intel.id} - ${intel.severity} Vulnerability (CVSS: ${intel.cvss})`,
+        description: intel.aiSummary,
+        type: 'article',
+        url: `https://reconshield.in/cve/${cveId.toLowerCase()}`,
+      },
+      twitter: { card: 'summary_large_image' }
+    };
+  } catch (error) {
+    return { title: 'CVE Error' };
+  }
 }
 
 // Phase 1: Semantic HTML5 Architecture
 export default async function CveEntityPage({ params }) {
-  const resolvedParams = await params;
-  const cveId = resolvedParams?.id?.toUpperCase();
-  const intel = await getCveIntelligence(cveId);
+  try {
+    const resolvedParams = await params;
+    const cveId = resolvedParams?.slug?.toUpperCase();
+    
+    if (!cveId) notFound();
 
-  if (!intel) notFound();
+    const intel = await getCveIntelligence(cveId);
+    if (!intel) notFound();
 
   // Phase 9: AI/LLM Optimized JSON-LD
   const jsonLd = {
@@ -264,4 +289,8 @@ export default async function CveEntityPage({ params }) {
       </main>
     </>
   );
+  } catch (error) {
+    console.error("CVE Page Error:", error);
+    notFound();
+  }
 }

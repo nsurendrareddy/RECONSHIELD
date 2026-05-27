@@ -9,41 +9,46 @@ const isValidDomain = (domain) => {
 };
 
 export async function generateMetadata({ params }) {
-  const resolvedParams = await params;
-  const domain = resolvedParams?.domain?.toLowerCase();
+  try {
+    const resolvedParams = await params;
+    const domain = resolvedParams?.domain?.toLowerCase();
 
-  if (!domain || !isValidDomain(domain)) {
-    return { title: 'Invalid Domain' };
-  }
-
-  return {
-    title: `${domain} DNS Records Analysis & Propagation Profile`,
-    description: `Complete DNS configuration analysis for ${domain}. View A, AAAA, MX, TXT, and NS records, and uncover potential DNS hijacking or spoofing configuration risks.`,
-    alternates: {
-      canonical: `https://reconshield.in/dns/${domain}`,
-    },
-    robots: { index: false, follow: true },
-    openGraph: {
-      url: `https://reconshield.in/dns/${domain}`,
-      title: `${domain} DNS Profile`,
-      description: `Analyze the DNS records and infrastructure topology for ${domain}.`,
-      type: 'article',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${domain} DNS Intelligence`,
-      description: `DNS routing and zone data analysis for ${domain}.`,
+    if (!domain || !isValidDomain(domain)) {
+      return { title: 'Invalid Domain' };
     }
-  };
+
+    return {
+      title: `${domain} DNS Records Analysis & Propagation Profile`,
+      description: `Complete DNS configuration analysis for ${domain}. View A, AAAA, MX, TXT, and NS records, and uncover potential DNS hijacking or spoofing configuration risks.`,
+      alternates: {
+        canonical: `https://reconshield.in/dns-records/${domain}`,
+      },
+      robots: { index: true, follow: true },
+      openGraph: {
+        url: `https://reconshield.in/dns-records/${domain}`,
+        title: `${domain} DNS Profile`,
+        description: `Analyze the DNS records and infrastructure topology for ${domain}.`,
+        type: 'article',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${domain} DNS Intelligence`,
+        description: `DNS routing and zone data analysis for ${domain}.`,
+      }
+    };
+  } catch (error) {
+    return { title: 'Error' };
+  }
 }
 
 export default async function DnsIntelligencePage({ params }) {
-  const resolvedParams = await params;
-  const domain = resolvedParams?.domain?.toLowerCase();
+  try {
+    const resolvedParams = await params;
+    const domain = resolvedParams?.domain?.toLowerCase();
 
-  if (!domain || !isValidDomain(domain)) {
-    notFound();
-  }
+    if (!domain || !isValidDomain(domain)) {
+      notFound();
+    }
 
   const schemaJson = {
     '@context': 'https://schema.org',
@@ -243,4 +248,8 @@ export default async function DnsIntelligencePage({ params }) {
       </div>
     </>
   );
+  } catch (error) {
+    console.error("DNS Records Page Error:", error);
+    notFound();
+  }
 }

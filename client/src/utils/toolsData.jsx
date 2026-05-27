@@ -98,16 +98,7 @@ export const TOOLS = [
     popular: false,
     category: 'Email Security',
   },
-  {
-    id: 'threat-intelligence', // Changed from ip-blacklist-checker to threat-intelligence to match backend integration 
-    name: 'Threat Intelligence',
-    icon: AlertTriangle,
-    color: 'amber',
-    desc: 'Check if an IP/Domain is listed on spam databases, malware blacklists, or threat intelligence feeds.',
-    tags: ['Spam Lists', 'Malware', 'Reputation'],
-    popular: false,
-    category: 'Threat Intelligence',
-  },
+
   {
     id: 'tech-detector',
     name: 'Tech Detector',
@@ -461,34 +452,7 @@ export const TOOL_SEO_CONTENT = {
       </div>
     )
   },
-  'threat-intelligence': {
-    faqs: [
-      { q: "What is an IP Blacklist?", a: "It is a database of IP addresses that have been flagged for malicious behavior, such as sending spam, hosting malware, or participating in botnet DDoS attacks." },
-      { q: "Why is my IP blacklisted?", a: "IPs get blacklisted if a device on the network is infected and sending spam, if you inherited a recycled IP with a bad history, or if your server is compromised." },
-      { q: "How do I remove my IP from a blacklist?", a: "You must first secure your network and stop the malicious activity. Then, visit the specific blacklist provider (e.g., Spamhaus, SURBL) and submit a delisting request." }
-    ],
-    content: (
-      <div className="prose prose-invert max-w-none mt-12">
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Real-Time Threat Reputation</h2>
-        <p className="text-gray-400 leading-relaxed mb-6">
-          IP addresses act as digital identities. When an IP is involved in malicious activity, cybersecurity organizations and email providers add it to global blacklists (DNSBL/RBL). Our Threat Intelligence Checker queries dozens of authoritative databases—including Spamhaus, Sorbs, and Barracuda—to determine if your infrastructure is actively flagged as a source of spam, malware distribution, or botnet command-and-control (C2) activity.
-        </p>
 
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">The Impact of Poor IP Reputation</h2>
-        <p className="text-gray-400 leading-relaxed mb-6">
-          A blacklisted IP address has immediate and severe operational consequences. Email servers will outright reject or silently drop outgoing emails, crippling business communication. E-commerce transactions originating from blacklisted IPs are frequently blocked by payment gateways due to high fraud risk scores. Furthermore, cloud providers may suspend instances associated with malicious IPs.
-        </p>
-
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Proactive Reputation Management</h2>
-        <ul className="text-gray-400 leading-relaxed mb-6 list-disc pl-6 space-y-2">
-          <li><strong>Monitor Outbound Traffic:</strong> Implement strict egress filtering on your firewalls to detect and block unexpected outbound connections that could indicate a compromised server.</li>
-          <li><strong>Secure Mail Relays:</strong> Ensure your SMTP servers are not acting as 'open relays', which spammers actively seek out to bounce millions of junk emails through your infrastructure.</li>
-          <li><strong>Check IP History Before Provisioning:</strong> When provisioning new cloud instances or dedicated servers, scan the assigned IP address before migrating production services to ensure you aren't inheriting a burned reputation.</li>
-        </ul>
-        <CTABlock />
-      </div>
-    )
-  },
   'tech-detector': {
     faqs: [
       { q: "What is technology fingerprinting?", a: "It is the process of identifying the underlying software, frameworks, content management systems (CMS), and server configurations running a website." },
