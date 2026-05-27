@@ -17,10 +17,10 @@ export default function Hero({ onStartScan }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-matrix-400/5 border border-matrix-400/10 mb-8"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-800/50 border border-white/10 mb-8"
         >
-          <Zap className="w-3.5 h-3.5 text-matrix-400" />
-          <span className="text-[10px] font-mono text-matrix-400 font-bold uppercase tracking-[0.2em]">
+          <Zap className="w-3.5 h-3.5 text-blue-400" />
+          <span className="text-[10px] font-mono text-gray-300 font-bold uppercase tracking-[0.2em]">
             Next-Gen Threat Intelligence
           </span>
         </m.div>
@@ -49,15 +49,15 @@ export default function Hero({ onStartScan }) {
         >
           <button
             onClick={() => document.getElementById('domain-input')?.focus()}
-            className="px-8 py-4 bg-matrix-400 text-surface-950 font-bold rounded-xl hover:bg-matrix-300 transition-all flex items-center gap-2 shadow-lg shadow-matrix-400/20 active:scale-95"
+            className="px-8 py-4 bg-white text-surface-950 font-bold rounded-xl hover:bg-gray-100 transition-all flex items-center gap-2 shadow-lg active:scale-95"
           >
             <Shield className="w-5 h-5" /> Start Free Assessment
           </button>
           <button
             onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-            className="px-8 py-4 bg-surface-800 text-white border border-white/5 font-bold rounded-xl hover:bg-surface-700 transition-all flex items-center gap-2 active:scale-95"
+            className="px-8 py-4 bg-surface-800 text-white border border-white/10 font-bold rounded-xl hover:bg-surface-700 transition-all flex items-center gap-2 shadow-sm active:scale-95"
           >
-            <Target className="w-5 h-5 text-matrix-400" /> Exploration Mode
+            <Target className="w-5 h-5 text-gray-400" /> Exploration Mode
           </button>
         </m.div>
 
@@ -131,11 +131,11 @@ export default function Hero({ onStartScan }) {
 function StatBox({ label, value, icon }) {
   return (
     <div className="text-left group cursor-default">
-      <div className="flex items-center gap-2 mb-1 text-gray-500 group-hover:text-matrix-400 transition-colors">
+      <div className="flex items-center gap-2 mb-1 text-gray-500 transition-colors">
         {React.cloneElement(icon, { className: 'w-3 h-3' })}
         <span className="text-[10px] font-mono uppercase tracking-widest">{label}</span>
       </div>
-      <div className="text-2xl font-display font-bold text-white group-hover:text-glow-green transition-all">{value}</div>
+      <div className="text-2xl font-display font-bold text-white transition-all">{value}</div>
     </div>
   );
 }

@@ -32,7 +32,7 @@ export default function SOCBackground() {
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.strokeStyle = 'rgba(0, 255, 65, 0.05)';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
       ctx.lineWidth = 0.5;
 
       // Draw grid
@@ -49,7 +49,7 @@ export default function SOCBackground() {
       ctx.stroke();
 
       // Draw particles and lines
-      ctx.fillStyle = 'rgba(0, 255, 65, 0.2)';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
       particles.forEach((p, i) => {
         p.x += p.vx;
         p.y += p.vy;
@@ -69,7 +69,7 @@ export default function SOCBackground() {
 
           if (dist < 150) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(0, 255, 65, ${0.1 * (1 - dist / 150)})`;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.05 * (1 - dist / 150)})`;
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
             ctx.stroke();
@@ -91,7 +91,7 @@ export default function SOCBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none -z-20 opacity-40"
+      className="fixed inset-0 pointer-events-none -z-20 opacity-15 md:opacity-25 blur-[1px] md:blur-none"
     />
   );
 }

@@ -83,38 +83,38 @@ export default async function Page() {
       {/* 1. Hero Section */}
       <section className="relative pt-24 pb-32 overflow-hidden border-b border-white/5">
         <div className="absolute inset-0 bg-[#0a0d14] -z-20" />
-        <div className="absolute inset-0 bg-[url('/matrix-bg.png')] bg-repeat opacity-5 -z-10" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full bg-[#00ff88]/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+        <div className="absolute inset-0 bg-[url('/matrix-bg.png')] bg-repeat opacity-[0.02] -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full bg-matrix-400/5 blur-[120px] rounded-full pointer-events-none -z-10" />
         
         <div className="max-w-[1200px] mx-auto px-6 relative z-10 text-center animate-fade-in-up">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00ff88]/10 border border-[#00ff88]/20 text-[#00ff88] text-xs font-mono uppercase tracking-widest mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-matrix-400/10 border border-matrix-400/20 text-matrix-400 text-xs font-semibold uppercase tracking-widest mb-8">
             <Activity className="w-4 h-4" />
-            <span>Passive OSINT Engine Online</span>
+            <span>INFRASTRUCTURE VISIBILITY ACTIVE</span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 tracking-tight leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-8 tracking-tight leading-tight md:leading-[1.1]">
             Infrastructure Visibility <br className="hidden md:block"/> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#00e5ff]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-matrix-400 to-matrix-300">
               & Threat Intelligence
             </span> Platform
           </h1>
           
-          <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed">
             Audit configurations, analyze infrastructure, and identify exposure instantly with our free, professional-grade passive infrastructure visibility engine. Identify infrastructure exposure before issues impact operations.
           </p>
 
-          <div className="bg-red-500/10 border border-red-500/20 text-red-200 text-sm py-3 px-6 rounded-xl max-w-2xl mx-auto mb-8 font-mono inline-block">
-            <strong>NOTICE:</strong> ReconShield provides passive cybersecurity and OSINT tools intended solely for authorized security research, infrastructure self-assessment, and defensive analysis. Please review our usage guidelines before using any platform features. <Link href="/disclaimer" className="text-white underline hover:text-red-100 transition-colors">Read Authorized Use Policy</Link>
+          <div className="bg-surface-900/60 border border-white/10 text-gray-300 text-sm py-4 px-6 rounded-xl max-w-2xl mx-auto mb-10 shadow-lg">
+            <strong className="text-white">NOTICE:</strong> ReconShield provides defensive cybersecurity tools intended solely for authorized security research, infrastructure self-assessment, and defensive analysis. <Link href="/disclaimer" className="text-matrix-400 hover:text-matrix-300 transition-colors ml-1">Read Authorized Use Policy</Link>
           </div>
 
-          <div className="max-w-3xl mx-auto bg-surface-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4 shadow-2xl">
+          <div className="max-w-3xl mx-auto bg-surface-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-4 shadow-xl">
             <DynamicDashboardClient />
           </div>
 
           <div className="mt-12 flex items-center justify-center gap-8 text-sm font-mono text-gray-500 uppercase tracking-widest">
-            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> 100% Passive</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> No Paywalls</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> Real-Time OSINT</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-matrix-400" /> 100% Passive</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-matrix-400" /> No Paywalls</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-matrix-400" /> Real-Time OSINT</div>
           </div>
         </div>
       </section>
@@ -129,13 +129,13 @@ export default async function Page() {
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {tools.map((tool, i) => (
-              <Link href={tool.href} key={i} className="group p-6 bg-surface-900/40 border border-white/5 hover:border-[#00ff88]/30 rounded-2xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,255,136,0.1)] flex flex-col h-full">
-                <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <tool.icon className="w-6 h-6 text-[#00ff88]" />
+              <Link href={tool.href} key={i} className="group p-6 bg-surface-900/60 border border-white/5 hover:border-white/10 rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-surface-900/50 flex flex-col h-full">
+                <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform">
+                  <tool.icon className="w-6 h-6 text-matrix-400" />
                 </div>
-                <h3 className="text-lg font-bold text-white mb-3 group-hover:text-[#00ff88] transition-colors">{tool.name}</h3>
+                <h3 className="text-lg font-bold text-white mb-3 group-hover:text-matrix-400 transition-colors">{tool.name}</h3>
                 <p className="text-sm text-gray-400 leading-relaxed mb-6 flex-1">{tool.desc}</p>
-                <div className="font-mono text-xs text-matrix-400 flex items-center gap-2 uppercase tracking-wider group-hover:translate-x-2 transition-transform">
+                <div className="font-mono text-xs text-matrix-400 flex items-center gap-2 uppercase tracking-wider group-hover:translate-x-1 transition-transform">
                   Launch Tool <ArrowRight className="w-3 h-3" />
                 </div>
               </Link>
