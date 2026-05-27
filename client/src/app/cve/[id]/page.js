@@ -21,7 +21,7 @@ async function getCveIntelligence(cveId) {
       cisaKev: true,
       publishedDate: isLog4j ? '2021-12-10' : '2023-10-10',
       description: isLog4j 
-        ? 'Apache Log4j2 JNDI features used in configuration, log messages, and parameters do not protect against attacker controlled LDAP and other JNDI related endpoints. An attacker who can control log messages or log message parameters can execute arbitrary code loaded from LDAP servers when message lookup substitution is enabled.'
+        ? 'Apache Log4j2 JNDI features used in configuration, log messages, and parameters do not protect against unauthorized actor controlled LDAP and other JNDI related endpoints. An unauthorized actor who can control log messages or log message parameters can execute arbitrary code loaded from LDAP servers when message lookup substitution is enabled.'
         : 'The HTTP/2 protocol allows a denial of service (server resource consumption) because request cancellation can reset many streams quickly.',
       aiSummary: `ReconShield Intelligence identifies ${normalizedId} as a ${isLog4j ? 'CRITICAL' : 'HIGH'} severity vulnerability actively exploited in the wild. Threat actors frequently utilize this vulnerability to achieve ${isLog4j ? 'remote code execution (RCE)' : 'denial of service (DDoS)'} against exposed internet infrastructure.`,
       affectedSoftware: isLog4j ? ['Apache Log4j 2.x'] : ['Multiple HTTP/2 Implementations (NGINX, HAProxy, IIS)'],
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }) {
   if (!intel) return { title: 'CVE Not Found' };
 
   return {
-    title: `${intel.id} Vulnerability Analysis & Exploit Intelligence`,
+    title: `${intel.id} Vulnerability Analysis & abuse Intelligence`,
     description: intel.aiSummary,
     alternates: { canonical: `https://reconshield.in/cve/${cveId.toLowerCase()}` },
     robots: { index: false, follow: true },
@@ -174,7 +174,7 @@ export default async function CveEntityPage({ params }) {
               {/* Phase 3: AI Intelligence Summary */}
               <section aria-labelledby="ai-summary">
                 <h2 id="ai-summary" className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold mb-4 flex items-center gap-2">
-                  <Cpu className="w-4 h-4" /> // AI Exploit Summary
+                  <Cpu className="w-4 h-4" /> // AI abuse Summary
                 </h2>
                 <div className="bg-gradient-to-br from-[#0d1117] to-[#121822] border border-[#1a2332] rounded-xl p-6 relative overflow-hidden shadow-lg">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-[#00ff88]/5 blur-[80px] pointer-events-none" />
@@ -221,7 +221,7 @@ export default async function CveEntityPage({ params }) {
             <aside className="lg:col-span-1 space-y-6">
               <div className="bg-[#0d1117] border border-[#1a2332] rounded-xl p-6 sticky top-24">
                 <h2 className="font-mono text-[10px] tracking-[2px] uppercase text-[#8a9bb0] font-bold mb-6 flex items-center gap-2 border-b border-[#1a2332] pb-4">
-                  <Network className="w-4 h-4" /> Exploit Graph
+                  <Network className="w-4 h-4" /> abuse Graph
                 </h2>
                 
                 <div className="space-y-6">

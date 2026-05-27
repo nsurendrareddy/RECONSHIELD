@@ -25,7 +25,7 @@ export default async function Page() {
 
   const tools = [
     { name: 'IP Lookup Tool', icon: MapPin, href: '/tools/ip-lookup', desc: 'Trace IP addresses, detect VPNs/proxies, and check 50+ threat blocklists.' },
-    { name: 'DNS Lookup', icon: Network, href: '/tools/dns-lookup', desc: 'Enumerate DNS records and analyze SPF/DMARC for email spoofing risks.' },
+    { name: 'DNS Lookup', icon: Network, href: '/tools/dns-lookup', desc: 'audit DNS records and analyze SPF/DMARC for email spoofing risks.' },
     { name: 'Exposure Assessment Tool', icon: Shield, href: '/tools/vulnerability-scanner', desc: 'Scan websites passively for misconfigurations and exposed configuration risks.' },
     { name: 'WHOIS Lookup', icon: Search, href: '/tools/whois', desc: 'Identify domain ownership, registration dates, and infrastructure providers.' },
     { name: 'Port Scanner', icon: Terminal, href: '/tools/port-scanner', desc: 'Detect exposed services, database ports, and unencrypted administrative interfaces.' },
@@ -156,7 +156,7 @@ export default async function Page() {
               Security Exposure <br/> Assessment & OSINT Engine
             </h2>
             <p className="text-gray-400 mb-8 leading-relaxed">
-              Traditional assessment tools can generate disruptive traffic. ReconShield utilizes strict <strong>passive intelligence gathering</strong> and OSINT methodologies to map out your digital infrastructure stealthily. We analyze DNS propagation, perform deep domain intelligence, and uncover forgotten configuration risks.
+              Traditional assessment tools can generate disruptive traffic. ReconShield utilizes strict <strong>passive intelligence gathering</strong> and OSINT methodologies to map out your digital infrastructure passively. We analyze DNS propagation, perform deep domain intelligence, and uncover forgotten configuration risks.
             </p>
             <ul className="space-y-4 mb-8">
               {['Real-time threat detection and exposure analysis', 'Zero-impact passive intelligence gathering', 'Continuous infrastructure monitoring and discovery', 'Domain intelligence and shadow IT exposure tracking'].map((item, i) => (
@@ -228,7 +228,7 @@ export default async function Page() {
               <Database className="w-8 h-8 text-purple-400 mb-6" />
               <h3 className="text-xl font-bold text-white mb-4">Security Monitoring</h3>
               <p className="text-sm text-gray-400 leading-relaxed">
-                The attack surface changes daily. Continuous automated security insights ensure that newly exposed APIs, expired certificates, or DNS alterations are detected in real-time.
+                The internet-facing assets changes daily. Continuous automated security insights ensure that newly exposed APIs, expired certificates, or DNS alterations are detected in real-time.
               </p>
             </div>
           </div>
@@ -246,7 +246,7 @@ export default async function Page() {
               </div>
               <h2 className="text-3xl font-display font-bold text-white">Built for Security Researchers & authorized security professionals</h2>
               <p className="text-gray-400 leading-relaxed">
-                ReconShield operates under a strict ethical framework prioritizing internet safety and responsible research. Built by <strong>Surendra Reddy</strong>, a dedicated cybersecurity engineer focused on exposure intelligence and OSINT. Our platform serves as a safe harbor for mapping infrastructure stealthily without violating legal boundaries.
+                ReconShield operates under a strict ethical framework prioritizing internet safety and responsible research. Built by <strong>Surendra Reddy</strong>, a dedicated cybersecurity engineer focused on exposure intelligence and OSINT. Our platform serves as a safe harbor for mapping infrastructure passively without violating legal boundaries.
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-white/10">
                 <div>

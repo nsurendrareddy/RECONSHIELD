@@ -7,13 +7,13 @@ import {
 
 export const metadata = {
   title: "Cybersecurity Tools & Threat Intelligence Platform ",
-  description: "Enterprise suite of free cybersecurity tools. Perform attack surface analysis, OSINT reconnaissance, exposure assessment, and infrastructure intelligence.",
+  description: "Enterprise suite of free cybersecurity tools. Perform internet-facing assets analysis, OSINT infrastructure visibility, exposure assessment, and infrastructure intelligence.",
   alternates: {
     canonical: 'https://reconshield.in/tools',
   },
   openGraph: {
     title: "Cybersecurity Tools & Threat Intelligence Platform",
-    description: "Enterprise suite of free cybersecurity tools. Perform attack surface analysis, OSINT reconnaissance, exposure assessment, and infrastructure intelligence.",
+    description: "Enterprise suite of free cybersecurity tools. Perform internet-facing assets analysis, OSINT infrastructure visibility, exposure assessment, and infrastructure intelligence.",
     url: 'https://reconshield.in/tools',
     type: 'website',
   }
@@ -26,12 +26,12 @@ export default function ToolsHubPage() {
       a: "Yes. ReconShield operates as a free, open-access threat intelligence platform. We believe enterprise-grade security tools should be accessible to all developers and researchers."
     },
     {
-      q: "Is it legal to use these reconnaissance tools?",
+      q: "Is it legal to use these infrastructure visibility tools?",
       a: "Absolutely. All ReconShield tools operate passively. We aggregate data from global OSINT databases, public DNS registries, and passive header analysis without sending disruptive or malicious payloads to the target."
     },
     {
-      q: "What is Attack Surface Analysis?",
-      a: "Attack surface analysis is the process of mapping all exposed digital assets (domains, IPs, ports, headers) that an attacker could potentially exploit. Our tools automate this discovery phase."
+      q: "What is internet-facing assets Analysis?",
+      a: "internet-facing assets analysis is the process of mapping all exposed digital assets (domains, IPs, ports, headers) that an unauthorized actor could potentially abuse. Our tools automate this discovery phase."
     },
     {
       q: "How accurate is the threat intelligence platform?",
@@ -57,7 +57,7 @@ export default function ToolsHubPage() {
                 "@id": "https://reconshield.in/tools#collection",
                 "name": "ReconShield Cybersecurity Tools Platform",
                 "url": "https://reconshield.in/tools",
-                "description": "A comprehensive suite of cybersecurity tools for OSINT and attack surface analysis."
+                "description": "A comprehensive suite of cybersecurity tools for OSINT and internet-facing assets analysis."
               },
               {
                 "@type": "BreadcrumbList",
@@ -98,11 +98,11 @@ export default function ToolsHubPage() {
           </h1>
           
           <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
-            Equip yourself with enterprise-grade <strong>cybersecurity reconnaissance tools</strong>. Perform massive <strong>attack surface analysis</strong>, enumerate infrastructure, and harden your defenses—all entirely free.
+            Equip yourself with enterprise-grade <strong>cybersecurity infrastructure visibility tools</strong>. Perform massive <strong>internet-facing assets analysis</strong>, audit infrastructure, and harden your defenses—all entirely free.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-gray-500 uppercase tracking-widest mb-16">
-            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-matrix-400" /> Passive Reconnaissance</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-matrix-400" /> Passive infrastructure visibility</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-cyan-400" /> Live OSINT Feeds</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-400" /> Zero Registration</div>
           </div>
@@ -133,7 +133,7 @@ export default function ToolsHubPage() {
                 <Network className="w-8 h-8 text-cyan-400 mb-6 relative z-10" />
                 <h3 className="text-xl font-bold text-white mb-3 relative z-10">DNS Lookup & Security Analysis</h3>
                 <p className="text-sm text-gray-400 leading-relaxed relative z-10">
-                  Enumerate A, MX, TXT, and NS records instantly. Perform a deep security audit on your SPF and DMARC configurations to prevent domain spoofing and phishing.
+                  audit A, MX, TXT, and NS records instantly. Perform a deep security audit on your SPF and DMARC configurations to prevent domain spoofing and phishing.
                 </p>
               </Link>
 
@@ -159,7 +159,7 @@ export default function ToolsHubPage() {
               <div className="h-px flex-1 bg-gradient-to-r from-blue-500/20 to-transparent" />
             </div>
             <p className="text-gray-400 mb-8 max-w-3xl">
-              Harden your web applications against modern cyber attacks. These <strong>website security tools</strong> simulate how an attacker views your frontend defenses.
+              Harden your web applications against modern cyber attacks. These <strong>website security tools</strong> simulate how an unauthorized actor views your frontend defenses.
             </p>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -189,11 +189,11 @@ export default function ToolsHubPage() {
             </div>
           </section>
 
-          {/* 4. Attack Surface & Reconnaissance Tools */}
+          {/* 4. internet-facing assets & infrastructure visibility Tools */}
           <section>
             <div className="flex items-center gap-4 mb-10">
               <h2 className="text-2xl font-display font-bold text-white flex items-center gap-3">
-                <Target className="w-6 h-6 text-red-500" /> Attack Surface Reconnaissance
+                <Target className="w-6 h-6 text-red-500" /> internet-facing assets infrastructure visibility
               </h2>
               <div className="h-px flex-1 bg-gradient-to-r from-red-500/20 to-transparent" />
             </div>
@@ -241,7 +241,7 @@ export default function ToolsHubPage() {
             <div className="prose prose-invert max-w-none prose-p:text-gray-400">
               <h2 className="text-3xl font-display font-bold text-white mb-6">AI Cybersecurity Intelligence</h2>
               <p>
-                The volume of data generated by an <strong>attack surface analysis</strong> is staggering. To combat alert fatigue, ReconShield is evolving to integrate <strong>AI cybersecurity intelligence</strong>. 
+                The volume of data generated by an <strong>internet-facing assets analysis</strong> is staggering. To combat alert fatigue, ReconShield is evolving to integrate <strong>AI cybersecurity intelligence</strong>. 
               </p>
               <p>
                 By applying machine learning algorithms to the telemetry gathered by our <strong>cybersecurity tools</strong>, we can automatically prioritize risks—differentiating between a low-level missing security header and a critical exposed database port. This allows security teams to focus on remediation rather than data triage.
@@ -325,7 +325,7 @@ export default function ToolsHubPage() {
                   <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                   <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                   <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                    Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                    Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade infrastructure visibility tools and secure the digital internet-facing assets.
                   </p>
                   <div className="flex gap-6 text-sm font-mono">
                     <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-matrix-400 hover:text-matrix-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>

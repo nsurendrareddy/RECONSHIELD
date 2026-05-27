@@ -167,7 +167,7 @@ export default async function WhoisIntelligencePage({ params }) {
 
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">Threat Vectors & Expiry</h3>
                 <p className="text-gray-400 leading-relaxed">
-                  Failure to monitor the expiration of {domain} can lead to catastrophic security breaches. Attackers constantly monitor dropping domains to execute a <strong>Domain Takeover</strong>. Once re-registered by a malicious actor, they gain control over the domain's email MX routing (enabling password resets) and its web traffic.
+                  Failure to monitor the expiration of {domain} can lead to catastrophic security breaches. unauthorized actors constantly monitor dropping domains to execute a <strong>Domain Takeover</strong>. Once re-registered by a malicious actor, they gain control over the domain's email MX routing (enabling password resets) and its web traffic.
                 </p>
 
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">Investigation Workflows</h3>
@@ -226,7 +226,7 @@ export default async function WhoisIntelligencePage({ params }) {
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-white">Subdomain Finder</div>
-                      <div className="text-xs text-gray-500">Map the attack surface</div>
+                      <div className="text-xs text-gray-500">Map the internet-facing assets</div>
                     </div>
                   </Link>
                 </div>

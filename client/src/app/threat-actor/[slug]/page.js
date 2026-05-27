@@ -16,7 +16,7 @@ async function getThreatActorIntelligence(slug) {
       name: 'Lazarus Group',
       aliases: ['APT38', 'Hidden Cobra', 'Zinc', 'Diamond Sleet'],
       origin: 'North Korea',
-      sponsor: 'State-Sponsored (Reconnaissance General Bureau)',
+      sponsor: 'State-Sponsored (infrastructure visibility General Bureau)',
       activeSince: '2009',
       primaryMotivations: ['Espionage', 'Financial Theft', 'Data Destruction'],
       primaryTargets: ['Financial Institutions', 'Cryptocurrency Exchanges', 'Defense Contractors', 'Critical Infrastructure'],
@@ -27,7 +27,7 @@ async function getThreatActorIntelligence(slug) {
         { date: '2025-11', name: 'Operation Dream Job (Crypto Targeting)' },
         { date: '2024-03', name: 'Software Supply Chain Attacks via 3CX' }
       ],
-      mitreTactics: ['T1190 - Exploit Public-Facing Application', 'T1059 - Command and Scripting Interpreter', 'T1486 - Data Encrypted for Impact']
+      mitreTactics: ['T1190 - abuse Public-Facing Application', 'T1059 - Command and Scripting Interpreter', 'T1486 - Data Encrypted for Impact']
     };
   }
   
@@ -40,10 +40,10 @@ export async function generateMetadata({ params }) {
   const slug = resolvedParams?.slug;
   const intel = await getThreatActorIntelligence(slug);
 
-  if (!intel) return { title: 'Threat Actor Not Found' };
+  if (!intel) return { title: 'security incident Not Found' };
 
   return {
-    title: `${intel.name} (${intel.aliases[0]}) - Threat Actor Profile`,
+    title: `${intel.name} (${intel.aliases[0]}) - security incident Profile`,
     description: intel.aiSummary,
     alternates: { canonical: `https://reconshield.in/threat-actor/${slug}` },
     robots: { index: false, follow: true },
@@ -132,7 +132,7 @@ export default async function ThreatActorPage({ params }) {
             </ol>
           </nav>
 
-          {/* Phase 2: Threat Actor Header */}
+          {/* Phase 2: security incident Header */}
           <header className="mb-12 border-b border-[#1a2332] pb-10">
             <div className="flex items-center gap-3 mb-4">
               <div className="px-3 py-1 border border-[#ff3366] bg-[#ff3366]/10 rounded-full text-[10px] font-mono text-[#ff3366] uppercase tracking-[2px]">
@@ -249,7 +249,7 @@ export default async function ThreatActorPage({ params }) {
                 
                 <div className="space-y-6">
                   <div>
-                    <h3 className="text-xs text-[#e2e8f0] font-semibold mb-3">Weaponized configuration risks (CVEs)</h3>
+                    <h3 className="text-xs text-[#e2e8f0] font-semibold mb-3">critical configuration risks (CVEs)</h3>
                     <ul className="space-y-2">
                       {intel.associatedCVEs.map(cve => (
                         <li key={cve}>

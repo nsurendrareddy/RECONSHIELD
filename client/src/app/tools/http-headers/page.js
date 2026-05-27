@@ -222,7 +222,7 @@ export default function SecurityHeadersPage() {
             <ul>
               <li><strong>Compliance & Audits:</strong> Organizations must run a <strong>security headers checker</strong> to prove compliance with frameworks like SOC 2, ISO 27001, and PCI-DSS, all of which mandate strict transport security and client-side protections.</li>
               <li><strong>Post-Deployment Hardening:</strong> DevOps engineers use the tool as a post-deployment checklist to ensure caching layers (like Cloudflare or AWS CloudFront) aren't stripping critical security directives.</li>
-              <li><strong>Bug Bounty Research:</strong> Pentesters scan targets for missing headers. The absence of `X-Frame-Options` is frequently submitted as a clickjacking exposure risk.</li>
+              <li><strong>Bug Bounty Research:</strong> Pentesters analyze infrastructure assets for missing headers. The absence of `X-Frame-Options` is frequently submitted as a clickjacking exposure risk.</li>
             </ul>
 
             <h2 className="text-3xl font-display font-bold text-white mt-16 mb-8">Step-by-Step Tutorial: Hardening Your Site</h2>
@@ -267,7 +267,7 @@ export default function SecurityHeadersPage() {
                 <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                 <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade infrastructure visibility tools and secure the digital internet-facing assets.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
                   <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-amber-500 hover:text-amber-400 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
@@ -290,7 +290,7 @@ export default function SecurityHeadersPage() {
               <Link href="/tools/vulnerability-scanner" className="p-6 bg-surface-900 border border-white/5 hover:border-amber-500/30 rounded-2xl group transition-all">
                 <Shield className="w-6 h-6 text-amber-500 mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-white font-bold mb-2 group-hover:text-amber-500 transition-colors">Security Exposure Assessment Tool</h3>
-                <p className="text-xs text-gray-400">Assess the full attack surface of a domain passively for deep security misconfigurations.</p>
+                <p className="text-xs text-gray-400">Assess the full internet-facing assets of a domain passively for deep security misconfigurations.</p>
               </Link>
 
               <Link href="/tools/ssl-checker" className="p-6 bg-surface-900 border border-white/5 hover:border-amber-500/30 rounded-2xl group transition-all">

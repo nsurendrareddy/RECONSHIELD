@@ -14,7 +14,6 @@ export async function generateMetadata({ params }) {
   return {
     title: `${tool.name} - Free Online ${tool.name} Tool`,
     description: tool.desc,
-    keywords: tool.keywords,
     alternates: {
       canonical: `https://reconshield.in/tools/${toolId}`,
     },
@@ -214,7 +213,7 @@ export function ToolPageContent({ toolId }) {
               <div className="mt-8 p-6 rounded-xl bg-gradient-to-br from-matrix-400/10 to-transparent border border-matrix-400/20">
                 <h4 className="text-sm font-bold text-white mb-2">Automate Your Scans</h4>
                 <p className="text-xs text-gray-400 mb-4 leading-relaxed">
-                  Get full attack surface visibility and continuous monitoring with our enterprise API.
+                  Get full internet-facing assets visibility and continuous monitoring with our enterprise API.
                 </p>
                 <Link href="/contact" className="text-xs font-mono font-bold text-matrix-400 hover:underline">
                   Contact Sales →

@@ -88,7 +88,7 @@ export default function Layout({ children }) {
               </div>
               <div className="hidden xs:block">
                 <h1 className="font-display text-lg font-bold tracking-wider">
-                  <span className={`${theme === 'dark' ? 'text-glow-green text-matrix-400' : 'text-matrix-600'}`}>RECON</span>
+                  <span className={`${theme === 'dark' ? 'text-glow-green text-matrix-400' : 'text-matrix-600'}`}>analysis</span>
                   <span className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>SHIELD</span>
                 </h1>
                 <div className="flex items-center gap-1.5 -mt-0.5">
@@ -203,7 +203,7 @@ export default function Layout({ children }) {
                 <span className={`font-display font-bold tracking-wider ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>RECONSHIELD</span>
               </div>
               <p className="text-sm leading-relaxed max-w-sm">
-                Advanced educational reconnaissance and intelligence platform. Empowers security researchers with visibility into their attack surface through passive data collection.
+                Advanced educational infrastructure visibility and intelligence platform. Empowers security researchers with visibility into their internet-facing assets through passive data collection.
               </p>
             </div>
             

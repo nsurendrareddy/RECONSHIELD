@@ -102,7 +102,7 @@ export default function DnsLookupPage() {
           </h1>
           
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Instantly enumerate domain records with our <strong>domain intelligence tool</strong>. Verify A, AAAA, MX, and TXT records, perform an <strong>SPF checker</strong> audit, and monitor global DNS propagation.
+            Instantly audit domain records with our <strong>domain intelligence tool</strong>. Verify A, AAAA, MX, and TXT records, perform an <strong>SPF checker</strong> audit, and monitor global DNS propagation.
           </p>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -207,7 +207,7 @@ export default function DnsLookupPage() {
                   </div>
                   <div>
                     <h4 className="text-white font-bold mb-1">DMARC Enforcement</h4>
-                    <p className="text-sm text-gray-400">DMARC ties SPF and DKIM together. We check if your DMARC policy is set to `reject` or `quarantine`, preventing attackers from spoofing your domain in phishing campaigns.</p>
+                    <p className="text-sm text-gray-400">DMARC ties SPF and DKIM together. We check if your DMARC policy is set to `reject` or `quarantine`, preventing unauthorized actors from spoofing your domain in phishing campaigns.</p>
                   </div>
                 </div>
               </div>
@@ -228,7 +228,7 @@ export default function DnsLookupPage() {
             <h2 className="text-3xl font-display font-bold text-white mt-16 mb-8">Real-World Security Use Cases</h2>
             <ul>
               <li><strong>Phishing Prevention:</strong> IT teams utilize the tool to audit TXT records, ensuring strict DMARC enforcement is in place to stop domain spoofing.</li>
-              <li><strong>Bug Bounty Reconnaissance:</strong> authorized security professionals perform deep enumeration to discover forgotten subdomains or vulnerable CNAME pointers that could lead to a takeover.</li>
+              <li><strong>Bug Bounty infrastructure visibility:</strong> authorized security professionals perform deep enumeration to discover forgotten subdomains or vulnerable CNAME pointers that could lead to a takeover.</li>
               <li><strong>Email Deliverability Troubleshooting:</strong> Marketing operations use the <strong>MX lookup</strong> function to diagnose why transactional emails are bouncing or landing in spam folders.</li>
             </ul>
 
@@ -274,7 +274,7 @@ export default function DnsLookupPage() {
                 <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                 <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade infrastructure visibility tools and secure the digital internet-facing assets.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
                   <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
@@ -309,7 +309,7 @@ export default function DnsLookupPage() {
               <Link href="/tools/vulnerability-scanner" className="p-6 bg-surface-900 border border-white/5 hover:border-cyan-500/30 rounded-2xl group transition-all">
                 <Shield className="w-6 h-6 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-white font-bold mb-2 group-hover:text-cyan-400 transition-colors">Security Exposure Assessment Tool</h3>
-                <p className="text-xs text-gray-400">Assess the full attack surface of a domain passively for security misconfigurations.</p>
+                <p className="text-xs text-gray-400">Assess the full internet-facing assets of a domain passively for security misconfigurations.</p>
               </Link>
             </div>
           </div>

@@ -10,7 +10,7 @@ export default function TopActiveThreats() {
   // Mock data for Phase 1 of implementation (Simulating Redis/ClickHouse pull)
   useEffect(() => {
     setThreats([
-      { ip: "185.122.204.10", score: 98, asn: 44534, campaign: "Kimsuky Exploit", lastSeen: "2 mins ago", country: "RU" },
+      { ip: "185.122.204.10", score: 98, asn: 44534, campaign: "Kimsuky abuse", lastSeen: "2 mins ago", country: "RU" },
       { ip: "45.227.255.43", score: 94, asn: 262254, campaign: "Mirai Botnet", lastSeen: "5 mins ago", country: "CN" },
       { ip: "103.142.228.6", score: 91, asn: 13412, campaign: "CVE-2023-44487", lastSeen: "12 mins ago", country: "VN" },
       { ip: "193.169.255.10", score: 88, asn: 51042, campaign: "Log4Shell Scans", lastSeen: "15 mins ago", country: "IR" },

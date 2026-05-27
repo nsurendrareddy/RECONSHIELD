@@ -150,7 +150,7 @@ export default async function PortIntelligencePage({ params }) {
               Port <span className="text-red-400">{port}</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
-              exposure assessment, common exploits, and firewall configuration recommendations for TCP/UDP port {port}.
+              exposure assessment, common configuration abuse, and firewall configuration recommendations for TCP/UDP port {port}.
             </p>
           </div>
 
@@ -185,7 +185,7 @@ export default async function PortIntelligencePage({ params }) {
 
                 <Link href={`/tools/port-scanner`} className="inline-flex items-center justify-center gap-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/30 px-6 py-3 rounded-xl font-bold transition-all">
                   <Activity className="w-4 h-4" />
-                  Scan Target for Port {port}
+                  analyze infrastructure for Port {port}
                 </Link>
               </div>
 
@@ -204,14 +204,14 @@ export default async function PortIntelligencePage({ params }) {
                 <p className="text-gray-400 leading-relaxed">
                   The risk of exposing port {port} depends heavily on the underlying application and the network architecture. 
                   Because {portDetails.service} is a known service, automated botnets and exposure assessment tools constantly sweep the internet for IPs listening on port {port}. 
-                  If the service is unpatched or relies on weak default credentials, an attacker can exploit the open port to gain Initial Access to the server environment.
+                  If the service is unpatched or relies on weak default credentials, an unauthorized actor can abuse the open port to gain Initial Access to the server environment.
                 </p>
 
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">Defensive Strategies</h3>
                 <ul className="text-gray-400 leading-relaxed list-disc pl-5 space-y-2">
                   <li><strong>Firewall Configuration:</strong> Implement a default-deny policy. Port {port} should drop all inbound traffic from the WAN.</li>
                   <li><strong>Virtual Private Networks:</strong> Require administrators to connect via an encrypted VPN tunnel before attempting to route traffic to port {port}.</li>
-                  <li><strong>Continuous Monitoring:</strong> Utilize active attack surface management tools to alert the Security Operations Center (SOC) if port {port} is unexpectedly exposed.</li>
+                  <li><strong>Continuous Monitoring:</strong> Utilize active internet-facing assets management tools to alert the Security Operations Center (SOC) if port {port} is unexpectedly exposed.</li>
                 </ul>
               </div>
 

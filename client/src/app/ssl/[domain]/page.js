@@ -174,7 +174,7 @@ export default async function SslIntelligencePage({ params }) {
 
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">Configuration Exposure</h3>
                 <p className="text-gray-400 leading-relaxed">
-                  Misconfigurations on {domain}'s web server can lead to severe security breaches. If {domain} supports outdated protocols like SSLv3 or TLS 1.0, it may be vulnerable to attacks like POODLE or BEAST. Furthermore, if {domain} utilizes weak cipher suites (e.g., those using RC4 or 3DES), state-sponsored actors or sophisticated attackers positioned on the network could potentially decrypt the captured traffic.
+                  Misconfigurations on {domain}'s web server can lead to severe security breaches. If {domain} supports outdated protocols like SSLv3 or TLS 1.0, it may be vulnerable to attacks like POODLE or BEAST. Furthermore, if {domain} utilizes weak cipher suites (e.g., those using RC4 or 3DES), state-sponsored actors or sophisticated unauthorized actors positioned on the network could potentially decrypt the captured traffic.
                 </p>
 
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">Investigation Vectors for {domain}</h3>
@@ -191,7 +191,7 @@ export default async function SslIntelligencePage({ params }) {
                   {[
                     { q: `What happens if the certificate for ${domain} expires?`, a: `If the SSL certificate expires, modern browsers (Chrome, Firefox, Safari) will display a full-page security warning (ERR_CERT_DATE_INVALID), effectively blocking user access and crippling traffic to the site.` },
                     { q: `How do I enforce HTTPS on ${domain}?`, a: `To ensure all connections are encrypted, the server for ${domain} should implement the HTTP Strict Transport Security (HSTS) header and enforce 301 redirects from HTTP to HTTPS.` },
-                    { q: `Can attackers fake a certificate for ${domain}?`, a: `Attackers cannot fake a valid, trusted certificate without compromising a Root CA or successfully executing a complex BGP hijacking attack to intercept domain validation emails/DNS checks.` }
+                    { q: `Can unauthorized actors fake a certificate for ${domain}?`, a: `unauthorized actors cannot fake a valid, trusted certificate without compromising a Root CA or successfully executing a complex BGP hijacking attack to intercept domain validation emails/DNS checks.` }
                   ].map((faq, i) => (
                     <div key={i} className="p-5 rounded-xl bg-[#0d1117] border border-white/[0.06]">
                       <h3 className="text-white font-semibold mb-2 text-sm">{faq.q}</h3>

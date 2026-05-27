@@ -78,8 +78,8 @@ export default function BugBountySection({ data }) {
               </div>
             </div>
             <div>
-              <h3 className="text-base font-display font-bold text-white tracking-wide uppercase">Bug Bounty Recon Mode</h3>
-              <p className="text-[11px] font-mono text-gray-500 mt-0.5">LIVE ATTACK SURFACE INTELLIGENCE</p>
+              <h3 className="text-base font-display font-bold text-white tracking-wide uppercase">Bug Bounty analysis Mode</h3>
+              <p className="text-[11px] font-mono text-gray-500 mt-0.5">LIVE internet-facing assets INTELLIGENCE</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -94,9 +94,9 @@ export default function BugBountySection({ data }) {
       {expanded && (
         <div className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Attack Surface Score Gauge */}
+            {/* internet-facing assets Score Gauge */}
             <div className="bg-surface-900/60 rounded-2xl p-4 border border-white/[0.04] flex flex-col items-center">
-              <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-3">Attack Surface Score</p>
+              <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-3">internet-facing assets Score</p>
               <svg width="100" height="100" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="8" />
                 <circle cx="50" cy="50" r="40" fill="none" stroke={gaugeColor} strokeWidth="8"
@@ -135,7 +135,7 @@ export default function BugBountySection({ data }) {
             <div className="bg-surface-900/60 rounded-2xl p-4 border border-white/[0.04]">
               <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-3">Attack Paths ({attackPaths.length})</p>
               {attackPaths.length === 0 ? (
-                <div className="flex items-center gap-2 mt-3"><Shield className="w-4 h-4 text-matrix-400" /><p className="text-xs text-matrix-400 font-mono">No exploit chains found</p></div>
+                <div className="flex items-center gap-2 mt-3"><Shield className="w-4 h-4 text-matrix-400" /><p className="text-xs text-matrix-400 font-mono">No abuse chains found</p></div>
               ) : (
                 <div className="space-y-1.5">
                   {attackPaths.slice(0, 4).map((p, i) => (
@@ -150,7 +150,7 @@ export default function BugBountySection({ data }) {
 
           {insights.length > 0 && (
             <div>
-              <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-3">Recon Insights</p>
+              <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-3">analysis Insights</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {insights.map((ins, i) => (
                   <div key={i} className={`flex items-start gap-2.5 px-3 py-2.5 rounded-xl border ${ins.risk === 'critical' ? 'bg-red-500/5 border-red-500/10' : ins.risk === 'high' ? 'bg-orange-500/5 border-orange-500/10' : 'bg-amber-500/5 border-amber-500/10'}`}>
@@ -176,7 +176,7 @@ export default function BugBountySection({ data }) {
 
           <div className="flex items-start gap-3 px-4 py-3 bg-amber-500/5 border border-amber-500/10 rounded-xl">
             <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-            <p className="text-[11px] font-mono text-amber-400/80">EDUCATIONAL USE ONLY — Passive reconnaissance only. No active exploitation. Only test domains you own or have written authorization to assess.</p>
+            <p className="text-[11px] font-mono text-amber-400/80">EDUCATIONAL USE ONLY — Passive infrastructure visibility only. No active exploitation. Only test domains you own or have written authorization to assess.</p>
           </div>
         </div>
       )}

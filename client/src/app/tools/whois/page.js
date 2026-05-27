@@ -40,7 +40,7 @@ export default function WhoisPage() {
     },
     {
       q: "How does WHOIS help with threat hunting?",
-      a: "Threat hunters use WHOIS checkers to perform infrastructure attribution analysis. By analyzing creation dates, registrar choices, and nameservers, analysts can link seemingly unrelated domains to the same malicious threat actor."
+      a: "Threat hunters use WHOIS checkers to perform infrastructure attribution analysis. By analyzing creation dates, registrar choices, and nameservers, analysts can link seemingly unrelated domains to the same malicious security incident."
     }
   ];
 
@@ -268,7 +268,7 @@ export default function WhoisPage() {
                 <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                 <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade infrastructure visibility tools and secure the digital internet-facing assets.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
                   <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:text-teal-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
@@ -291,13 +291,13 @@ export default function WhoisPage() {
               <Link href="/tools/dns-lookup" className="p-6 bg-surface-900 border border-white/5 hover:border-teal-500/30 rounded-2xl group transition-all">
                 <Network className="w-6 h-6 text-teal-400 mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-white font-bold mb-2 group-hover:text-teal-400 transition-colors">DNS Intelligence</h3>
-                <p className="text-xs text-gray-400">Pivot from WHOIS data to enumerate the target's underlying DNS infrastructure.</p>
+                <p className="text-xs text-gray-400">Pivot from WHOIS data to audit the target's underlying DNS infrastructure.</p>
               </Link>
 
               <Link href="/tools/ip-lookup" className="p-6 bg-surface-900 border border-white/5 hover:border-teal-500/30 rounded-2xl group transition-all">
                 <Search className="w-6 h-6 text-teal-400 mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-white font-bold mb-2 group-hover:text-teal-400 transition-colors">IP Reputation Scanner</h3>
-                <p className="text-xs text-gray-400">Perform an ASN lookup on the domain's resolved IP address for threat actor attribution.</p>
+                <p className="text-xs text-gray-400">Perform an ASN lookup on the domain's resolved IP address for security incident attribution.</p>
               </Link>
 
               <Link href="/tools/port-scanner" className="p-6 bg-surface-900 border border-white/5 hover:border-teal-500/30 rounded-2xl group transition-all">

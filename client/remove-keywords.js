@@ -1,29 +1,28 @@
 const fs = require('fs');
 const path = require('path');
 
-function processDir(dir) {
-  const files = fs.readdirSync(dir);
+const srcDir = path.join(__dirname, 'src');
+
+function processDirectory(directory) {
+  const files = fs.readdirSync(directory);
   for (const file of files) {
-    const fullPath = path.join(dir, file);
+    const fullPath = path.join(directory, file);
     if (fs.statSync(fullPath).isDirectory()) {
-      processDir(fullPath);
+      processDirectory(fullPath);
     } else if (fullPath.endsWith('.js') || fullPath.endsWith('.jsx')) {
       let content = fs.readFileSync(fullPath, 'utf8');
       
-      // We found the keyword property like:
-      // keywords: ["cybersecurity", "vulnerability scanner", "IP intelligence", "threat detection", "SSL checker", "DNS lookup"],
-      // keywords: [`${domain} ssl`, ...],
+      // Remove lines matching `keywords:` 
+      const lines = content.split('\n');
+      const filtered = lines.filter(line => !line.trim().startsWith('keywords:'));
       
-      // Match keywords property accurately
-      const newContent = content.replace(/\s*keywords:\s*\[[\s\S]*?\],?/g, '');
-      
-      if (content !== newContent) {
-        fs.writeFileSync(fullPath, newContent, 'utf8');
-        console.log('Removed keywords from:', fullPath);
+      if (filtered.length !== lines.length) {
+        fs.writeFileSync(fullPath, filtered.join('\n'), 'utf8');
+        console.log(`Removed keywords from: ${fullPath}`);
       }
     }
   }
 }
 
-processDir(path.join(__dirname, 'src', 'app'));
-console.log('Done');
+processDirectory(srcDir);
+console.log('Keywords removal complete.');

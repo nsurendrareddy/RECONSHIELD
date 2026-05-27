@@ -77,7 +77,7 @@ export default function ScanTerminalLog({ scanning, data, target }) {
             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/40 border border-yellow-500/50" />
             <div className="w-2.5 h-2.5 rounded-full bg-green-500/40 border border-green-500/50" />
           </div>
-          <span className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">Recon Terminal v2.4</span>
+          <span className="text-[10px] text-gray-500 font-mono uppercase tracking-widest">analysis Terminal v2.4</span>
         </div>
         <div className="flex items-center gap-2">
           <div className={`w-1.5 h-1.5 rounded-full ${scanning ? 'bg-matrix-400 animate-pulse' : 'bg-gray-600'}`} />

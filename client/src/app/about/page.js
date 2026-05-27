@@ -9,7 +9,7 @@ export const metadata = {
   },
   openGraph: {
     title: "About Surendra Reddy — Founder of ReconShield",
-    description: "Learn about the mission of ReconShield: providing advanced, AI-driven visibility into global attack surfaces for security researchers.",
+    description: "Learn about the mission of ReconShield: providing advanced, AI-driven visibility into global internet-facing assets for security researchers.",
     url: 'https://reconshield.in/about',
     type: 'profile',
   }
@@ -20,13 +20,13 @@ export default function About() {
     { icon: Globe, title: 'Global Intelligence', desc: 'Real-time monitoring of infrastructure and network reputation across 200+ countries.' },
     { icon: Lock, title: 'Security Auditing', desc: 'security configuration analysis of SSL/TLS and security headers to ensure data encryption standards.' },
     { icon: Cpu, title: 'AI-Powered Analysis', desc: 'Using advanced language models to interpret complex technical scans into human-readable risk reports.' },
-    { icon: Target, title: 'Precision Recon', desc: 'High-fidelity mapping of DNS records and subdomain structures for comprehensive visibility.' },
+    { icon: Target, title: 'defensive infrastructure visibility', desc: 'High-fidelity mapping of DNS records and subdomain structures for comprehensive visibility.' },
   ]
 
   const methodology = [
     'Passive only (no traffic to target)',
     'Public data sources only',
-    'No storage of scan targets'
+    'No storage of infrastructure targets'
   ]
 
   return (
@@ -80,7 +80,7 @@ export default function About() {
           About <span className="text-matrix-400">Surendra Reddy</span>
         </h1>
         <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed font-mono">
-          Empowering the next generation of security researchers with AI-driven visibility into the digital attack surface.
+          Empowering the next generation of security researchers with AI-driven visibility into the digital internet-facing assets.
         </p>
       </div>
 
@@ -119,25 +119,25 @@ export default function About() {
         <div className="space-y-6 text-[14px] text-gray-400 leading-[1.8] font-mono max-w-3xl">
           <div className="mb-6">[PHOTO]</div>
           <p>
-            Surendra Reddy is a cybersecurity researcher, OSINT analyst, and founder of ReconShield, a free passive reconnaissance and cybersecurity intelligence platform focused on defensive security research and infrastructure visibility.
+            Surendra Reddy is a cybersecurity researcher, OSINT analyst, and founder of ReconShield, a free passive infrastructure visibility and cybersecurity intelligence platform focused on defensive security research and infrastructure visibility.
           </p>
           <p>
-            With a strong interest in network intelligence, attack surface analysis, and open-source intelligence (OSINT), Surendra built ReconShield to make enterprise-style security tools more accessible to researchers, IT teams, students, and organizations seeking better visibility into their own digital infrastructure. His work focuses on ethical and authorized cybersecurity practices that help organizations identify exposure, strengthen configurations, and improve operational security.
+            With a strong interest in network intelligence, internet-facing assets analysis, and open-source intelligence (OSINT), Surendra built ReconShield to make enterprise-style security tools more accessible to researchers, IT teams, students, and organizations seeking better visibility into their own digital infrastructure. His work focuses on ethical and authorized cybersecurity practices that help organizations identify exposure, strengthen configurations, and improve operational security.
           </p>
           <p>
-            ReconShield was created to simplify security research workflows through lightweight, privacy-focused tools for DNS analysis, SSL inspection, WHOIS intelligence, IP visibility, and passive reconnaissance. The platform is designed around responsible use principles and does not support offensive or unauthorized activities.
+            ReconShield was created to simplify security research workflows through lightweight, privacy-focused tools for DNS analysis, SSL inspection, WHOIS intelligence, IP visibility, and passive infrastructure visibility. The platform is designed around responsible use principles and does not support malicious or unauthorized activities.
           </p>
           <div className="mt-6 mb-2">Surendra’s research interests include:</div>
           <ul className="list-disc pl-6 space-y-2 mb-6 text-[#94a3b8]">
             <li>Threat intelligence</li>
             <li>Passive OSINT methodologies</li>
-            <li>Network reconnaissance</li>
+            <li>Network infrastructure visibility</li>
             <li>Internet infrastructure analysis</li>
             <li>Security automation</li>
             <li>Defensive cybersecurity operations</li>
           </ul>
           <p>
-            He actively studies evolving attack surface trends and publishes educational cybersecurity content intended to support awareness, compliance, and responsible security auditing. Surendra believes cybersecurity knowledge should be accessible, transparent, and ethically applied. Through ReconShield, he continues working toward democratizing security visibility tools while promoting lawful and authorized research practices.
+            He actively studies evolving internet-facing assets trends and publishes educational cybersecurity content intended to support awareness, compliance, and responsible security auditing. Surendra believes cybersecurity knowledge should be accessible, transparent, and ethically applied. Through ReconShield, he continues working toward democratizing security visibility tools while promoting lawful and authorized research practices.
           </p>
           <p className="text-[#00ff88] mt-8">
             Connect with Surendra on LinkedIn: <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noreferrer" className="underline hover:text-white transition-colors">linkedin.com/in/surendrareddy3</a><br/>
@@ -153,7 +153,7 @@ export default function About() {
           {[
             "Passive only — no packets sent directly to the target",
             "Public data sources only — WHOIS, DNS, certificate logs, threat feeds",
-            "No storage of scan targets — queries are not logged or retained"
+            "No storage of infrastructure targets — queries are not logged or retained"
           ].map((m, i) => (
             <div key={i} className="flex items-center gap-3 text-[12px] text-[#64748b] font-mono uppercase">
               <span className="text-[#00ff8866]">▸</span>
@@ -168,9 +168,9 @@ export default function About() {
           <Activity className="w-64 h-64 text-matrix-400" />
         </div>
         <div className="relative z-10 max-w-2xl">
-          <h2 className="text-3xl font-display font-bold text-white mb-6 tracking-wide">ETHICAL INTELLECTUALISM</h2>
+          <h2 className="text-3xl font-display font-bold text-white mb-6 tracking-wide">DEFENSIVE SECURITY FOCUS</h2>
           <p className="text-gray-400 leading-relaxed mb-6 font-mono">
-            ReconShield was built on the principle that visibility is the first step toward defense. We believe that by democratizing high-level reconnaissance tools, we can help build a more resilient internet.
+            ReconShield was built on the principle that visibility is the first step toward defense. We believe that by democratizing high-level infrastructure visibility tools, we can help build a more resilient internet.
           </p>
           <div className="flex items-center gap-4 py-6 border-t border-white/5">
              <div className="flex -space-x-3">

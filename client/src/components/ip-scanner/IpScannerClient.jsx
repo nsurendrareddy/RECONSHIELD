@@ -144,7 +144,7 @@ export default function IpScannerClient() {
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-matrix-400 font-mono text-xs uppercase tracking-[0.2em]">
               <Zap className="w-3 h-3" />
-              <span>Advanced Reconnaissance</span>
+              <span>Advanced infrastructure visibility</span>
             </div>
             <h1 className="text-4xl font-display font-bold tracking-tight">
               IP <span className="text-glow-green text-matrix-400">Intelligence</span> Scanner
@@ -295,7 +295,7 @@ export default function IpScannerClient() {
                 </div>
                 <h3 className="text-xl font-display font-bold mb-2">Awaiting Target</h3>
                 <p className="text-gray-500 max-w-xs text-sm">
-                  Initialize a scan to begin reconnaissance. All data is collected passively without direct exploitation.
+                  Initialize a scan to begin infrastructure visibility. All data is collected passively without direct exploitation.
                 </p>
               </motion.div>
             ) : data ? (

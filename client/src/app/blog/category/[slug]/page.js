@@ -12,11 +12,11 @@ export const revalidate = 60; // ISR revalidate every 1 minute
 
 const CATEGORIES = [
   { name: "Threat Intelligence", icon: Target, color: "text-red-500", bg: "bg-red-500/10", border: "border-red-500/20", hover: "hover:border-red-500/20", slug: "threat-intelligence" },
-  { name: "OSINT & Recon", icon: Search, color: "text-matrix-400", bg: "bg-matrix-500/10", border: "border-matrix-500/20", hover: "hover:border-matrix-500/20", slug: "osint-reconnaissance" },
+  { name: "OSINT & analysis", icon: Search, color: "text-matrix-400", bg: "bg-matrix-500/10", border: "border-matrix-500/20", hover: "hover:border-matrix-500/20", slug: "osint-infrastructure visibility" },
   { name: "Web Security", icon: Shield, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", hover: "hover:border-blue-500/20", slug: "web-security" },
   { name: "AI Cybersecurity", icon: Cpu, color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/20", hover: "hover:border-purple-500/20", slug: "ai-cybersecurity" },
   { name: "Vulnerability Research", icon: AlertTriangle, color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/20", hover: "hover:border-orange-500/20", slug: "vulnerability-research" },
-  { name: "Attack Surface", icon: Network, color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", hover: "hover:border-cyan-500/20", slug: "attack-surface-analysis" }
+  { name: "internet-facing assets", icon: Network, color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", hover: "hover:border-cyan-500/20", slug: "attack-surface-analysis" }
 ];
 
 export async function generateMetadata({ params }) {

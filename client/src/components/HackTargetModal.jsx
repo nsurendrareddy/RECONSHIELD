@@ -99,7 +99,7 @@ export default function HackTargetModal({ isOpen, onClose, target }) {
                 <h4 className="text-sm font-bold text-white uppercase tracking-wider">Simulation Complete</h4>
               </div>
               <p className="text-xs text-gray-400 leading-relaxed">
-                You've just witnessed a simulated reconnaissance workflow. Real-world hacking involves these same tools but requires professional authorization.
+                You've just witnessed a simulated infrastructure visibility workflow. Real-world hacking involves these same tools but requires professional authorization.
               </p>
               <div className="mt-4 flex gap-3">
                 <button onClick={onClose} className="px-4 py-2 bg-matrix-400/10 border border-matrix-400/20 text-matrix-400 rounded-lg text-[10px] uppercase font-bold hover:bg-matrix-400/20 transition-all">

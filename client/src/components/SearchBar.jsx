@@ -11,7 +11,7 @@ export default function SearchBar({ onScan, isScanning }) {
     e.preventDefault()
     setError('')
     const cleaned = domain.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '')
-    if (!cleaned) { setError('Target domain or IP required'); return }
+    if (!cleaned) { setError('Domain or IP required'); return }
     if (!consent) { setError('Authorization confirmation required'); return }
     onScan(cleaned)
   }
@@ -30,7 +30,7 @@ export default function SearchBar({ onScan, isScanning }) {
                 type="text"
                 value={domain}
                 onChange={(e) => setDomain(e.target.value)}
-                placeholder="target.domain.com"
+                placeholder="example.com"
                 className="w-full bg-transparent border-none outline-none text-matrix-400 placeholder-gray-600 text-lg py-3 font-mono tracking-wide"
                 disabled={isScanning}
                 id="domain-input"
@@ -46,7 +46,7 @@ export default function SearchBar({ onScan, isScanning }) {
               id="scan-button"
             >
               {isScanning ? (
-                <><Loader2 className="w-4 h-4 animate-spin" />Scanning...</>
+                <><Loader2 className="w-4 h-4 animate-spin" />Analyzing...</>
               ) : (
                 <><Shield className="w-4 h-4" />Analyze</>
               )}
@@ -64,8 +64,8 @@ export default function SearchBar({ onScan, isScanning }) {
             />
           </div>
           <span className="text-xs text-gray-500 group-hover/consent:text-gray-400 transition-colors font-mono leading-relaxed">
-            [REQUIRED] I confirm authorization to scan this target.
-            All analysis uses non-intrusive, passive reconnaissance only.
+            [REQUIRED] I confirm authorization to analyze this infrastructure.
+            All analysis uses non-intrusive, passive infrastructure visibility only.
           </span>
         </label>
 

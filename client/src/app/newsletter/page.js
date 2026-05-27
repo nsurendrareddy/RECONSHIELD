@@ -31,7 +31,7 @@ export default async function NewsletterPage() {
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#378add]">Delivered Weekly</span>.
           </h1>
           <p className="text-[#94a3b8] text-lg lg:text-xl font-light">
-            Stay ahead of threat actors with our curated weekly digest. Critical CVEs, offensive AI capabilities, malware trends, and actionable intelligence straight to your inbox.
+            Stay ahead of threat actors with our curated weekly digest. Critical CVEs, defensive AI capabilities, malware trends, and actionable intelligence straight to your inbox.
           </p>
           <div className="pt-4 flex justify-center gap-4">
             <Link href="/rss.xml" className="inline-flex items-center gap-2 text-orange-400 hover:text-orange-300 transition-colors font-mono text-[11px] uppercase tracking-wider">
@@ -64,12 +64,12 @@ export default async function NewsletterPage() {
             <TopicCard 
               icon={<AlertTriangle className="w-5 h-5 text-yellow-500" />} 
               title="CVEs & Patch Alerts" 
-              desc="Critical vulnerability disclosures, exploits in the wild, and immediate mitigation steps." 
+              desc="Critical vulnerability disclosures, configuration abuse in the wild, and immediate mitigation steps." 
             />
             <TopicCard 
               icon={<Cpu className="w-5 h-5 text-blue-400" />} 
               title="AI Security" 
-              desc="Offensive AI capabilities, prompt injection techniques, and LLM vulnerability research." 
+              desc="defensive AI capabilities, prompt injection techniques, and LLM vulnerability research." 
             />
             <TopicCard 
               icon={<Bug className="w-5 h-5 text-red-400" />} 

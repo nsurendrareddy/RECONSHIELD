@@ -136,7 +136,7 @@ export default function SslCheckerPage() {
               Secure Sockets Layer (SSL) and its modern successor, Transport Layer Security (TLS), are cryptographic protocols designed to provide communications security over a computer network. When you visit an HTTPS website, these protocols encrypt the data transmitted between your browser and the server, preventing Man-in-the-Middle (MitM) attacks. An <strong>HTTPS security checker</strong> evaluates the implementation of these protocols to ensure data privacy and integrity.
             </p>
             <p>
-              By utilizing an <strong>SSL certificate checker</strong>, organizations can map out their cryptographic attack surface, identifying deprecated protocols that put sensitive user data at risk.
+              By utilizing an <strong>SSL certificate checker</strong>, organizations can map out their cryptographic internet-facing assets, identifying deprecated protocols that put sensitive user data at risk.
             </p>
 
             <h2 className="text-3xl font-display font-bold mt-16 mb-6 flex items-center gap-3">
@@ -168,7 +168,7 @@ export default function SslCheckerPage() {
 
               <h3 className="text-xl text-white font-bold mt-8 mb-4">Common SSL/TLS configuration risks</h3>
               <p>
-                A <strong>TLS configuration analyzer</strong> is critical because simply having an SSL certificate is not enough. If your server supports legacy protocols (like SSLv3 or TLS 1.0) or weak ciphers (like RC4 or DES), attackers can force a protocol downgrade and decrypt the traffic. Our tool acts as an <strong>HTTPS exposure assessment tool</strong>, identifying misconfigurations that lead to attacks such as POODLE, BEAST, or CRIME.
+                A <strong>TLS configuration analyzer</strong> is critical because simply having an SSL certificate is not enough. If your server supports legacy protocols (like SSLv3 or TLS 1.0) or weak ciphers (like RC4 or DES), unauthorized actors can force a protocol downgrade and decrypt the traffic. Our tool acts as an <strong>HTTPS exposure assessment tool</strong>, identifying misconfigurations that lead to attacks such as POODLE, BEAST, or CRIME.
               </p>
             </div>
 
@@ -227,7 +227,7 @@ export default function SslCheckerPage() {
             <ul>
               <li><strong>E-Commerce Compliance:</strong> PCI-DSS compliance strictly requires robust encryption. Payment gateways use our <strong>HTTPS security checker</strong> to ensure customer data cannot be intercepted.</li>
               <li><strong>SEO Rankings:</strong> Google directly uses HTTPS as a ranking signal. A broken certificate or weak TLS configuration can plummet a domain's organic search visibility.</li>
-              <li><strong>Infrastructure Audits:</strong> Penetration testers analyze cipher suites during the reconnaissance phase to find weak cryptographic implementations for exploitation.</li>
+              <li><strong>Infrastructure Audits:</strong> Penetration testers analyze cipher suites during the infrastructure visibility phase to find weak cryptographic implementations for exploitation.</li>
             </ul>
 
             <h2 className="text-3xl font-display font-bold text-white mt-16 mb-8">Step-by-Step Tutorial: Analyzing an SSL Certificate</h2>
@@ -272,7 +272,7 @@ export default function SslCheckerPage() {
                 <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                 <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade infrastructure visibility tools and secure the digital internet-facing assets.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
                   <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>

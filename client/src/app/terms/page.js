@@ -39,7 +39,7 @@ export default function TermsOfServicePage() {
           <div className="p-6 bg-surface-900 border border-red-500/20 rounded-2xl mb-12">
             <h3 className="text-white font-bold mb-2 flex items-center gap-2"><AlertOctagon className="w-5 h-5 text-red-500" /> Acceptable Use & Authorization</h3>
             <p className="text-sm text-gray-400 m-0">
-              ReconShield provides passive reconnaissance tools for educational, research, and defensive cybersecurity purposes. By using this platform, you agree that you are authorized to scan the target domains or IPs, or that you are collecting intelligence from public, open-source records (OSINT).
+              ReconShield provides passive infrastructure visibility tools for educational, research, and defensive cybersecurity purposes. By using this platform, you agree that you are authorized to scan the target domains or IPs, or that you are collecting intelligence from public, open-source records (OSINT).
             </p>
           </div>
 
@@ -61,10 +61,10 @@ export default function TermsOfServicePage() {
           <h2>3. Prohibited Activities</h2>
           <p>You strictly agree NOT to use the ReconShield platform to:</p>
           <ul>
-            <li>Conduct unauthorized active scanning, exploitation, or penetration testing against third-party networks.</li>
-            <li>Engage in malicious activities, including reconnaissance for immediate criminal exploit.</li>
+            <li>Conduct unauthorized active scanning, exploitation, or compliance auditing against third-party networks.</li>
+            <li>Engage in malicious activities, including infrastructure visibility for immediate criminal abuse.</li>
             <li>Automate requests via bots, scrapers, or scripts that bypass our rate limits and degrade the service for other users.</li>
-            <li>Attempt to reverse engineer, bypass, or exploit the ReconShield infrastructure itself.</li>
+            <li>Attempt to reverse engineer, bypass, or abuse the ReconShield infrastructure itself.</li>
           </ul>
           <p>Violation of these rules will result in an immediate and permanent IP ban from the platform, and potential reporting to relevant authorities.</p>
 

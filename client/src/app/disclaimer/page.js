@@ -51,7 +51,7 @@ export default function DisclaimerPage() {
           <p>Users are strictly prohibited from using ReconShield for:</p>
           <ul>
             <li>Unauthorized network scanning</li>
-            <li>Illegal reconnaissance activities</li>
+            <li>Illegal infrastructure visibility activities</li>
             <li>Attempting unauthorized access to systems or services</li>
             <li>Circumventing security controls</li>
             <li>Harassment, disruption, or abuse of third-party infrastructure</li>
@@ -59,7 +59,7 @@ export default function DisclaimerPage() {
             <li>Activities that violate applicable local, national, or international laws</li>
           </ul>
           <p>
-            ReconShield does not support offensive cyber operations, malicious activity, exploit deployment, credential attacks, or unauthorized penetration attempts.
+            ReconShield does not support defensive cyber operations, malicious activity, abuse deployment, credential attacks, or unauthorized penetration attempts.
           </p>
           <p>Any misuse of the platform is solely the responsibility of the individual user.</p>
 

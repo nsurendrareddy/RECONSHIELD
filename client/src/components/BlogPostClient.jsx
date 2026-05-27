@@ -276,7 +276,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
                   <h4 className="font-mono text-[12px] text-[#00ff88] uppercase tracking-[2px] mb-2 flex items-center gap-2">
                     <Globe className="w-3 h-3" /> IP INTELLIGENCE
                   </h4>
-                  <p className="text-[10px] text-gray-500 mb-4 leading-relaxed">Passive infrastructure reconnaissance and threat scoring.</p>
+                  <p className="text-[10px] text-gray-500 mb-4 leading-relaxed">Passive infrastructure infrastructure visibility and threat scoring.</p>
                   <div className="w-full py-2 bg-[#00ff8811] border border-[#00ff8822] text-[#00ff88] font-mono text-[9px] text-center tracking-[2px] group-hover:bg-[#00ff8822] transition-colors">
                     SCAN IP
                   </div>
@@ -286,7 +286,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
                   <h4 className="font-mono text-[12px] text-[#378add] uppercase tracking-[2px] mb-2 flex items-center gap-2">
                     <Shield className="w-3 h-3" /> VULN SCANNER
                   </h4>
-                  <p className="text-[10px] text-gray-500 mb-4 leading-relaxed">Automated attack surface analysis and risk discovery.</p>
+                  <p className="text-[10px] text-gray-500 mb-4 leading-relaxed">Automated internet-facing assets analysis and risk discovery.</p>
                   <div className="w-full py-2 bg-[#378add11] border border-[#378add22] text-[#378add] font-mono text-[9px] text-center tracking-[2px] group-hover:bg-[#378add22] transition-colors">
                     LAUNCH SCAN
                   </div>
@@ -333,7 +333,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
                         {getInitials(p.author?.name)}
                       </div>
                       <span className="font-mono text-[9px] tracking-[2px] uppercase text-gray-300">
-                        {p.author?.name || 'RECON'}
+                        {p.author?.name || 'analysis'}
                       </span>
                     </div>
                     <span className="font-mono text-[9px] tracking-[2px] uppercase text-gray-500">
@@ -357,7 +357,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
                 <h1 className="font-mono text-xl font-bold tracking-[3px] uppercase">RECONSHIELD</h1>
               </div>
               <p className="text-[12px] text-[#94a3b8] leading-relaxed max-w-sm">
-                Advanced educational reconnaissance and intelligence platform. Empowers security researchers with visibility into their attack surface through passive data collection.
+                Advanced educational infrastructure visibility and intelligence platform. Empowers security researchers with visibility into their internet-facing assets through passive data collection.
               </p>
             </div>
             <div>

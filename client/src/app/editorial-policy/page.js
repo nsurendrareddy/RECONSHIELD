@@ -51,10 +51,10 @@ export default function EditorialPolicyPage() {
 
           <h2>4. Ethical-Use Principles</h2>
           <p>
-            ReconShield strictly separates defensive research from offensive exploitation. Our content is written to empower defenders. 
+            ReconShield strictly separates defensive research from defensive exploitation. Our content is written to empower defenders. 
           </p>
           <ul>
-            <li>We do not publish exploit code (PoC) unless it is widely public and explicitly necessary to demonstrate defensive countermeasures.</li>
+            <li>We do not publish abuse code (PoC) unless it is widely public and explicitly necessary to demonstrate defensive countermeasures.</li>
             <li>We avoid aggressive terminology that glorifies cybercrime. We focus on terms like "exposure management," "configuration risk," and "security posture."</li>
             <li>We explicitly instruct our readers to utilize our intelligence only on infrastructure they own or are authorized to audit.</li>
           </ul>

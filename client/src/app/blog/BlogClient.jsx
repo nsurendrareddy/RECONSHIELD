@@ -116,7 +116,7 @@ export default function BlogClient({ posts }) {
                       {getInitials(featuredPost.author?.name)}
                     </div>
                     <div className="font-mono text-[9px] tracking-[2px] uppercase flex gap-4 text-gray-500">
-                      <span className="text-white tracking-[1px]">{featuredPost.author?.name || 'RECON TEAM'}</span>
+                      <span className="text-white tracking-[1px]">{featuredPost.author?.name || 'analysis TEAM'}</span>
                       <span className="tracking-[2px]">{formatDate(featuredPost.publishedAt || featuredPost._createdAt)}</span>
                       <span className="tracking-[2px]">{calculateReadTime(featuredPost)} MIN READ</span>
                     </div>
@@ -216,7 +216,7 @@ export default function BlogClient({ posts }) {
                       {getInitials(post.author?.name)}
                     </div>
                     <span className="font-mono text-[9px] tracking-[2px] uppercase text-gray-300">
-                      {post.author?.name || 'RECON'}
+                      {post.author?.name || 'analysis'}
                     </span>
                   </div>
                   <span className="font-mono text-[9px] tracking-[2px] uppercase text-gray-500">

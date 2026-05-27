@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Globe, Search, Network, Lock, Server, Activity, Shield, Mail, AlertTriangle, Cpu } from 'lucide-react';
 
-export const CATEGORIES = ['All', 'Network Intelligence', 'Domain Intelligence', 'DNS Analysis', 'SSL/TLS Security', 'Reconnaissance', 'Web Security', 'Email Security', 'Threat Intelligence'];
+export const CATEGORIES = ['All', 'Network Intelligence', 'Domain Intelligence', 'DNS Analysis', 'SSL/TLS Security', 'infrastructure visibility', 'Web Security', 'Email Security', 'Threat Intelligence'];
 
 export const COLOR_MAP = {
   cyan:   { bg: 'bg-cyan-500/10',    border: 'border-cyan-500/20',    text: 'text-cyan-400',    hover: 'hover:border-cyan-500/40' },
@@ -27,7 +27,6 @@ export const TOOLS = [
     tags: ['Geolocation', 'ISP', 'ASN', 'Threat Intel'],
     popular: true,
     category: 'Network Intelligence',
-    keywords: 'ip lookup, ip geolocation, ip address tracker, find ip location, ip threat intelligence',
   },
   {
     id: 'whois',
@@ -38,7 +37,6 @@ export const TOOLS = [
     tags: ['Registrar', 'Expiry Date', 'Name Servers'],
     popular: true,
     category: 'Domain Intelligence',
-    keywords: 'whois lookup, domain info, domain registrar, domain expiry check, whois history',
   },
   {
     id: 'dns-lookup',
@@ -49,7 +47,6 @@ export const TOOLS = [
     tags: ['DNS Records', 'SPF', 'DMARC', 'DNSSEC'],
     popular: true,
     category: 'DNS Analysis',
-    keywords: 'dns lookup, dns records checker, mx record lookup, a record lookup, txt record lookup',
   },
   {
     id: 'ssl-checker',
@@ -60,18 +57,16 @@ export const TOOLS = [
     tags: ['Certificate', 'TLS Version', 'Security Grade'],
     popular: true,
     category: 'SSL/TLS Security',
-    keywords: 'ssl checker, ssl certificate checker, tls security, check ssl expiry, cipher suite scanner',
   },
   {
     id: 'subdomain-finder',
     name: 'Subdomain Finder',
     icon: Server,
     color: 'orange',
-    desc: 'Passively enumerate subdomains from public sources, certificate logs, and DNS records.',
+    desc: 'Passively audit subdomains from public sources, certificate logs, and DNS records.',
     tags: ['Passive OSINT', 'DNS Validation', 'Export'],
     popular: false,
-    category: 'Reconnaissance',
-    keywords: 'subdomain finder, subdomain enumeration, subdomain scanner, osint subdomains, passive reconnaissance',
+    category: 'infrastructure visibility',
   },
   {
     id: 'port-scanner',
@@ -82,7 +77,6 @@ export const TOOLS = [
     tags: ['Open Ports', 'Service Detection', 'Risk Rating'],
     popular: false,
     category: 'Network Intelligence',
-    keywords: 'port scanner, open port checker, network port scan, scan open ports, service detection',
   },
   {
     id: 'http-headers',
@@ -93,7 +87,6 @@ export const TOOLS = [
     tags: ['CSP', 'HSTS', 'X-Frame-Options', 'Security Grade'],
     popular: false,
     category: 'Web Security',
-    keywords: 'http headers checker, security headers, csp checker, hsts checker, x-frame-options',
   },
   {
     id: 'email-security',
@@ -104,7 +97,6 @@ export const TOOLS = [
     tags: ['SPF', 'DKIM', 'DMARC', 'Mail Server'],
     popular: false,
     category: 'Email Security',
-    keywords: 'email security checker, spf checker, dmarc validator, dkim check, phishing protection',
   },
   {
     id: 'threat-intelligence', // Changed from ip-blacklist-checker to threat-intelligence to match backend integration 
@@ -115,7 +107,6 @@ export const TOOLS = [
     tags: ['Spam Lists', 'Malware', 'Reputation'],
     popular: false,
     category: 'Threat Intelligence',
-    keywords: 'ip blacklist checker, ip reputation, spam check, threat intelligence, malware blacklist',
   },
   {
     id: 'tech-detector',
@@ -125,8 +116,7 @@ export const TOOLS = [
     desc: 'Fingerprint CMS, frameworks, analytics tools, CDN, WAF, and technology stack of any website.',
     tags: ['CMS Detection', 'Framework', 'CDN/WAF'],
     popular: false,
-    category: 'Reconnaissance',
-    keywords: 'tech detector, technology stack, cms detector, wappalyzer alternative, website framework checker',
+    category: 'infrastructure visibility',
   },
   {
     id: 'vulnerability-scanner',
@@ -137,7 +127,6 @@ export const TOOLS = [
     tags: ['Security Assessment', 'Exposure Check', 'Passive Scan'],
     popular: true,
     category: 'Web Security',
-    keywords: 'security exposure assessment, infrastructure security check, configuration risks scanner',
   }
 ];
 
@@ -148,7 +137,7 @@ const CTABlock = () => (
       Need Advanced Threat Intelligence?
     </h3>
     <p className="text-gray-400 mb-6 max-w-2xl leading-relaxed">
-      Use ReconShield's full suite for real-time infrastructure intelligence, continuous attack surface monitoring, and automated exposure detection.
+      Use ReconShield's full suite for real-time infrastructure intelligence, continuous internet-facing assets monitoring, and automated exposure detection.
     </p>
     <Link href="/contact">
       <button className="bg-cyan-500 hover:bg-cyan-400 text-black px-6 py-3 rounded-xl font-semibold transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]">
@@ -173,14 +162,14 @@ export const TOOL_SEO_CONTENT = {
           This process reveals critical metadata including the physical location of the server, the ISP routing the traffic, and the Autonomous System Number (ASN) it belongs to.
         </p>
 
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Attackers Exploit IP Information</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why unauthorized actors abuse IP Information</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Cybercriminals use IP intelligence to profile their targets. By identifying the ASN and hosting provider (e.g., AWS, DigitalOcean, or a residential ISP), attackers can tailor their exploits. For example, enterprise IP ranges might be targeted with ransomware, while consumer IPs might be targeted with botnet malware. Furthermore, attackers often use anonymous proxies or VPNs to mask their own IPs, making IP reputation checks vital for defensive security.
+          Cybercriminals use IP intelligence to profile their targets. By identifying the ASN and hosting provider (e.g., AWS, DigitalOcean, or a residential ISP), unauthorized actors can tailor their configuration abuse. For example, enterprise IP ranges might be targeted with ransomware, while consumer IPs might be targeted with botnet malware. Furthermore, unauthorized actors often use anonymous proxies or VPNs to mask their own IPs, making IP reputation checks vital for defensive security.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">IP Lookup vs WHOIS</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          While often confused, IP Lookup and WHOIS serve different purposes. <strong>IP Lookup</strong> focuses on the network layer, revealing the physical location, ISP, and network routing information of an IP address. <strong>WHOIS</strong>, on the other hand, operates at the domain layer, showing who registered a specific domain name (like example.com), when it was registered, and the associated nameservers. Both are essential for complete infrastructure reconnaissance.
+          While often confused, IP Lookup and WHOIS serve different purposes. <strong>IP Lookup</strong> focuses on the network layer, revealing the physical location, ISP, and network routing information of an IP address. <strong>WHOIS</strong>, on the other hand, operates at the domain layer, showing who registered a specific domain name (like example.com), when it was registered, and the associated nameservers. Both are essential for complete infrastructure infrastructure visibility.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Common IP Security Misconfigurations</h2>
@@ -207,14 +196,14 @@ export const TOOL_SEO_CONTENT = {
           By analyzing these records, security researchers can map out an organization's digital footprint and external dependencies.
         </p>
 
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Attackers Exploit DNS</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why unauthorized actors abuse DNS</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          DNS is a prime target for attackers due to its fundamental role in internet routing. Attackers look for <strong>Subdomain Takeover</strong> configuration risks where a CNAME record points to an unclaimed cloud service (like an expired AWS S3 bucket or GitHub Pages site). They also actively scan for domains lacking proper SPF (Sender Policy Framework) and DMARC records, allowing them to easily spoof the domain and launch highly convincing phishing campaigns against employees or customers.
+          DNS is a prime target for unauthorized actors due to its fundamental role in internet routing. unauthorized actors look for <strong>Subdomain Takeover</strong> configuration risks where a CNAME record points to an unclaimed cloud service (like an expired AWS S3 bucket or GitHub Pages site). They also actively scan for domains lacking proper SPF (Sender Policy Framework) and DMARC records, allowing them to easily spoof the domain and launch highly convincing phishing campaigns against employees or customers.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">DNS Lookup vs Subdomain Finder</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          A <strong>DNS Lookup</strong> targets a specific, known hostname (e.g., api.example.com) to retrieve its configuration records. In contrast, a <strong>Subdomain Finder</strong> is a discovery tool used during the initial reconnaissance phase to find unknown hostnames belonging to a root domain. Subdomain enumeration often utilizes passive sources like Certificate Transparency (CT) logs, while DNS lookup actively queries resolvers for record details.
+          A <strong>DNS Lookup</strong> targets a specific, known hostname (e.g., api.example.com) to retrieve its configuration records. In contrast, a <strong>Subdomain Finder</strong> is a discovery tool used during the initial infrastructure visibility phase to find unknown hostnames belonging to a root domain. Subdomain enumeration often utilizes passive sources like Certificate Transparency (CT) logs, while DNS lookup actively queries resolvers for record details.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Best Practices for DNS Security</h2>
@@ -222,7 +211,7 @@ export const TOOL_SEO_CONTENT = {
           <li><strong>Implement DNSSEC:</strong> Protect against DNS spoofing and cache poisoning by cryptographically signing your DNS records.</li>
           <li><strong>Enforce strict DMARC policies:</strong> Set your DMARC policy to 'reject' or 'quarantine' to prevent unauthorized senders from spoofing your domain in emails.</li>
           <li><strong>Regularly prune stale records:</strong> Remove obsolete CNAME records pointing to decommissioned third-party services to prevent subdomain takeovers.</li>
-          <li><strong>Restrict zone transfers (AXFR):</strong> Ensure your nameservers do not allow anonymous zone transfers, which would hand attackers a complete map of your infrastructure.</li>
+          <li><strong>Restrict zone transfers (AXFR):</strong> Ensure your nameservers do not allow anonymous zone transfers, which would hand unauthorized actors a complete map of your infrastructure.</li>
         </ul>
         <CTABlock />
       </div>
@@ -231,7 +220,7 @@ export const TOOL_SEO_CONTENT = {
   'ssl-checker': {
     faqs: [
       { q: "What does an SSL Checker do?", a: "An SSL Checker audits a website's SSL/TLS certificate to ensure it is valid, trusted by browsers, not expired, and securely configured with strong cryptography." },
-      { q: "What is a cipher suite?", a: "A cipher suite is a set of cryptographic algorithms used to secure the network connection (TLS). Weak cipher suites can be cracked by attackers." },
+      { q: "What is a cipher suite?", a: "A cipher suite is a set of cryptographic algorithms used to secure the network connection (TLS). Weak cipher suites can be cracked by unauthorized actors." },
       { q: "Why should I disable TLS 1.0 and 1.1?", a: "TLS 1.0 and 1.1 are obsolete protocols with known cryptographic configuration risks (like BEAST and POODLE). Modern security standards require TLS 1.2 or 1.3." }
     ],
     content: (
@@ -245,7 +234,7 @@ export const TOOL_SEO_CONTENT = {
         <p className="text-gray-400 leading-relaxed mb-6">
           Even with a valid certificate, misconfigured TLS settings can lead to data interception. 
           <strong>Mixed Content</strong> occurs when an HTTPS page loads scripts or images over insecure HTTP, bypassing encryption. 
-          <strong>Supporting Weak Ciphers</strong> allows attackers positioned on the network to perform downgrade attacks or decrypt captured traffic. 
+          <strong>Supporting Weak Ciphers</strong> allows unauthorized actors positioned on the network to perform downgrade attacks or decrypt captured traffic. 
           <strong>Missing Certificate Revocation checking</strong> (OCSP Must-Staple) means browsers might trust a stolen certificate that the CA has already revoked.
         </p>
 
@@ -270,10 +259,10 @@ export const TOOL_SEO_CONTENT = {
           When a browser requests a web page, the server responds with HTTP headers alongside the HTML content. Security headers are specialized instructions that lock down browser behavior. Our tool analyzes your server's responses for critical headers including <code>Content-Security-Policy</code>, <code>Strict-Transport-Security</code>, <code>X-Frame-Options</code>, and <code>X-Content-Type-Options</code>, providing a comprehensive grade based on OWASP best practices.
         </p>
 
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Attackers Love Missing Headers</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why unauthorized actors Love Missing Headers</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Without a strong Content Security Policy (CSP), attackers can inject malicious JavaScript (XSS) into your site to steal user session cookies or log keystrokes. 
-          Without <code>X-Frame-Options</code>, an attacker can embed your site in a hidden iframe on a malicious domain, tricking logged-in users into clicking buttons they didn't intend to (Clickjacking). 
+          Without a strong Content Security Policy (CSP), unauthorized actors can inject malicious JavaScript (XSS) into your site to steal user session cookies or log keystrokes. 
+          Without <code>X-Frame-Options</code>, an unauthorized actor can embed your site in a hidden iframe on a malicious domain, tricking logged-in users into clicking buttons they didn't intend to (Clickjacking). 
           Missing security headers essentially leave the browser's built-in defense mechanisms disabled.
         </p>
 
@@ -292,18 +281,18 @@ export const TOOL_SEO_CONTENT = {
     faqs: [
       { q: "What is passive exposure assessment?", a: "Passive scanning identifies configuration risks by analyzing server responses, headers, and public records without sending intrusive or malicious payloads to the target." },
       { q: "Is exposure assessment legal?", a: "Passive scanning (which ReconShield uses) is generally legal as it only observes public configurations. Active scanning requires explicit authorization from the asset owner." },
-      { q: "How often should I scan my website?", a: "Continuous scanning is recommended. The attack surface changes daily as new configuration risks (CVEs) are discovered, certificates expire, and infrastructure is modified." }
+      { q: "How often should I scan my website?", a: "Continuous scanning is recommended. The internet-facing assets changes daily as new configuration risks (CVEs) are discovered, certificates expire, and infrastructure is modified." }
     ],
     content: (
       <div className="prose prose-invert max-w-none mt-12">
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Automated Attack Surface Analysis</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Automated internet-facing assets Analysis</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          ReconShield's Security Exposure Assessment Tool acts as an automated infrastructure visibility engine. It maps your external attack surface by aggregating data across DNS, SSL/TLS configurations, open ports, HTTP headers, and exposed technologies. By correlating this data against known threat patterns and common misconfigurations, the engine identifies potential entry points before attackers can exploit them.
+          ReconShield's Security Exposure Assessment Tool acts as an automated infrastructure visibility engine. It maps your external internet-facing assets by aggregating data across DNS, SSL/TLS configurations, open ports, HTTP headers, and exposed technologies. By correlating this data against known threat patterns and common misconfigurations, the engine identifies potential entry points before unauthorized actors can abuse them.
         </p>
 
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">How It Works: Passive Reconnaissance</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">How It Works: Passive infrastructure visibility</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Unlike aggressive penetration testing tools that brute-force directories or inject SQL payloads, our scanner operates strictly passively. It acts like a standard web browser and DNS client, gathering information through normal operational queries. We analyze server banners, error messages, routing paths, and public intelligence feeds to build a comprehensive risk profile with zero impact on your server's availability or performance.
+          Unlike aggressive compliance auditing tools that brute-force directories or inject SQL payloads, our scanner operates strictly passively. It acts like a standard web browser and DNS client, gathering information through normal operational queries. We analyze server banners, error messages, routing paths, and public intelligence feeds to build a comprehensive risk profile with zero impact on your server's availability or performance.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Continuous Assessment Matters</h2>
@@ -322,14 +311,14 @@ export const TOOL_SEO_CONTENT = {
     ],
     content: (
       <div className="prose prose-invert max-w-none mt-12">
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">The Role of WHOIS in Reconnaissance</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">The Role of WHOIS in infrastructure visibility</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
           A WHOIS check is often the first step in digital forensics and threat intelligence. It queries authoritative registries (like Verisign or Public Interest Registry) to extract metadata about a domain name. This includes the registrar, the creation and expiration dates, the domain statuses (like clientTransferProhibited), and the designated name servers. 
         </p>
 
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Attackers Use WHOIS</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why unauthorized actors Use WHOIS</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Attackers monitor WHOIS records to identify expiring domains belonging to target organizations. If a company fails to renew a domain, an attacker can purchase it and hijack incoming email or web traffic. Social engineers also use historical WHOIS data to map out corporate structures or find technical contacts to target in spear-phishing campaigns.
+          unauthorized actors monitor WHOIS records to identify expiring domains belonging to target organizations. If a company fails to renew a domain, an unauthorized actor can purchase it and hijack incoming email or web traffic. Social engineers also use historical WHOIS data to map out corporate structures or find technical contacts to target in spear-phishing campaigns.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Best Practices for Domain Management</h2>
@@ -344,20 +333,20 @@ export const TOOL_SEO_CONTENT = {
   },
   'subdomain-finder': {
     faqs: [
-      { q: "What is subdomain enumeration?", a: "It is the process of finding valid subdomains for one or more domains. It expands the known attack surface of a target." },
+      { q: "What is subdomain enumeration?", a: "It is the process of finding valid subdomains for one or more domains. It expands the known internet-facing assets of a target." },
       { q: "How do you find hidden subdomains?", a: "We use passive sources like Certificate Transparency (CT) logs, search engine scraping, and public DNS datasets to discover subdomains without brute-forcing." },
-      { q: "What is a subdomain takeover?", a: "It occurs when a subdomain points to a third-party service (like AWS S3) that has been deleted. An attacker can claim that service and serve content on the victim's subdomain." }
+      { q: "What is a subdomain takeover?", a: "It occurs when a subdomain points to a third-party service (like AWS S3) that has been deleted. An unauthorized actor can claim that service and serve content on the victim's subdomain." }
     ],
     content: (
       <div className="prose prose-invert max-w-none mt-12">
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Expanding the Attack Surface</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Expanding the internet-facing assets</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
           Organizations often focus their security efforts on their main website (www.example.com), neglecting forgotten development servers, legacy staging environments, or internal portals hosted on obscure subdomains (e.g., dev-api-v1.example.com). Our Subdomain Finder systematically enumerates these hidden assets using passive OSINT techniques, giving you a complete map of your exposed infrastructure.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">The Danger of Shadow IT</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Subdomains frequently host out-of-date software, unpatched WordPress installations, or exposed administrative panels. Because these assets are often unmanaged by the central IT team (Shadow IT), they represent a path of least resistance for attackers. Discovering and securing these forgotten subdomains is a critical phase of any Bug Bounty or penetration testing engagement.
+          Subdomains frequently host out-of-date software, unpatched WordPress installations, or exposed administrative panels. Because these assets are often unmanaged by the central IT team (Shadow IT), they represent a path of least resistance for unauthorized actors. Discovering and securing these forgotten subdomains is a critical phase of any Bug Bounty or compliance auditing engagement.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Mitigating Subdomain configuration risks</h2>
@@ -454,12 +443,12 @@ export const TOOL_SEO_CONTENT = {
       <div className="prose prose-invert max-w-none mt-12">
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Defending Against Email Spoofing</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          The SMTP protocol used for sending emails lacks built-in authentication, making it trivially easy for attackers to forge the 'From' address. To combat this, three core DNS-based security protocols were developed: SPF, DKIM, and DMARC. Our Email Security Checker analyzes your domain's DNS configuration to validate the syntactic correctness and enforcement strength of these crucial records.
+          The SMTP protocol used for sending emails lacks built-in authentication, making it trivially easy for unauthorized actors to forge the 'From' address. To combat this, three core DNS-based security protocols were developed: SPF, DKIM, and DMARC. Our Email Security Checker analyzes your domain's DNS configuration to validate the syntactic correctness and enforcement strength of these crucial records.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">The Phishing Epidemic</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Business Email Compromise (BEC) and phishing are the leading vectors for ransomware infections and financial wire fraud. If your domain lacks a strict DMARC policy (<code>p=reject</code>), attackers can send perfectly crafted emails pretending to be your CEO or invoicing department. These emails will pass through spam filters because, technically, there is no policy instructing the receiver to block them.
+          Business Email Compromise (BEC) and phishing are the leading vectors for ransomware infections and financial wire fraud. If your domain lacks a strict DMARC policy (<code>p=reject</code>), unauthorized actors can send perfectly crafted emails pretending to be your CEO or invoicing department. These emails will pass through spam filters because, technically, there is no policy instructing the receiver to block them.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">How to Secure Your Email Infrastructure</h2>
@@ -513,9 +502,9 @@ export const TOOL_SEO_CONTENT = {
           Modern websites are complex composites of various frameworks, libraries, analytics trackers, and Content Delivery Networks (CDNs). Our Tech Detector analyzes the target's frontend payload and HTTP responses to fingerprint the entire stack. From detecting underlying CMS platforms like WordPress or Ghost, to identifying frontend frameworks like React or Vue.js, and pinpointing infrastructure like Cloudflare or AWS.
         </p>
 
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Attackers Profile Technology</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why unauthorized actors Profile Technology</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Technology fingerprinting is a critical step in the cyber kill chain. If an attacker identifies that a target is running an outdated version of jQuery, a vulnerable WordPress plugin, or an unpatched Microsoft IIS server, they can search Exploit-DB or Metasploit for a pre-written exploit (CVE) specifically designed for that version. Security through obscurity is not enough, but leaking precise version numbers hands attackers a blueprint of your configuration risks.
+          Technology fingerprinting is a critical step in the cyber kill chain. If an unauthorized actor identifies that a target is running an outdated version of jQuery, a vulnerable WordPress plugin, or an unpatched Microsoft IIS server, they can search abuse-DB or Metasploit for a pre-written abuse (CVE) specifically designed for that version. Security through obscurity is not enough, but leaking precise version numbers hands unauthorized actors a blueprint of your configuration risks.
         </p>
 
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Defending Against Fingerprinting</h2>

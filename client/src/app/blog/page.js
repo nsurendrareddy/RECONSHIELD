@@ -13,13 +13,13 @@ export const revalidate = 60; // ISR revalidate every 1 minute
 
 export const metadata = {
   title: "Cybersecurity Research & Threat Intelligence Publication",
-  description: "Enterprise cybersecurity publication. Deep-dive OSINT research, vulnerability analysis, AI security intelligence, and attack surface mapping tutorials.",
+  description: "Enterprise cybersecurity publication. Deep-dive OSINT research, vulnerability analysis, AI security intelligence, and internet-facing assets mapping tutorials.",
   alternates: {
     canonical: 'https://reconshield.in/blog',
   },
   openGraph: {
     title: "Cybersecurity Research & Threat Intelligence Publication",
-    description: "Enterprise cybersecurity publication. Deep-dive OSINT research, vulnerability analysis, AI security intelligence, and attack surface mapping tutorials.",
+    description: "Enterprise cybersecurity publication. Deep-dive OSINT research, vulnerability analysis, AI security intelligence, and internet-facing assets mapping tutorials.",
     url: 'https://reconshield.in/blog',
     type: 'website',
   }
@@ -27,11 +27,11 @@ export const metadata = {
 
 const CATEGORIES = [
   { name: "Threat Intelligence", icon: Target, color: "text-red-500", bg: "bg-red-500/10", border: "border-red-500/20", hover: "hover:border-red-500/20", slug: "threat-intelligence" },
-  { name: "OSINT & Recon", icon: Search, color: "text-matrix-400", bg: "bg-matrix-500/10", border: "border-matrix-500/20", hover: "hover:border-matrix-500/20", slug: "osint-reconnaissance" },
+  { name: "OSINT & analysis", icon: Search, color: "text-matrix-400", bg: "bg-matrix-500/10", border: "border-matrix-500/20", hover: "hover:border-matrix-500/20", slug: "osint-infrastructure visibility" },
   { name: "Web Security", icon: Shield, color: "text-blue-400", bg: "bg-blue-500/10", border: "border-blue-500/20", hover: "hover:border-blue-500/20", slug: "web-security" },
   { name: "AI Cybersecurity", icon: Cpu, color: "text-purple-400", bg: "bg-purple-500/10", border: "border-purple-500/20", hover: "hover:border-purple-500/20", slug: "ai-cybersecurity" },
   { name: "Vulnerability Research", icon: AlertTriangle, color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/20", hover: "hover:border-orange-500/20", slug: "vulnerability-research" },
-  { name: "Attack Surface", icon: Network, color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", hover: "hover:border-cyan-500/20", slug: "attack-surface-analysis" }
+  { name: "internet-facing assets", icon: Network, color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", hover: "hover:border-cyan-500/20", slug: "attack-surface-analysis" }
 ];
 
 export default async function BlogPage() {
@@ -230,7 +230,7 @@ export default async function BlogPage() {
                 {[
                   { title: "Automating Infrastructure Attribution with RDAP", target: "/tools/whois" },
                   { title: "Hunting Phishing Campaigns via Passive DNS", target: "/tools/dns-lookup" },
-                  { title: "Mapping Shadow IT using Attack Surface Scanners", target: "/tools/port-scanner" }
+                  { title: "Mapping Shadow IT using internet-facing assets Scanners", target: "/tools/port-scanner" }
                 ].map((guide, i) => (
                   <Link href={guide.target} key={i} className="block p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-colors group">
                     <div className="flex justify-between items-center mb-3">
@@ -269,7 +269,7 @@ export default async function BlogPage() {
           {/* 9. Newsletter Section */}
           <section className="text-center max-w-3xl mx-auto border-t border-white/5 pt-20">
             <Mail className="w-12 h-12 text-matrix-400 mx-auto mb-6" />
-            <h2 className="text-3xl font-display font-bold text-white mb-4">Join the Reconnaissance Briefing</h2>
+            <h2 className="text-3xl font-display font-bold text-white mb-4">Join the infrastructure visibility Briefing</h2>
             <p className="text-gray-400 mb-8">
               Get zero-day alerts, OSINT tradecraft, and exclusive threat intelligence reports delivered directly to your inbox. No spam. Unsubscribe anytime.
             </p>

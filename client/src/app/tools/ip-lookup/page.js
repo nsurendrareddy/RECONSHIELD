@@ -96,7 +96,7 @@ export default function IpScannerPage() {
         <div className="max-w-[1200px] mx-auto px-6 relative z-10 text-center animate-fade-in-up">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-900 border border-white/10 text-gray-400 text-xs font-mono uppercase tracking-widest mb-6 shadow-sm">
             <Search className="w-4 h-4 text-[#00ff88]" />
-            <span>Passive Reconnaissance Module</span>
+            <span>Passive infrastructure visibility Module</span>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
@@ -143,7 +143,7 @@ export default function IpScannerPage() {
               How IP Intelligence Works
             </h2>
             <p>
-              The moment you query an IP address, ReconShield initiates a series of strict, passive reconnaissance checks. First, the <strong>IP geolocation checker</strong> queries Regional Internet Registries (like ARIN or RIPE) to determine the geographical assignment of the subnet. Concurrently, an <strong>ASN lookup</strong> (Autonomous System Number) is performed to identify the organization routing the traffic. 
+              The moment you query an IP address, ReconShield initiates a series of strict, passive infrastructure visibility checks. First, the <strong>IP geolocation checker</strong> queries Regional Internet Registries (like ARIN or RIPE) to determine the geographical assignment of the subnet. Concurrently, an <strong>ASN lookup</strong> (Autonomous System Number) is performed to identify the organization routing the traffic. 
             </p>
             <p>
               An ASN is critical for context: an IP belonging to AS15169 (Google) behaves very differently from an IP originating from a bulletproof hosting provider known for harboring cybercriminals. Our platform aggregates this data silently, ensuring the target is never alerted to the investigation.
@@ -162,7 +162,7 @@ export default function IpScannerPage() {
                 In the realm of cybersecurity, context is everything. An <strong>IP reputation checker</strong> analyzes the historical behavior of an IP address across the global internet. If an IP has been recently observed orchestrating brute-force attacks, distributing malware, or sending massive phishing campaigns, it is flagged by threat intelligence networks.
               </p>
               <p>
-                Monitoring IP reputation allows organizations to preemptively block malicious traffic. By utilizing our <strong>malicious IP checker</strong>, network defenders can filter out high-risk endpoints before they interact with internal systems, significantly reducing the attack surface.
+                Monitoring IP reputation allows organizations to preemptively block malicious traffic. By utilizing our <strong>malicious IP checker</strong>, network defenders can filter out high-risk endpoints before they interact with internal systems, significantly reducing the internet-facing assets.
               </p>
 
               <h3 className="text-xl text-white font-bold mt-8 mb-4">VPN & Proxy Detection Explained</h3>
@@ -259,7 +259,7 @@ export default function IpScannerPage() {
                 <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                 <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade infrastructure visibility tools and secure the digital internet-facing assets.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
                   <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
@@ -288,7 +288,7 @@ export default function IpScannerPage() {
               <Link href="/tools/vulnerability-scanner" className="p-6 bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 rounded-2xl group transition-all">
                 <Shield className="w-6 h-6 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
                 <h3 className="text-white font-bold mb-2 group-hover:text-[#00ff88] transition-colors">Security Exposure Assessment Tool</h3>
-                <p className="text-xs text-gray-400">Perform a full attack surface analysis passively on any domain.</p>
+                <p className="text-xs text-gray-400">Perform a full internet-facing assets analysis passively on any domain.</p>
               </Link>
 
               <Link href="/ports" className="p-6 bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 rounded-2xl group transition-all">

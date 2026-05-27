@@ -139,7 +139,7 @@ export default function RootLayout({ children }) {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 "name": "ReconShield",
-                "alternateName": ["Recon Shield"],
+                "alternateName": ["analysis Shield"],
                 "url": "https://reconshield.in",
               },
               {

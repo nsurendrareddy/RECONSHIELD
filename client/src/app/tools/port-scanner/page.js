@@ -7,14 +7,14 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 });
 
 export const metadata = {
-  title: "Port Scanner & Network Attack Surface Analysis Tool ",
-  description: "Free TCP port scanner and open port checker. Scan open ports, map your attack surface, and detect vulnerable network services passively.",
+  title: "Port Scanner & Network internet-facing assets Analysis Tool ",
+  description: "Free TCP port scanner and open port checker. Scan open ports, map your internet-facing assets, and detect vulnerable network services passively.",
   alternates: {
     canonical: 'https://reconshield.in/tools/port-scanner',
   },
   openGraph: {
-    title: "Port Scanner & Network Attack Surface Analysis Tool",
-    description: "Free TCP port scanner and open port checker. Scan open ports, map your attack surface, and detect vulnerable network services passively.",
+    title: "Port Scanner & Network internet-facing assets Analysis Tool",
+    description: "Free TCP port scanner and open port checker. Scan open ports, map your internet-facing assets, and detect vulnerable network services passively.",
     url: 'https://reconshield.in/tools/port-scanner',
     type: 'article',
   }
@@ -28,11 +28,11 @@ export default function PortScannerPage() {
     },
     {
       q: "Is it illegal to scan open ports?",
-      a: "Port scanning is generally considered reconnaissance and is legal if it strictly relies on public, passive databases (like ReconShield does via Shodan/InternetDB). However, actively firing intrusive packets at unauthorized targets can violate terms of service and be perceived as a hostile act."
+      a: "Port scanning is generally considered infrastructure visibility and is legal if it strictly relies on public, passive databases (like ReconShield does via Shodan/InternetDB). However, actively firing intrusive packets at unauthorized targets can violate terms of service and be perceived as a hostile act."
     },
     {
-      q: "What is Attack Surface Analysis?",
-      a: "Attack surface analysis involves mapping all the points where an unauthorized user could potentially enter or extract data from an environment. Our network port scanner identifies all exposed services, allowing administrators to minimize this attack surface."
+      q: "What is internet-facing assets Analysis?",
+      a: "internet-facing assets analysis involves mapping all the points where an unauthorized user could potentially enter or extract data from an environment. Our network port scanner identifies all exposed services, allowing administrators to minimize this internet-facing assets."
     },
     {
       q: "What are the most dangerous open ports?",
@@ -58,7 +58,7 @@ export default function PortScannerPage() {
                 "@id": "https://reconshield.in/tools/port-scanner#software",
                 "name": "ReconShield Port Scanner",
                 "url": "https://reconshield.in/tools/port-scanner",
-                "description": "Enterprise TCP port scanner and attack surface analysis tool.",
+                "description": "Enterprise TCP port scanner and internet-facing assets analysis tool.",
                 "applicationCategory": "SecurityApplication",
                 "operatingSystem": "Web",
                 "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
@@ -94,15 +94,15 @@ export default function PortScannerPage() {
         <div className="max-w-[1200px] mx-auto px-6 relative z-10 text-center animate-fade-in-up">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-900 border border-white/10 text-gray-400 text-xs font-mono uppercase tracking-widest mb-6 shadow-sm">
             <Terminal className="w-4 h-4 text-red-500" />
-            <span>Reconnaissance & Mapping Module</span>
+            <span>infrastructure visibility & Mapping Module</span>
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Port Scanner</span> & Attack Surface Analysis
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Port Scanner</span> & internet-facing assets Analysis
           </h1>
           
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Instantly map exposed infrastructure with our <strong>network port scanner</strong>. Scan open ports, identify listening services, and perform a comprehensive <strong>attack surface analysis</strong> passively.
+            Instantly map exposed infrastructure with our <strong>network port scanner</strong>. Scan open ports, identify listening services, and perform a comprehensive <strong>internet-facing assets analysis</strong> passively.
           </p>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -116,7 +116,7 @@ export default function PortScannerPage() {
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-gray-500 uppercase tracking-widest">
             <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-red-500" /> TCP Port Discovery</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-red-500" /> Service Identification</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-red-500" /> Passive Reconnaissance</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-red-500" /> Passive infrastructure visibility</div>
           </div>
         </div>
       </section>
@@ -150,14 +150,14 @@ export default function PortScannerPage() {
           </div>
         </section>
 
-        {/* 4. Common Ports & 5. Security Risks & 6. Attack Surface */}
+        {/* 4. Common Ports & 5. Security Risks & 6. internet-facing assets */}
         <section className="py-20 bg-[#0a0d14] border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16">
             
             <div className="prose prose-invert max-w-none prose-p:text-gray-400">
               <h2 className="text-3xl font-display font-bold text-white mb-6">Common Ports Explained</h2>
               <p>
-                To effectively conduct an <strong>attack surface analysis</strong>, it is critical to recognize standard service ports:
+                To effectively conduct an <strong>internet-facing assets analysis</strong>, it is critical to recognize standard service ports:
               </p>
               <ul>
                 <li><strong>Port 21 (FTP):</strong> File Transfer Protocol. Often vulnerable if transmitting data unencrypted.</li>
@@ -169,14 +169,14 @@ export default function PortScannerPage() {
 
               <h3 className="text-xl text-white font-bold mt-8 mb-4">Open Port Security Risks</h3>
               <p>
-                Every open port represents a potential entry point for an attacker. If a service running on an open port contains a vulnerability (CVE) or is secured by weak/default credentials, an attacker can compromise the entire server. This is why a <strong>network port scanner</strong> is the first tool deployed during a penetration test.
+                Every open port represents a potential entry point for an unauthorized actor. If a service running on an open port contains a vulnerability (CVE) or is secured by weak/default credentials, an unauthorized actor can compromise the entire server. This is why a <strong>network port scanner</strong> is the first tool deployed during a compliance audit.
               </p>
             </div>
 
             {/* Core Threats Focus Card */}
             <div className="bg-surface-900 border border-white/10 rounded-3xl p-8 shadow-2xl">
               <h3 className="text-xl font-display font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-red-500" /> Attack Surface Analysis
+                <AlertTriangle className="w-5 h-5 text-red-500" /> internet-facing assets Analysis
               </h3>
               
               <div className="space-y-6">
@@ -186,7 +186,7 @@ export default function PortScannerPage() {
                   </div>
                   <div>
                     <h4 className="text-white font-bold mb-1">Infrastructure Mapping</h4>
-                    <p className="text-sm text-gray-400">By determining the open ports, attackers and defenders alike can infer the exact architecture (web, database, mail) of the underlying server.</p>
+                    <p className="text-sm text-gray-400">By determining the open ports, unauthorized actors and defenders alike can infer the exact architecture (web, database, mail) of the underlying server.</p>
                   </div>
                 </div>
                 
@@ -196,7 +196,7 @@ export default function PortScannerPage() {
                   </div>
                   <div>
                     <h4 className="text-white font-bold mb-1">Shadow IT Discovery</h4>
-                    <p className="text-sm text-gray-400">Organizations often spin up temporary testing servers that are forgotten. Our scanner helps locate these rogue endpoints before attackers do.</p>
+                    <p className="text-sm text-gray-400">Organizations often spin up temporary testing servers that are forgotten. Our scanner helps locate these rogue endpoints before unauthorized actors do.</p>
                   </div>
                 </div>
 
@@ -222,7 +222,7 @@ export default function PortScannerPage() {
             <h2 className="text-3xl font-display font-bold text-white mb-6">Real-World Security Use Cases</h2>
             <ul>
               <li><strong>Zero Trust Verification:</strong> Security engineers use an <strong>open port checker</strong> to verify that strict "default-deny" firewall rules are correctly implemented.</li>
-              <li><strong>Red Teaming & Reconnaissance:</strong> authorized security professionals use a <strong>TCP port scanner</strong> as the very first step of an engagement to map out where configuration risks might exist.</li>
+              <li><strong>Red Teaming & infrastructure visibility:</strong> authorized security professionals use a <strong>TCP port scanner</strong> as the very first step of an engagement to map out where configuration risks might exist.</li>
               <li><strong>Incident Response:</strong> If a server is behaving anomalously, incident responders will scan for unauthorized open ports that may indicate a malicious backdoor listener.</li>
             </ul>
 
@@ -268,7 +268,7 @@ export default function PortScannerPage() {
                 <h4 className="text-white font-bold text-xl mb-1">Surendra Reddy</h4>
                 <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-3">Cybersecurity Researcher & Founder, ReconShield</p>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade reconnaissance tools and secure the digital attack surface.
+                  Surendra is a cybersecurity engineer specializing in Open Source Intelligence (OSINT), exposure intelligence, and AI-driven threat analysis. He built ReconShield to democratize access to enterprise-grade infrastructure visibility tools and secure the digital internet-facing assets.
                 </p>
                 <div className="flex gap-6 text-sm font-mono">
                   <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-red-500 hover:text-red-400 flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3"/></a>
@@ -283,7 +283,7 @@ export default function PortScannerPage() {
         <section className="py-20 bg-[#0a0d14]">
           <div className="max-w-[1200px] mx-auto px-6">
             <div className="flex items-center gap-4 mb-10">
-              <h2 className="font-mono text-xs tracking-[4px] uppercase text-red-500 font-bold">// EXPLORE RELATED RECONNAISSANCE TOOLS</h2>
+              <h2 className="font-mono text-xs tracking-[4px] uppercase text-red-500 font-bold">// EXPLORE RELATED infrastructure visibility TOOLS</h2>
               <div className="h-[1px] flex-1 bg-[#1a2332]" />
             </div>
             

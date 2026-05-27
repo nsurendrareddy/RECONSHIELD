@@ -170,7 +170,7 @@ export default function AttackGraphSection({ data }) {
             </div>
           </div>
           <div>
-            <h3 className="text-base font-display font-bold text-white tracking-wide uppercase">Attack Surface Graph</h3>
+            <h3 className="text-base font-display font-bold text-white tracking-wide uppercase">internet-facing assets Graph</h3>
             <p className="text-[11px] font-mono text-gray-500 mt-0.5">INTERACTIVE TOPOLOGY MAP — CLICK NODES FOR DETAILS</p>
           </div>
         </div>

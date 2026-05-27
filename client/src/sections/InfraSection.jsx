@@ -88,7 +88,7 @@ export default function InfraSection({ data }) {
 
           {/* GitHub */}
           <div>
-            <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-2">GitHub Recon</p>
+            <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-2">GitHub analysis</p>
             {!github.enabled ? (
               <p className="text-[10px] font-mono text-gray-600">{github.message || 'GitHub token not configured'}</p>
             ) : github.leaks_found > 0 ? (

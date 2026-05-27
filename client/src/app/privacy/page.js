@@ -39,7 +39,7 @@ export default function PrivacyPolicyPage() {
           <div className="p-6 bg-surface-900 border border-white/10 rounded-2xl mb-12">
             <h3 className="text-white font-bold mb-2 flex items-center gap-2"><Shield className="w-5 h-5 text-blue-400" /> Security-First Commitment</h3>
             <p className="text-sm text-gray-400 m-0">
-              As a cybersecurity platform, ReconShield prioritizes your privacy. Our reconnaissance tools are designed to operate passively. We do not require account registration, and we do not store the targets you scan in any personally identifiable manner.
+              As a cybersecurity platform, ReconShield prioritizes your privacy. Our infrastructure visibility tools are designed to operate passively. We do not require account registration, and we do not store the targets you scan in any personally identifiable manner.
             </p>
           </div>
 

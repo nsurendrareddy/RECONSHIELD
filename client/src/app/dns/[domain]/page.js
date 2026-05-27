@@ -172,7 +172,7 @@ export default async function DnsIntelligencePage({ params }) {
 
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">Threat Vectors & configuration risks</h3>
                 <p className="text-gray-400 leading-relaxed">
-                  Attackers heavily target the DNS layer. <strong>Subdomain Takeover</strong> occurs when a CNAME record points to an external, unclaimed cloud resource. Furthermore, if {domain} does not employ DNSSEC, it is potentially vulnerable to cache poisoning, allowing attackers to route legitimate users to malicious infrastructure by falsifying DNS responses.
+                  unauthorized actors heavily target the DNS layer. <strong>Subdomain Takeover</strong> occurs when a CNAME record points to an external, unclaimed cloud resource. Furthermore, if {domain} does not employ DNSSEC, it is potentially vulnerable to cache poisoning, allowing unauthorized actors to route legitimate users to malicious infrastructure by falsifying DNS responses.
                 </p>
 
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">Investigation Workflows</h3>

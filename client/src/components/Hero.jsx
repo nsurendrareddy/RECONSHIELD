@@ -38,7 +38,7 @@ export default function Hero({ onStartScan }) {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto mb-10 leading-relaxed font-light"
         >
-          Scan websites, analyze IP threats, detect configuration risks, and monitor cyber risks in real time using advanced AI security analytics.
+          Improve infrastructure visibility, reduce unnecessary exposure, detect configuration risks, and monitor security posture in real time using advanced AI analytics.
         </m.p>
 
         <m.div
@@ -51,7 +51,7 @@ export default function Hero({ onStartScan }) {
             onClick={() => document.getElementById('domain-input')?.focus()}
             className="px-8 py-4 bg-matrix-400 text-surface-950 font-bold rounded-xl hover:bg-matrix-300 transition-all flex items-center gap-2 shadow-lg shadow-matrix-400/20 active:scale-95"
           >
-            <Shield className="w-5 h-5" /> Start Free Scan
+            <Shield className="w-5 h-5" /> Start Free Assessment
           </button>
           <button
             onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
@@ -70,7 +70,7 @@ export default function Hero({ onStartScan }) {
         >
           <StatBox label="Active Threats" value="1.2M+" icon={<Activity />} />
           <StatBox label="Nodes Monitored" value="84.2K" icon={<Globe />} />
-          <StatBox label="Daily Scans" value="12.5K" icon={<Target />} />
+          <StatBox label="Daily Assessments" value="12.5K" icon={<Target />} />
           <StatBox label="Security Score" value="98.4" icon={<Shield />} />
         </m.div>
 
@@ -94,14 +94,14 @@ export default function Hero({ onStartScan }) {
                 <Target className="w-4 h-4 text-matrix-400" /> What is ReconShield?
               </h3>
               <p className="mb-6">
-                ReconShield is a next-generation cybersecurity platform and OSINT (Open Source Intelligence) research hub engineered to provide unparalleled visibility into the digital attack surface. We empower security researchers, authorized security professionals, and IT professionals with an arsenal of sophisticated tools designed to expose configuration risks before adversaries can exploit them.
+                ReconShield is a next-generation cybersecurity platform and OSINT (Open Source Intelligence) research hub engineered to provide unparalleled visibility into digital internet-facing assets. We empower security researchers, authorized security professionals, and IT administrators with an arsenal of sophisticated tools designed to expose configuration risks before unauthorized actors can abuse them.
               </p>
               
               <h3 className="text-white font-bold mb-3 uppercase tracking-wide flex items-center gap-2">
                 <Shield className="w-4 h-4 text-matrix-400" /> Who is it for?
               </h3>
               <p>
-                Our platform is specifically built for cybersecurity researchers, SOC analysts, penetration testers, and authorized security professionals who require high-fidelity intelligence and automated reconnaissance. Whether you are conducting proactive security auditing or mapping complex infrastructure networks, ReconShield provides the actionable data needed to stay ahead of evolving cyber threats.
+                Our platform is specifically built for cybersecurity researchers, SOC analysts, compliance auditors, and authorized security professionals who require high-fidelity intelligence and automated infrastructure visibility. Whether you are conducting proactive security auditing or monitoring complex infrastructure networks, ReconShield provides the actionable data needed to stay ahead of evolving cyber threats.
               </p>
             </div>
             

@@ -17,16 +17,16 @@ export async function generateMetadata({ params }) {
   }
 
   return {
-    title: `${domain} Subdomain Enumeration & Attack Surface Mapping`,
-    description: `Discover hidden subdomains and map the external attack surface of ${domain}. Detect forgotten development servers, staging environments, and potential subdomain takeovers.`,
+    title: `${domain} Subdomain Enumeration & internet-facing assets Mapping`,
+    description: `Discover hidden subdomains and map the external internet-facing assets of ${domain}. Detect forgotten development servers, staging environments, and potential subdomain takeovers.`,
     alternates: {
       canonical: `https://reconshield.in/subdomains/${domain}`,
     },
     robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/subdomains/${domain}`,
-      title: `${domain} Attack Surface Profile`,
-      description: `Passive reconnaissance and subdomain enumeration for ${domain}.`,
+      title: `${domain} internet-facing assets Profile`,
+      description: `Passive infrastructure visibility and subdomain enumeration for ${domain}.`,
       type: 'article',
     },
     twitter: {
@@ -51,7 +51,7 @@ export default async function SubdomainIntelligencePage({ params }) {
       {
         '@type': 'TechArticle',
         '@id': `https://reconshield.in/subdomains/${domain}/#article`,
-        headline: `${domain} Subdomain Attack Surface Mapping`,
+        headline: `${domain} Subdomain internet-facing assets Mapping`,
         description: `Detailed intelligence report outlining the known subdomains, virtual hosts, and cloud infrastructure associated with ${domain}.`,
         publisher: {
           '@type': 'Organization',
@@ -78,7 +78,7 @@ export default async function SubdomainIntelligencePage({ params }) {
           {
             '@type': 'Question',
             name: `What is a Subdomain Takeover on ${domain}?`,
-            acceptedAnswer: { '@type': 'Answer', text: `A takeover occurs when a subdomain of ${domain} has a DNS record pointing to a decommissioned third-party service (like an expired AWS S3 bucket). An attacker can claim that bucket and serve malicious content on the legitimate subdomain.` }
+            acceptedAnswer: { '@type': 'Answer', text: `A takeover occurs when a subdomain of ${domain} has a DNS record pointing to a decommissioned third-party service (like an expired AWS S3 bucket). An unauthorized actor can claim that bucket and serve malicious content on the legitimate subdomain.` }
           },
           {
             '@type': 'Question',
@@ -113,13 +113,13 @@ export default async function SubdomainIntelligencePage({ params }) {
           <div className="border-b border-white/10 pb-8 mb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/10 border border-orange-500/20 rounded-full text-[10px] font-mono text-orange-400 mb-4 uppercase tracking-widest">
               <Network className="w-3 h-3" />
-              <span>Attack Surface Mapping</span>
+              <span>internet-facing assets Mapping</span>
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
               <span className="text-orange-400">{domain}</span> Subdomains
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
-              Passive reconnaissance and subdomain enumeration to uncover the hidden infrastructure of {domain}.
+              Passive infrastructure visibility and subdomain enumeration to uncover the hidden infrastructure of {domain}.
             </p>
           </div>
 
@@ -154,7 +154,7 @@ export default async function SubdomainIntelligencePage({ params }) {
                 
                 <Link href={`/tools/subdomain-finder?target=${domain}`} className="inline-flex items-center justify-center gap-2 bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 border border-orange-500/30 px-6 py-3 rounded-xl font-bold transition-all">
                   <Search className="w-4 h-4" />
-                  Enumerate Subdomains for {domain}
+                  audit Subdomains for {domain}
                 </Link>
               </div>
 
@@ -163,7 +163,7 @@ export default async function SubdomainIntelligencePage({ params }) {
                   Mapping the Footprint of {domain}
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
-                  While the main website (`www.{domain}`) is heavily defended by web application firewalls and security teams, subdomains often host forgotten or unmonitored infrastructure. Finding these subdomains is the foundational first step in any penetration test or Bug Bounty engagement.
+                  While the main website (`www.{domain}`) is heavily defended by web application firewalls and security teams, subdomains often host forgotten or unmonitored infrastructure. Finding these subdomains is the foundational first step in any compliance audit or Bug Bounty engagement.
                 </p>
 
                 <h3 className="text-xl font-bold text-white mt-8 mb-3">The Danger of Shadow IT</h3>

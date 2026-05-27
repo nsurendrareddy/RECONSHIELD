@@ -4,7 +4,7 @@ import { ShieldAlert, AlertTriangle, Lock } from 'lucide-react'
 
 const LEGAL_BADGE = (
   <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-amber-500/10 border border-amber-500/20 rounded text-[10px] font-mono text-amber-400">
-    <Lock className="w-2.5 h-2.5" /> SIMULATION MODE — NO REAL EXPLOITS
+    <Lock className="w-2.5 h-2.5" /> SIMULATION MODE — NO REAL configuration abuse
   </div>
 )
 

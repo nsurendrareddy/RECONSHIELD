@@ -78,7 +78,7 @@ export default async function HeadersIntelligencePage({ params }) {
           {
             '@type': 'Question',
             name: `Is ${domain} protected from Clickjacking?`,
-            acceptedAnswer: { '@type': 'Answer', text: `Protection from Clickjacking is achieved by the X-Frame-Options header (or CSP frame-ancestors). If missing, attackers can load ${domain} inside an invisible iframe to trick users into performing unauthorized actions.` }
+            acceptedAnswer: { '@type': 'Answer', text: `Protection from Clickjacking is achieved by the X-Frame-Options header (or CSP frame-ancestors). If missing, unauthorized actors can load ${domain} inside an invisible iframe to trick users into performing unauthorized actions.` }
           },
           {
             '@type': 'Question',
