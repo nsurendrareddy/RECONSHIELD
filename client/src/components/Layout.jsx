@@ -148,61 +148,60 @@ export default function Layout({ children }) {
 
           </div>
           {/* END: flex items-center justify-between h-16 */}
-
-          {/* Mobile Navigation Drawer */}
-          {isMenuOpen && (
-            <div className="md:hidden fixed inset-0 z-[100] bg-surface-950/95 backdrop-blur-2xl transition-transform duration-300 ease-in-out">
-              <div className="flex flex-col h-full w-full">
-                {/* Top Section */}
-                <div className="flex items-center justify-between px-6 h-16 border-b border-white/10">
-                  <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 group">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-matrix-400/10 border border-matrix-400/20">
-                      <Shield className="w-5 h-5 text-matrix-400" />
-                    </div>
-                    <div>
-                      <h1 className="font-display text-lg font-bold tracking-wider">
-                        <span className="text-matrix-400">analysis</span><span className="text-white">SHIELD</span>
-                      </h1>
-                    </div>
-                  </Link>
-                  <button onClick={() => setIsMenuOpen(false)} className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-400 hover:text-white transition-colors" aria-label="Close menu">
-                    <X className="w-6 h-6" />
-                  </button>
-                </div>
-
-                {/* Main Navigation */}
-                <div className="flex-1 overflow-y-auto py-8 px-6">
-                  <nav className="flex flex-col gap-6">
-                    {navItems.map(({ path, label, icon: Icon }) => (
-                      <Link
-                        key={path}
-                        href={path}
-                        onClick={() => setIsMenuOpen(false)}
-                        className={`flex items-center gap-4 py-2 text-xl font-medium transition-colors min-h-[44px] ${pathname === path ? 'text-matrix-400' : 'text-gray-300 hover:text-white'}`}
-                      >
-                        {Icon && <Icon className="w-6 h-6" />}
-                        <span>{label}</span>
-                      </Link>
-                    ))}
-                  </nav>
-                </div>
-
-                {/* Bottom Section */}
-                <div className="p-6 border-t border-white/10 bg-surface-900/50">
-                  <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm text-gray-400 font-medium">
-                    <Link href="/disclaimer" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Disclaimer</Link>
-                    <Link href="/privacy" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Privacy Policy</Link>
-                    <Link href="/editorial-policy" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Editorial Policy</Link>
-                    <Link href="/terms" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Authorized Use</Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
         </div>
         {/* END: max-w-[1440px] */}
       </header>
+
+      {/* Mobile Navigation Drawer */}
+      {isMenuOpen && (
+        <div className="md:hidden fixed inset-0 z-[100] bg-surface-950/95 backdrop-blur-2xl transition-transform duration-300 ease-in-out">
+          <div className="flex flex-col h-[100dvh] w-full">
+            {/* Top Section */}
+            <div className="flex items-center justify-between px-6 h-16 border-b border-white/10 shrink-0">
+              <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 group">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-matrix-400/10 border border-matrix-400/20">
+                  <Shield className="w-5 h-5 text-matrix-400" />
+                </div>
+                <div>
+                  <h1 className="font-display text-lg font-bold tracking-wider">
+                    <span className="text-matrix-400">analysis</span><span className="text-white">SHIELD</span>
+                  </h1>
+                </div>
+              </Link>
+              <button onClick={() => setIsMenuOpen(false)} className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-400 hover:text-white transition-colors" aria-label="Close menu">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Main Navigation */}
+            <div className="flex-1 overflow-y-auto py-8 px-6">
+              <nav className="flex flex-col gap-6">
+                {navItems.map(({ path, label, icon: Icon }) => (
+                  <Link
+                    key={path}
+                    href={path}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={`flex items-center gap-4 py-2 text-xl font-medium transition-colors min-h-[44px] ${pathname === path ? 'text-matrix-400' : 'text-gray-300 hover:text-white'}`}
+                  >
+                    {Icon ? <Icon className="w-6 h-6" /> : <div className="w-6 h-6" />}
+                    <span>{label}</span>
+                  </Link>
+                ))}
+              </nav>
+            </div>
+
+            {/* Bottom Section */}
+            <div className="p-6 border-t border-white/10 bg-surface-900/50 shrink-0">
+              <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm text-gray-400 font-medium">
+                <Link href="/disclaimer" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Disclaimer</Link>
+                <Link href="/privacy" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Privacy Policy</Link>
+                <Link href="/editorial-policy" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Editorial Policy</Link>
+                <Link href="/terms" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Authorized Use</Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className={`${isBlogPage ? '' : 'max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8'} min-h-[80vh] relative`}>
