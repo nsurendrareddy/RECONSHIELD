@@ -9,8 +9,7 @@ export const config = {
     '/ssl/:path*',
     '/dns/:path*',
     '/tools/whois/:path*',
-    '/subdomains/:path*',
-    '/headers/:path*'
+    '/subdomains/:path*'
   ],
 };
 
@@ -92,7 +91,7 @@ export function middleware(request) {
   }
 
   // 4. Domain Validation (Applies to multiple routes)
-  const domainRoutes = ['/ssl/', '/dns/', '/tools/whois/', '/subdomains/', '/headers/'];
+  const domainRoutes = ['/ssl/', '/dns/', '/tools/whois/', '/subdomains/'];
   const matchingRoute = domainRoutes.find(route => pathname.startsWith(route));
   
   if (matchingRoute) {
