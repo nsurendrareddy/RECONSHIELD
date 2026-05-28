@@ -10,7 +10,7 @@ export const revalidate = 86400; // Cache for 24 hours since Actor profiles chan
 async function getThreatActorIntelligence(slug) {
   const normalizedSlug = slug.toLowerCase();
   
-  if (normalizedSlug === 'lazarus-group' || normalizedSlug === 'apt38') {
+  if (normalizedSlug === 'lazarus-group' || normalizedSlug === 'apt38' || normalizedSlug === 'lazarus-group-diamond-sleet') {
     return {
       name: 'Lazarus Group', aliases: ['APT38', 'Hidden Cobra', 'Zinc', 'Diamond Sleet'], origin: 'North Korea', sponsor: 'State-Sponsored (General Bureau)', activeSince: '2009',
       primaryMotivations: ['Espionage', 'Financial Theft', 'Data Destruction'], primaryTargets: ['Financial Institutions', 'Cryptocurrency Exchanges', 'Defense Contractors'],
@@ -46,6 +46,15 @@ async function getThreatActorIntelligence(slug) {
       recentCampaigns: [],
       mitreTactics: ['T1090 - Proxy']
     };
+  } else if (normalizedSlug === 'unknown-ddos-operators') {
+    return {
+      name: 'Unknown DDoS Operators', aliases: ['DDoS Botnets', 'Anonymous Traffic Sources'], origin: 'Global', sponsor: 'Unknown', activeSince: 'Unknown',
+      primaryMotivations: ['Extortion', 'Service Disruption'], primaryTargets: ['Enterprise Infrastructure', 'Critical Services'],
+      aiSummary: 'Unknown DDoS operators frequently utilize unpatched vulnerabilities, such as HTTP/2 Rapid Reset, to launch volumetric and resource-exhaustion attacks against enterprise targets.',
+      associatedMalware: ['Mirai variants', 'Custom DDoS Scripts'], associatedCVEs: ['CVE-2023-44487'],
+      recentCampaigns: [{ date: '2023-10', name: 'HTTP/2 Rapid Reset Exploitation' }],
+      mitreTactics: ['T1498 - Network Denial of Service', 'T1499 - Endpoint Denial of Service']
+    };
   }
   
   return null; // Triggers 404
@@ -70,8 +79,14 @@ export async function generateMetadata({ params }) {
         description: intel.aiSummary,
         type: 'article',
         url: `https://reconshield.in/threat-actor/${slug}`,
+        images: [{ url: '/og-image.png', width: 1200, height: 630 }],
       },
-      twitter: { card: 'summary_large_image' }
+      twitter: { 
+        card: 'summary_large_image',
+        title: `Intelligence Profile: ${intel.name}`,
+        description: intel.aiSummary,
+        images: ['/og-image.png']
+      }
     };
   } catch (error) {
     return { title: 'Error' };

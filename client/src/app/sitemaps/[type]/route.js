@@ -124,15 +124,21 @@ export async function GET(request, { params }) {
                  const uniqueUrls = new Map();
                  validUrls.forEach(u => uniqueUrls.set(u.url, u));
                  
-                 Array.from(uniqueUrls.values()).forEach(u => {
-                    // Escape XML entities
-                    const safeUrl = u.url.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-                    const lastmod = u.lastmod || STATIC_LAST_MODIFIED;
-                    const changefreq = u.changefreq || 'weekly';
-                    const priority = u.priority || '0.6';
-                    
-                    xml += `  <url>\n    <loc>${safeUrl}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
-                 });
+                 for (const u of Array.from(uniqueUrls.values())) {
+                    try {
+                        // HTTP validation before sitemap insertion
+                        const response = await fetch(u.url, { method: 'HEAD', headers: { 'User-Agent': 'SitemapValidator' } });
+                        if (response.status === 200) {
+                            const safeUrl = u.url.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+                            const lastmod = u.lastmod || STATIC_LAST_MODIFIED;
+                            const changefreq = u.changefreq || 'weekly';
+                            const priority = u.priority || '0.6';
+                            xml += `  <url>\n    <loc>${safeUrl}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
+                        }
+                    } catch(e) {
+                        // Skip if fetch fails
+                    }
+                 }
              }
           }
         } catch(e) {
@@ -147,15 +153,29 @@ export async function GET(request, { params }) {
             let pathPrefix = entityType;
             if (entityType === 'dns') pathPrefix = 'dns-records';
             if (entityType === 'malicious-ips') pathPrefix = 'ip';
-            if (entityType === 'cve') pathPrefix = 'cve'; // if cve sitemap exists
+            if (entityType === 'cve') pathPrefix = 'cve';
             
             if (fallbackItems.length > 0) {
-              fallbackItems.forEach(item => {
-                xml += `  <url>\n    <loc>${BASE_URL}/${pathPrefix}/${encodeURIComponent(item)}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
-              });
+              for (const item of fallbackItems) {
+                const url = `${BASE_URL}/${pathPrefix}/${encodeURIComponent(item)}`;
+                try {
+                  const response = await fetch(url, { method: 'HEAD', headers: { 'User-Agent': 'SitemapValidator' } });
+                  if (response.status === 200) {
+                    xml += `  <url>\n    <loc>${url}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+                  }
+                } catch(e) {
+                  // Skip on failure
+                }
+              }
             } else {
                // Minimal fallback for root entity type if no specific items exist
-               xml += `  <url>\n    <loc>${BASE_URL}/${pathPrefix}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
+               const rootUrl = `${BASE_URL}/${pathPrefix}`;
+               try {
+                 const response = await fetch(rootUrl, { method: 'HEAD', headers: { 'User-Agent': 'SitemapValidator' } });
+                 if (response.status === 200) {
+                   xml += `  <url>\n    <loc>${rootUrl}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
+                 }
+               } catch(e) {}
             }
         }
     }

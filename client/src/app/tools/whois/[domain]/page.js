@@ -27,11 +27,13 @@ export async function generateMetadata({ params }) {
       title: `${domain} WHOIS Profile`,
       description: `Analyze domain ownership and registration history for ${domain}.`,
       type: 'article',
+      images: [{ url: '/og-image.png', width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${domain} Registry Intelligence`,
       description: `Domain registration history and WHOIS data analysis for ${domain}.`,
+      images: ['/og-image.png']
     }
   };
 }

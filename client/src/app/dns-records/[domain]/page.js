@@ -29,11 +29,13 @@ export async function generateMetadata({ params }) {
         title: `${domain} DNS Profile`,
         description: `Analyze the DNS records and infrastructure topology for ${domain}.`,
         type: 'article',
+        images: [{ url: '/og-image.png', width: 1200, height: 630 }],
       },
       twitter: {
         card: 'summary_large_image',
         title: `${domain} DNS Intelligence`,
         description: `DNS routing and zone data analysis for ${domain}.`,
+        images: ['/og-image.png']
       }
     };
   } catch (error) {

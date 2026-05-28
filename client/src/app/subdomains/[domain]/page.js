@@ -28,11 +28,13 @@ export async function generateMetadata({ params }) {
       title: `${domain} internet-facing assets Profile`,
       description: `Passive infrastructure visibility and subdomain enumeration for ${domain}.`,
       type: 'article',
+      images: [{ url: '/og-image.png', width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${domain} Subdomain Intelligence`,
       description: `Map the external infrastructure and subdomains associated with ${domain}.`,
+      images: ['/og-image.png']
     }
   };
 }

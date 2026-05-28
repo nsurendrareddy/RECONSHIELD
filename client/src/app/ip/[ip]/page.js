@@ -59,8 +59,14 @@ export async function generateMetadata({ params }) {
       description: intel.aiSummary,
       type: 'article',
       url: `https://reconshield.in/ip/${ip}`,
+      images: [{ url: '/og-image.png', width: 1200, height: 630 }],
     },
-    twitter: { card: 'summary_large_image' }
+    twitter: { 
+      card: 'summary_large_image',
+      title: `${ip} - ${intel.riskClassification}`,
+      description: intel.aiSummary,
+      images: ['/og-image.png']
+    }
   };
 }
 

@@ -29,11 +29,13 @@ export async function generateMetadata({ params }) {
       title: `${domain} SSL Profile`,
       description: `Cryptographic security and TLS protocol analysis for ${domain}.`,
       type: 'article',
+      images: [{ url: '/og-image.png', width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${domain} TLS Intelligence`,
       description: `Review the SSL/TLS certificate security for ${domain}.`,
+      images: ['/og-image.png']
     }
   };
 }

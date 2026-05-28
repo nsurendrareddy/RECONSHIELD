@@ -73,8 +73,14 @@ export async function generateMetadata({ params }) {
         description: intel.aiSummary,
         type: 'article',
         url: `https://reconshield.in/cve/${cveId.toLowerCase()}`,
+        images: [{ url: '/og-image.png', width: 1200, height: 630 }],
       },
-      twitter: { card: 'summary_large_image' }
+      twitter: { 
+        card: 'summary_large_image',
+        title: `${intel.id} - Vulnerability Intelligence`,
+        description: intel.aiSummary,
+        images: ['/og-image.png']
+      }
     };
   } catch (error) {
     return { title: 'CVE Error' };

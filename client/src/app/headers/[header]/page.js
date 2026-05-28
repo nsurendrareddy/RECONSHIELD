@@ -95,6 +95,13 @@ export async function generateMetadata({ params }) {
       title: `${intel.name} Security Header Profile`,
       description: `Complete guide on configuring ${intel.name} and implementing web security best practices.`,
       type: 'article',
+      images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${intel.name} Security Profile`,
+      description: `Complete guide on configuring ${intel.name}.`,
+      images: ['/og-image.png']
     }
   };
 }

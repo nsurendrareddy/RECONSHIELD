@@ -58,6 +58,7 @@ export async function generateMetadata({ params }) {
       card: 'summary_large_image',
       title: `Network Port Analysis: ${port}`,
       description: `Analyze the security implications of open port ${port}.`,
+      images: ['/og-image.png']
     }
   };
 }

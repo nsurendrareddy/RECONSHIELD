@@ -36,6 +36,7 @@ export async function generateMetadata({ params }) {
       card: 'summary_large_image',
       title: `${tool.name} | Free Cybersecurity Tool`,
       description: tool.desc,
+      images: ['/og-image.png']
     }
   };
 }
@@ -123,7 +124,7 @@ export function ToolPageContent({ toolId }) {
       <AuthorizedUseBanner />
       
       <div className="sr-only">
-        <h1>{tool.name}</h1>
+        <h2>{tool.name}</h2>
         <p>{tool.desc}</p>
       </div>
 

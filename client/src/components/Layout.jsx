@@ -95,7 +95,7 @@ export default function Layout({ children }) {
                 <div className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full animate-pulse ${theme === 'dark' ? 'bg-matrix-400' : 'bg-matrix-600'}`} />
               </div>
               <div className="hidden xs:block">
-                <h1 className="font-display text-lg font-bold tracking-wider">
+                <span className="font-display text-lg font-bold tracking-wider">
                   <span className={`${theme === 'dark' ? 'text-glow-green text-matrix-400' : 'text-matrix-600'}`}>analysis</span>
                   <span className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>SHIELD</span>
                 </h1>
@@ -171,7 +171,7 @@ export default function Layout({ children }) {
                   <Shield className="w-5 h-5 text-matrix-400" />
                 </div>
                 <div>
-                  <h1 className="font-display text-lg font-bold tracking-wider">
+                  <span className="font-display text-lg font-bold tracking-wider">
                     <span className="text-matrix-400">analysis</span><span className="text-white">SHIELD</span>
                   </h1>
                 </div>

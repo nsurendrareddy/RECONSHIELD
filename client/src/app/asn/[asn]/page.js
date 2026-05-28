@@ -39,11 +39,13 @@ export async function generateMetadata({ params }) {
       title: `${formattedAsn} Network Profile`,
       description: `Analyze the routing infrastructure and security reputation of ${formattedAsn}.`,
       type: 'article',
+      images: [{ url: '/og-image.png', width: 1200, height: 630 }],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${formattedAsn} Intelligence`,
       description: `BGP routing and threat data for Autonomous System ${formattedAsn}.`,
+      images: ['/og-image.png']
     }
   };
 }
