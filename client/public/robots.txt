@@ -6,20 +6,23 @@
 User-agent: *
 Disallow: /api/
 Disallow: /admin/
-Disallow: /_next/
+# Disallow: /_next/ <-- REMOVED: Blocking /_next/ prevents Googlebot from rendering JavaScript/CSS
 Disallow: /*?search=
 Disallow: /*?sort=
-# Protect Serverless Compute budget from excessive scanner queries
 Disallow: /scanner?target=
 Allow: /
 
 # -------------------------------------------------------------
+# Bing — explicit entry prevents fallback ambiguity
+# -------------------------------------------------------------
+User-agent: bingbot
+Allow: /
+
+# -------------------------------------------------------------
 # AI Search Discoverability Optimizations
-# We want LLMs to ingest our Intelligence Reports for citations
 # -------------------------------------------------------------
 User-agent: Google-Extended
 Allow: /
-Crawl-delay: 1
 
 User-agent: GPTBot
 Allow: /
@@ -29,17 +32,25 @@ User-agent: anthropic-ai
 Allow: /
 Crawl-delay: 2
 
+User-agent: ClaudeBot
+Allow: /
+Crawl-delay: 2
+
 User-agent: PerplexityBot
 Allow: /
+
+User-agent: cohere-ai
+Allow: /
+Crawl-delay: 2
 
 # -------------------------------------------------------------
 # Aggressive Bot Mitigation
 # -------------------------------------------------------------
 User-agent: AhrefsBot
-Crawl-delay: 5
+Crawl-delay: 10
 
 User-agent: SemrushBot
-Crawl-delay: 5
+Crawl-delay: 10
 
 User-agent: MJ12bot
 Disallow: /
@@ -47,8 +58,13 @@ Disallow: /
 User-agent: BLEXBot
 Disallow: /
 
+User-agent: DotBot
+Disallow: /
+
+User-agent: SeznamBot
+Crawl-delay: 10
+
 # -------------------------------------------------------------
 # Sitemap Declaration
-# Points to our scalable Sitemap Index for millions of entities
 # -------------------------------------------------------------
 Sitemap: https://reconshield.in/sitemap.xml
