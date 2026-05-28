@@ -27,8 +27,6 @@ const ChatbotPanel = dynamic(() => import('@/components/ChatbotPanel'), { ssr: f
 import ErrorBoundary from '@/components/ErrorBoundary'
 import { useState } from 'react'
 import { AlertTriangle, RotateCcw, Crosshair, Clock } from 'lucide-react'
-import SOCBackground from '@/components/SOCBackground'
-import Hero from '@/components/Hero'
 
 export default function DashboardClient() {
   const { status, scanData, error, progress, scanProgress, domain, scan, reset } = useScan()
@@ -36,12 +34,8 @@ export default function DashboardClient() {
   const isLimitReached = status === 'limit-reached'
 
   return (
-    <div className="relative min-h-screen">
-      <SOCBackground />
-      
-      {status === 'idle' && <Hero />}
-      
-      <div className={status === 'idle' ? 'max-w-4xl mx-auto' : ''}>
+    <div className="relative w-full">
+      <div className={status === 'idle' ? 'w-full' : 'mt-8 mb-12'}>
         <SearchBar onScan={scan} isScanning={status === 'scanning'} />
       </div>
 
