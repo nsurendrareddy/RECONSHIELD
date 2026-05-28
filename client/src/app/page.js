@@ -1,6 +1,7 @@
-import HomeSections from '@/components/HomeSections';
+import dynamic from 'next/dynamic';
+const HomeSections = dynamic(() => import('@/components/HomeSections'));
+const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'));
 import DynamicDashboardClient from '@/components/DynamicDashboardClient';
-import NewsletterForm from '@/components/NewsletterForm';
 import { client, homepageBlogQuery } from '@/utils/sanity';
 import { Shield, Target, Activity, Cpu, MapPin, Network, Search, Terminal, Lock, Layers, Mail, CheckCircle2, Globe, Database, ArrowRight } from 'lucide-react';
 import Link from 'next/link';

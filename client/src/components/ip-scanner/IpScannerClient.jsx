@@ -244,7 +244,7 @@ export default function IpScannerClient() {
               </div>
             </div>
             <div className="h-[300px] w-full bg-surface-950 grayscale hover:grayscale-0 transition-all duration-700">
-              {typeof window !== 'undefined' && MapContainer && (
+              {MapContainer && (
                 <MapContainer 
                   center={[39.03, -77.5]} 
                   zoom={2} 

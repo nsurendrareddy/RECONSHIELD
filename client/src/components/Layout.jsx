@@ -5,7 +5,7 @@ import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Gl
 import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 
-import NewsletterForm from '@/components/NewsletterForm'
+const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
 
