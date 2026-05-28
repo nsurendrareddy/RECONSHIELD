@@ -98,7 +98,7 @@ export default function Layout({ children }) {
                 <span className="font-display text-lg font-bold tracking-wider">
                   <span className={`${theme === 'dark' ? 'text-glow-green text-matrix-400' : 'text-matrix-600'}`}>analysis</span>
                   <span className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>SHIELD</span>
-                </h1>
+                </span>
                 <div className="flex items-center gap-1.5 -mt-0.5">
                   <Activity className={`w-2.5 h-2.5 ${theme === 'dark' ? 'text-matrix-400/60' : 'text-matrix-600/60'}`} />
                   <p className={`text-[9px] tracking-[0.25em] uppercase font-mono ${theme === 'dark' ? 'text-matrix-400/60' : 'text-matrix-600/60'}`}>Cyber Intelligence</p>
@@ -173,7 +173,7 @@ export default function Layout({ children }) {
                 <div>
                   <span className="font-display text-lg font-bold tracking-wider">
                     <span className="text-matrix-400">analysis</span><span className="text-white">SHIELD</span>
-                  </h1>
+                  </span>
                 </div>
               </Link>
               <button onClick={() => setIsMenuOpen(false)} className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-400 hover:text-white transition-colors" aria-label="Close menu">
