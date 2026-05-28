@@ -221,7 +221,7 @@ export default function SslCheckerPage() {
             <ul>
               <li><strong>E-Commerce Compliance:</strong> PCI-DSS compliance strictly requires robust encryption. Payment gateways use our <strong>HTTPS security checker</strong> to ensure customer data cannot be intercepted.</li>
               <li><strong>SEO Rankings:</strong> Google directly uses HTTPS as a ranking signal. A broken certificate or weak TLS configuration can plummet a domain's organic search visibility.</li>
-              <li><strong>Infrastructure Audits:</strong> Penetration testers analyze cipher suites during the infrastructure visibility phase to find weak cryptographic implementations for exploitation.</li>
+              <li><strong>Infrastructure Audits:</strong> Security researchers and administrators analyze cipher suites during the infrastructure visibility phase to detect and resolve weak cryptographic implementations.</li>
             </ul>
 
             <h2 className="text-3xl font-display font-bold text-white mt-16 mb-8">Step-by-Step Tutorial: Analyzing an SSL Certificate</h2>

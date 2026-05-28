@@ -265,6 +265,105 @@ export default async function Page() {
         </div>
       </section>
 
+      {/* 8.5 Security Education & Compliance Guidelines (AdSense Word Count & E-E-A-T Boost) */}
+      <section className="py-24 bg-[#05080f] border-t border-b border-white/5">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-6 uppercase tracking-wider">
+              Educational Security Auditing & Compliance Guide
+            </h2>
+            <p className="text-gray-400 max-w-3xl mx-auto text-lg leading-relaxed">
+              Understand the methodologies, ethics, and requirements of passive asset identification. 
+              Learn how ReconShield supports compliance verification and security posture hygiene.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 text-gray-300 leading-relaxed font-sans text-sm">
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 uppercase tracking-wide flex items-center gap-2">
+                  <span className="w-1.5 h-6 bg-matrix-400 rounded-full" />
+                  1. Passive Security Analysis Methodology
+                </h3>
+                <p className="mb-4">
+                  In modern cybersecurity operations, mapping internet-facing assets is divided into active and passive methodologies. Active scanning involves transmitting probe requests, diagnostic scripts, or security payloads directly to a target server to analyze its live responses. While highly informative, unauthorized active testing is illegal and can lead to operational failures.
+                </p>
+                <p>
+                  <strong>Passive Analysis</strong>, by contrast, relies strictly on public open-source records, global DNS registries, certificate transparency logs, and cached threat intelligence databases. ReconShield utilizes a 100% passive engine, ensuring that all scans perform zero packet transmissions to target servers. This approach respects network boundaries and allows IT professionals to discover configuration exposure safely.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 uppercase tracking-wide flex items-center gap-2">
+                  <span className="w-1.5 h-6 bg-matrix-400 rounded-full" />
+                  2. Aligning Assets with Compliance Frameworks
+                </h3>
+                <p className="mb-4">
+                  Maintaining strong asset visibility is essential for satisfying standard security and regulatory frameworks. Outdated ciphers or exposed services immediately trigger audits for major compliance regimes:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-400">
+                  <li>
+                    <strong>GDPR (Article 32):</strong> Mandates organizational and technical measures to guarantee a level of security appropriate to data risks, including encryption verification via SSL/TLS checker utilities.
+                  </li>
+                  <li>
+                    <strong>PCI-DSS (Requirement 11.2):</strong> Dictates regular internal and external network vulnerability assessments to prevent unauthorized access to cardholder data environments.
+                  </li>
+                  <li>
+                    <strong>HIPAA (Security Rule):</strong> Requires regular administrative and technical reviews of transmission protocols to ensure patient confidentiality across health networks.
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="space-y-8">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 uppercase tracking-wide flex items-center gap-2">
+                  <span className="w-1.5 h-6 bg-matrix-400 rounded-full" />
+                  3. Ethical Framework & Responsible Disclosures
+                </h3>
+                <p className="mb-4">
+                  ReconShield is committed to defensive security and educational excellence. We believe that public security awareness builds a stronger, more resilient internet. However, security tools must be handled responsibly.
+                </p>
+                <p>
+                  We operate under a strict <strong>Responsible Disclosure Policy</strong>. If you discover a critical configuration exposure using our analyzers on assets you do not own, you must notify the asset administrators privately and allow adequate mitigation time before releasing any findings. We strongly oppose unauthorized publication of vulnerable configuration targets.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-bold text-white mb-3 uppercase tracking-wide flex items-center gap-2">
+                  <span className="w-1.5 h-6 bg-matrix-400 rounded-full" />
+                  4. Infrastructure Hardening Roadmap
+                </h3>
+                <p className="mb-4">
+                  If your ReconShield diagnostics reveal configuration risks, follow this structured remediation roadmap to secure your digital footprint:
+                </p>
+                <ol className="list-decimal pl-6 space-y-3 text-gray-400">
+                  <li>
+                    <strong>Analyze HTTP Headers:</strong> Ensure that security headers like Content-Security-Policy (CSP), HSTS, and X-Content-Type-Options are present to mitigate script injection.
+                  </li>
+                  <li>
+                    <strong>Harden Transport Cryptography:</strong> Disable outdated SSL versions and weak ciphers (e.g., Triple DES or RC4) in your Nginx or Apache server configurations, allowing only TLS 1.2 or TLS 1.3.
+                  </li>
+                  <li>
+                    <strong>Verify DNS Protections:</strong> Establish valid SPF, DKIM, and DMARC configurations to guarantee email validation and prevent phishing domains from spoofing your brand.
+                  </li>
+                  <li>
+                    <strong>Audit Firewalls:</strong> Restrict ports associated with administration (e.g., SSH on port 22 or RDP on port 3389) or databases (port 3306) to corporate VPN tunnels only.
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-16 bg-surface-900 border border-white/5 rounded-3xl p-8 text-center max-w-4xl mx-auto">
+            <h4 className="text-lg font-bold text-white mb-3 uppercase tracking-widest">Educational Focus Commitment</h4>
+            <p className="text-gray-400 text-sm leading-relaxed mb-0">
+              ReconShield does not host, distribute, or support exploitation tools, brute-forcing scripts, or cracking applications. Our utility suite is designed to serve as an academic security resource for university students, network administrators, compliance auditors, and cybersecurity engineers looking to analyze their public footprint.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* 6. Cybersecurity News & Research */}
       {posts && posts.length > 0 && (
         <section className="py-24 bg-[#05080f] border-t border-white/5">

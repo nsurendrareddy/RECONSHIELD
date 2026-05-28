@@ -2,14 +2,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { Terminal as TerminalIcon, X, Maximize2, Minimize2, Cpu, Shield, Zap } from 'lucide-react'
 
-const HACK_STEPS = [
-  { cmd: 'nmap -sV --script=vuln {target}', output: 'Scanning target services and configuration risks...', delay: 1000 },
-  { cmd: 'gobuster dir -u https://{target} -w common.txt', output: 'Finding hidden directories...', delay: 1500 },
-  { cmd: 'ffuf -u https://{target}/FUZZ -w subdomains.txt', output: 'Fuzzing for subdomains...', delay: 1200 },
-  { cmd: 'sqlmap -u "https://{target}/api/user?id=1" --batch', output: 'Testing for SQL injection points...', delay: 2000 },
-  { cmd: 'subfinder -d {target}', output: 'Enumerating subdomains via passive sources...', delay: 1000 },
-  { cmd: 'nuclei -u https://{target} -t cves/', output: 'Running template-based vulnerability scans...', delay: 1800 },
-  { cmd: 'whois {target}', output: 'Fetching domain registration intelligence...', delay: 800 },
+const AUDIT_STEPS = [
+  { cmd: 'curl -I https://{target}', output: 'Retrieving HTTP response headers and security directives...', delay: 1000 },
+  { cmd: 'dig +short ns {target}', output: 'Resolving nameservers and routing infrastructure...', delay: 1200 },
+  { cmd: 'dig +short txt {target}', output: 'Querying SPF/DMARC email validation policies...', delay: 1200 },
+  { cmd: 'openssl s_client -connect {target}:443 -brief', output: 'Auditing SSL/TLS handshake configurations & ciphers...', delay: 1800 },
+  { cmd: 'whois {target}', output: 'Fetching passive domain registration intelligence...', delay: 800 },
 ]
 
 export default function HackTargetModal({ isOpen, onClose, target }) {
@@ -19,8 +17,8 @@ export default function HackTargetModal({ isOpen, onClose, target }) {
   const scrollRef = useRef(null)
 
   useEffect(() => {
-    if (isOpen && currentStep < HACK_STEPS.length) {
-      const step = HACK_STEPS[currentStep]
+    if (isOpen && currentStep < AUDIT_STEPS.length) {
+      const step = AUDIT_STEPS[currentStep]
       
       // Type out command
       const cmdLine = { type: 'cmd', text: `root@reconshield:~# ${step.cmd.replace('{target}', target)}` }
@@ -67,7 +65,7 @@ export default function HackTargetModal({ isOpen, onClose, target }) {
             <div className="h-4 w-px bg-white/10 mx-1" />
             <div className="flex items-center gap-2 text-[10px] font-mono text-gray-500 uppercase tracking-widest">
               <TerminalIcon className="w-3 h-3" />
-              Educational Pentest Lab — {target}
+              Educational Configuration Audit — {target}
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -87,7 +85,7 @@ export default function HackTargetModal({ isOpen, onClose, target }) {
               {line.text}
             </div>
           ))}
-          {currentStep < HACK_STEPS.length ? (
+          {currentStep < AUDIT_STEPS.length ? (
             <div className="text-matrix-400 animate-pulse mt-2 flex items-center gap-2">
               <span className="w-2 h-4 bg-matrix-400" />
               <span className="text-[10px] uppercase tracking-tighter opacity-50">Processing next sequence...</span>
@@ -99,7 +97,7 @@ export default function HackTargetModal({ isOpen, onClose, target }) {
                 <h4 className="text-sm font-bold text-white uppercase tracking-wider">Simulation Complete</h4>
               </div>
               <p className="text-xs text-gray-400 leading-relaxed">
-                You've just witnessed a simulated infrastructure visibility workflow. Real-world hacking involves these same tools but requires professional authorization.
+                You have reviewed a simulated infrastructure configuration audit. Real-world security analysis utilizes standard command-line tools to verify compliance and security posture under strict authorization.
               </p>
               <div className="mt-4 flex gap-3">
                 <button onClick={onClose} className="px-4 py-2 bg-matrix-400/10 border border-matrix-400/20 text-matrix-400 rounded-lg text-[10px] uppercase font-bold hover:bg-matrix-400/20 transition-all">

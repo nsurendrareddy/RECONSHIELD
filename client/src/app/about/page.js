@@ -111,7 +111,9 @@ export default function About() {
       <section className="mb-24">
         <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold mb-8">// ABOUT THE AUTHOR & FOUNDER</h2>
         <div className="space-y-6 text-[14px] text-gray-400 leading-[1.8] font-mono max-w-3xl">
-          <div className="mb-6">[PHOTO]</div>
+          <div className="mb-6 w-24 h-24 rounded-2xl overflow-hidden border border-matrix-500/20 bg-surface-900 flex items-center justify-center">
+            <Users className="w-10 h-10 text-matrix-400" />
+          </div>
           <p>
             Surendra Reddy is a cybersecurity researcher, OSINT analyst, and founder of ReconShield, a free passive infrastructure visibility and cybersecurity intelligence platform focused on defensive security research and infrastructure visibility.
           </p>

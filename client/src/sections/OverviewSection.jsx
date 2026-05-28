@@ -35,7 +35,7 @@ export default function OverviewSection({ data, scanId }) {
                 className="flex items-center gap-2 px-3 py-1.5 bg-matrix-400/10 border border-matrix-400/30 text-matrix-400 rounded-lg text-[11px] font-mono hover:bg-matrix-400/20 transition-all group/btn"
               >
                 <Terminal className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
-                SIMULATE_RECON()
+                RUN_DIAGNOSTICS()
               </button>
             </div>
           </div>
