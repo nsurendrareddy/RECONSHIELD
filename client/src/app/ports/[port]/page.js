@@ -2,6 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import { Server, Shield, Activity, ChevronRight, Lock, AlertTriangle, Globe } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import RelatedPorts from '@/components/entities/RelatedPorts';
+import PortSecurityContext from '@/components/entities/PortSecurityContext';
 
 export const revalidate = 86400;
 
@@ -96,7 +99,7 @@ export default async function PortIntelligencePage({ params }) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
-          { '@type': 'ListItem', position: 2, name: 'Port Intelligence', item: 'https://reconshield.in/tools/port-scanner' },
+          { '@type': 'ListItem', position: 2, name: 'Ports Database', item: 'https://reconshield.in/ports' },
           { '@type': 'ListItem', position: 3, name: `Port ${port}`, item: `https://reconshield.in/ports/${port}` },
         ],
       },
@@ -134,15 +137,10 @@ export default async function PortIntelligencePage({ params }) {
         <div className="max-w-5xl mx-auto px-4 pt-8">
           
           {/* Breadcrumb Navigation */}
-          <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
-              <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
-              <li><ChevronRight className="w-3 h-3" /></li>
-              <li><Link href="/tools/port-scanner" className="hover:text-[#00ff88] transition-colors">Port Scanner</Link></li>
-              <li><ChevronRight className="w-3 h-3" /></li>
-              <li className="text-[#00ff88]">Port {port}</li>
-            </ol>
-          </nav>
+          <Breadcrumbs crumbs={[
+            { label: 'Ports Database', href: '/ports' },
+            { label: `Port ${port}`, href: `/ports/${port}` }
+          ]} />
 
           {/* Header */}
           <div className="border-b border-white/10 pb-8 mb-10">
@@ -217,6 +215,8 @@ export default async function PortIntelligencePage({ params }) {
                   <li><strong>Virtual Private Networks:</strong> Require administrators to connect via an encrypted VPN tunnel before attempting to route traffic to port {port}.</li>
                   <li><strong>Continuous Monitoring:</strong> Utilize active internet-facing assets management tools to alert the Security Operations Center (SOC) if port {port} is unexpectedly exposed.</li>
                 </ul>
+
+                <PortSecurityContext port={port} />
               </div>
 
               {/* Dynamic FAQs */}
@@ -263,6 +263,8 @@ export default async function PortIntelligencePage({ params }) {
                     </div>
                   </Link>
                 </div>
+                
+                <RelatedPorts currentPort={port} />
               </div>
             </div>
 

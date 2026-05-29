@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Network, Server, Lock, Shield, ChevronRight } from 'lucide-react';
+import Breadcrumbs from '@/components/Breadcrumbs';
 
 export const metadata = {
   title: 'Autonomous System Number (ASN) Intelligence Hub - ReconShield',
@@ -14,13 +15,9 @@ export default function AsnHubPage() {
   return (
     <div className="min-h-screen pb-24 font-sans bg-[#06090e]">
       <div className="max-w-[1200px] mx-auto px-6 pt-12">
-        <nav aria-label="Breadcrumb" className="mb-8">
-          <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
-            <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
-            <li><ChevronRight className="w-3 h-3" /></li>
-            <li className="text-[#00ff88]">ASN Hub</li>
-          </ol>
-        </nav>
+        <Breadcrumbs crumbs={[
+          { label: 'ASN Hub', href: '/asn' }
+        ]} />
 
         <header className="mb-12 border-b border-[#1a2332] pb-10">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">ASN Intelligence Hub</h1>

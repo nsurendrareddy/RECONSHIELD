@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { Network, Shield, AlertTriangle, ChevronRight, Globe, Server } from 'lucide-react';
 import { notFound, redirect } from 'next/navigation';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import RelatedASNs from '@/components/RelatedASNs';
 
 // ASN Validation (e.g. AS15169 or 15169)
 const isValidASN = (asn) => {
@@ -84,7 +86,7 @@ export default async function AsnIntelligencePage({ params }) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
-          { '@type': 'ListItem', position: 2, name: 'IP Intelligence', item: 'https://reconshield.in/tools/ip-lookup' },
+          { '@type': 'ListItem', position: 2, name: 'ASN Hub', item: 'https://reconshield.in/asn' },
           { '@type': 'ListItem', position: 3, name: formattedAsn, item: `https://reconshield.in/asn/${formattedAsn}` },
         ],
       },
@@ -121,15 +123,10 @@ export default async function AsnIntelligencePage({ params }) {
       <div className="min-h-screen pb-20">
         <div className="max-w-5xl mx-auto px-4 pt-8">
           
-          <nav aria-label="Breadcrumb" className="mb-8">
-            <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
-              <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
-              <li><ChevronRight className="w-3 h-3" /></li>
-              <li><Link href="/tools/ip-lookup" className="hover:text-[#00ff88] transition-colors">Intelligence</Link></li>
-              <li><ChevronRight className="w-3 h-3" /></li>
-              <li className="text-[#00ff88]">{formattedAsn}</li>
-            </ol>
-          </nav>
+          <Breadcrumbs crumbs={[
+            { label: 'ASN Hub', href: '/asn' },
+            { label: formattedAsn, href: `/asn/${formattedAsn}` }
+          ]} />
 
           <div className="border-b border-white/10 pb-8 mb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-500/10 border border-purple-500/20 rounded-full text-[10px] font-mono text-purple-400 mb-4 uppercase tracking-widest">
@@ -257,6 +254,7 @@ export default async function AsnIntelligencePage({ params }) {
                     </div>
                   </Link>
                 </div>
+                <RelatedASNs currentAsn={formattedAsn} />
               </div>
             </div>
 
