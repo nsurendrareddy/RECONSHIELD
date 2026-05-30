@@ -14,6 +14,7 @@ const nextConfig = {
     optimizePackageImports: ['recharts', 'lucide-react'],
     nextScriptWorkers: true,
   },
+  trailingSlash: false,
   async headers() {
     return [
       {

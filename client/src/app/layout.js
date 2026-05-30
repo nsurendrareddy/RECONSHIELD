@@ -138,20 +138,24 @@ export default function RootLayout({ children }) {
               {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
+                "@id": "https://reconshield.in/#website",
                 "name": "ReconShield",
                 "alternateName": ["analysis Shield"],
                 "url": "https://reconshield.in",
+                "publisher": { "@id": "https://reconshield.in/#organization" }
               },
               {
                 "@context": "https://schema.org",
                 "@type": "Organization",
+                "@id": "https://reconshield.in/#organization",
                 "name": "ReconShield",
                 "url": "https://reconshield.in",
                 "logo": "https://reconshield.in/og-image.png",
                 "sameAs": [
                   "https://github.com/nsurendrareddy",
                   "https://linkedin.com/in/surendrareddy3"
-                ]
+                ],
+                "knowsAbout": ["Cybersecurity", "Threat Intelligence", "OSINT", "Vulnerability Management"]
               },
 
               {

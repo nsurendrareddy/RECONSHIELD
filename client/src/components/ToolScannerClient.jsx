@@ -26,7 +26,6 @@ const SECTION_MAP = {
   'port-scanner': { section: PortSection, icon: Activity, dataKey: 'ports' },
   'http-headers': { section: HeadersSection, icon: Layers, dataKey: 'headers' },
   'email-security': { section: DnsSection, icon: Shield, dataKey: 'dns' },
-  'threat-intelligence': { section: IpSection, icon: Activity, dataKey: 'ip' },
   'tech-detector': { section: TechSection, icon: Layers, dataKey: 'tech' },
   'vulnerability-scanner': { section: VulnSimSection, icon: Shield, dataKey: 'vuln_sim' },
 };

@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { ChevronRight, Share2 } from 'lucide-react';
 import { TOOLS, TOOL_SEO_CONTENT } from '@/utils/toolsData';
 import AuthorizedUseBanner from '@/components/AuthorizedUseBanner';
+import { SemanticToolLinks } from '@/components/SemanticLinks';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
@@ -191,6 +192,7 @@ export function ToolPageContent({ toolId }) {
               </div>
             )}
             
+            <SemanticToolLinks currentTool={toolId} />
             <ShareButtons toolId={toolId} toolName={tool.name} />
           </div>
 
