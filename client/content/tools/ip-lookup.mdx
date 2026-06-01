@@ -1,7 +1,22 @@
 ## Technical Overview of IP Address Systems
-Every node participating in a public or private network requires a unique logical address to routing packets of data. The Internet Protocol (IP) represents the core layer-3 standard of the OSI model. Currently, two namespaces coexist: IPv4, utilizing 32-bit addressing (e.g., `192.0.2.1`), and IPv6, utilizing 128-bit hexadecimal addressing (e.g., `2001:db8::1`). Understanding how these addresses are geolocated and classified is fundamental to modern security operations and threat intelligence workflows.
+Every node participating in a public or private network requires a unique logical address to route packets of data. The Internet Protocol (IP) represents the core layer-3 standard of the OSI model. Currently, two namespaces coexist: IPv4, utilizing 32-bit addressing (e.g., `192.0.2.1`), and IPv6, utilizing 128-bit hexadecimal addressing (e.g., `2001:db8::1`). Understanding how these addresses are geolocated and classified is fundamental to modern security operations and threat intelligence workflows.
 
 An IP lookup tool queries registries maintained by Regional Internet Registries (RIRs) such as ARIN, RIPE, APNIC, LACNIC, and AFRINIC. These queries return crucial routing details, network boundaries, and organizational ownership data.
+
+```text
++----------------------+      1. DNS / WHOIS Query      +-------------------------+
+|  Incident Responder  | -----------------------------> |  ReconShield Telemetry  |
+|  (Or Security Team)  | <----------------------------- |  Intelligence Platform  |
++----------------------+    4. Enriched Threat Report   +-------------------------+
+                                                                     |
+                                             2. Regional             | 3. Reputation Checks
+                                             Registries              v
+                                        +-----------------------------------------+
+                                        |  ARIN / RIPE / APNIC Database Query     |
+                                        |  Honeypot Sensor Networks               |
+                                        |  AbuseIPDB & Spamhaus Telemetry Feed   |
+                                        +-----------------------------------------+
+```
 
 ## RFC 1918 Private Address Space vs Public Routing
 A common security audit configuration mistake is confusing public internet addresses with private ranges. Under RFC 1918, specific blocks are reserved for internal, non-routable local area networks (LANs):
@@ -10,6 +25,8 @@ A common security audit configuration mistake is confusing public internet addre
 - **192.168.0.0/16:** (Range: `192.168.0.0` to `192.168.255.255`)
 
 Additionally, loopback addresses (such as `127.0.0.1` or `::1` under RFC 4291) are designated for local host communications. Since private networks are not routable on the public WAN, public threat intelligence feeds will never contain reputational logs or geolocation coordinates for them. If a diagnostic tool scans a private IP, it must trigger a local handler or not found response, as public registration data does not exist.
+
+> **Analyst Tip:** When analyzing network ingress logs, look for RFC 1918 source IPs in your internet-facing perimeter rules. If found, this indicates either a spoofing attack or a NAT/routing configuration error on your edge gateway.
 
 ## Geolocation Precision and Accuracy Limits
 Geolocation databases map IP addresses to physical coordinates using BGP routing tables, ISP server registries, and latency measurements. Security analysts must understand the inherent limitations of this data:
@@ -31,8 +48,8 @@ Security Operations Centers (SOC) leverage IP lookup data to detect and contain 
 
 ## Best Practices for Incident Responders
 When analyzing log alerts containing external IP addresses:
-- Verify if the IP belongs to a major cloud provider (e.g., AWS, GCP, Azure). Many organizations host legitimate integrations there, but actors also deploy temporary attack proxies on cheap server instances.
-- Correlate the ASN (Autonomous System Number) to verify owner reputation. Peer connections with reputable telecom entities carry lower risk profiles than bulletproof hosting providers.
-- Implement conditional access policies that prompt or block high-risk ASNs, Tor nodes, and residential proxy ranges at the identity provider (IdP) layer.
+1. Verify if the IP belongs to a major cloud provider (e.g., AWS, GCP, Azure). Many organizations host legitimate integrations there, but actors also deploy temporary attack proxies on cheap server instances.
+2. Correlate the ASN (Autonomous System Number) to verify owner reputation. Peer connections with reputable telecom entities carry lower risk profiles than bulletproof hosting providers.
+3. Implement conditional access policies that prompt or block high-risk ASNs, Tor nodes, and residential proxy ranges at the identity provider (IdP) layer.
 
 {{CTABlock}}

@@ -412,6 +412,97 @@ export default async function Page() {
           </div>
         </section>
 
+        {/* ================= CYBERSECURITY INTELLIGENCE LEARNING CENTER (Knowledge Hubs) ================= */}
+        <section className="py-24 bg-[#0a0d14] border-b border-white/5">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="mb-12">
+              <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// RECONSHIELD KNOWLEDGE HUBS</span>
+              <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Cybersecurity Intelligence & Learning Centers</h3>
+              <p className="text-gray-400 text-sm mt-2 max-w-2xl">
+                Explore our curated topical authority clusters, mapping protocols, vulnerabilities, OSINT intelligence networks, and defensive recommendations.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  title: "Threat Intelligence & Attribution",
+                  desc: "Analyze attacker indicators of compromise (IoCs), tracking known threat actors, and mapping infrastructure footprints across regional ASNs.",
+                  links: [
+                    { title: "BGP Hijacking & Route Leaks Guide", url: "/blog/securing-bgp-route-leaks" },
+                    { title: "IP Telemetry Analysis Node", url: "/tools/ip-lookup" }
+                  ]
+                },
+                {
+                  title: "Passive OSINT & Reconnaissance",
+                  desc: "Learn passive network mapping methodologies using cached certificate logs, public registries, and passive DNS records without triggering security alerts.",
+                  links: [
+                    { title: "Anatomy of Passive OSINT Guide", url: "/blog/anatomy-of-passive-osint" },
+                    { title: "Global WHOIS Registrar Directory", url: "/tools/whois" }
+                  ]
+                },
+                {
+                  title: "Attack Surface Management",
+                  desc: "Discover and catalog internet-facing assets, exposed services, administrative panels, and database ports before adversary exploitation.",
+                  links: [
+                    { title: "Shadow IT Discovery & Telemetry", url: "/blog/shadow-it-exposed-ports" },
+                    { title: "Network Port Exposure Scanner", url: "/tools/port-scanner" }
+                  ]
+                },
+                {
+                  title: "DNS Security & Routing Verification",
+                  desc: "Understand secure domain resolution protocols including DNSSEC validation, SPF mechanisms, DMARC configurations, and registrar locking standards.",
+                  links: [
+                    { title: "DMARC Phishing Authentication Blueprint", url: "/blog/spf-dkim-dmarc-blueprint" },
+                    { title: "Recursive Anycast DNS Diagnostics", url: "/tools/dns-lookup" }
+                  ]
+                },
+                {
+                  title: "SSL/TLS Cryptographic Analysis",
+                  desc: "Audit public transport layer keys, active cipher suite vulnerabilities (e.g. logjam, sweet32), TLS protocols validation, and certificate chain expiry.",
+                  links: [
+                    { title: "Cryptographic Regulatory Compliance Guide", url: "/blog/ssl-tls-regulatory-compliance" },
+                    { title: "Automated SSL/TLS Certificate Auditor", url: "/tools/ssl-checker" }
+                  ]
+                },
+                {
+                  title: "Vulnerability Intelligence & CVEs",
+                  desc: "Track software flaw disclosures, parsing Common Vulnerability Scoring System (CVSS v3/v4) indicators, and analyzing EPSS exploit probability rankings.",
+                  links: [
+                    { title: "OWASP Top 10 Web Headers Hardening", url: "/blog/owasp-http-headers-hardening" },
+                    { title: "Passive Vulnerability Analysis Suite", url: "/tools/vulnerability-scanner" }
+                  ]
+                }
+              ].map((hub, idx) => (
+                <div key={idx} className="bg-surface-900 border border-white/5 rounded-2xl p-6 flex flex-col justify-between hover:border-matrix-400/30 transition-all duration-300">
+                  <div>
+                    <h4 className="text-white text-base font-bold mb-2 uppercase tracking-wide">{hub.title}</h4>
+                    <p className="text-gray-400 text-xs leading-relaxed mb-6">{hub.desc}</p>
+                  </div>
+                  <div className="space-y-2 border-t border-white/5 pt-4">
+                    {hub.links.map((link, lidx) => (
+                      <Link key={lidx} href={link.url} className="text-xs text-matrix-400 hover:text-white transition-colors flex items-center gap-1">
+                        <span>→</span> <span>{link.title}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Glossary / Entity Linking Panel */}
+            <div className="mt-8 p-6 rounded-2xl bg-surface-900/30 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="font-mono text-xs">
+                <span className="text-[#00ff88] uppercase font-bold tracking-wider">// Semantic Entity Relations: </span>
+                <span className="text-gray-500">Autonomous Systems (ASN) • IP Footprints • DNSSEC Keys • TLS Cipher Suites • CVE Metadata • Port Scan Telemetry</span>
+              </div>
+              <Link href="/tools" className="text-xs font-mono text-matrix-400 hover:underline uppercase tracking-wider shrink-0">
+                Launch Research Centers →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* ================= E-E-A-T AUTHOR & EDITORIAL TRUST SIGNALS ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
