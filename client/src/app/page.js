@@ -274,6 +274,97 @@ export default async function Page() {
           </div>
         </section>
 
+        {/* ================= CATEGORY DIRECTIVES ================= */}
+        <section className="py-24 bg-[#0a0d14] border-b border-white/5">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="flex items-center justify-between mb-12">
+              <div>
+                <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// CATEGORY ARCHIVES</span>
+                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Research Directives</h3>
+              </div>
+              <Link href="/blog" className="hidden sm:inline-flex items-center gap-1.5 font-mono text-[11px] text-[#00ff88] hover:text-white uppercase tracking-widest transition-colors">
+                All Directives <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {[
+                { name: "Threat Intelligence", icon: Target, slug: "threat-intelligence", color: "text-red-400" },
+                { name: "OSINT & Analysis", icon: Search, slug: "osint-analysis", color: "text-matrix-400" },
+                { name: "Web Security", icon: Shield, slug: "web-security", color: "text-blue-400" },
+                { name: "AI Cybersecurity", icon: Cpu, slug: "ai-cybersecurity", color: "text-purple-400" },
+                { name: "Vulnerability Research", icon: AlertTriangle, slug: "vulnerability-research", color: "text-orange-400" },
+                { name: "Internet-Facing Assets", icon: Network, slug: "internet-facing-assets", color: "text-cyan-400" }
+              ].map((cat, idx) => {
+                const Icon = cat.icon;
+                return (
+                  <Link href={`/blog?category=${encodeURIComponent(cat.name)}`} key={idx} className="p-5 rounded-2xl bg-surface-900 border border-white/5 hover:border-matrix-400/30 transition-all duration-300 group flex flex-col items-center text-center">
+                    <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform border border-white/5">
+                      <Icon className={`w-5 h-5 ${cat.color}`} />
+                    </div>
+                    <span className="text-[11px] font-mono font-bold text-white group-hover:text-matrix-400 transition-colors leading-tight">{cat.name.toUpperCase()}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* ================= LATEST EDITORIAL GUIDES ================= */}
+        <section className="py-24 bg-[#05080f] border-b border-white/5">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="flex items-center gap-4 mb-12">
+              <div>
+                <span className="font-mono text-xs text-gray-500 uppercase tracking-widest">// RECENT BRIEFINGS</span>
+                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Vulnerability Writeups & OSINT Guides</h3>
+              </div>
+              <div className="h-px flex-1 bg-white/5" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {secondaryArticles.map((post) => (
+                <Link href={`/blog/${post.slug?.current || post.slug}`} key={post._id} className="group flex flex-col bg-surface-900 border border-white/5 hover:border-matrix-400/30 transition-all duration-300 rounded-2xl overflow-hidden shadow-lg">
+                  <div className="relative aspect-video w-full bg-surface-950 overflow-hidden border-b border-white/5">
+                    {post.mainImage ? (
+                      <Image
+                        src={urlFor(post.mainImage).width(360).height(200).fit('crop').auto('format').url()}
+                        alt={post.title}
+                        fill
+                        className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-surface-950 to-surface-900 flex items-center justify-center">
+                        <BookOpen className="w-10 h-10 text-matrix-400/10" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6 flex flex-col flex-1">
+                    <span className="font-mono text-[9px] tracking-[2px] uppercase text-[#00ff88] mb-3">
+                      {post.categories?.[0]?.title || 'INTEL'}
+                    </span>
+                    <h4 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-matrix-400 transition-colors line-clamp-2">
+                      {post.title}
+                    </h4>
+                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-2 mb-6">
+                      {post.excerpt}
+                    </p>
+                    <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5 font-mono text-[9px] text-gray-500 uppercase">
+                      <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {calculateReadTime(post)} MIN READ</span>
+                      <span>{formatDate(post.publishedAt || post._createdAt)}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            
+            <div className="flex justify-center mt-12">
+              <Link href="/blog" className="px-6 py-3 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 hover:border-matrix-400/30 rounded-xl text-xs font-mono uppercase tracking-widest transition-all">
+                Access Entire Archives
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* ================= INTERACTIVE COMPLIANCE AUDITING (Passive Tool) ================= */}
         <section className="py-24 bg-[#0a0d14] relative border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
@@ -313,97 +404,6 @@ export default async function Page() {
                 <AlertTriangle className="w-4 h-4 shrink-0" />
                 Defensive Auditing Notice: ReconShield provides passive assessments under authorized security guidelines.
               </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= CATEGORY DIRECTIVES ================= */}
-        <section className="py-24 bg-[#05080f] border-b border-white/5">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="flex items-center justify-between mb-12">
-              <div>
-                <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// CATEGORY ARCHIVES</span>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Research Directives</h3>
-              </div>
-              <Link href="/blog" className="hidden sm:inline-flex items-center gap-1.5 font-mono text-[11px] text-[#00ff88] hover:text-white uppercase tracking-widest transition-colors">
-                All Directives <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {[
-                { name: "Threat Intelligence", icon: Target, slug: "threat-intelligence", color: "text-red-400" },
-                { name: "OSINT & Analysis", icon: Search, slug: "osint-analysis", color: "text-matrix-400" },
-                { name: "Web Security", icon: Shield, slug: "web-security", color: "text-blue-400" },
-                { name: "AI Cybersecurity", icon: Cpu, slug: "ai-cybersecurity", color: "text-purple-400" },
-                { name: "Vulnerability Research", icon: AlertTriangle, slug: "vulnerability-research", color: "text-orange-400" },
-                { name: "Internet-Facing Assets", icon: Network, slug: "internet-facing-assets", color: "text-cyan-400" }
-              ].map((cat, idx) => {
-                const Icon = cat.icon;
-                return (
-                  <Link href={`/blog?category=${encodeURIComponent(cat.name)}`} key={idx} className="p-5 rounded-2xl bg-surface-900 border border-white/5 hover:border-matrix-400/30 transition-all duration-300 group flex flex-col items-center text-center">
-                    <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform border border-white/5">
-                      <Icon className={`w-5 h-5 ${cat.color}`} />
-                    </div>
-                    <span className="text-[11px] font-mono font-bold text-white group-hover:text-matrix-400 transition-colors leading-tight">{cat.name.toUpperCase()}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ================= LATEST EDITORIAL GUIDES ================= */}
-        <section className="py-24 bg-[#0a0d14] border-b border-white/5">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="flex items-center gap-4 mb-12">
-              <div>
-                <span className="font-mono text-xs text-gray-500 uppercase tracking-widest">// RECENT BRIEFINGS</span>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Vulnerability Writeups & OSINT Guides</h3>
-              </div>
-              <div className="h-px flex-1 bg-white/5" />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {secondaryArticles.map((post) => (
-                <Link href={`/blog/${post.slug?.current || post.slug}`} key={post._id} className="group flex flex-col bg-surface-900 border border-white/5 hover:border-matrix-400/30 transition-all duration-300 rounded-2xl overflow-hidden shadow-lg">
-                  <div className="relative aspect-video w-full bg-surface-950 overflow-hidden border-b border-white/5">
-                    {post.mainImage ? (
-                      <Image
-                        src={urlFor(post.mainImage).width(360).height(200).fit('crop').auto('format').url()}
-                        alt={post.title}
-                        fill
-                        className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-surface-950 to-surface-900 flex items-center justify-center">
-                        <BookOpen className="w-10 h-10 text-matrix-400/10" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6 flex flex-col flex-1">
-                    <span className="font-mono text-[9px] tracking-[2px] uppercase text-[#00ff88] mb-3">
-                      {post.categories?.[0]?.title || 'INTEL'}
-                    </span>
-                    <h4 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-matrix-400 transition-colors line-clamp-2">
-                      {post.title}
-                    </h4>
-                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-2 mb-6">
-                      {post.excerpt}
-                    </p>
-                    <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5 font-mono text-[9px] text-gray-500 uppercase">
-                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {calculateReadTime(post)} MIN READ</span>
-                      <span>{formatDate(post.publishedAt || post._createdAt)}</span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-            
-            <div className="flex justify-center mt-12">
-              <Link href="/blog" className="px-6 py-3 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 hover:border-matrix-400/30 rounded-xl text-xs font-mono uppercase tracking-widest transition-all">
-                Access Entire Archives
-              </Link>
             </div>
           </div>
         </section>

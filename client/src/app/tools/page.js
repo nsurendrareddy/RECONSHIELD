@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 
 import { generateBaseMetadata } from '@/utils/metadata';
+import ToolsHubClient from '@/components/ToolsHubClient';
 
 export const metadata = generateBaseMetadata({
   title: "Cybersecurity Tools & Threat Intelligence Platform",
@@ -106,119 +107,8 @@ export default function ToolsHubPage() {
       <div className="bg-[#05080f]">
         
         <div className="max-w-[1200px] mx-auto px-6 py-20 space-y-32">
-
-          {/* 2. Infrastructure Intelligence Tools */}
-          <section>
-            <div className="flex items-center gap-4 mb-10">
-              <h2 className="text-2xl font-display font-bold text-white flex items-center gap-3">
-                <Network className="w-6 h-6 text-cyan-400" /> Infrastructure Intelligence
-              </h2>
-              <div className="h-px flex-1 bg-gradient-to-r from-cyan-500/20 to-transparent" />
-            </div>
-            <p className="text-gray-400 mb-8 max-w-3xl">
-              Map the underlying fabric of any target. Our <strong>infrastructure intelligence tools</strong> query global registries and DNS resolvers to unmask the technologies and policies powering a domain.
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Link href="/tools/dns-lookup" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all overflow-hidden">
-                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-20 transition-opacity">
-                  <Network className="w-32 h-32 text-cyan-500" />
-                </div>
-                <Network className="w-8 h-8 text-cyan-400 mb-6 relative z-10" />
-                <h3 className="text-xl font-bold text-white mb-3 relative z-10">DNS Lookup & Security Analysis</h3>
-                <p className="text-sm text-gray-400 leading-relaxed relative z-10">
-                  audit A, MX, TXT, and NS records instantly. Perform a deep security audit on your SPF and DMARC configurations to prevent domain spoofing and phishing.
-                </p>
-              </Link>
-
-              <Link href="/tools/whois" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-teal-500/30 transition-all overflow-hidden">
-                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-20 transition-opacity">
-                  <Globe className="w-32 h-32 text-teal-500" />
-                </div>
-                <Globe className="w-8 h-8 text-teal-400 mb-6 relative z-10" />
-                <h3 className="text-xl font-bold text-white mb-3 relative z-10">WHOIS Domain Intelligence</h3>
-                <p className="text-sm text-gray-400 leading-relaxed relative z-10">
-                  Query modern RDAP endpoints to discover domain ownership, registration dates, and perform infrastructure attribution analysis for threat hunting.
-                </p>
-              </Link>
-            </div>
-          </section>
-
-          {/* 3. Web Security Analysis Tools */}
-          <section>
-            <div className="flex items-center gap-4 mb-10">
-              <h2 className="text-2xl font-display font-bold text-white flex items-center gap-3">
-                <Shield className="w-6 h-6 text-blue-400" /> Web Security Analysis
-              </h2>
-              <div className="h-px flex-1 bg-gradient-to-r from-blue-500/20 to-transparent" />
-            </div>
-            <p className="text-gray-400 mb-8 max-w-3xl">
-              Harden your web applications against modern cyber attacks. These <strong>website security tools</strong> simulate how an unauthorized actor views your frontend defenses.
-            </p>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <Link href="/tools/vulnerability-scanner" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-blue-500/30 transition-all">
-                <Shield className="w-8 h-8 text-blue-400 mb-6" />
-                <h3 className="text-lg font-bold text-white mb-3">Exposure Assessment Tool</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  Perform a passive analysis to detect OWASP misconfigurations and configuration risks on your web server.
-                </p>
-              </Link>
-
-              <Link href="/tools/http-headers" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-amber-500/30 transition-all">
-                <Lock className="w-8 h-8 text-amber-500 mb-6" />
-                <h3 className="text-lg font-bold text-white mb-3">Security Headers Auditor</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  Check your Content-Security-Policy (CSP) and HSTS headers to definitively defeat XSS and clickjacking attacks.
-                </p>
-              </Link>
-
-              <Link href="/tools/ssl-checker" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all">
-                <Key className="w-8 h-8 text-purple-400 mb-6" />
-                <h3 className="text-lg font-bold text-white mb-3">SSL/TLS Crypto Checker</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  Analyze cryptographic trust chains, monitor certificate expiration, and eliminate weak, vulnerable cipher suites.
-                </p>
-              </Link>
-            </div>
-          </section>
-
-          {/* 4. Infrastructure Visibility Tools */}
-          <section>
-            <div className="flex items-center gap-4 mb-10">
-              <h2 className="text-2xl font-display font-bold text-white flex items-center gap-3">
-                <Target className="w-6 h-6 text-red-500" /> Infrastructure Visibility Tools
-              </h2>
-              <div className="h-px flex-1 bg-gradient-to-r from-red-500/20 to-transparent" />
-            </div>
-            <p className="text-gray-400 mb-8 max-w-3xl">
-              Discover what you are exposing to the world. Use our <strong>OSINT tools</strong> to find shadow IT, forgotten endpoints, and vulnerable network services.
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Link href="/tools/ip-lookup" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-matrix-500/30 transition-all overflow-hidden">
-                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-20 transition-opacity">
-                  <Search className="w-32 h-32 text-matrix-500" />
-                </div>
-                <Search className="w-8 h-8 text-matrix-400 mb-6 relative z-10" />
-                <h3 className="text-xl font-bold text-white mb-3 relative z-10">IP Reputation Intelligence</h3>
-                <p className="text-sm text-gray-400 leading-relaxed relative z-10">
-                  Cross-reference IP addresses against global threat feeds. Perform an ASN lookup, identify proxy/VPN usage, and assess IP risk scores.
-                </p>
-              </Link>
-
-              <Link href="/tools/port-scanner" className="relative group p-8 rounded-3xl bg-surface-900 border border-white/5 hover:border-red-500/30 transition-all overflow-hidden">
-                <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-20 transition-opacity">
-                  <Terminal className="w-32 h-32 text-red-500" />
-                </div>
-                <Terminal className="w-8 h-8 text-red-500 mb-6 relative z-10" />
-                <h3 className="text-xl font-bold text-white mb-3 relative z-10">TCP Port Analyzer</h3>
-                <p className="text-sm text-gray-400 leading-relaxed relative z-10">
-                  Analyze open TCP ports to map your network boundaries. Identify inadvertently exposed services like SSH, RDP, or databases instantly.
-                </p>
-              </Link>
-            </div>
-          </section>
+          {/* Dynamic Tools Hub Client (Includes Search, Category Filtering, and Responsive Grid) */}
+          <ToolsHubClient />
 
           {/* 5. OSINT Education & 6. AI Intelligence */}
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 border-t border-white/5 pt-20">
