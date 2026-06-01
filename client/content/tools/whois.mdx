@@ -1,0 +1,51 @@
+## What is a WHOIS Lookup?
+WHOIS is a query and response protocol designed to database domain registration ownership, technical contacts, and expiration dates. Standardized under RFC 3912, WHOIS allows clients to search databases containing information about registered internet resources, such as domain names, IP address blocks, and autonomous systems.
+
+As domain registration expanded, the Internet Corporation for Assigned Names and Numbers (ICANN) mandated that registration records remain accessible to the public to resolve copyright disputes, verify entity identities, and assist law enforcement.
+
+## The Hierarchy of Domain Registration
+Domain registration follows a strict administrative hierarchy:
+1. **ICANN:** The global oversight body coordinating the internet's naming systems.
+2. **Registry:** The organization managing the master database for a specific Top-Level Domain (e.g., Verisign manages `.com`, Public Interest Registry manages `.org`).
+3. **Registrar:** A commercial business accredited by ICANN to sell domain names (e.g., GoDaddy, Namecheap, Cloudflare Registrar).
+4. **Registrant:** The individual or organization that purchases and owns the rights to use the domain name.
+
+A WHOIS query queries both registry and registrar databases to compile a complete record of ownership.
+
+## Key Fields in a WHOIS Record
+A standard WHOIS response contains several critical parameters:
+- **Registry Domain ID:** The unique global identifier for the domain within the TLD registry.
+- **Registrar Name:** The registrar through which the domain was purchased.
+- **Creation and Expiration Dates:** The timestamps when the domain was first registered and when the registration lease ends.
+- **Registrant Contact Info:** The physical address, email, and phone number of the domain owner.
+- **Name Servers:** The DNS servers delegating traffic for the domain.
+- **Domain Status Codes (EPP):** Indicators showing the active status and locks applied to the domain.
+
+## EPP Domain Status Codes and Registry Locks
+The Extensible Provisioning Protocol (EPP) status codes tell security analysts whether a domain is locked or active. Security administrators should verify their domains have these codes enabled to prevent DNS hijacking and domain theft:
+- `clientTransferProhibited`: The registrar blocks unauthorized transfer requests. This is the standard lock.
+- `serverTransferProhibited`: The registry itself blocks transfers. This is a high-security lock requiring manual out-of-band verification.
+- `clientDeleteProhibited` and `clientUpdateProhibited`: Restrict unauthorized deletions or DNS nameserver updates.
+
+## GDPR and WHOIS Privacy Redaction
+Prior to the implementation of the General Data Protection Regulation (GDPR) in 2018, WHOIS records displayed the full name, email, and phone numbers of domain registrants publicly, creating a target for spammers, scrapers, and social engineers.
+
+Under modern privacy regulations, registrars redact personal data from public WHOIS feeds by default:
+- **Redacted Information:** Personal names, emails, and address fields are replaced with strings like "REDACTED FOR PRIVACY".
+- **Privacy Protection Services:** Many registrars route communication through anonymized proxy addresses (e.g., `contact@privacyproxy.com`) to allow legitimate contact without revealing identity.
+- **RDAP (Registration Data Access Protocol):** The modern successor to WHOIS. RDAP supports JSON formatting, encrypted transmission over HTTPS, and authenticated access control, allowing registries to grant law enforcement or security researchers access to unredacted data under strict criteria.
+
+## Using WHOIS in Threat Hunting and Forensics
+Security operations teams leverage WHOIS data to identify, investigate, and block malicious campaigns:
+- **Investigating Phishing Domains:** Threat actors register domains mimicking banks or SaaS products. Analysts check the domain creation date; domains registered within the last 24–48 hours carrying suspicious keywords are flagged for automated blocking.
+- **Correlating Actor Infrastructure:** By analyzing technical registrant emails, shared nameservers, or specific phone numbers across historic databases, analysts map out entire networks of domains controlled by the same threat actor.
+- **Detecting DGAs (Domain Generation Algorithms):** Malware utilizes DGAs to generate dozens of domains daily for Command & Control (C2) servers. WHOIS helps trace whether these domains were registered in bulk.
+
+## Best Practices for Domain Owners
+To secure your organization's digital assets:
+- Always purchase domains using a corporate email group (e.g., `domains@company.com`) rather than an individual's personal address to prevent loss of access.
+- Enable multi-factor authentication (2FA) on all registrar accounts.
+- Restrict registration edits by applying registrar-level locks.
+- Configure domains to automatically renew to prevent expiration hijack attempts by domain squatters.
+
+{{CTABlock}}

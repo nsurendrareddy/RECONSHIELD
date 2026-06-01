@@ -229,9 +229,10 @@ export default async function AuthorProfilePage({ params }) {
                         <Image 
                           src={urlFor(post.mainImage).width(361).height(203).fit('crop').auto('format').url()} 
                           alt={post.title}
-                          fill
+                          width={361}
+                          height={203}
                           sizes="(max-width: 768px) 100vw, 361px"
-                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          className="object-cover w-full h-auto group-hover:scale-105 transition-transform duration-700"
                         />
                       )}
                     </div>

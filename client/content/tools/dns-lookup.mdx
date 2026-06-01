@@ -1,0 +1,47 @@
+## The Architecture of the Domain Name System (DNS)
+The Domain Name System (DNS) is the foundational naming database of the internet, acting as a distributed directory that translates human-readable hostnames (e.g., `example.com`) into machine-routable IP addresses (e.g., `93.184.216.34` or `2606:2800:220:1:248:1893:25c8:1946`). 
+
+DNS resolution follows a hierarchical lookup chain:
+1. **Recursive Resolver:** The client queries the ISP resolver or a public DNS service (like Cloudflare's `1.1.1.1` or Google's `8.8.8.8`).
+2. **Root Hint Servers:** Resolvers fetch the appropriate Top-Level Domain (TLD) server from the global root zone.
+3. **TLD Nameservers:** Resolvers query registry-operated nameservers (such as `.com` or `.org`) to find the authoritative name servers.
+4. **Authoritative Nameservers:** The host's DNS provider returns the final record mapping for the requested domain name.
+
+## Essential DNS Record Types Explained
+Understanding DNS records is critical for web operations, server configuration, and incident response:
+- **A Records:** Map a hostname to a 32-bit IPv4 address.
+- **AAAA Records:** Map a hostname to a 128-bit IPv6 address.
+- **CNAME Records:** Map a hostname to another hostname (alias), commonly used to delegate services to CDNs or external cloud providers.
+- **MX (Mail Exchanger) Records:** Specify the mail server hosts responsible for receiving inbound emails, including priority values.
+- **TXT Records:** Contain arbitrary textual data, extensively used for ownership verification, Google Workspace registration, and email security headers.
+- **NS (Name Server) Records:** Define the authoritative nameservers responsible for delegating zones.
+- **CAA (Certification Authority Authorization) Records:** Specify which Certificate Authorities (CAs) are allowed to issue SSL/TLS certificates for the domain.
+
+## DNSSEC: Preventing Cache Poisoning and Spoofing
+Standard DNS queries transit the network in plaintext via UDP port 53, leaving them vulnerable to spoofing, interception, and cache poisoning. Cache poisoning involves injecting fraudulent routing records into a resolver's cache, redirecting unsuspecting users to phishing clones.
+
+**DNSSEC (Domain Name System Security Extensions)** mitigates this vulnerability by cryptographically signing DNS records. Using public-key cryptography:
+- Authorized nameservers sign records using their private keys.
+- Resolvers validate signatures using a trusted chain of public keys starting from the Root Zone Anchor.
+- This ensures that DNS answers cannot be modified or forged during transit.
+
+## Email Authentication and Anti-Phishing Protocols
+A large percentage of modern cyber attacks rely on phishing. Because the SMTP protocol allows email senders to forge the `From:` header, domain owners must publish DNS TXT records to authenticate legitimate email traffic:
+- **SPF (Sender Policy Framework):** Identifies the authorized IP addresses and mail servers allowed to send email for the domain. Note that SPF is limited to a maximum of 10 recursive DNS lookups; exceeding this limit invalides the SPF protection, exposing the domain to spoofing.
+- **DKIM (DomainKeys Identified Mail):** Adds a cryptographic digital signature to email headers, proving that the email originated from the domain and was not altered in transit.
+- **DMARC (Domain-based Message Authentication, Reporting, and Conformance):** Sets a policy instructing receiving mail servers on how to handle emails that fail SPF or DKIM checks (e.g., `p=none` for monitoring, `p=quarantine` to flag as spam, or `p=reject` to drop the email).
+
+## Threat Actor Abuse of DNS (MITRE ATT&CK Mapping)
+Threat actors actively target DNS configurations during operations:
+- **Subdomain Takeovers:** If a CNAME record points to an expired AWS, GitHub, or Azure resource, an actor can claim the third-party resource and serve malicious code under the victim's sub-domain, bypassing browser security controls.
+- **T1071.004 - Command and Control (DNS Tunneling):** Actors encapsulate command payloads inside standard DNS queries (using TXT or CNAME records) to tunnel data past corporate firewalls and intrusion detection systems, as port 53 traffic is rarely blocked.
+- **DNS Hijacking:** Modifying registration details at the domain registrar to change authoritative nameservers, redirecting all web and email traffic.
+
+## Best Practices for Domain Security
+To secure your DNS infrastructure:
+- Enable two-factor authentication (2FA) and IP whitelisting at your domain registrar.
+- Implement registry locks (e.g., `clientTransferProhibited`, `clientDeleteProhibited`) to block unauthorized domain transfers.
+- Conduct regular audits to prune stale CNAME, A, and TXT records.
+- Set up DMARC monitoring to analyze failed authentication reports and verify all legitimate email flows.
+
+{{CTABlock}}

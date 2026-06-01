@@ -1,10 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import fs from 'fs';
+import path from 'path';
 import { ChevronRight, Share2 } from 'lucide-react';
 import { TOOLS, TOOL_SEO_CONTENT } from '@/utils/toolsData';
 import AuthorizedUseBanner from '@/components/AuthorizedUseBanner';
 import { SemanticToolLinks } from '@/components/SemanticLinks';
+import { renderMarkdown } from '@/utils/markdownRenderer';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
@@ -72,6 +75,18 @@ export function ToolPageContent({ toolId }) {
   const tool = TOOLS.find(t => t.id === toolId) || TOOLS.find(t => t.id === 'dns-lookup');
   const seoConfig = TOOL_SEO_CONTENT[toolId] || TOOL_SEO_CONTENT['dns-lookup'];
   
+  // Load educational guide from content/tools directory if available
+  let parsedMdxContent = null;
+  try {
+    const filePath = path.join(process.cwd(), 'content', 'tools', `${toolId}.mdx`);
+    if (fs.existsSync(filePath)) {
+      const mdxRaw = fs.readFileSync(filePath, 'utf8');
+      parsedMdxContent = renderMarkdown(mdxRaw);
+    }
+  } catch (err) {
+    console.warn(`Error reading MDX file for ${toolId}:`, err);
+  }
+
   // Get 3 related tools based on category
   const relatedTools = TOOLS.filter(t => t.category === tool.category && t.id !== toolId).slice(0, 3);
   if (relatedTools.length < 3) {
@@ -175,7 +190,7 @@ export function ToolPageContent({ toolId }) {
           
           {/* Left Column: Rich Content */}
           <div className="lg:col-span-2">
-            {seoConfig.content}
+            {parsedMdxContent || seoConfig.content}
             
             {/* Tool FAQs */}
             {seoConfig.faqs && seoConfig.faqs.length > 0 && (

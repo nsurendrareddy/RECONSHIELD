@@ -111,10 +111,11 @@ export default function BlogClient({ posts }) {
                     <Image 
                       src={urlFor(featuredPost.mainImage).width(800).height(450).fit('crop').auto('format').url()} 
                       alt={featuredPost.title}
-                      fill
+                      width={800}
+                      height={450}
                       priority
                       sizes="(max-width: 1024px) 100vw, 800px"
-                      className="object-cover group-hover:scale-[1.01] transition-transform duration-700"
+                      className="object-cover w-full h-auto group-hover:scale-[1.01] transition-transform duration-700"
                     />
                   ) : (
                     <div className="absolute inset-0 bg-gradient-to-br from-matrix-900/10 via-surface-950 to-surface-900 flex items-center justify-center">
@@ -256,11 +257,12 @@ export default function BlogClient({ posts }) {
                     <div className="relative aspect-video w-full overflow-hidden bg-surface-950 border-b border-white/5">
                       {post.mainImage ? (
                         <Image 
-                          src={urlFor(post.mainImage).width(360).height(200).fit('crop').auto('format').url()} 
+                          src={urlFor(post.mainImage).width(360).height(202).fit('crop').auto('format').url()} 
                           alt={post.title}
-                          fill
+                          width={360}
+                          height={202}
                           sizes="(max-width: 768px) 100vw, 360px"
-                          className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
+                          className="object-cover w-full h-auto group-hover:scale-[1.02] transition-transform duration-700"
                         />
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-surface-950 to-surface-900 flex items-center justify-center">

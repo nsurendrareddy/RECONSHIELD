@@ -37,12 +37,12 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const port = resolvedParams?.port;
 
-  if (!port || !isValidPort(port)) {
-    return { title: 'Invalid Port Number' };
+  if (!port || !isValidPort(port) || !PORT_DATA[port]) {
+    return { title: 'Port Not Found' };
   }
 
   const portDetails = PORT_DATA[port];
-  const serviceName = portDetails ? portDetails.service : 'Unknown Service';
+  const serviceName = portDetails.service;
 
   return {
     title: `Port ${port} (${serviceName}) Security Analysis & configuration risks`,
@@ -71,11 +71,11 @@ export default async function PortIntelligencePage({ params }) {
     const resolvedParams = await params;
     const port = resolvedParams?.port;
 
-    if (!port || !isValidPort(port)) {
+    if (!port || !isValidPort(port) || !PORT_DATA[port]) {
       notFound();
     }
 
-    const portDetails = PORT_DATA[port] || { service: 'Custom/Dynamic Service', risk: 'Variable', protocol: 'TCP/UDP' };
+    const portDetails = PORT_DATA[port];
 
   // Schema Generation
   const schemaJson = {

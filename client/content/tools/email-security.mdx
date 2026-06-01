@@ -1,0 +1,40 @@
+## Email Protocol Vulnerabilities and Authentication
+The Simple Mail Transfer Protocol (SMTP), designed in the early days of the internet, lacks built-in sender verification mechanisms. When SMTP was created, it assumed all network nodes were trusted. Consequently, any sender can craft an email and specify any value in the `From:` header, enabling email spoofing.
+
+Today, email spoofing is the primary delivery mechanism for phishing, malware distribution, and Business Email Compromise (BEC) campaigns. To establish trust, three core DNS-based authentication protocols were designed: SPF, DKIM, and DMARC.
+
+## Sender Policy Framework (SPF)
+**Sender Policy Framework (SPF)** is a protocol defined in RFC 7208 that allows domain owners to publish a list of authorized IP addresses and mail servers allowed to send emails on behalf of their domain.
+- **How It Works:** When an email server receives a message claiming to originate from `example.com`, it queries the DNS TXT records for `example.com` to check the SPF policy. If the sending IP address is not listed, the email fails the SPF check.
+- **Syntax Breakdown:** A typical SPF record looks like: `v=spf1 ip4:192.0.2.1 include:_spf.google.com -all`
+  - `v=spf1`: Declares the SPF version.
+  - `ip4`: Explicitly authorizes a specific IPv4 address block.
+  - `include`: Authorizes a third-party email sender (such as Google Workspace or Microsoft 365) by importing their SPF records.
+  - `-all` (Fail): Instructs the receiver to reject any emails that do not match the authorized list. Alternatives include `~all` (SoftFail, which accepts the mail but flags it).
+- **The 10 DNS Lookup Limit:** To prevent denial-of-service attacks on DNS resolvers, the SPF specification dictates that evaluating an SPF record must not require more than **10 recursive DNS lookups**. If a domain includes many third-party services, it may exceed this limit, causing the SPF check to fail automatically. This can be resolved using "SPF flattening," which replaces domain includes with raw IP addresses.
+
+## DomainKeys Identified Mail (DKIM)
+While SPF verifies the sending server's IP address, it does not protect the email content from alteration in transit. **DomainKeys Identified Mail (DKIM)** (RFC 6376) addresses this by cryptographically signing email messages.
+- **Key Pairs:** The domain owner generates a public/private key pair. The private key remains secure on the outgoing mail server, while the public key is published in a DNS TXT record under a specific selector (e.g., `selector1._domainkey.example.com`).
+- **Signing Headers:** When an email is sent, the server calculates a cryptographic hash of the headers and body, signs it with the private key, and appends the signature to the email header.
+- **Verification:** The receiving server queries the public key from the sender's DNS and verifies the signature. If the signature matches, it proves that the email originated from the domain and was not tampered with during transit.
+
+## DMARC: Enforcing Policies and Reporting
+SPF and DKIM operate independently and have limitations. For example, SPF validates the sender address defined in the hidden envelope header (Return-Path), not the visible `From:` address that users see.
+
+**DMARC (Domain-based Message Authentication, Reporting, and Conformance)** (RFC 7489) binds SPF and DKIM together by enforcing **Domain Alignment**:
+- **Alignment:** DMARC requires that the domain in the visible `From:` header matches the domain verified by SPF and/or DKIM.
+- **Polices:** DMARC defines a policy for handling failed messages:
+  - `p=none`: Monitor failures but deliver the email (used during setup).
+  - `p=quarantine`: Send failed emails to the spam/junk folder.
+  - `p=reject`: Instruct receiving servers to drop failed emails immediately.
+- **Reporting:** DMARC instructs receivers to send daily XML reports detailing which IPs are sending emails on behalf of the domain, allowing administrators to audit their email sender network.
+
+## Implementing Secure Email Configurations
+To protect your domain reputation:
+- Publish an SPF record listing all legitimate email senders, ensuring it remains under the 10-lookup limit.
+- Configure DKIM signing on all outgoing mail servers and third-party SaaS integrations.
+- Set up a DMARC policy, starting at `p=none` with a reporting address (`rua=mailto:dmarc@example.com`), analyze the reports, resolve alignment issues, and escalate the policy to `p=reject`.
+- Implement inbound email filtering that checks SPF, DKIM, and DMARC flags to block spoofed external emails.
+
+{{CTABlock}}

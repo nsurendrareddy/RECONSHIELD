@@ -18,6 +18,8 @@ const extractAsnNumber = (asn) => {
   return match ? match[1] : null;
 };
 
+const KNOWN_ASNS = ['AS15169', 'AS13335', 'AS714', 'AS32934', 'AS16509'];
+
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const rawAsn = resolvedParams?.asn;
@@ -28,6 +30,10 @@ export async function generateMetadata({ params }) {
 
   const asnNum = extractAsnNumber(rawAsn);
   const formattedAsn = `AS${asnNum}`;
+
+  if (!KNOWN_ASNS.includes(formattedAsn)) {
+    return { title: 'ASN Not Found' };
+  }
 
   return {
     title: `${formattedAsn} Routing Details & IP Blocks`,
@@ -62,6 +68,10 @@ export default async function AsnIntelligencePage({ params }) {
 
   const asnNum = extractAsnNumber(rawAsn);
   const formattedAsn = `AS${asnNum}`;
+
+  if (!KNOWN_ASNS.includes(formattedAsn)) {
+    notFound();
+  }
 
   if (rawAsn !== formattedAsn) {
     redirect(`/asn/${formattedAsn}`);

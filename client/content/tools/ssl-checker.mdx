@@ -1,0 +1,42 @@
+## Transport Layer Security (TLS) vs Secure Sockets Layer (SSL)
+Transport Layer Security (TLS) and its predecessor, Secure Sockets Layer (SSL), are cryptographic protocols designed to provide secure, encrypted communications over a computer network. While the term "SSL" remains widely used in marketing and domain management, the SSL protocol itself is completely obsolete and has been deprecated due to major cryptographic vulnerabilities. Modern web communication relies on TLS 1.2 and TLS 1.3 to ensure data integrity and confidentiality.
+
+A secure SSL checker initiates a TLS handshake with a web server to retrieve and analyze the digital certificate, validating the trust chain, expiration dates, cryptographic algorithms, and protocol support.
+
+## Public Key Infrastructure (PKI) and Certificate Authorities (CAs)
+The security of TLS relies on **Public Key Infrastructure (PKI)**. Digital certificates verify the identity of a website, ensuring that a user is connecting to the real server and not an intercepting middleman.
+- **Certificate Authorities (CAs):** Trusted organizations (such as Let's Encrypt, DigiCert, or Sectigo) that verify domain ownership and issue signed certificates.
+- **Root Store:** Web browsers and operating systems maintain a pre-installed database of trusted Root CA certificates.
+- **Intermediate Certificates:** CAs issue certificates from intermediate servers rather than their offline root keys. Servers must send the full intermediate certificate chain during the TLS handshake to allow browsers to build a valid trust path back to the Root CA.
+
+## The TLS Handshake and Cipher Negotiations
+When a client establishes an HTTPS connection, it performs a TLS handshake:
+1. **Client Hello:** The browser sends supported TLS versions, cipher suites, and a random string.
+2. **Server Hello:** The server responds with the selected TLS version, chosen cipher suite, server random string, and its digital certificate.
+3. **Authentication:** The client verifies the certificate against its trusted root store.
+4. **Key Exchange:** The parties generate a shared symmetric key (e.g., via Diffie-Hellman Ephemeral) to encrypt all subsequent session traffic.
+
+A **Cipher Suite** is a package of cryptographic algorithms defining how the connection will be authenticated, encrypted, and checked for integrity. An example of a modern, secure cipher suite is `TLS_AES_256_GCM_SHA384` (used in TLS 1.3), which utilizes AES-256 in Galois/Counter Mode (GCM) for authenticated encryption.
+
+## Critical TLS Vulnerabilities and Deprecated Protocols
+Security audits often flag servers that support legacy protocols or weak configuration parameters. Over the years, serious attacks have compromised older cryptographic implementations:
+- **POODLE (Padding Oracle On Downgraded Legacy Encryption):** Exploited weaknesses in the padding of SSLv3, allowing actors to decrypt secure cookies. This forced the complete retirement of SSLv3.
+- **BEAST (Browser Exploit Against SSL/TLS):** Targeted TLS 1.0 block ciphers, allowing attackers to steal session tokens.
+- **ROBOT (Return of Bleichenbacher's Oracle Threat):** Revived classic padding attacks on RSA key exchanges, enabling attackers to decrypt traffic or sign payloads.
+- **Logjam and FREAK:** Exploited servers that supported weak export-grade cryptography, allowing attackers to force down the encryption strength to a level they could brute-force.
+
+For these reasons, the Internet Engineering Task Force (IETF) officially deprecated TLS 1.0 and TLS 1.1 in RFC 8996. PCI-DSS compliance standards require disabling these versions to protect payment card data.
+
+## Forward Secrecy and Cryptographic Strength
+Modern security standards require **Perfect Forward Secrecy (PFS)**. PFS ensures that if a server's private key is compromised in the future, past encrypted sessions captured by passive eavesdroppers cannot be decrypted.
+- **Ephemeral Key Exchanges:** Algorithms like ECDHE (Elliptic Curve Diffie-Hellman Ephemeral) generate unique, disposable session keys for every connection.
+- **AEAD Ciphers:** Authenticated Encryption with Associated Data (AEAD) ciphers (such as AES-GCM or ChaCha20-Poly1305) provide both encryption and authentication in a single, high-performance step, preventing padding oracle attacks.
+
+## Best Practices for Secure TLS Configurations
+To achieve an A+ security rating and comply with compliance guidelines:
+- **Enforce TLS 1.2 and TLS 1.3:** Disable all legacy support for SSLv2, SSLv3, TLS 1.0, and TLS 1.1.
+- **Disable Weak Ciphers:** Remove support for ciphers using RC4, 3DES, or anonymous DH keys. Prioritize ECDHE and AEAD cipher suites.
+- **Configure HSTS:** Implement HTTP Strict Transport Security with a long max-age and the `preload` directive to force browser connections to remain secure.
+- **Set Up Certificate Monitoring:** Use automated SSL checking tools to alert administrators 30 days before certificate expiration to prevent operational downtime.
+
+{{CTABlock}}

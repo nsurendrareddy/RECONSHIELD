@@ -13,12 +13,13 @@ const ptComponents = {
       return (
         <div className="relative w-full aspect-video my-8 rounded-lg overflow-hidden border border-[#1a2332]">
           <Image
-            src={urlFor(value).width(800).auto('format').url()}
+            src={urlFor(value).width(800).height(450).fit('crop').auto('format').url()}
             alt={value.alt || 'Article Image'}
-            fill
+            width={800}
+            height={450}
             sizes="(max-width: 800px) 100vw, 800px"
             quality={75}
-            className="object-cover"
+            className="object-cover w-full h-auto"
           />
           {value.caption && (
             <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm p-2 text-[10px] font-mono text-gray-400 text-center">
@@ -128,14 +129,15 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
         <div className="relative w-full h-[280px] rounded-lg overflow-hidden border border-[#1a2332] mb-8">
           {post.mainImage && (
             <Image
-              src={urlFor(post.mainImage).width(1440).auto('format').url()}
+              src={urlFor(post.mainImage).width(1440).height(500).fit('crop').auto('format').url()}
               alt={post.title}
-              fill
+              width={1440}
+              height={500}
               priority
               fetchPriority="high"
               sizes="(max-width: 1440px) 100vw, 1440px"
               quality={75}
-              className="object-cover"
+              className="object-cover w-full h-auto"
             />
           )}
         </div>
@@ -225,12 +227,13 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
                       <div className="relative w-full aspect-video rounded border border-[#1a2332] overflow-hidden mb-2">
                         {p.mainImage && (
                           <Image
-                            src={urlFor(p.mainImage).width(240).auto('format').url()}
+                            src={urlFor(p.mainImage).width(240).height(135).fit('crop').auto('format').url()}
                             alt={p.title}
-                            fill
+                            width={240}
+                            height={135}
                             sizes="240px"
                             quality={75}
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="object-cover w-full h-auto group-hover:scale-105 transition-transform duration-500"
                           />
                         )}
                       </div>
@@ -310,10 +313,11 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
                     <Image 
                       src={urlFor(p.mainImage).width(361).height(361).fit('crop').auto('format').url()} 
                       alt={p.title}
-                      fill
+                      width={361}
+                      height={361}
                       sizes="(max-width: 768px) 100vw, 361px"
                       quality={70}
-                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="object-cover w-full h-auto group-hover:scale-105 transition-transform duration-700"
                     />
                   )}
                 </div>

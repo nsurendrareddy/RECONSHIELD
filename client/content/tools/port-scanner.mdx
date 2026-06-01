@@ -1,0 +1,40 @@
+## Principles of Network Port Scanning
+Port scanning is a network visibility technique used to identify active host interfaces, open communications paths, and running service versions. In TCP/IP networking, a port is a 16-bit logical identifier (ranging from 1 to 65535) that directs network traffic to specific software processes on a computer.
+
+A port scanner probes these endpoints by transmitting packets and analyzing the response, mapping which ports are listening, closed, or blocked by security firewalls.
+
+## Port Classifications and Assignments
+The Internet Assigned Numbers Authority (IANA) manages the global registry of port numbers, categorizing them into three core blocks:
+1. **Well-Known Ports (1–1023):** Reserved for core system processes and standard services. Examples include SSH (22), Telnet (23), SMTP (25), DNS (53), HTTP (80), and HTTPS (443).
+2. **Registered Ports (1024–49151):** Assigned to software vendors for specific database engines or applications. Examples include Microsoft SQL Server (1433), MySQL (3306), RDP (3389), PostgreSQL (5432), and Redis (6379).
+3. **Dynamic/Private Ports (49152–65535):** Not assigned to any service, reserved for ephemeral client-side connections during transport transactions.
+
+## Common Port Scan Types and Mechanics
+Security auditors utilize different scanning techniques based on performance, network configuration, and stealth requirements:
+- **TCP SYN Scan (Stealth Scan):** The scanner transmits a SYN packet. If the server replies with a SYN-ACK, the port is open; the scanner then immediately sends a RST packet to tear down the connection before the three-way handshake completes. This avoids logging on some older legacy systems.
+- **TCP Connect Scan:** The scanner completes the full three-way handshake (SYN, SYN-ACK, ACK). This is more reliable but is fully logged by the target host's operating system.
+- **UDP Scan:** UDP is a connectionless protocol. The scanner sends raw UDP packets. If no response is received, the port is assumed open or filtered; if the server returns an ICMP Destination Unreachable packet, the port is closed. UDP scans are slow because they rely on timeouts.
+
+## Understanding Port States
+A scanner classifies ports into specific states:
+- **Open:** The target host accepts incoming connections. A service is actively listening.
+- **Closed:** The host replies with a RST packet. No service is listening on this port.
+- **Filtered:** The scanner receives no response or an ICMP type 3 message, indicating a network firewall or security appliance blocked the probe before it reached the host.
+
+## The Security Risks of Exposing Ports
+Every open port increases the external attack surface of an organization. Common vulnerabilities include:
+- **Exposed Database Services:** Exposing port 3306 (MySQL) or 1433 (MSSQL) to the public WAN invites brute-force attacks and SQL injection exploits. Databases should only be accessible locally or via a secure VPN.
+- **Insecure Administration Protocols:** Telnet (23) and FTP (21) transit authentication credentials in cleartext, enabling network eavesdroppers to harvest administrator passwords.
+- **Remote Access Exposure:** Exposing Remote Desktop Protocol (RDP - 3389) or SSH (22) allows attackers to perform credential stuffing or deploy ransomware if zero-day vulnerabilities are discovered in the protocol implementations.
+
+## Mitigation and Defense Strategies
+To secure exposed network ports:
+- **Default Deny Firewall Posture:** Block all incoming traffic at the perimeter firewall, whitelisting only essential ports (such as 80 and 443 for web servers).
+- **Network Segmentation:** Place databases and application servers in separate private subnets with strict internal firewalls.
+- **Zero Trust Network Access (ZTNA):** Eliminate exposing administrative ports (like SSH or RDP) directly to the internet. Instead, enforce multi-factor authentication and require users to connect via an identity-aware proxy or VPN tunnel.
+- **Intrusion Prevention Systems (IPS):** Deploy firewall rules that detect and block IP addresses executing automated port scans.
+
+## Legal and Ethical Boundaries
+Port scanning third-party networks without explicit authorization is illegal in many jurisdictions and violates the terms of service of cloud providers. Organizations should only scan assets they own or have obtained written permission to audit. ReconShield promotes responsible security hygiene and authorized testing.
+
+{{CTABlock}}

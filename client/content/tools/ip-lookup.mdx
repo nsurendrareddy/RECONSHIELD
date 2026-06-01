@@ -1,0 +1,38 @@
+## Technical Overview of IP Address Systems
+Every node participating in a public or private network requires a unique logical address to routing packets of data. The Internet Protocol (IP) represents the core layer-3 standard of the OSI model. Currently, two namespaces coexist: IPv4, utilizing 32-bit addressing (e.g., `192.0.2.1`), and IPv6, utilizing 128-bit hexadecimal addressing (e.g., `2001:db8::1`). Understanding how these addresses are geolocated and classified is fundamental to modern security operations and threat intelligence workflows.
+
+An IP lookup tool queries registries maintained by Regional Internet Registries (RIRs) such as ARIN, RIPE, APNIC, LACNIC, and AFRINIC. These queries return crucial routing details, network boundaries, and organizational ownership data.
+
+## RFC 1918 Private Address Space vs Public Routing
+A common security audit configuration mistake is confusing public internet addresses with private ranges. Under RFC 1918, specific blocks are reserved for internal, non-routable local area networks (LANs):
+- **10.0.0.0/8:** (Range: `10.0.0.0` to `10.255.255.255`)
+- **172.16.0.0/12:** (Range: `172.16.0.0` to `172.31.255.255`)
+- **192.168.0.0/16:** (Range: `192.168.0.0` to `192.168.255.255`)
+
+Additionally, loopback addresses (such as `127.0.0.1` or `::1` under RFC 4291) are designated for local host communications. Since private networks are not routable on the public WAN, public threat intelligence feeds will never contain reputational logs or geolocation coordinates for them. If a diagnostic tool scans a private IP, it must trigger a local handler or not found response, as public registration data does not exist.
+
+## Geolocation Precision and Accuracy Limits
+Geolocation databases map IP addresses to physical coordinates using BGP routing tables, ISP server registries, and latency measurements. Security analysts must understand the inherent limitations of this data:
+- **Country and City Level Accuracy:** Geolocation databases are highly reliable at the country level (over 99% accuracy) and moderately reliable at the city level (80-90% accuracy).
+- **No Street-Level Coordinates:** Coordinates provided by IP lookups are general regional centroids (e.g., the center of a city or ZIP code) and must never be interpreted as precise physical street locations of an individual user.
+- **Dynamic DHCP Reassignments:** Consumer ISPs dynamically allocate IPs from a pool. A single IP address may represent a home router in one city on Tuesday and a mobile cellular node in another city by Friday.
+
+## IP Abuse Confidence Scores and Threat Intelligence
+A core component of network defense is assessing the risk score of inbound connections. Threat intelligence platforms compute an **Abuse Confidence Score** by compiling logs from distributed honeypots, firewall alert systems, and security information event management (SIEM) systems.
+- **Brute Force Scans:** Sensors track repetitive failed SSH (port 22), RDP (port 3389), or WinRM attempts from specific IPs.
+- **Spam and Phishing Feeds:** Mail servers report IPs sending unauthorized bulk mail, validating credentials against SPF, DKIM, and DMARC parameters.
+- **Botnet Command & Control (C2):** Compromised nodes communicating with known malicious command networks are flagged instantly.
+
+## Defensive Security Workflows and MITRE ATT&CK Mapping
+Security Operations Centers (SOC) leverage IP lookup data to detect and contain adversary campaigns. Mapping external IPs to the MITRE ATT&CK framework reveals tactical intentions:
+- **T1090 - Proxy Infrastructure:** Threat actors utilize commercial VPNs, Tor exit nodes, and compromised residential proxies to obfuscate their origin. Identifying proxy flags during checkout or login prevents credential stuffing.
+- **T1584.005 - Botnets:** Volumetric DDoS and distributed scans originate from large botnets. Knowing if an IP is associated with known botnet patterns allows perimeter firewalls (WAF) to drop traffic automatically.
+- **T1190 - Exploit Public-Facing Application:** Automated vulnerability scanners probe ports 80/443 for unpatched software. Identifying scan origins helps block malicious vulnerability scanners before they find zero-day vulnerabilities.
+
+## Best Practices for Incident Responders
+When analyzing log alerts containing external IP addresses:
+- Verify if the IP belongs to a major cloud provider (e.g., AWS, GCP, Azure). Many organizations host legitimate integrations there, but actors also deploy temporary attack proxies on cheap server instances.
+- Correlate the ASN (Autonomous System Number) to verify owner reputation. Peer connections with reputable telecom entities carry lower risk profiles than bulletproof hosting providers.
+- Implement conditional access policies that prompt or block high-risk ASNs, Tor nodes, and residential proxy ranges at the identity provider (IdP) layer.
+
+{{CTABlock}}

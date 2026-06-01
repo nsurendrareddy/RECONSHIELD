@@ -40,11 +40,19 @@ async function getIpIntelligence(ip) {
 
 const isValidIP = (ip) => /^(\d{1,3}\.){3}\d{1,3}$/.test(ip) || /^([\da-fA-F]{1,4}:){7}[\da-fA-F]{1,4}$/.test(ip);
 
+const isPrivateIP = (ip) => {
+  const ipv4Private = /^(10\.\d{1,3}\.\d{1,3}\.\d{1,3})|(172\.(1[6-9]|2\d|3[0-1])\.\d{1,3}\.\d{1,3})|(192\.168\.\d{1,3}\.\d{1,3})|(127\.\d{1,3}\.\d{1,3}\.\d{1,3})$/.test(ip);
+  const ipv6Private = /^(::1|fe80:|fc00:|fd00:)/i.test(ip);
+  return ipv4Private || ipv6Private;
+};
+
+const KNOWN_IPS = ['8.8.8.8', '1.1.1.1', '9.9.9.9', '185.191.171.2', '194.165.16.2'];
+
 // Phase 10: Next.js SEO & OpenGraph Optimization
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const ip = resolvedParams?.ip;
-  if (!ip || !isValidIP(ip)) return { title: 'Invalid IP Address' };
+  if (!ip || !isValidIP(ip) || isPrivateIP(ip) || !KNOWN_IPS.includes(ip)) return { title: 'IP Not Found' };
 
   const intel = await getIpIntelligence(ip);
 
@@ -75,7 +83,7 @@ export default async function IpEntityPage({ params }) {
   const resolvedParams = await params;
   const ip = resolvedParams?.ip;
 
-  if (!ip || !isValidIP(ip)) notFound();
+  if (!ip || !isValidIP(ip) || isPrivateIP(ip) || !KNOWN_IPS.includes(ip)) notFound();
   
   const intel = await getIpIntelligence(ip);
 

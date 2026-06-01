@@ -1,0 +1,53 @@
+## The Role of HTTP Response Headers in Web Security
+When a client requests a web page, the server responds with the requested content (HTML, CSS, JS) accompanied by a set of HTTP response headers. These headers contain metadata describing the server software, content length, cache settings, and security policies. 
+
+HTTP security headers are specialized instructions that direct the browser to restrict certain behaviors, activate built-in defenses, and block malicious execution paths. Correctly configuring security headers is one of the most cost-effective and powerful steps for securing a web application against OWASP Top 10 vulnerabilities.
+
+## Content Security Policy (CSP) and XSS Mitigation
+Cross-Site Scripting (XSS) occurs when an attacker successfully injects malicious JavaScript into a trusted website, executing code in the session of visiting users. XSS can leak session cookies, hijack accounts, or redirect users to phishing sites.
+
+**Content Security Policy (CSP)** is an HTTP header (published as `Content-Security-Policy`) that allows site administrators to declare approved sources of content that the browser is allowed to load.
+- **Restricting Script Execution:** A strong CSP restricts script execution to trusted domains (e.g., `script-src 'self' https://apis.google.com`).
+- **Disallowing Inline Scripts:** By default, CSP disables inline scripts (e.g., `<script>alert(1)</script>`) and the `eval()` function, forcing developers to put code in static files.
+- **Reporting Violations:** CSP can operate in `Content-Security-Policy-Report-Only` mode, sending logs of policy violations to a reporting endpoint without blocking resource execution.
+
+A common implementation error is using a weak CSP that allows unsafe directives (like `'unsafe-inline'` or `'unsafe-eval'`), which negates many of the security benefits.
+
+## HTTP Strict Transport Security (HSTS)
+Even if a website implements HTTPS, attackers can execute SSL stripping or man-in-the-middle (MitM) attacks. If a user types `http://example.com`, the server redirects them to the secure `https://` URL. During this initial unencrypted HTTP transit, an attacker can intercept the request and spoof the redirect, keeping the user on an unencrypted HTTP link.
+
+**HTTP Strict Transport Security (HSTS)**, sent via the `Strict-Transport-Security` header, forces the browser to only connect to the domain via HTTPS.
+- **Syntax:** `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`
+- **Preloading:** The `preload` directive allows the domain to be included in browser source code pre-compiled lists. Browsers will automatically block any HTTP attempts to the site before sending the first network packet.
+
+## X-Frame-Options and Clickjacking Defenses
+Clickjacking (User Interface Redressing) occurs when an attacker overlays a transparent iframe containing a target website on top of a malicious page. The attacker tricks the user into clicking a button on the host page (e.g., "Win a Prize"), which actually triggers a hidden button on the embedded target page (e.g., "Delete Account").
+
+The `X-Frame-Options` header controls whether a browser is allowed to render a page within a `<frame>`, `<iframe>`, `<embed>`, or `<object>` element:
+- `DENY`: Completely prevents the page from being framed by any site.
+- `SAMEORIGIN`: Only allows the page to be framed if the parent frame is on the same origin (protocol, domain, and port).
+
+*Note:* Modern CSP policies support the `frame-ancestors` directive, which provides more granular framing controls and supersedes the legacy `X-Frame-Options` header.
+
+## X-Content-Type-Options and MIME-Sniffing
+Web browsers attempt to assist users by "sniffing" the content type of downloaded files. For example, if a server serves an image file with a text content type, the browser will read the file bytes, identify it as a PNG, and render it.
+
+However, attackers can abuse this behavior by uploading a text file containing malicious JavaScript, pretending it is a JPEG. If the browser sniffs the MIME type, it may execute the image bytes as active JavaScript in the site's security context.
+
+Enforcing the `X-Content-Type-Options: nosniff` header instructs the browser to strictly follow the `Content-Type` header sent by the server, disabling automatic MIME-sniffing.
+
+## Referrer-Policy and Permissions-Policy
+To protect user privacy and restrict browser API exposures:
+- **Referrer-Policy:** Controls how much information is included in the `Referer` header when a user clicks a link to another site. Setting it to `strict-origin-when-cross-origin` prevents sensitive parameters in URLs (like session IDs or reset tokens) from leaking to third-party referrers.
+- **Permissions-Policy (formerly Feature-Policy):** Restricts access to browser APIs and hardware features (such as the camera, microphone, geolocation, or USB devices) for the current document and any embedded iframes.
+
+## Deprecated Headers to Avoid
+The `X-XSS-Protection` header was designed to enable browser-based XSS filters. However, modern security standards recommend disabling it (or setting it to `0`) because it introduced new security vulnerabilities, such as allowing attackers to block legitimate scripts from executing, and has been deprecated in modern browsers in favor of a strong Content Security Policy.
+
+## How to Implement Security Headers
+Ensure these headers are added at the reverse proxy or web server layer:
+- **Nginx Config:** `add_header Content-Security-Policy "default-src 'self';" always;`
+- **Apache Config:** `Header always set X-Frame-Options "SAMEORIGIN"`
+- **Cloudflare Rules:** Utilize transform rules to append security headers dynamically to all responses.
+
+{{CTABlock}}

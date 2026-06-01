@@ -1,0 +1,36 @@
+## Introduction to Subdomain Enumeration
+Subdomain enumeration is the process of identifying all child hosts associated with a primary root domain (e.g., finding `api.example.com` or `dev.example.com` under `example.com`). During the initial stages of security audits or threat analysis, subdomain discovery is critical to mapping out an organization's external attack surface.
+
+Many organizations secure their main corporate homepage but leave obscure subdomains unprotected, creating entry points for attackers.
+
+## Active vs Passive Subdomain Discovery
+Security analysts utilize two primary methodologies to discover subdomains:
+1. **Active Enumeration:** Direct interaction with authoritative nameservers. This includes attempting DNS zone transfers (AXFR), brute-forcing subdomains using wordlists, or sending wildcard DNS queries. Active enumeration is highly accurate but is easily logged by network defense systems.
+2. **Passive Enumeration:** Gathering information from public repositories and third-party databases without directly interacting with the target's servers. Passive techniques are completely stealthy and rely on Certificate Transparency logs, search engine scraping, and public DNS archives.
+
+## Certificate Transparency (CT) Logs
+The most reliable source for passive subdomain discovery is **Certificate Transparency (CT) logs**. Mandatory under modern web standards, CT is an open framework designed to log every SSL/TLS certificate issued by Certificate Authorities (CAs) in public, cryptographically auditable ledgers.
+- **How CAs Log Certificates:** When a CA issues a certificate for `staging.example.com`, the record is appended to a CT log.
+- **Historical Analysis:** Security tools query these public logs (e.g., via databases like crt.sh) to reconstruct a historical list of all hostnames that have ever requested an SSL/TLS certificate.
+- **Uncovering Staging Environments:** Since certificates are requested during development, CT logs frequently leak staging, QA, and testing environments (e.g., `test-payment-gateway.example.com`) before they are officially launched.
+
+## The Risks of Shadow IT and Stale Subdomains
+As organizations scale, different departments deploy cloud resources, create temporary landing pages, or integrate SaaS platforms. This often leads to:
+- **Shadow IT:** Systems deployed without the knowledge or authorization of the central IT security team. Staging servers, legacy admin portals, or temporary APIs are often left unmonitored.
+- **Orphaned Subdomains:** Subdomains that remain active in DNS configuration tables long after the target cloud instance or third-party service has been shut down.
+
+## Subdomain Takeover Vulnerabilities
+An orphaned subdomain can lead to a severe vulnerability known as a **Subdomain Takeover**:
+1. An administrator creates a DNS record pointing a subdomain (e.g., `blog.example.com`) to a third-party service (such as GitHub Pages, Zendesk, or AWS S3) via a CNAME record.
+2. Later, the organization deletes the third-party account or cloud bucket but forgets to remove the CNAME record from their DNS zone file.
+3. An attacker registers the same name on the third-party service (e.g., creating a GitHub Pages site with the name `blog.example.com`).
+4. Because the DNS record still points to the third-party service, the attacker's content is rendered on `blog.example.com`. The attacker can now serve malicious scripts, steal cookies, or execute phishing campaigns under the victim's trusted domain.
+
+## Best Practices for Asset Visibility
+To prevent security leaks and subdomain takeovers:
+- **Maintain a DNS Inventory:** Track all DNS records and subdomains in a centralized, version-controlled database.
+- **Automate Takeover Scanning:** Regularly run security tools that check if CNAME records resolve to unclaimed third-party services.
+- **Implement Wildcard Certificates Safely:** While wildcard certificates (`*.example.com`) simplify certificate management, they do not prevent DNS records from being enumerated or hijacked if wildcard routing is misconfigured.
+- **Enforce DNS Decommissioning Workflows:** Require that any server or third-party cloud service deletion automatically triggers the removal of its corresponding DNS record.
+
+{{CTABlock}}

@@ -200,9 +200,11 @@ export default async function Page() {
                       <Image
                         src={urlFor(featuredPost.mainImage).width(800).height(450).fit('crop').auto('format').url()}
                         alt={featuredPost.title}
-                        fill
+                        width={800}
+                        height={450}
+                        sizes="(max-width: 1024px) 100vw, 800px"
                         priority
-                        className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
+                        className="object-cover w-full h-auto group-hover:scale-[1.02] transition-transform duration-700"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-matrix-900/30 via-surface-950 to-surface-900 flex items-center justify-center">
@@ -327,10 +329,12 @@ export default async function Page() {
                   <div className="relative aspect-video w-full bg-surface-950 overflow-hidden border-b border-white/5">
                     {post.mainImage ? (
                       <Image
-                        src={urlFor(post.mainImage).width(360).height(200).fit('crop').auto('format').url()}
+                        src={urlFor(post.mainImage).width(360).height(202).fit('crop').auto('format').url()}
                         alt={post.title}
-                        fill
-                        className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                        width={360}
+                        height={202}
+                        sizes="(max-width: 768px) 100vw, 360px"
+                        className="object-cover w-full h-auto group-hover:scale-[1.03] transition-transform duration-700"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-surface-950 to-surface-900 flex items-center justify-center">
