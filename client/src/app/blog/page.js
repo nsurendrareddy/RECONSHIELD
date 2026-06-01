@@ -13,7 +13,6 @@ import { slugify } from '@/utils/slugify';
 export const revalidate = 60; // ISR revalidate every 1 minute
 
 import { generateBaseMetadata } from '@/utils/metadata';
-import { fallbackPostsList } from '@/utils/fallbackPosts';
 
 export const metadata = generateBaseMetadata({
   title: "Cybersecurity Research & Threat Intelligence Publication",
@@ -31,22 +30,15 @@ const CATEGORIES = [
 ];
 
 export default async function BlogPage() {
-  let sanityPosts = [];
+  let posts = [];
   
   try {
-    sanityPosts = await client.fetch(blogListQuery);
+    posts = await client.fetch(blogListQuery);
   } catch (error) {
     console.error('Error fetching blog posts from Sanity:', error);
   }
 
-  // De-duplicate: filter out local fallbacks if the same slug is returned by Sanity
-  const sanityPostsList = sanityPosts || [];
-  const sanitySlugs = new Set(sanityPostsList.map(p => p.slug?.current || p.slug));
-  const filteredFallbacks = fallbackPostsList.filter(p => !sanitySlugs.has(p.slug));
-  
-  // Merge lists to preserve all high-value intelligence articles
-  const posts = [...sanityPostsList, ...filteredFallbacks];
-
+  // Fallback static posts if Sanity fetch fails or is empty for demo purposes
   const featuredPost = posts[0] || null;
   const latestPosts = posts.slice(1, 7) || [];
 

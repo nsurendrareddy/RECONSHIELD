@@ -1,67 +1,29 @@
 import BlogPostClient from '@/components/BlogPostClient';
-import { ShieldAlert, ArrowLeft } from 'lucide-react';
+import { ShieldAlert, ArrowLeft, WifiOff } from 'lucide-react';
 import Link from 'next/link';
 import { client, blogDetailQuery, urlFor, recentPostsQuery, categoriesWithCountQuery, relatedPostsQuery } from '@/utils/sanity';
-import { fallbackPosts, fallbackPostsList } from '@/utils/fallbackPosts';
-
 export const revalidate = 60;
-
-export async function generateStaticParams() {
-  let sanitySlugs = [];
-  try {
-    const posts = await client.fetch(`*[_type == "post" && defined(slug.current)] { "slug": slug.current }`);
-    sanitySlugs = posts.map(p => ({ slug: p.slug }));
-  } catch (err) {
-    console.error('>>> generateStaticParams error:', err);
-  }
-  
-  const fallbackSlugs = Object.keys(fallbackPosts).map(slug => ({ slug }));
-  
-  // Combine unique slugs
-  const allSlugs = [...sanitySlugs, ...fallbackSlugs];
-  const uniqueSlugs = Array.from(new Set(allSlugs.map(s => s.slug))).map(slug => ({ slug }));
-  
-  return uniqueSlugs;
-}
 
 async function getPost(slug) {
   if (!slug || slug === 'undefined') return null;
   
-  console.log(`>>> Fetching blog post details for slug: "${slug}"`);
-  
   try {
     const sanityPost = await client.fetch(blogDetailQuery, { slug });
-    if (sanityPost) {
-      console.log(`>>> Retrieved post "${slug}" from Sanity CMS.`);
-      return sanityPost;
-    }
+    return sanityPost;
   } catch (err) {
-    console.error('>>> SANITY FETCH ERROR FOR SLUG:', slug, err);
+    console.error('>>> SANITY FETCH ERROR:', err);
+    return { _error: true, message: err.message };
   }
-  
-  // Check fallback registry
-  if (fallbackPosts[slug]) {
-    console.log(`>>> Resolving local fallback data for slug: "${slug}"`);
-    return fallbackPosts[slug];
-  }
-  
-  console.warn(`>>> Blog post slug "${slug}" not found in Sanity or fallback registry.`);
-  return null;
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post || post._error) {
-    return { 
-      title: 'Intelligence Briefing Missing | ReconShield',
-      description: 'The requested intelligence briefing does not exist or has been classified.'
-    };
-  }
+  if (!post || post._error) return { title: 'Intelligence Briefing Missing' };
 
-  const description = post.excerpt || '';
+  const description = post.excerpt;
   const imageUrl = post.mainImageUrl || '/og-image.png';
-  const authorName = post.author?.name ?? "Surendra Reddy";
+  const authorName = post.author?.name ?? "ReconShield Team";
   
   return {
     title: `${post.title} | Intelligence`,
@@ -112,37 +74,18 @@ export default async function Page({ params }) {
   }
 
   // Fetch sidebar and related data
-  let recentPosts = [];
-  let categories = [];
-  let relatedPosts = [];
-
-  try {
-    const [resRecent, resCategories, resRelated] = await Promise.all([
-      client.fetch(recentPostsQuery, { slug }),
-      client.fetch(categoriesWithCountQuery),
-      client.fetch(relatedPostsQuery, { slug })
-    ]);
-    recentPosts = resRecent || [];
-    categories = resCategories || [];
-    relatedPosts = resRelated || [];
-  } catch (err) {
-    console.error('>>> Error fetching supporting blog data:', err);
-  }
-
-  // Fallback for empty sidebar modules
-  if (recentPosts.length === 0) {
-    recentPosts = fallbackPostsList.filter(p => p.slug !== slug).slice(0, 3);
-  }
-  if (relatedPosts.length === 0) {
-    relatedPosts = fallbackPostsList.filter(p => p.slug !== slug).slice(0, 3);
-  }
+  const [recentPosts, categories, relatedPosts] = await Promise.all([
+    client.fetch(recentPostsQuery, { slug }),
+    client.fetch(categoriesWithCountQuery),
+    client.fetch(relatedPostsQuery, { slug })
+  ]);
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": post.categories?.[0]?.title === "Cyber News" ? "NewsArticle" : "Article",
     "headline": post.title,
     "description": post.excerpt,
-    "image": post.mainImageUrl || "https://reconshield.in/og-image.png",
+    "image": post.mainImageUrl || (post.mainImage ? urlFor(post.mainImage).url() : "https://reconshield.in/og-image.png"),
     "datePublished": post.publishedAt,
     "dateModified": post.publishedAt,
     "author": {
@@ -177,9 +120,9 @@ export default async function Page({ params }) {
       />
       <BlogPostClient 
         post={post} 
-        recentPosts={recentPosts} 
-        categories={categories} 
-        relatedPosts={relatedPosts}
+        recentPosts={recentPosts || []} 
+        categories={categories || []} 
+        relatedPosts={relatedPosts || []}
       />
     </>
   );
