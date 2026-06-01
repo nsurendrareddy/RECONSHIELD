@@ -91,7 +91,7 @@ export default async function Page({ params }) {
     "author": {
       "@type": "Person",
       "name": post.author?.name || "Surendra Reddy",
-      "url": "https://reconshield.in/about",
+      "url": `https://reconshield.in/author/${post.author?.slug?.current || post.author?.slug || 'surendra-reddy'}`,
       "sameAs": [
         "https://linkedin.com/in/surendrareddy3",
         "https://github.com/nsurendrareddy"

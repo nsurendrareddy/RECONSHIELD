@@ -25,7 +25,7 @@ export const blogListQuery = `*[_type == "post" && defined(slug.current) && !(_i
   publishedAt,
   "categories": categories[]->{ title },
   excerpt,
-  "author": author->{ name },
+  "author": author->{ name, "slug": slug.current, image },
   "estimatedWordCount": length(pt::text(body))
 }`;
 
@@ -40,7 +40,7 @@ export const blogDetailQuery = `*[_type == "post" && slug.current == $slug][0] {
   body,
   "category": categories[0]->title,
   "categories": categories[]->{ title },
-  "author": author->{ name },
+  "author": author->{ name, "slug": slug.current, image, bio },
   "tags": tags[]
 }`;
 
@@ -67,16 +67,39 @@ export const relatedPostsQuery = `*[_type == "post" && slug.current != $slug && 
   publishedAt,
   "categories": categories[]->{ title },
   excerpt,
-  "author": author->{ name }
+  "author": author->{ name, "slug": slug.current }
 }`;
 
-export const homepageBlogQuery = `*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))] | order(coalesce(publishedAt, _createdAt) desc)[0...3] {
+export const homepageBlogQuery = `*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))] | order(coalesce(publishedAt, _createdAt) desc)[0...10] {
   _id,
   title,
   "slug": slug.current,
   mainImage,
   publishedAt,
   "categories": categories[]->{ title },
-  excerpt
+  excerpt,
+  "author": author->{ name, "slug": slug.current },
+  "estimatedWordCount": length(pt::text(body))
 }`;
+
+export const authorDetailQuery = `*[_type == "author" && slug.current == $slug][0] {
+  _id,
+  name,
+  "slug": slug.current,
+  image,
+  bio
+}`;
+
+export const authorPostsQuery = `*[_type == "post" && author->slug.current == $slug && defined(slug.current) && !(_id in path("drafts.**"))] | order(coalesce(publishedAt, _createdAt) desc) {
+  _id,
+  title,
+  "slug": slug.current,
+  mainImage,
+  publishedAt,
+  "categories": categories[]->{ title },
+  excerpt,
+  "author": author->{ name, "slug": slug.current },
+  "estimatedWordCount": length(pt::text(body))
+}`;
+
 

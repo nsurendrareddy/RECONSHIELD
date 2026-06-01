@@ -37,10 +37,9 @@ export default function Layout({ children }) {
   }
 
   const navItems = [
-    { path: '/', label: 'Scanner', icon: Terminal },
-    { path: '/tools', label: 'Tools', icon: Shield },
-    { path: '/tools/ip-lookup', label: 'IP Intel', icon: Globe },
-    { path: '/blog', label: 'Blog' },
+    { path: '/', label: 'Home' },
+    { path: '/blog', label: 'Intel Feed' },
+    { path: '/tools', label: 'Security Tools' },
     { path: '/about', label: 'About' },
     { path: '/contact', label: 'Contact' },
   ]
