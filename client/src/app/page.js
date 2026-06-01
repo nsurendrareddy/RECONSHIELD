@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { client, homepageBlogQuery, urlFor } from '@/utils/sanity';
+import { fallbackPostsList } from '@/utils/fallbackPosts';
 import { 
   Shield, Target, Activity, Cpu, MapPin, Network, 
   Search, Terminal, Lock, Layers, Mail, CheckCircle2, 
@@ -20,87 +21,29 @@ export const metadata = generateBaseMetadata({
   path: '/'
 });
 
-// Fallback high-quality editorial articles in case Sanity fetch returns empty
-const MOCK_POSTS = [
-  {
-    _id: "mock-1",
-    title: "The Anatomy of Passive OSINT: Mapping Infrastructure Without Noise",
-    slug: "anatomy-of-passive-osint",
-    publishedAt: "2026-05-28T09:00:00Z",
-    excerpt: "Learn how modern threat hunters map enterprise footprints entirely through cached DNS, transparency logs, and global RIR data without triggering network intrusion detection systems.",
-    categories: [{ title: "OSINT & analysis" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 1520
-  },
-  {
-    _id: "mock-2",
-    title: "Securing BGP Route Leaks: Why Large ASNs Fall Victim to Hijacking Campaigns",
-    slug: "securing-bgp-route-leaks",
-    publishedAt: "2026-05-25T11:30:00Z",
-    excerpt: "A deep dive into Autonomous System Number (ASN) path verification, peer filtering mechanisms, and the crucial role of RPKI repository deployment in preventing routing exposures.",
-    categories: [{ title: "Threat Intelligence" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 1840
-  },
-  {
-    _id: "mock-3",
-    title: "Demystifying SPF, DKIM, and DMARC: A Blueprint for Email Spoofing Defense",
-    slug: "spf-dkim-dmarc-blueprint",
-    publishedAt: "2026-05-22T08:15:00Z",
-    excerpt: "Misconfigured mail records remain the leading vector for business email compromise (BEC). We breakdown how to implement strict authentication protocols to protect corporate brands.",
-    categories: [{ title: "Web Security" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 1390
-  },
-  {
-    _id: "mock-4",
-    title: "OWASP Top 10 Web Configuration Audits: Hardening HTTP Headers",
-    slug: "owasp-http-headers-hardening",
-    publishedAt: "2026-05-19T14:00:00Z",
-    excerpt: "Why Content-Security-Policy (CSP), Strict-Transport-Security, and X-Frame-Options are the first line of defense against cross-site scripting and modern clickjacking attacks.",
-    categories: [{ title: "Web Security" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 1250
-  },
-  {
-    _id: "mock-5",
-    title: "The Critical Role of SSL/TLS Ciphers in Regulatory Compliance Frameworks",
-    slug: "ssl-tls-regulatory-compliance",
-    publishedAt: "2026-05-15T10:45:00Z",
-    excerpt: "Outdated transport protocols are direct compliance violations under GDPR and PCI-DSS. Here is how to perform passive checks and audit your cryptography trust chains.",
-    categories: [{ title: "Vulnerability Research" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2100
-  },
-  {
-    _id: "mock-6",
-    title: "Shadow IT Discovery: Passive Identification of Exposed Database and Administrative Ports",
-    slug: "shadow-it-exposed-ports",
-    publishedAt: "2026-05-10T16:20:00Z",
-    excerpt: "Exposing SSH, RDP, or raw database interfaces to the public internet presents catastrophic risk. We explore how to inventory assets using regional passive telemetry databases.",
-    categories: [{ title: "internet-facing assets" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 1670
-  }
-];
+// Fallback high-quality editorial articles
+const MOCK_POSTS = fallbackPostsList;
 
 export default async function Page() {
-  let posts = [];
+  let sanityPosts = [];
   try {
-    posts = await client.fetch(homepageBlogQuery);
+    sanityPosts = await client.fetch(homepageBlogQuery);
   } catch (error) {
     console.error('Error fetching blog posts for homepage:', error);
   }
 
-  // Use mock posts if Sanity query fails or yields empty results (mitigates "thin-content" penalties)
-  if (!posts || posts.length === 0) {
-    posts = MOCK_POSTS;
-  }
+  // De-duplicate: filter out local fallbacks if the same slug is returned by Sanity
+  const sanityPostsList = sanityPosts || [];
+  const sanitySlugs = new Set(sanityPostsList.map(p => p.slug?.current || p.slug));
+  const filteredFallbacks = fallbackPostsList.filter(p => !sanitySlugs.has(p.slug));
+  
+  // Merge lists to preserve all high-value intelligence articles
+  const posts = [...sanityPostsList, ...filteredFallbacks];
 
   // Organize articles for publication layout
   const featuredPost = posts[0] || MOCK_POSTS[0];
-  const trendingBriefings = posts.slice(1, 5).length > 0 ? posts.slice(1, 5) : MOCK_POSTS.slice(1, 5);
-  const secondaryArticles = posts.slice(5, 8).length > 0 ? posts.slice(5, 8) : MOCK_POSTS.slice(3, 6);
+  const trendingBriefings = posts.slice(1, 5);
+  const secondaryArticles = posts.slice(5, 8);
 
   const getInitials = (name) => {
     if (!name) return 'SR';
