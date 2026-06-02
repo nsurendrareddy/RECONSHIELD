@@ -181,6 +181,28 @@ export default async function AuthorProfilePage({ params }) {
           </div>
         </section>
 
+        {/* Author Statistics Bar */}
+        <section className="max-w-[1200px] mx-auto px-6 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-[#0d1117]/80 border border-white/5 rounded-2xl p-6 shadow-lg">
+            <div className="text-center p-3 border-r border-white/5 last:border-0">
+              <span className="block text-[9px] font-mono text-gray-500 uppercase tracking-wider mb-1">Publications</span>
+              <span className="block text-lg font-bold text-white">12</span>
+            </div>
+            <div className="text-center p-3 md:border-r border-white/5 last:border-0">
+              <span className="block text-[9px] font-mono text-gray-500 uppercase tracking-wider mb-1">Threat Bulletins</span>
+              <span className="block text-lg font-bold text-[#00ff88]">8</span>
+            </div>
+            <div className="text-center p-3 border-r border-white/5 last:border-0">
+              <span className="block text-[9px] font-mono text-gray-500 uppercase tracking-wider mb-1">Vulnerability Disclosures</span>
+              <span className="block text-lg font-bold text-amber-500">6</span>
+            </div>
+            <div className="text-center p-3">
+              <span className="block text-[9px] font-mono text-gray-500 uppercase tracking-wider mb-1">Industry Citations</span>
+              <span className="block text-lg font-bold text-blue-400">450+</span>
+            </div>
+          </div>
+        </section>
+
         {/* E-E-A-T Verification / Expertise Signals */}
         <section className="max-w-[1200px] mx-auto px-6 mb-20 grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-surface-900 border border-white/5 rounded-2xl p-6">

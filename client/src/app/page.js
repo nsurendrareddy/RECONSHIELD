@@ -13,6 +13,7 @@ import { generateBaseMetadata } from '@/utils/metadata';
 import DynamicDashboardClient from '@/components/DynamicDashboardClient';
 import NewsletterForm from '@/components/NewsletterForm';
 import TopActiveThreats from '@/components/TopActiveThreats';
+import HeroSocVisual from '@/components/HeroSocVisual';
 
 export const metadata = generateBaseMetadata({
   title: "ReconShield | Cybersecurity Research & Threat Intelligence Publication",
@@ -28,7 +29,7 @@ const MOCK_POSTS = [
     slug: "anatomy-of-passive-osint",
     publishedAt: "2026-05-28T09:00:00Z",
     excerpt: "Learn how modern threat hunters map enterprise footprints entirely through cached DNS, transparency logs, and global RIR data without triggering network intrusion detection systems.",
-    categories: [{ title: "OSINT & analysis" }],
+    categories: [{ title: "OSINT & Analysis" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
     estimatedWordCount: 1520
   },
@@ -78,7 +79,7 @@ const MOCK_POSTS = [
     slug: "shadow-it-exposed-ports",
     publishedAt: "2026-05-10T16:20:00Z",
     excerpt: "Exposing SSH, RDP, or raw database interfaces to the public internet presents catastrophic risk. We explore how to inventory assets using regional passive telemetry databases.",
-    categories: [{ title: "internet-facing assets" }],
+    categories: [{ title: "Network Security" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
     estimatedWordCount: 1670
   }
@@ -99,8 +100,7 @@ export default async function Page() {
 
   // Organize articles for publication layout
   const featuredPost = posts[0] || MOCK_POSTS[0];
-  const trendingBriefings = posts.slice(1, 5).length > 0 ? posts.slice(1, 5) : MOCK_POSTS.slice(1, 5);
-  const secondaryArticles = posts.slice(5, 8).length > 0 ? posts.slice(5, 8) : MOCK_POSTS.slice(3, 6);
+  const secondaryArticles = posts.slice(1, 4).length > 0 ? posts.slice(1, 4) : MOCK_POSTS.slice(1, 4);
 
   const getInitials = (name) => {
     if (!name) return 'SR';
@@ -169,163 +169,136 @@ export default async function Page() {
       />
 
       <div className="bg-[#05080f] min-h-screen">
-        {/* ================= HERO SECTION (Magazine Layout) ================= */}
-        <section className="relative pt-24 pb-20 overflow-hidden border-b border-white/5">
-          <div className="absolute inset-0 bg-[#0a0d14] -z-20" />
-          <div className="absolute inset-0 bg-[url('/matrix-bg.png')] bg-repeat opacity-[0.01] -z-10" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full bg-matrix-400/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+        {/* ================= 1. HERO SECTION ================= */}
+        <section className="relative pt-28 pb-20 overflow-hidden border-b border-white/5 bg-[#070b12]">
+          <div className="absolute inset-0 bg-[url('/matrix-bg.png')] bg-repeat opacity-[0.01] pointer-events-none" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full bg-[#00ff88]/5 blur-[120px] rounded-full pointer-events-none" />
           
           <div className="max-w-[1200px] mx-auto px-6 relative z-10">
-            {/* Editorial Brand Header */}
-            <div className="text-center mb-16 animate-fade-in-up">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-matrix-400/10 border border-matrix-400/20 text-matrix-400 text-xs font-semibold uppercase tracking-widest mb-6">
-                <Activity className="w-4 h-4" />
-                <span>Security Research & Threat Intelligence</span>
-              </div>
-              <h1 className="text-4xl md:text-6xl font-display font-bold text-white tracking-tight mb-4 uppercase">
-                ReconShield <span className="text-transparent bg-clip-text bg-gradient-to-r from-matrix-400 to-matrix-300">Intelligence</span> Journal
-              </h1>
-              <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base font-sans leading-relaxed">
-                Peer-reviewed OSINT analysis, CVE research reports, and technical guides authored by cybersecurity engineers to assist defensive security auditing.
-              </p>
-            </div>
-
-            {/* Split Magazine Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left Column: Big Featured Story (2/3 width) */}
-              <div className="lg:col-span-2 group">
-                <Link href={`/blog/${featuredPost.slug?.current || featuredPost.slug}`} className="block h-full bg-surface-900 border border-white/5 hover:border-matrix-400/30 rounded-3xl overflow-hidden transition-all duration-300 shadow-xl flex flex-col">
-                  <div className="relative aspect-[16/9] w-full bg-surface-950 overflow-hidden">
-                    {featuredPost.mainImage ? (
-                      <Image
-                        src={urlFor(featuredPost.mainImage).width(800).height(450).fit('crop').auto('format').url()}
-                        alt={featuredPost.title}
-                        width={800}
-                        height={450}
-                        sizes="(max-width: 1024px) 100vw, 800px"
-                        priority
-                        className="object-cover w-full h-auto group-hover:scale-[1.02] transition-transform duration-700"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-matrix-900/30 via-surface-950 to-surface-900 flex items-center justify-center">
-                        <Shield className="w-16 h-16 text-matrix-400/20" />
-                      </div>
-                    )}
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-matrix-400/90 text-surface-950 text-[10px] font-mono font-bold uppercase tracking-wider rounded">
-                        {featuredPost.categories?.[0]?.title || 'OSINT'}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-8 flex flex-col flex-1">
-                    <h2 className="text-xl md:text-2xl font-display font-bold text-white mb-4 group-hover:text-matrix-400 transition-colors leading-tight">
-                      {featuredPost.title}
-                    </h2>
-                    <p className="text-gray-400 text-sm leading-relaxed mb-8 flex-1">
-                      {featuredPost.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between pt-6 border-t border-white/5 text-[10px] font-mono text-gray-500 uppercase tracking-wider">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-[#1a2332] flex items-center justify-center text-[#00ff88] text-[8px] font-bold">
-                          {getInitials(featuredPost.author?.name)}
-                        </div>
-                        <span className="text-gray-300 font-sans font-bold">{featuredPost.author?.name}</span>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {calculateReadTime(featuredPost)} MIN READ</span>
-                        <span>{formatDate(featuredPost.publishedAt || featuredPost._createdAt)}</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-
-              {/* Right Column: Trending News Feed (1/3 width) */}
-              <div className="flex flex-col gap-6">
-                <div className="flex items-center gap-2 pb-3 border-b border-white/5">
-                  <Star className="w-4 h-4 text-amber-500" />
-                  <h3 className="font-mono text-xs text-amber-500 font-bold uppercase tracking-wider">Trending Intelligence</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              
+              {/* Left Column: Heading and Value Proposition */}
+              <div className="lg:col-span-7 space-y-6 text-left">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00ff88]/10 border border-[#00ff88]/20 text-[#00ff88] text-[10px] font-mono uppercase tracking-widest">
+                  <Activity className="w-3.5 h-3.5" />
+                  <span>Defensive Threat Research Center</span>
                 </div>
-                <div className="flex flex-col gap-5 flex-1 justify-between">
-                  {trendingBriefings.map((post, idx) => (
-                    <Link href={`/blog/${post.slug?.current || post.slug}`} key={post._id} className="group flex gap-4 p-3 rounded-2xl border border-transparent hover:border-white/5 hover:bg-surface-900/40 transition-all duration-300">
-                      <span className="font-mono text-lg font-bold text-matrix-400/40 group-hover:text-matrix-400 tracking-wider">0{idx + 1}</span>
-                      <div className="min-w-0">
-                        <span className="block font-mono text-[9px] text-[#00ff88] uppercase tracking-widest mb-1">
-                          {post.categories?.[0]?.title || 'OSINT'}
-                        </span>
-                        <h4 className="text-xs font-bold text-white group-hover:text-[#00ff88] transition-colors line-clamp-2 leading-snug">
-                          {post.title}
-                        </h4>
-                        <span className="block font-mono text-[8px] text-gray-500 mt-2 uppercase">
-                          {formatDate(post.publishedAt || post._createdAt)}
-                        </span>
-                      </div>
-                    </Link>
-                  ))}
+                
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight leading-[1.1] uppercase">
+                  ENTERPRISE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#38bdf8]">THREAT INTELLIGENCE</span> & AUDITING
+                </h1>
+                
+                <p className="text-gray-400 text-sm sm:text-base font-sans leading-relaxed max-w-xl">
+                  ReconShield is a premium intelligence publication dedicated to documenting threat actor activities, verifying DNS security protocols, auditing cryptographic layers, and preventing network exposures.
+                </p>
+                
+                <div className="flex flex-wrap items-center gap-4 pt-2">
+                  <Link href="/blog" className="px-5 py-3 bg-[#00ff88] hover:bg-[#00e077] text-surface-950 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(0,255,136,0.2)]">
+                    Explore Publications
+                  </Link>
+                  <Link href="/scanner" className="px-5 py-3 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 hover:border-white/20 text-xs font-mono uppercase tracking-widest rounded-xl transition-all">
+                    Launch Scanner Suite
+                  </Link>
                 </div>
               </div>
+
+              {/* Right Column: Animated SOC Telemetry Box */}
+              <div className="lg:col-span-5">
+                <HeroSocVisual />
+              </div>
+
             </div>
           </div>
         </section>
 
-        {/* ================= THREAT PULSE SECTION ================= */}
+        {/* ================= 2. FEATURED EDITORIAL RESEARCH ================= */}
+        <section className="py-24 bg-[#05080f] border-b border-white/5">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="flex items-center gap-4 mb-10">
+              <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold">// FEATURED RESEARCH</h2>
+              <div className="h-[1px] flex-1 bg-white/5" />
+            </div>
+
+            <div className="group">
+              <Link href={`/blog/${featuredPost.slug?.current || featuredPost.slug}`} className="block bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 rounded-3xl overflow-hidden transition-all duration-300 shadow-xl">
+                <div className="grid grid-cols-1 lg:grid-cols-12">
+                  {/* Image Grid Column */}
+                  <div className="lg:col-span-7 relative aspect-[16/10] lg:aspect-auto min-h-[300px] bg-surface-950 overflow-hidden">
+                    {featuredPost.mainImage ? (
+                      <Image
+                        src={urlFor(featuredPost.mainImage).width(800).height(500).fit('crop').auto('format').url()}
+                        alt={featuredPost.title}
+                        fill
+                        priority
+                        sizes="(max-width: 1024px) 100vw, 800px"
+                        className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-surface-900 to-surface-950 flex items-center justify-center">
+                        <Shield className="w-20 h-20 text-[#00ff88]/10" />
+                      </div>
+                    )}
+                    <div className="absolute top-6 left-6">
+                      <span className="px-3.5 py-1.5 bg-[#00ff88]/90 text-surface-950 text-[10px] font-mono font-bold uppercase tracking-wider rounded">
+                        {featuredPost.categories?.[0]?.title || 'OSINT'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Text Grid Column */}
+                  <div className="lg:col-span-5 p-8 md:p-12 flex flex-col justify-between">
+                    <div>
+                      <span className="block font-mono text-[9px] text-[#00ff88] uppercase tracking-[3px] mb-3">// PRIMARY BRIEFING</span>
+                      <h3 className="text-xl md:text-2xl font-display font-bold text-white mb-4 group-hover:text-[#00ff88] transition-colors leading-tight">
+                        {featuredPost.title}
+                      </h3>
+                      <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-6 font-sans">
+                        {featuredPost.excerpt}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-6 border-t border-white/5 text-[9px] font-mono text-gray-500 uppercase tracking-wider">
+                      <div className="flex items-center gap-2">
+                        <div className="w-6 h-6 rounded-full bg-[#1a2332] flex items-center justify-center text-[#00ff88] text-[8px] font-bold">
+                          {getInitials(featuredPost.author?.name)}
+                        </div>
+                        <span className="text-gray-300 font-sans font-bold">{featuredPost.author?.name || 'Surendra Reddy'}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {calculateReadTime(featuredPost)} MIN</span>
+                        <span>{formatDate(featuredPost.publishedAt || featuredPost._createdAt)}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ================= 3. THREAT INTELLIGENCE HIGHLIGHTS ================= */}
         <section className="bg-[#05080f] py-12 border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
             <TopActiveThreats />
           </div>
         </section>
 
-        {/* ================= CATEGORY DIRECTIVES ================= */}
-        <section className="py-24 bg-[#0a0d14] border-b border-white/5">
+        {/* ================= 4. LATEST CYBERSECURITY ARTICLES ================= */}
+        <section className="py-24 bg-[#05080f] border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
             <div className="flex items-center justify-between mb-12">
               <div>
-                <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// CATEGORY ARCHIVES</span>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Research Directives</h3>
+                <span className="font-mono text-xs text-gray-500 uppercase tracking-widest">// RECENT DISCLOSURES</span>
+                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Latest Intelligence Briefings</h3>
               </div>
-              <Link href="/blog" className="hidden sm:inline-flex items-center gap-1.5 font-mono text-[11px] text-[#00ff88] hover:text-white uppercase tracking-widest transition-colors">
-                All Directives <ArrowRight className="w-3.5 h-3.5" />
+              <Link href="/blog" className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#00ff88] hover:text-white uppercase tracking-widest transition-colors">
+                View All Articles <ArrowRight className="w-3.5 h-3.5" />
               </Link>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {[
-                { name: "Threat Intelligence", icon: Target, slug: "threat-intelligence", color: "text-red-400" },
-                { name: "OSINT & Analysis", icon: Search, slug: "osint-analysis", color: "text-matrix-400" },
-                { name: "Web Security", icon: Shield, slug: "web-security", color: "text-blue-400" },
-                { name: "AI Cybersecurity", icon: Cpu, slug: "ai-cybersecurity", color: "text-purple-400" },
-                { name: "Vulnerability Research", icon: AlertTriangle, slug: "vulnerability-research", color: "text-orange-400" },
-                { name: "Internet-Facing Assets", icon: Network, slug: "internet-facing-assets", color: "text-cyan-400" }
-              ].map((cat, idx) => {
-                const Icon = cat.icon;
-                return (
-                  <Link href={`/blog?category=${encodeURIComponent(cat.name)}`} key={idx} className="p-5 rounded-2xl bg-surface-900 border border-white/5 hover:border-matrix-400/30 transition-all duration-300 group flex flex-col items-center text-center">
-                    <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform border border-white/5">
-                      <Icon className={`w-5 h-5 ${cat.color}`} />
-                    </div>
-                    <span className="text-[11px] font-mono font-bold text-white group-hover:text-matrix-400 transition-colors leading-tight">{cat.name.toUpperCase()}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* ================= LATEST EDITORIAL GUIDES ================= */}
-        <section className="py-24 bg-[#05080f] border-b border-white/5">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="flex items-center gap-4 mb-12">
-              <div>
-                <span className="font-mono text-xs text-gray-500 uppercase tracking-widest">// RECENT BRIEFINGS</span>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Vulnerability Writeups & OSINT Guides</h3>
-              </div>
-              <div className="h-px flex-1 bg-white/5" />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {secondaryArticles.map((post) => (
-                <Link href={`/blog/${post.slug?.current || post.slug}`} key={post._id} className="group flex flex-col bg-surface-900 border border-white/5 hover:border-matrix-400/30 transition-all duration-300 rounded-2xl overflow-hidden shadow-lg">
+                <Link href={`/blog/${post.slug?.current || post.slug}`} key={post._id} className="group flex flex-col bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all duration-300 rounded-2xl overflow-hidden shadow-lg">
                   <div className="relative aspect-video w-full bg-surface-950 overflow-hidden border-b border-white/5">
                     {post.mainImage ? (
                       <Image
@@ -338,15 +311,15 @@ export default async function Page() {
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-surface-950 to-surface-900 flex items-center justify-center">
-                        <BookOpen className="w-10 h-10 text-matrix-400/10" />
+                        <BookOpen className="w-10 h-10 text-[#00ff88]/10" />
                       </div>
                     )}
                   </div>
                   <div className="p-6 flex flex-col flex-1">
                     <span className="font-mono text-[9px] tracking-[2px] uppercase text-[#00ff88] mb-3">
-                      {post.categories?.[0]?.title || 'INTEL'}
+                      {post.categories?.[0]?.title || 'INTELLIGENCE'}
                     </span>
-                    <h4 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-matrix-400 transition-colors line-clamp-2">
+                    <h4 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-[#00ff88] transition-colors line-clamp-2">
                       {post.title}
                     </h4>
                     <p className="text-gray-400 text-xs leading-relaxed line-clamp-2 mb-6">
@@ -360,17 +333,44 @@ export default async function Page() {
                 </Link>
               ))}
             </div>
-            
-            <div className="flex justify-center mt-12">
-              <Link href="/blog" className="px-6 py-3 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 hover:border-matrix-400/30 rounded-xl text-xs font-mono uppercase tracking-widest transition-all">
-                Access Entire Archives
-              </Link>
+          </div>
+        </section>
+
+        {/* ================= 5. RESEARCH CATEGORIES ================= */}
+        <section className="py-24 bg-[#0a0d14] border-b border-white/5">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="flex items-center justify-between mb-12">
+              <div>
+                <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// CATEGORY SILOS</span>
+                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Topical Intelligence Hubs</h3>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+              {[
+                { name: "Threat Intelligence", icon: Target, slug: "threat-intelligence", color: "text-red-400" },
+                { name: "OSINT & Analysis", icon: Search, slug: "osint", color: "text-[#00ff88]" },
+                { name: "Web Security", icon: Shield, slug: "web-security", color: "text-blue-400" },
+                { name: "Email Security", icon: Mail, slug: "email-security", color: "text-purple-400" },
+                { name: "Network Security", icon: Network, slug: "network-security", color: "text-cyan-400" },
+                { name: "Cloud Security", icon: Cpu, slug: "cloud-security", color: "text-orange-400" }
+              ].map((cat, idx) => {
+                const Icon = cat.icon;
+                return (
+                  <Link href={`/category/${cat.slug}`} key={idx} className="p-5 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all duration-300 group flex flex-col items-center text-center">
+                    <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform border border-white/5">
+                      <Icon className={`w-5 h-5 ${cat.color}`} />
+                    </div>
+                    <span className="text-[10px] font-mono font-bold text-white group-hover:text-[#00ff88] transition-colors leading-tight">{cat.name.toUpperCase()}</span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        {/* ================= INTERACTIVE COMPLIANCE AUDITING (Passive Tool) ================= */}
-        <section className="py-24 bg-[#0a0d14] relative border-b border-white/5">
+        {/* ================= 6. FEATURED SCANNER PREVIEW ================= */}
+        <section className="py-24 bg-[#05080f] relative border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-widest mb-4">
@@ -396,15 +396,21 @@ export default async function Page() {
               <DynamicDashboardClient />
               
               <div className="mt-6 flex items-center justify-center gap-8 text-[11px] font-mono text-gray-500 uppercase tracking-wider">
-                <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-matrix-400" /> 100% Passive</div>
-                <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-matrix-400" /> Zero Packets Sent</div>
-                <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-matrix-400" /> RFC Compliance Only</div>
+                <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> 100% Passive</div>
+                <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> Zero Packets Sent</div>
+                <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> RFC Compliance Only</div>
               </div>
+            </div>
+
+            <div className="flex justify-center mt-10">
+              <Link href="/scanner" className="inline-flex items-center gap-2 px-6 py-3 bg-[#00ff88]/10 hover:bg-[#00ff88]/20 text-[#00ff88] border border-[#00ff88]/25 rounded-xl text-xs font-mono uppercase tracking-widest transition-all">
+                Access Central Scanner Dashboard <ChevronRight className="w-4 h-4" />
+              </Link>
             </div>
 
             {/* Regulatory Compliance & Guidelines Alert */}
             <div className="mt-12 max-w-2xl mx-auto p-4 rounded-xl bg-amber-500/5 border border-amber-500/10 text-center">
-              <p className="text-amber-500 text-[11px] font-mono m-0 uppercase tracking-widest flex items-center justify-center gap-2">
+              <p className="text-amber-500 text-[10px] font-mono m-0 uppercase tracking-widest flex items-center justify-center gap-2">
                 <AlertTriangle className="w-4 h-4 shrink-0" />
                 Defensive Auditing Notice: ReconShield provides passive assessments under authorized security guidelines.
               </p>
@@ -412,107 +418,16 @@ export default async function Page() {
           </div>
         </section>
 
-        {/* ================= CYBERSECURITY INTELLIGENCE LEARNING CENTER (Knowledge Hubs) ================= */}
+        {/* ================= 7. ANALYST/AUTHOR SECTION ================= */}
         <section className="py-24 bg-[#0a0d14] border-b border-white/5">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="mb-12">
-              <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// RECONSHIELD KNOWLEDGE HUBS</span>
-              <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Cybersecurity Intelligence & Learning Centers</h3>
-              <p className="text-gray-400 text-sm mt-2 max-w-2xl">
-                Explore our curated topical authority clusters, mapping protocols, vulnerabilities, OSINT intelligence networks, and defensive recommendations.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  title: "Threat Intelligence & Attribution",
-                  desc: "Analyze attacker indicators of compromise (IoCs), tracking known threat actors, and mapping infrastructure footprints across regional ASNs.",
-                  links: [
-                    { title: "BGP Hijacking & Route Leaks Guide", url: "/blog/securing-bgp-route-leaks" },
-                    { title: "IP Telemetry Analysis Node", url: "/tools/ip-lookup" }
-                  ]
-                },
-                {
-                  title: "Passive OSINT & Reconnaissance",
-                  desc: "Learn passive network mapping methodologies using cached certificate logs, public registries, and passive DNS records without triggering security alerts.",
-                  links: [
-                    { title: "Anatomy of Passive OSINT Guide", url: "/blog/anatomy-of-passive-osint" },
-                    { title: "Global WHOIS Registrar Directory", url: "/tools/whois" }
-                  ]
-                },
-                {
-                  title: "Attack Surface Management",
-                  desc: "Discover and catalog internet-facing assets, exposed services, administrative panels, and database ports before adversary exploitation.",
-                  links: [
-                    { title: "Shadow IT Discovery & Telemetry", url: "/blog/shadow-it-exposed-ports" },
-                    { title: "Network Port Exposure Scanner", url: "/tools/port-scanner" }
-                  ]
-                },
-                {
-                  title: "DNS Security & Routing Verification",
-                  desc: "Understand secure domain resolution protocols including DNSSEC validation, SPF mechanisms, DMARC configurations, and registrar locking standards.",
-                  links: [
-                    { title: "DMARC Phishing Authentication Blueprint", url: "/blog/spf-dkim-dmarc-blueprint" },
-                    { title: "Recursive Anycast DNS Diagnostics", url: "/tools/dns-lookup" }
-                  ]
-                },
-                {
-                  title: "SSL/TLS Cryptographic Analysis",
-                  desc: "Audit public transport layer keys, active cipher suite vulnerabilities (e.g. logjam, sweet32), TLS protocols validation, and certificate chain expiry.",
-                  links: [
-                    { title: "Cryptographic Regulatory Compliance Guide", url: "/blog/ssl-tls-regulatory-compliance" },
-                    { title: "Automated SSL/TLS Certificate Auditor", url: "/tools/ssl-checker" }
-                  ]
-                },
-                {
-                  title: "Vulnerability Intelligence & CVEs",
-                  desc: "Track software flaw disclosures, parsing Common Vulnerability Scoring System (CVSS v3/v4) indicators, and analyzing EPSS exploit probability rankings.",
-                  links: [
-                    { title: "OWASP Top 10 Web Headers Hardening", url: "/blog/owasp-http-headers-hardening" },
-                    { title: "Passive Vulnerability Analysis Suite", url: "/tools/vulnerability-scanner" }
-                  ]
-                }
-              ].map((hub, idx) => (
-                <div key={idx} className="bg-surface-900 border border-white/5 rounded-2xl p-6 flex flex-col justify-between hover:border-matrix-400/30 transition-all duration-300">
-                  <div>
-                    <h4 className="text-white text-base font-bold mb-2 uppercase tracking-wide">{hub.title}</h4>
-                    <p className="text-gray-400 text-xs leading-relaxed mb-6">{hub.desc}</p>
-                  </div>
-                  <div className="space-y-2 border-t border-white/5 pt-4">
-                    {hub.links.map((link, lidx) => (
-                      <Link key={lidx} href={link.url} className="text-xs text-matrix-400 hover:text-white transition-colors flex items-center gap-1">
-                        <span>→</span> <span>{link.title}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Glossary / Entity Linking Panel */}
-            <div className="mt-8 p-6 rounded-2xl bg-surface-900/30 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="font-mono text-xs">
-                <span className="text-[#00ff88] uppercase font-bold tracking-wider">// Semantic Entity Relations: </span>
-                <span className="text-gray-500">Autonomous Systems (ASN) • IP Footprints • DNSSEC Keys • TLS Cipher Suites • CVE Metadata • Port Scan Telemetry</span>
-              </div>
-              <Link href="/tools" className="text-xs font-mono text-matrix-400 hover:underline uppercase tracking-wider shrink-0">
-                Launch Research Centers →
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= E-E-A-T AUTHOR & EDITORIAL TRUST SIGNALS ================= */}
-        <section className="py-24 bg-[#05080f] border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
               
               {/* Author Highlight Card */}
               <div className="bg-surface-900 border border-white/5 rounded-3xl p-8 md:p-10 flex flex-col justify-between shadow-xl">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-matrix-400/10 text-matrix-400 text-[10px] font-mono uppercase tracking-widest rounded mb-6">
-                    <Award className="w-3.5 h-3.5" /> Researcher & Lead Editor
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00ff88]/10 text-[#00ff88] text-[10px] font-mono uppercase tracking-widest rounded mb-6">
+                    <Award className="w-3.5 h-3.5" /> Lead Researcher & Founder
                   </div>
                   <h3 className="text-2xl font-display font-bold text-white mb-4">Surendra Reddy</h3>
                   <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-6 font-mono">
@@ -529,10 +444,10 @@ export default async function Page() {
                 </div>
                 <div className="flex items-center justify-between border-t border-white/5 pt-6 mt-6">
                   <div className="flex gap-4">
-                    <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-gray-400 hover:text-matrix-400 transition-colors flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3" /></a>
+                    <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-gray-400 hover:text-[#00ff88] transition-colors flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3" /></a>
                     <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-gray-400 hover:text-white transition-colors flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3" /></a>
                   </div>
-                  <Link href="/author/surendra-reddy" className="text-xs font-mono text-matrix-400 hover:underline uppercase tracking-widest">
+                  <Link href="/author/surendra-reddy" className="text-xs font-mono text-[#00ff88] hover:underline uppercase tracking-widest">
                     Author Profile →
                   </Link>
                 </div>
@@ -550,15 +465,15 @@ export default async function Page() {
                   </p>
                   <ul className="space-y-4 text-xs text-gray-400">
                     <li className="flex items-start gap-2">
-                      <span className="text-matrix-400 font-mono font-bold shrink-0">1.</span>
+                      <span className="text-[#00ff88] font-mono font-bold shrink-0">1.</span>
                       <span><strong>Technical Validation:</strong> Vulnerabilities are tested in lab parameters and cross-referenced with vendor security disclosures.</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-matrix-400 font-mono font-bold shrink-0">2.</span>
+                      <span className="text-[#00ff88] font-mono font-bold shrink-0">2.</span>
                       <span><strong>Zero Abuse Payload:</strong> We never distribute active exploit scripts. Our focus is configuration mitigation.</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-matrix-400 font-mono font-bold shrink-0">3.</span>
+                      <span className="text-[#00ff88] font-mono font-bold shrink-0">3.</span>
                       <span><strong>Responsible Disclosures:</strong> Unpatched vulnerabilities are escalated to registry administrators privately first.</span>
                     </li>
                   </ul>
@@ -573,9 +488,9 @@ export default async function Page() {
           </div>
         </section>
 
-        {/* ================= WEEKLY INTEL BRIEFING (Newsletter) ================= */}
-        <section className="py-24 bg-[#0a0d14] relative overflow-hidden">
-          <div className="absolute inset-0 bg-matrix-400/5 -z-10" />
+        {/* ================= 8. NEWSLETTER SECTION ================= */}
+        <section className="py-24 bg-[#05080f] relative overflow-hidden">
+          <div className="absolute inset-0 bg-[#00ff88]/5 -z-10 pointer-events-none" />
           <div className="max-w-3xl mx-auto px-6 text-center">
             <Mail className="w-12 h-12 text-[#00ff88] mx-auto mb-6" />
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 uppercase tracking-wider">Stay Ahead of Emerging Threat Vectors</h2>
@@ -584,12 +499,12 @@ export default async function Page() {
             </p>
             
             <NewsletterForm 
-              accentColor="bg-matrix-600 hover:bg-matrix-500"
-              buttonTextColor="text-white"
+              accentColor="bg-[#00ff88] hover:bg-[#00e077]"
+              buttonTextColor="text-surface-950"
               inputClass="px-6 py-4 w-full sm:w-96 text-sm"
-              buttonClass="px-8 py-4 text-xs font-mono tracking-widest"
+              buttonClass="px-8 py-4 text-xs font-mono tracking-widest font-bold"
             />
-            <p className="text-xs text-gray-600 mt-4 font-mono">Fact checked intelligence. 100% spam-free. Unsubscribe anytime.</p>
+            <p className="text-[10px] text-gray-600 mt-4 font-mono uppercase tracking-wider">Fact checked intelligence. 100% spam-free. Unsubscribe anytime.</p>
           </div>
         </section>
       </div>
