@@ -4,8 +4,8 @@ import { generateBaseMetadata } from '@/utils/metadata';
 import ScannerHubClient from '@/components/ScannerHubClient';
 
 export const metadata = generateBaseMetadata({
-  title: "Cybersecurity Scanner Hub - Passive Infrastructure Auditing Suite",
-  description: "Access ReconShield's dedicated Cybersecurity Scanner Hub. Passively audit HTTP security headers, inspect SSL/TLS cryptography configurations, validate SPF/DKIM/DMARC email records, scan open ports, and search threat intelligence databases—entirely free.",
+  title: "Passive Diagnostics Suite - Infrastructure Exposure Diagnostics | ReconShield",
+  description: "Validate email security (SPF/DMARC), inspect SSL cipher health, analyze HTTP security headers, and identify exposed services using passive infrastructure intelligence and non-intrusive diagnostics.",
   path: '/scanner'
 });
 
@@ -62,14 +62,47 @@ export default async function ScannerPage() {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "CollectionPage",
-        "@id": "https://reconshield.in/scanner#collection",
-        "name": "ReconShield Cybersecurity Scanner Hub",
-        "url": "https://reconshield.in/scanner",
-        "description": "Unified dashboard for passive cybersecurity audits and vulnerability scans. Audit HTTP headers, SSL certificates, DNS zones, and email validation settings.",
-        "publisher": {
-          "@id": "https://reconshield.in/#organization"
-        }
+        "@type": "SoftwareApplication",
+        "@id": "https://reconshield.in/scanner#software",
+        "name": "Passive Diagnostics Suite",
+        "operatingSystem": "All",
+        "applicationCategory": "SecurityApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Validate email security (SPF/DMARC), inspect SSL cipher health, analyze HTTP security headers, and identify exposed services using passive infrastructure intelligence and non-intrusive diagnostics."
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://reconshield.in/scanner#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How does the Passive Diagnostics Suite work?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The Passive Diagnostics Suite queries cached threat intelligence, public DNS records, Certificate Transparency logs, and globally aggregated network metadata. It does not send direct packets or run active intrusion payloads against the target domain."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Why is non-intrusive scanning important?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Non-intrusive analysis allows organizations and researchers to identify exposures without causing service disruptions, triggering security alarms, or violating compliance regulations regarding active penetration testing."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is infrastructure exposure?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Infrastructure exposure refers to visible services, misconfigured email records (like SPF/DMARC), weak SSL ciphers, and missing HTTP headers that could be leveraged by threat actors to compromise an organization's digital footprint."
+            }
+          }
+        ]
       },
       {
         "@type": "BreadcrumbList",
@@ -84,7 +117,7 @@ export default async function ScannerPage() {
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Scanner Hub",
+            "name": "Passive Diagnostics Suite",
             "item": "https://reconshield.in/scanner"
           }
         ]
@@ -94,7 +127,7 @@ export default async function ScannerPage() {
 
   return (
     <>
-      {/* Structured Schema Markup (CollectionPage and BreadcrumbList) */}
+      {/* Structured Schema Markup (SoftwareApplication, FAQPage, and BreadcrumbList) */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}

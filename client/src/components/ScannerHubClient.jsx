@@ -8,13 +8,13 @@ import {
   Shield, Lock, Layers, FileText, Cookie, Mail, Key, FileCheck, Server, Globe, Search, Network, 
   RefreshCw, Terminal, Cpu, Binary, AlertTriangle, ShieldAlert, LayoutTemplate, Database, Target, 
   ArrowRight, ArrowUpRight, Sparkles, Filter, X, CheckCircle2, ShieldCheck, Activity, Eye, Zap, 
-  Clock, Calendar, ChevronRight, HelpCircle
+  Clock, Calendar, ChevronRight, HelpCircle, BookOpen, BookOpenCheck, ShieldQuestion, HeartHandshake
 } from 'lucide-react';
 import { urlFor } from '@/utils/sanity';
+import DynamicDashboardClient from '@/components/DynamicDashboardClient';
 
-// Tool metadata mapping
+// Detailed Tool metadata mapping for the specific scanners list at the bottom
 const TOOLS_LIST = [
-  // Web Security
   {
     id: 'http-headers',
     name: 'HTTP Security Headers Scanner',
@@ -70,8 +70,6 @@ const TOOLS_LIST = [
     route: '/tools/http-headers',
     color: 'cyber'
   },
-
-  // Email Security
   {
     id: 'spf-checker',
     name: 'SPF Checker',
@@ -116,8 +114,6 @@ const TOOLS_LIST = [
     route: '/tools/dns-lookup',
     color: 'neon'
   },
-
-  // DNS & Infrastructure
   {
     id: 'dns-lookup',
     name: 'DNS Lookup',
@@ -162,8 +158,6 @@ const TOOLS_LIST = [
     route: '/tools/dns-lookup',
     color: 'matrix'
   },
-
-  // Network Security
   {
     id: 'port-scanner',
     name: 'Open Port Scanner',
@@ -208,8 +202,6 @@ const TOOLS_LIST = [
     route: '/tools/ip-lookup',
     color: 'red'
   },
-
-  // Threat Intelligence
   {
     id: 'waf-detector',
     name: 'WAF Detector',
@@ -258,7 +250,6 @@ const TOOLS_LIST = [
 
 const CATEGORIES = ['All', 'Web Security', 'Email Security', 'DNS & Infrastructure', 'Network Security', 'Threat Intelligence'];
 
-// Helper for Category Colors
 const CATEGORY_COLORS = {
   'Web Security': 'text-cyber-400 bg-cyber-500/10 border-cyber-500/20',
   'Email Security': 'text-purple-400 bg-purple-500/10 border-purple-500/20',
@@ -330,10 +321,8 @@ const AnimatedCounter = ({ value, duration = 2000 }) => {
 export default function ScannerHubClient({ latestPosts }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
-  
   const dashboardRef = useRef(null);
 
-  // Scroll to main tools container
   const handleScrollToTools = () => {
     if (dashboardRef.current) {
       dashboardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -355,130 +344,99 @@ export default function ScannerHubClient({ latestPosts }) {
     });
   }, [searchQuery, activeCategory]);
 
-  // Featured Tools details
-  const featuredTools = useMemo(() => {
-    return [
-      {
-        id: 'featured-headers',
-        name: 'HTTP Security Headers Scanner',
-        desc: 'Submit a target domain to receive an instant letter-grade (A to F) based on HTTP headers compliance auditing. Analyze Content Security Policy, strict Transport Layer protection headers, frame constraints, and other OWASP configuration recommendations.',
-        icon: Shield,
-        tag: 'Recommended',
-        badge: 'Web App Security',
-        route: '/tools/http-headers',
-        grade: 'A+',
-        details: 'Audit security headers (CSP, HSTS, CORS, X-Frame-Options)'
-      },
-      {
-        id: 'featured-email',
-        name: 'SPF / DKIM / DMARC Authentication Checker',
-        desc: 'Protect domain integrity from spear-phishing and Business Email Compromise (BEC) spoofs. This validator parses DNS zones, evaluates authentication policies, assesses alignment profiles, and flags weak quarantine options.',
-        icon: Mail,
-        tag: 'Popular',
-        badge: 'Email Threat Vector',
-        route: '/tools/email-security',
-        grade: 'Strict',
-        details: 'Validate DNS records, syntax validity, & alignment criteria'
-      },
-      {
-        id: 'featured-ssl',
-        name: 'SSL/TLS Cryptographic Certificate Auditor',
-        desc: 'Inspect the cipher configurations and trust chains of web servers. Audit certificate registration details, identify weak protocols (TLS 1.0, SSLv3), verify key renegotiation vulnerability status, and determine compliance postures.',
-        icon: Lock,
-        tag: 'Compliance Essential',
-        badge: 'Transport Security',
-        route: '/tools/ssl-checker',
-        grade: 'Secure',
-        details: 'Verify trust chains, cipher suites, & protocol version parameters'
-      }
-    ];
-  }, []);
-
   return (
-    <div className="relative">
+    <div className="relative bg-[#05080f] min-h-screen">
       
-      {/* 1. HERO SECTION */}
-      <section className="relative pt-32 pb-24 overflow-hidden border-b border-white/[0.04] bg-gradient-to-b from-[#0a0d14] to-[#05080f]">
+      {/* ================= 1. PRIMARY HERO CONSOLE ================= */}
+      <section className="relative pt-32 pb-24 overflow-hidden border-b border-white/[0.04] bg-[#070b12]">
         
-        {/* Neon blue/cyan blur lights */}
+        {/* Subtle grid background */}
+        <div className="absolute inset-0 bg-grid opacity-[0.25] pointer-events-none -z-10" />
+        
+        {/* Neon blue/cyan/purple ambient blurs */}
         <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-cyber-500/5 blur-[120px] rounded-full pointer-events-none -z-10" />
-        <div className="absolute top-1/3 right-1/4 translate-x-1/2 w-[400px] h-[400px] bg-matrix-500/5 blur-[130px] rounded-full pointer-events-none -z-10" />
-        
-        {/* Particle Overlay (Background aesthetics) */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,229,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(0,229,255,0.01)_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none -z-10" />
-        
-        {/* Cyber scan-line scan overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#00e5ff]/[0.015] to-transparent h-12 w-full animate-scan-fast pointer-events-none -z-10" />
+        <div className="absolute top-1/3 right-1/4 translate-x-1/2 w-[400px] h-[400px] bg-neon-500/5 blur-[130px] rounded-full pointer-events-none -z-10" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full bg-[#00ff88]/5 blur-[120px] rounded-full pointer-events-none -z-10" />
 
         <div className="max-w-[1200px] mx-auto px-6 relative z-10">
           
-          <div className="text-center max-w-4xl mx-auto">
-            {/* High-tech Badge */}
+          <div className="text-center max-w-4xl mx-auto space-y-6">
+            
+            {/* Cybersecurity diagnostics label badge */}
             <motion.div 
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-500/10 border border-cyber-500/20 text-cyber-400 text-xs font-mono uppercase tracking-widest mb-8"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-widest"
             >
-              <Zap className="w-3.5 h-3.5 animate-pulse text-cyber-400" />
-              <span>Unified Scanner Hub</span>
+              <Terminal className="w-3.5 h-3.5 text-blue-400" />
+              <span>Passive Diagnostics Suite</span>
             </motion.div>
 
-            <motion.h1 
+            {/* Page Title & Subtitle */}
+            <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-6xl font-display font-extrabold text-white tracking-tight uppercase leading-none mb-6"
+              className="space-y-3"
             >
-              Cybersecurity <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-400 via-matrix-400 to-[#8B5CF6]">Scanner Hub</span>
-            </motion.h1>
+              <h1 className="text-4xl sm:text-6xl font-display font-extrabold text-white tracking-tight uppercase leading-none">
+                Passive Diagnostics Suite
+              </h1>
+              <p className="text-lg sm:text-xl font-mono text-transparent bg-clip-text bg-gradient-to-r from-matrix-400 via-cyber-400 to-neon-400 uppercase tracking-widest font-bold">
+                Infrastructure Exposure Diagnostics
+              </p>
+            </motion.div>
 
+            {/* Description */}
             <motion.p 
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-gray-400 text-lg md:text-xl font-sans max-w-3xl mx-auto leading-relaxed mb-4"
+              className="text-gray-400 text-sm sm:text-base font-sans max-w-3xl mx-auto leading-relaxed"
             >
-              Advanced Security Analysis Tools for Web, Email, DNS, Network, and Infrastructure Protection.
+              Validate email security (SPF/DMARC), inspect SSL cipher health, analyze HTTP security headers, and identify exposed services using passive infrastructure intelligence and non-intrusive diagnostics.
             </motion.p>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
-              className="text-gray-500 text-xs sm:text-sm font-mono max-w-2xl mx-auto leading-relaxed mb-10"
-            >
-              // This page centralizes all security scanners previously accessible from the old homepage tools section into one dedicated scanner hub.
-            </motion.p>
-
-            {/* Action buttons */}
+            {/* Embedded Centerpiece Interactive Scanning Widget */}
             <motion.div 
-              initial={{ opacity: 0, y: 15 }}
+              initial={{ opacity: 0, y: 25 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="pt-4 max-w-3xl mx-auto text-left"
             >
-              <button 
-                onClick={handleScrollToTools}
-                className="w-full sm:w-auto px-8 py-4 bg-cyber-500 hover:bg-cyber-400 text-black text-xs font-mono font-bold uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_rgba(0,229,255,0.2)] hover:shadow-[0_0_30px_rgba(0,229,255,0.4)] flex items-center justify-center gap-2 group cursor-pointer"
-              >
-                <span>Start Scanning</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button 
-                onClick={handleScrollToTools}
-                className="w-full sm:w-auto px-8 py-4 bg-surface-900 border border-white/10 hover:border-cyber-400/50 hover:bg-surface-800 text-white text-xs font-mono font-bold uppercase tracking-widest rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <span>Explore Tools</span>
-                <Eye className="w-4 h-4 text-cyber-400" />
-              </button>
+              <DynamicDashboardClient />
             </motion.div>
+
+            {/* Passive Analysis Trust Indicators */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="pt-8 border-t border-white/5 flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-xs font-mono text-gray-500 uppercase tracking-wider"
+            >
+              {[
+                "100% Passive Diagnostics",
+                "Zero Direct Packets Sent",
+                "Cached Threat Intelligence Only",
+                "RFC-Compliant Analysis",
+                "Non-Intrusive Infrastructure Visibility"
+              ].map((badge, idx) => (
+                <div key={idx} className="flex items-center gap-2 hover:text-white transition-colors duration-200">
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#00ff88]/10 text-[#00ff88] animate-pulse-glow shrink-0">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                  </span>
+                  <span>{badge}</span>
+                </div>
+              ))}
+            </motion.div>
+
           </div>
 
         </div>
       </section>
 
-      {/* 5. SECURITY STATS SECTION */}
+      {/* ================= 2. SECURITY STATS SECTION ================= */}
       <section className="bg-[#05080f] py-12 border-b border-white/[0.04]">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -504,111 +462,130 @@ export default function ScannerHubClient({ latestPosts }) {
         </div>
       </section>
 
-      {/* 4. FEATURED TOOLS SECTION */}
+      {/* ================= 3. ADVANCED DIAGNOSTICS CARD MODULES SECTION ================= */}
       <section className="py-24 bg-[#0a0d14]/30 border-b border-white/[0.04] relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-cyber-500/[0.015] blur-[150px] rounded-full pointer-events-none -z-10" />
+        
         <div className="max-w-[1200px] mx-auto px-6">
           
-          <div className="mb-12">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-cyber-400" />
-              <span className="font-mono text-xs text-cyber-400 font-bold uppercase tracking-widest">// SECURE FIRST LINE OF DEFENSE</span>
+          <div className="text-center mb-16 space-y-2">
+            <div className="flex items-center justify-center gap-2">
+              <Sparkles className="w-4 h-4 text-matrix-400" />
+              <span className="font-mono text-xs text-matrix-400 font-bold uppercase tracking-widest">// CRITICAL AUDIT VECTORS</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mt-2 uppercase tracking-wide">Featured Exposure Scanners</h2>
-            <p className="text-gray-400 text-sm mt-1">High-impact audit utilities recommended for initial digital footprints mapping.</p>
+            <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">Advanced Diagnostics Silos</h2>
+            <p className="text-gray-400 text-sm max-w-2xl mx-auto">
+              Our passive diagnostics system operates across six core parameters to evaluate your domain's defensive architecture.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {featuredTools.map((tool) => {
-              const Icon = tool.icon;
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Email Authentication",
+                icon: Mail,
+                desc: "Audit domain verification and mail transport records to prevent brand impersonation and spoofing.",
+                items: ["SPF configuration check", "DKIM selector validation", "DMARC policy alignment", "BIMI validation parameters", "MX routing diagnostics"],
+                accent: "border-purple-500/10 group-hover:border-purple-500/30 text-purple-400 bg-purple-500/[0.02]"
+              },
+              {
+                title: "SSL/TLS Diagnostics",
+                icon: Lock,
+                desc: "Inspect cryptographic layer health, cipher suites strength, and verification chain parameters.",
+                items: ["Cipher suite audits", "Protocol version checks", "HSTS deployment audits", "Certificate chain validation", "Cryptographic expiration"],
+                accent: "border-cyber-500/10 group-hover:border-cyber-500/30 text-cyber-400 bg-cyber-500/[0.02]"
+              },
+              {
+                title: "HTTP Security Headers",
+                icon: Layers,
+                desc: "Analyze client-side vulnerability mitigation policies to prevent clickjacking and script injection.",
+                items: ["Content Security Policy (CSP)", "Strict-Transport-Security", "X-Frame-Options rules", "Permissions-Policy validation", "CORS policy check"],
+                accent: "border-matrix-500/10 group-hover:border-matrix-500/30 text-[#00ff88] bg-[#00ff88]/[0.02]"
+              },
+              {
+                title: "Infrastructure Exposure",
+                icon: Server,
+                desc: "Passively identify public-facing entry points, hosting configurations, and boundary defenses.",
+                items: ["Open ports passive discovery", "Banner grab telemetry", "CDN & WAF detection signatures", "ASN registry mapping", "Hosting co-location verification"],
+                accent: "border-red-500/10 group-hover:border-red-500/30 text-red-400 bg-red-500/[0.02]"
+              },
+              {
+                title: "DNS Intelligence",
+                icon: Globe,
+                desc: "Audit domain name system zone security configurations, integrity markers, and record mappings.",
+                items: ["DNSSEC cryptographic keys", "Nameserver authority validation", "TXT record audits", "MX record inventories", "Zone transfer checks"],
+                accent: "border-blue-500/10 group-hover:border-blue-500/30 text-blue-400 bg-blue-500/[0.02]"
+              },
+              {
+                title: "Threat Intelligence",
+                icon: Target,
+                desc: "Scan historical reputation records, threat activity logs, and system fingerprints.",
+                items: ["IP & Domain reputation check", "Known bad threat feed cross", "Passive network fingerprints", "Historical exposure trends", "Registry abuse database queries"],
+                accent: "border-amber-500/10 group-hover:border-amber-500/30 text-amber-400 bg-amber-500/[0.02]"
+              }
+            ].map((module, idx) => {
+              const Icon = module.icon;
               return (
                 <div 
-                  key={tool.id} 
-                  className="group flex flex-col justify-between p-8 rounded-3xl bg-[#0d1117]/60 backdrop-blur-xl border border-white/[0.06] hover:border-cyber-400/40 hover:shadow-[0_0_35px_rgba(0,229,255,0.05)] transition-all duration-300 relative overflow-hidden"
+                  key={idx} 
+                  className={`group flex flex-col justify-between p-8 rounded-3xl border bg-surface-900/40 backdrop-blur-xl transition-all duration-300 hover:shadow-2xl relative overflow-hidden ${module.accent}`}
                 >
-                  {/* Subtle hover background highlight */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyber-400/[0.02] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                  
-                  {/* Neon border glow bar */}
-                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-cyber-400/10 via-cyber-400 to-cyber-400/10 opacity-30 group-hover:opacity-100 transition-opacity duration-300" />
-
                   <div>
-                    {/* Top Row: Icon + Badges */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-cyber-500/10 border border-cyber-500/20 flex items-center justify-center text-cyber-400 group-hover:scale-105 transition-transform duration-300">
-                        <Icon className="w-6 h-6" />
+                    {/* Top Row: Icon */}
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-12 h-12 rounded-2xl bg-surface-950 border border-white/5 flex items-center justify-center text-gray-400 group-hover:scale-105 transition-transform duration-300">
+                        <Icon className="w-5 h-5 group-hover:text-white transition-colors" />
                       </div>
-                      
-                      <div className="flex items-center gap-2 font-mono">
-                        <span className="text-[9px] font-bold text-[#00ff88] bg-[#00ff88]/10 border border-[#00ff88]/20 px-2 py-0.5 rounded uppercase tracking-wider">
-                          {tool.tag}
-                        </span>
-                        <span className="text-[9px] text-gray-400 bg-surface-950 border border-white/5 px-2 py-0.5 rounded tracking-wider">
-                          {tool.grade}
-                        </span>
-                      </div>
+                      <h3 className="text-lg font-bold text-white group-hover:text-white transition-colors tracking-wide">
+                        {module.title}
+                      </h3>
                     </div>
-
-                    <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyber-400 transition-colors tracking-wide">
-                      {tool.name}
-                    </h3>
                     
-                    <p className="text-sm text-gray-400 leading-relaxed mb-6">
-                      {tool.desc}
+                    <p className="text-xs text-gray-400 leading-relaxed mb-6">
+                      {module.desc}
                     </p>
 
-                    <div className="p-3.5 rounded-xl bg-surface-950/60 border border-white/[0.04] mb-8">
-                      <p className="text-xs font-mono text-gray-500 flex items-start gap-1.5">
-                        <span className="text-cyber-400 shrink-0 font-bold">»</span>
-                        <span className="leading-snug">{tool.details}</span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t border-white/[0.04] flex items-center justify-between mt-auto">
-                    <span className="text-[10px] font-mono text-gray-600 uppercase tracking-widest">Featured Module</span>
-                    <Link 
-                      href={tool.route}
-                      className="inline-flex items-center gap-1.5 text-xs font-mono text-cyber-400 hover:text-white transition-colors uppercase tracking-widest font-bold"
-                    >
-                      <span>Launch Scanner</span>
-                      <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </Link>
+                    <ul className="space-y-2.5">
+                      {module.items.map((item, itemIdx) => (
+                        <li key={itemIdx} className="flex items-center gap-2 text-xs font-mono text-gray-500">
+                          <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 </div>
               );
             })}
           </div>
+
         </div>
       </section>
 
-      {/* 2. MAIN TOOLS DASHBOARD SECTION (MOST IMPORTANT) */}
-      <section ref={dashboardRef} className="py-24 bg-[#05080f] scroll-mt-16">
+      {/* ================= 4. DETAILED SCANNERS DASHBOARD ================= */}
+      <section ref={dashboardRef} className="py-24 bg-[#05080f] border-b border-white/[0.04]">
         <div className="max-w-[1200px] mx-auto px-6">
           
           <div className="text-center mb-12">
             <span className="font-mono text-xs text-cyber-400 font-bold uppercase tracking-widest">// TARGET AUDIT ENGINES</span>
-            <h2 className="text-3xl font-display font-bold text-white mt-2 uppercase tracking-wide">ReconShield Defense Dashboard</h2>
+            <h2 className="text-3xl font-display font-bold text-white mt-2 uppercase tracking-wide">Granular Audit Modules</h2>
             <p className="text-gray-400 text-sm max-w-2xl mx-auto mt-2 leading-relaxed">
-              Launch defensive network, web, infrastructure, threat intelligence, and compliance assessment scans using passive indicators without targeting payloads directly.
+              Launch targeted defensive checks for specific protocols or layers. Enter queries to filter our active modular database.
             </p>
           </div>
 
-          {/* 3. SEARCH BAR AND CATEGORY TABS CONTROLLER */}
+          {/* Search bar & categories filter */}
           <div className="p-6 rounded-3xl bg-[#0d1117]/50 border border-white/[0.05] shadow-2xl relative overflow-hidden mb-12">
-            
-            {/* Cyber glow background accent */}
             <div className="absolute -top-16 -right-16 w-48 h-48 bg-cyber-500/5 blur-[60px] rounded-full pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
-              
               {/* Tool Search Bar */}
               <div className="lg:col-span-1 relative flex items-center bg-surface-950 border border-white/10 rounded-2xl px-4 py-1.5 transition-all focus-within:border-cyber-400/50 focus-within:ring-1 focus-within:ring-cyber-400/50">
                 <Search className="w-5 h-5 text-gray-500 shrink-0" />
                 <input
                   type="text"
                   className="w-full bg-transparent py-2.5 pl-3 pr-8 text-white focus:outline-none font-mono text-sm placeholder:font-sans placeholder:text-gray-500"
-                  placeholder="Search security tools…"
+                  placeholder="Filter modular scanners..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -627,7 +604,7 @@ export default function ScannerHubClient({ latestPosts }) {
               <div className="lg:col-span-2 flex flex-col gap-2">
                 <div className="flex items-center gap-1.5 text-xs font-mono text-gray-500 uppercase tracking-widest pl-1">
                   <Filter className="w-3.5 h-3.5 text-cyber-400" /> 
-                  <span>Filter security class</span>
+                  <span>Filter by category</span>
                 </div>
                 <div className="flex overflow-x-auto pb-1 gap-2 max-w-full hide-scrollbar">
                   {CATEGORIES.map((category) => {
@@ -648,7 +625,6 @@ export default function ScannerHubClient({ latestPosts }) {
                   })}
                 </div>
               </div>
-
             </div>
           </div>
 
@@ -661,7 +637,7 @@ export default function ScannerHubClient({ latestPosts }) {
               </h3>
             </div>
             <div className="text-[10px] font-mono text-gray-500 bg-[#0d1117] border border-white/5 px-3 py-1 rounded-full uppercase tracking-wider">
-              Showing <span className="text-cyber-400 font-bold">{filteredTools.length}</span> of <span className="text-gray-400 font-bold">{TOOLS_LIST.length}</span> scanners
+              Showing <span className="text-cyber-400 font-bold">{filteredTools.length}</span> of <span className="text-gray-400 font-bold">{TOOLS_LIST.length}</span> modules
             </div>
           </div>
 
@@ -669,13 +645,7 @@ export default function ScannerHubClient({ latestPosts }) {
           <AnimatePresence mode="popLayout">
             {filteredTools.length > 0 ? (
               <motion.div 
-                variants={{
-                  show: {
-                    transition: {
-                      staggerChildren: 0.03
-                    }
-                  }
-                }}
+                variants={{ show: { transition: { staggerChildren: 0.03 } } }}
                 initial="hidden"
                 animate="show"
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
@@ -686,74 +656,69 @@ export default function ScannerHubClient({ latestPosts }) {
                   
                   return (
                     <motion.div
-                      layout
-                      key={tool.id}
-                      variants={{
-                        hidden: { opacity: 0, y: 15 },
-                        show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 120, damping: 18 } }
-                      }}
-                      className="group flex flex-col justify-between p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyber-400/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(0,229,255,0.02)] relative overflow-hidden"
-                    >
-                      {/* Hover glow background card accent */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-cyber-400/[0.015] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                       layout
+                       key={tool.id}
+                       variants={{
+                         hidden: { opacity: 0, y: 15 },
+                         show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 120, damping: 18 } }
+                       }}
+                       className="group flex flex-col justify-between p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyber-400/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(0,229,255,0.02)] relative overflow-hidden"
+                     >
+                       <div className="absolute inset-0 bg-gradient-to-br from-cyber-400/[0.015] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-                      <div>
-                        {/* Header: Icon & Category badge */}
-                        <div className="flex items-center justify-between mb-5">
-                          <div className="w-11 h-11 rounded-xl bg-surface-950 border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-cyber-500/10 group-hover:border-cyber-500/20 group-hover:text-cyber-400 transition-all duration-300">
-                            <Icon className="w-5 h-5" />
-                          </div>
-                          
-                          <span className={`text-[8px] font-mono font-bold px-2 py-0.5 rounded border ${categoryColor}`}>
-                            {tool.category.toUpperCase()}
-                          </span>
-                        </div>
+                       <div>
+                         {/* Header: Icon & Category badge */}
+                         <div className="flex items-center justify-between mb-5">
+                           <div className="w-11 h-11 rounded-xl bg-surface-950 border border-white/10 flex items-center justify-center text-gray-400 group-hover:bg-cyber-500/10 group-hover:border-cyber-500/20 group-hover:text-cyber-400 transition-all duration-300">
+                             <Icon className="w-5 h-5" />
+                           </div>
+                           
+                           <span className={`text-[8px] font-mono font-bold px-2 py-0.5 rounded border ${categoryColor}`}>
+                             {tool.category.toUpperCase()}
+                           </span>
+                         </div>
 
-                        {/* Title */}
-                        <h4 className="text-base font-bold text-white mb-2 group-hover:text-cyber-400 transition-colors flex items-center gap-1.5 font-display tracking-wide uppercase">
-                          {tool.name}
-                        </h4>
+                         {/* Title */}
+                         <h4 className="text-base font-bold text-white mb-2 group-hover:text-cyber-400 transition-colors flex items-center gap-1.5 font-display tracking-wide uppercase">
+                           {tool.name}
+                         </h4>
 
-                        {/* Description */}
-                        <p className="text-xs text-gray-400 leading-relaxed mb-6">
-                          {tool.desc}
-                        </p>
+                         {/* Description */}
+                         <p className="text-xs text-gray-400 leading-relaxed mb-6">
+                           {tool.desc}
+                         </p>
 
-                        {/* Tags list */}
-                        <div className="flex flex-wrap gap-1.5 mb-6">
-                          {tool.tags.map((tag) => (
-                            <span key={tag} className="text-[9px] font-mono text-gray-500 bg-surface-950 border border-white/5 px-2 py-0.5 rounded">
-                              #{tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
+                         {/* Tags list */}
+                         <div className="flex flex-wrap gap-1.5 mb-6">
+                           {tool.tags.map((tag) => (
+                             <span key={tag} className="text-[9px] font-mono text-gray-500 bg-surface-950 border border-white/5 px-2 py-0.5 rounded">
+                               #{tag}
+                             </span>
+                           ))}
+                         </div>
+                       </div>
 
-                      {/* Footer border & actions */}
-                      <div className="pt-4 border-t border-white/[0.04] flex items-center justify-between mt-auto">
-                        <span className="text-[9px] font-mono text-gray-600 uppercase tracking-widest">{tool.badge}</span>
-                        <Link 
-                          href={tool.route}
-                          className="inline-flex items-center gap-1 text-xs font-mono text-cyber-400 hover:text-white transition-colors uppercase tracking-widest font-bold"
-                        >
-                          <span>Launch</span>
-                          <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                        </Link>
-                      </div>
+                       {/* Footer border & actions */}
+                       <div className="pt-4 border-t border-white/[0.04] flex items-center justify-between mt-auto">
+                         <span className="text-[9px] font-mono text-gray-600 uppercase tracking-widest">{tool.badge}</span>
+                         <Link 
+                           href={tool.route}
+                           className="inline-flex items-center gap-1 text-xs font-mono text-cyber-400 hover:text-white transition-colors uppercase tracking-widest font-bold"
+                         >
+                           <span>Launch Page</span>
+                           <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                         </Link>
+                       </div>
                     </motion.div>
                   );
                 })}
               </motion.div>
             ) : (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="py-16 text-center border border-white/5 rounded-2xl bg-surface-900/60 max-w-md mx-auto shadow-xl"
-              >
+              <div className="py-16 text-center border border-white/5 rounded-2xl bg-surface-900/60 max-w-md mx-auto shadow-xl">
                 <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-gray-500">
                   <X className="w-6 h-6" />
                 </div>
-                <h4 className="text-white font-bold mb-1">No security modules found</h4>
+                <h4 className="text-white font-bold mb-1">No modular checks found</h4>
                 <p className="text-gray-400 text-xs font-mono mb-6 px-6 leading-relaxed">
                   We couldn't locate any scanners matching "{searchQuery}" under the category "{activeCategory}".
                 </p>
@@ -761,17 +726,130 @@ export default function ScannerHubClient({ latestPosts }) {
                   onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
                   className="px-5 py-2 bg-cyber-500/10 border border-cyber-500/20 text-cyber-400 text-xs font-mono font-bold rounded-xl hover:bg-cyber-500/20 transition-all uppercase tracking-widest cursor-pointer"
                 >
-                  Reset Search filter
+                  Reset filters
                 </button>
-              </motion.div>
+              </div>
             )}
           </AnimatePresence>
 
         </div>
       </section>
 
-      {/* 6. RECENT SECURITY ARTICLES SECTION */}
-      <section className="py-24 bg-[#0a0d14]/30 border-t border-b border-white/[0.04]">
+      {/* ================= 5. EDUCATIONAL SECTIONS (SEO & ADSENSE ADHERENCE) ================= */}
+      <section className="py-24 bg-[#0a0d14]/40 border-b border-white/5 relative">
+        <div className="max-w-[1200px] mx-auto px-6">
+          
+          <div className="text-center mb-16 space-y-2">
+            <div className="flex items-center justify-center gap-2">
+              <ShieldQuestion className="w-4.5 h-4.5 text-cyber-400" />
+              <span className="font-mono text-xs text-cyber-400 font-bold uppercase tracking-widest">// SECURE METHODOLOGY & EDUCATION</span>
+            </div>
+            <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">Understanding Passive Security Audits</h2>
+            <p className="text-gray-400 text-sm max-w-2xl mx-auto">
+              Learn how non-intrusive metadata evaluation protects organizational resources without creating risk or breaking compliance guidelines.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-stretch">
+            
+            <div className="p-8 rounded-3xl border border-white/5 bg-surface-900/30 hover:border-white/10 transition-colors">
+              <h3 className="text-lg font-bold text-white mb-3 tracking-wide uppercase font-display">
+                1. How Passive Diagnostics Work
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Rather than deploying network packets directly to target servers (which can mimic malicious activity), passive diagnostics compile data from cached threat intelligence registries, global DNS databases, Certificate Transparency (CT) logs, and registrar records. This enables quick evaluations of configuration posture entirely from pre-aggregated records without interacting with client servers.
+              </p>
+            </div>
+
+            <div className="p-8 rounded-3xl border border-white/5 bg-surface-900/30 hover:border-white/10 transition-colors">
+              <h3 className="text-lg font-bold text-white mb-3 tracking-wide uppercase font-display">
+                2. Why Non-Intrusive Analysis Matters
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Modern enterprise compliance frameworks (like GDPR, HIPAA, SOC 2, and PCI-DSS) restrict unauthorized penetration testing. Passive auditing allows administrators to survey external parameters (such as email authentication syntax or SSL configurations) safely. This guarantees that your testing is compliant, legal, and does not trigger security alarms.
+              </p>
+            </div>
+
+            <div className="p-8 rounded-3xl border border-white/5 bg-surface-900/30 hover:border-white/10 transition-colors">
+              <h3 className="text-lg font-bold text-white mb-3 tracking-wide uppercase font-display">
+                3. Understanding Infrastructure Exposure
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Exposures occur when services or settings reveal internal parameters to the public index. Examples include public BGP routes, active administrative port banners (SSH, RDP), or incomplete security records. Auditing these indicators regularly helps organizations maintain clean digital perimeter hygiene.
+              </p>
+            </div>
+
+            <div className="p-8 rounded-3xl border border-white/5 bg-surface-900/30 hover:border-white/10 transition-colors">
+              <h3 className="text-lg font-bold text-white mb-3 tracking-wide uppercase font-display">
+                4. Security Best Practices
+              </h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Maintain high-quality defensive layers by implementing strict DMARC alignment (`p=reject`), validating SPF record lookup thresholds, selecting modern TLS 1.3 cryptographic suites, deploying Content Security Policies (CSP) to restrict script sources, and isolating public database servers behind private virtual subnet bounds.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* ================= 6. CALL TO ACTIONS (INTERNAL BLOG LINKING) ================= */}
+      <section className="py-20 bg-[#070b12] border-b border-white/5">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="p-8 md:p-12 rounded-3xl border border-cyber-500/20 bg-gradient-to-br from-[#0d1117] via-surface-900/60 to-transparent shadow-2xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(0,229,255,0.02),transparent_40%)] pointer-events-none" />
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+              <div className="lg:col-span-7">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#00ff88]/10 text-[#00ff88] text-[10px] font-mono uppercase tracking-widest mb-4">
+                  <HeartHandshake className="w-3.5 h-3.5" /> 
+                  <span>Security Guidance Portal</span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-4 uppercase tracking-wide">
+                  Explore Defensive Security Publications
+                </h2>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  Deep dive into our peer-reviewed threat intelligence reports, cryptographic implementation handbooks, and OSINT defense methodologies written by industry experts.
+                </p>
+              </div>
+
+              <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Link 
+                  href="/blog"
+                  className="w-full text-center px-4 py-3.5 bg-surface-950 hover:bg-surface-900 border border-white/10 hover:border-cyber-400/40 text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span>Read Security Research</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link 
+                  href="/category/threat-intelligence"
+                  className="w-full text-center px-4 py-3.5 bg-surface-950 hover:bg-surface-900 border border-white/10 hover:border-cyber-400/40 text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span>Explore Threat Intel</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link 
+                  href="/blog/spf-dkim-dmarc-blueprint"
+                  className="w-full text-center px-4 py-3.5 bg-surface-950 hover:bg-surface-900 border border-white/10 hover:border-[#00ff88]/40 text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span>Learn SPF/DMARC</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+                <Link 
+                  href="/blog/ssl-tls-regulatory-compliance"
+                  className="w-full text-center px-4 py-3.5 bg-surface-950 hover:bg-surface-900 border border-white/10 hover:border-cyber-400/40 text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span>View SSL/TLS Guides</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ================= 7. RECENT CYBERSECURITY ARTICLES ================= */}
+      <section className="py-24 bg-[#0a0d14]/30 border-b border-white/[0.04]">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
             <div>
@@ -810,7 +888,7 @@ export default function ScannerHubClient({ latestPosts }) {
                   key={post._id}
                   className="group flex flex-col bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all duration-300 rounded-2xl overflow-hidden shadow-lg"
                 >
-                  <Link href={`/blog/${post.slug}`} className="block relative aspect-video w-full bg-surface-950 overflow-hidden border-b border-white/5">
+                  <Link href={`/blog/${post.slug?.current || post.slug}`} className="block relative aspect-video w-full bg-surface-950 overflow-hidden border-b border-white/5">
                     {post.mainImage ? (
                       <Image
                         src={urlFor(post.mainImage).width(360).height(202).fit('crop').auto('format').url()}
@@ -832,7 +910,7 @@ export default function ScannerHubClient({ latestPosts }) {
                       {post.categories?.[0]?.title || 'Threat Intel'}
                     </span>
                     
-                    <Link href={`/blog/${post.slug}`}>
+                    <Link href={`/blog/${post.slug?.current || post.slug}`}>
                       <h4 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-purple-400 transition-colors line-clamp-2 uppercase font-display tracking-wide">
                         {post.title}
                       </h4>
@@ -850,53 +928,6 @@ export default function ScannerHubClient({ latestPosts }) {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. CTA SECTION */}
-      <section className="py-24 bg-[#05080f] relative overflow-hidden">
-        
-        {/* Glow circle overlay */}
-        <div className="absolute bottom-0 right-0 w-[450px] h-[450px] bg-cyber-500/[0.015] blur-[150px] rounded-full pointer-events-none -z-10" />
-        <div className="absolute top-0 left-0 w-[450px] h-[450px] bg-matrix-500/[0.01] blur-[150px] rounded-full pointer-events-none -z-10" />
-
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="p-8 md:p-12 rounded-3xl border border-cyber-500/20 bg-gradient-to-br from-[#0d1117] via-surface-900 to-transparent relative overflow-hidden shadow-2xl">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(0,229,255,0.02),transparent_40%)] pointer-events-none" />
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative z-10">
-              
-              <div className="lg:col-span-2">
-                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-cyber-500/10 text-cyber-400 text-[10px] font-mono uppercase tracking-widest mb-4">
-                  <ShieldCheck className="w-3.5 h-3.5" /> 
-                  <span>Infrastructure Guard</span>
-                </div>
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-4 uppercase tracking-wide">
-                  Secure Your Infrastructure Before Attackers Find Weaknesses
-                </h2>
-                <p className="text-gray-400 text-sm md:text-base max-w-2xl leading-relaxed">
-                  Validate DNS settings, scan SSL certificates, and check HTTP security headers passive. Keep tracking of exposed digital assets and remediate configuration risks today.
-                </p>
-              </div>
-
-              <div className="lg:col-span-1 flex flex-col sm:flex-row lg:flex-col gap-4 justify-end">
-                <Link 
-                  href="/tools/vulnerability-scanner"
-                  className="w-full text-center px-6 py-4 bg-cyber-500 hover:bg-cyber-400 text-black text-xs font-mono font-bold uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_rgba(0,229,255,0.15)] hover:shadow-[0_0_30px_rgba(0,229,255,0.3)] block"
-                >
-                  Start Free Scan
-                </Link>
-                <Link 
-                  href="/blog"
-                  className="w-full text-center px-6 py-4 bg-surface-950 hover:bg-surface-900 border border-white/10 hover:border-cyber-400/40 text-white text-xs font-mono font-bold uppercase tracking-widest rounded-xl transition-all block"
-                >
-                  Explore Intelligence Hub
-                </Link>
-              </div>
-
-            </div>
-
           </div>
         </div>
       </section>

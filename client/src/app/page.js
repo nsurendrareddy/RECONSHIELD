@@ -10,7 +10,6 @@ import {
 
 import { generateBaseMetadata } from '@/utils/metadata';
 
-import DynamicDashboardClient from '@/components/DynamicDashboardClient';
 import NewsletterForm from '@/components/NewsletterForm';
 import TopActiveThreats from '@/components/TopActiveThreats';
 import HeroSocVisual from '@/components/HeroSocVisual';
@@ -369,51 +368,83 @@ export default async function Page() {
           </div>
         </section>
 
-        {/* ================= 6. FEATURED SCANNER PREVIEW ================= */}
-        <section className="py-24 bg-[#05080f] relative border-b border-white/5">
+        {/* ================= 6. COMPACT SCANNER CTA BANNER ================= */}
+        <section className="py-20 bg-[#05080f] relative border-b border-white/5 overflow-hidden">
+          {/* Accent glow lights */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-cyber-500/[0.02] blur-[100px] rounded-full pointer-events-none -z-10" />
+          <div className="absolute top-0 right-10 w-[200px] h-[200px] bg-[#00ff88]/[0.01] blur-[80px] rounded-full pointer-events-none -z-10" />
+
           <div className="max-w-[1200px] mx-auto px-6">
-            <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-widest mb-4">
-                <Terminal className="w-4 h-4" />
-                <span>Passive Diagnostics Suite</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 uppercase">Infrastructure Exposure Diagnostics</h2>
-              <p className="text-gray-400 max-w-2xl mx-auto text-sm leading-relaxed">
-                Validate email security (SPF/DMARC), inspect SSL cipher health, check HTTP headers, and locate open ports. Our passive audit queries cached global threat logs with zero traffic sent directly to targets.
-              </p>
-            </div>
-
-            {/* Embedded Scanning Widget in a sleek frame */}
-            <div className="max-w-3xl mx-auto bg-surface-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl relative">
-              <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/5">
-                <div className="flex gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/30" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/30" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-green-500/30" />
-                </div>
-                <span className="font-mono text-[10px] text-gray-500 uppercase tracking-widest">Authorized Research Console</span>
-              </div>
-              <DynamicDashboardClient />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
               
-              <div className="mt-6 flex items-center justify-center gap-8 text-[11px] font-mono text-gray-500 uppercase tracking-wider">
-                <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> 100% Passive</div>
-                <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> Zero Packets Sent</div>
-                <div className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> RFC Compliance Only</div>
+              {/* Left Column: CTA Title and Details */}
+              <div className="lg:col-span-7 space-y-6 text-left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyber-500/10 text-cyber-400 text-[10px] font-mono uppercase tracking-widest rounded">
+                  <Terminal className="w-3.5 h-3.5" /> Passive Auditing Suite
+                </div>
+                
+                <h2 className="text-3xl md:text-4xl font-display font-bold text-white uppercase tracking-tight leading-tight">
+                  Launch Passive Diagnostics Suite
+                </h2>
+                
+                <p className="text-gray-400 text-sm leading-relaxed max-w-xl">
+                  Run non-intrusive scans on target domains. Verify email security profiles, audit SSL/TLS cipher suites, and inspect response headers safely without direct packets targeting the server.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-4 pt-2">
+                  <Link 
+                    href="/scanner" 
+                    className="px-6 py-3.5 bg-[#00ff88] hover:bg-[#00e077] text-surface-950 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(0,255,136,0.15)] flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>Launch Scanner</span>
+                    <ArrowRight className="w-4 h-4 text-surface-950" />
+                  </Link>
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-gray-500">
+                    <CheckCircle2 className="w-4 h-4 text-[#00ff88] shrink-0" />
+                    <span>Authorized Research Policy Compliant</span>
+                  </div>
+                </div>
               </div>
-            </div>
 
-            <div className="flex justify-center mt-10">
-              <Link href="/scanner" className="inline-flex items-center gap-2 px-6 py-3 bg-[#00ff88]/10 hover:bg-[#00ff88]/20 text-[#00ff88] border border-[#00ff88]/25 rounded-xl text-xs font-mono uppercase tracking-widest transition-all">
-                Access Central Scanner Dashboard <ChevronRight className="w-4 h-4" />
-              </Link>
-            </div>
+              {/* Right Column: Subtle Scanner Console Preview */}
+              <div className="lg:col-span-5 relative">
+                <div className="w-full rounded-2xl border border-white/10 bg-surface-900/50 backdrop-blur-xl p-5 shadow-xl relative overflow-hidden">
+                  <div className="absolute inset-0 bg-grid opacity-[0.1] pointer-events-none" />
+                  
+                  {/* Mock Window Header */}
+                  <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/5">
+                    <div className="flex gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-red-500/30" />
+                      <span className="w-2 h-2 rounded-full bg-yellow-500/30" />
+                      <span className="w-2 h-2 rounded-full bg-green-500/30" />
+                    </div>
+                    <span className="font-mono text-[8px] text-gray-500 uppercase tracking-widest">passive_preview.sh</span>
+                  </div>
 
-            {/* Regulatory Compliance & Guidelines Alert */}
-            <div className="mt-12 max-w-2xl mx-auto p-4 rounded-xl bg-amber-500/5 border border-amber-500/10 text-center">
-              <p className="text-amber-500 text-[10px] font-mono m-0 uppercase tracking-widest flex items-center justify-center gap-2">
-                <AlertTriangle className="w-4 h-4 shrink-0" />
-                Defensive Auditing Notice: ReconShield provides passive assessments under authorized security guidelines.
-              </p>
+                  {/* Mock Input Bar */}
+                  <div className="bg-surface-950 border border-white/5 rounded-xl px-4 py-2.5 mb-4 flex items-center justify-between">
+                    <span className="font-mono text-xs text-gray-400">target: <span className="text-[#00ff88]">example.com</span></span>
+                    <span className="font-mono text-[9px] text-[#00ff88] bg-[#00ff88]/10 px-2 py-0.5 rounded tracking-widest animate-pulse uppercase">active</span>
+                  </div>
+
+                  {/* Mock Output Rows */}
+                  <div className="space-y-2.5 font-mono text-[10px] text-gray-400">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-500 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> Email Auth (SPF/DMARC)</span>
+                      <span className="text-[#00ff88]">[VALID]</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-500 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> SSL/TLS Cipher Suites</span>
+                      <span className="text-cyber-400">[SECURE]</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-500 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> HTTP Security Headers</span>
+                      <span className="text-purple-400">[AUDITED]</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </section>
