@@ -41,3 +41,21 @@ export function generateBaseMetadata({
     },
   };
 }
+
+export const getCategoryFallbackImage = (categoryName) => {
+  const name = (categoryName || '').toLowerCase().trim();
+  if (name.includes('web-security') || name.includes('web security') || name.includes('cloud') || name.includes('ssl')) {
+    return '/blog/ssl.png';
+  }
+  if (name.includes('osint') || name.includes('analysis')) {
+    return '/blog/osint.png';
+  }
+  if (name.includes('network') || name.includes('assets') || name.includes('dns') || name.includes('email')) {
+    return '/blog/dns.png';
+  }
+  if (name.includes('domain') || name.includes('surface') || name.includes('fraud')) {
+    return '/blog/domain.png';
+  }
+  return '/blog/vuln.png';
+};
+

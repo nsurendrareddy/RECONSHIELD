@@ -1,8 +1,8 @@
 import { client, urlFor } from '@/utils/sanity';
 import { Shield, Target, Search, Network, Cpu, Lock, CheckCircle2, Globe, Clock, ChevronRight, AlertTriangle, BookOpen } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { generateBaseMetadata } from '@/utils/metadata';
+import BlogCard from '@/components/BlogCard';
+import { generateBaseMetadata, getCategoryFallbackImage } from '@/utils/metadata';
 
 export const revalidate = 60; // Cache and revalidate once a minute
 
@@ -218,10 +218,13 @@ export async function generateMetadata({ params }) {
   const data = CATEGORY_DATA[slug];
   if (!data) return { title: 'Category Not Found' };
 
+  const image = getCategoryFallbackImage(data.title);
+
   return generateBaseMetadata({
     title: `${data.title} Cybersecurity Research & Guides`,
     description: data.description,
-    path: `/category/${slug}`
+    path: `/category/${slug}`,
+    image: image
   });
 }
 
@@ -250,7 +253,12 @@ export default async function CategoryPage({ params }) {
       _id,
       title,
       "slug": slug.current,
+      featuredImage,
       mainImage,
+      coverImage,
+      "imageUrl": mainImage.asset->url,
+      "featuredImageUrl": featuredImage.asset->url,
+      "coverImageUrl": coverImage.asset->url,
       publishedAt,
       "categories": categories[]->{ title },
       excerpt,
@@ -276,6 +284,7 @@ export default async function CategoryPage({ params }) {
         "url": `https://reconshield.in/category/${slug}`,
         "name": `${data.title} Cybersecurity Intelligence Guides`,
         "description": data.description,
+        "image": `https://reconshield.in${getCategoryFallbackImage(data.title)}`,
         "publisher": {
           "@type": "Organization",
           "name": "ReconShield",
@@ -343,52 +352,9 @@ export default async function CategoryPage({ params }) {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {posts.map((post) => {
-                const readTime = post.estimatedWordCount ? Math.max(1, Math.ceil(post.estimatedWordCount / 5 / 200)) : 6;
-                const initials = post.author?.name ? post.author.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'SR';
-                return (
-                  <Link href={`/blog/${post.slug}`} key={post._id} className="group flex flex-col bg-surface-900 border border-white/5 hover:border-matrix-400/30 transition-all duration-300 rounded-2xl overflow-hidden shadow-lg">
-                    <div className="relative aspect-video w-full bg-surface-950 overflow-hidden border-b border-white/5">
-                      {post.mainImage ? (
-                        <Image
-                          src={urlFor(post.mainImage).width(360).height(202).fit('crop').auto('format').url()}
-                          alt={post.title}
-                          width={360}
-                          height={202}
-                          className="object-cover w-full h-auto group-hover:scale-[1.03] transition-transform duration-700"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-surface-950 to-surface-900 flex items-center justify-center">
-                          <BookOpen className="w-10 h-10 text-matrix-400/10" />
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-6 flex flex-col flex-1">
-                      <span className="font-mono text-[9px] tracking-[2px] uppercase text-[#00ff88] mb-3">
-                        {post.categories?.[0]?.title || data.title}
-                      </span>
-                      <h3 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-matrix-400 transition-colors line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <p className="text-gray-400 text-xs leading-relaxed line-clamp-2 mb-6">
-                        {post.excerpt}
-                      </p>
-                      <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5 font-mono text-[9px] text-gray-500 uppercase">
-                        <div className="flex items-center gap-1.5">
-                          <div className="w-5 h-5 rounded-full bg-surface-950 flex items-center justify-center text-[#00ff88] text-[8px] font-bold">
-                            {initials}
-                          </div>
-                          <span className="font-sans font-bold text-gray-300">{post.author?.name || 'Surendra Reddy'}</span>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {readTime} MIN</span>
-                          <span>{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : 'JUN 2026'}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
+              {posts.map((post) => (
+                <BlogCard key={post._id} post={post} defaultCategory={data.title} />
+              ))}
             </div>
           </div>
 

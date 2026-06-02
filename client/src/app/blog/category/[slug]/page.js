@@ -2,7 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { client } from '@/utils/sanity';
-import { ChevronRight, FileText, Calendar, Clock } from 'lucide-react';
+import { ChevronRight, FileText } from 'lucide-react';
+import BlogCard from '@/components/BlogCard';
+import { generateBaseMetadata, getCategoryFallbackImage } from '@/utils/metadata';
 
 const CATEGORIES = {
   'internet-facing-assets': 'Internet-Facing Assets',
@@ -25,20 +27,15 @@ export async function generateMetadata({ params }) {
     return { title: 'Category Not Found' };
   }
 
-  return {
-    title: `${CATEGORIES[slug]} Research & Intelligence`,
-    description: `Latest security research, analysis, and intelligence reports covering ${CATEGORIES[slug]}.`,
-    alternates: {
-      canonical: `https://reconshield.in/blog/category/${slug}`,
-    },
-    robots: { index: true, follow: true },
-    openGraph: {
-      url: `https://reconshield.in/blog/category/${slug}`,
-      title: `${CATEGORIES[slug]} Intelligence Feed`,
-      description: `Deep-dive articles and technical breakdowns on ${CATEGORIES[slug]}.`,
-      type: 'website'
-    }
-  };
+  const categoryName = CATEGORIES[slug];
+  const image = getCategoryFallbackImage(categoryName);
+
+  return generateBaseMetadata({
+    title: `${categoryName} Research & Intelligence`,
+    description: `Latest security research, analysis, and intelligence reports covering ${categoryName}.`,
+    path: `/blog/category/${slug}`,
+    image: image
+  });
 }
 
 export default async function CategoryPage({ params }) {
@@ -49,14 +46,24 @@ export default async function CategoryPage({ params }) {
     notFound();
   }
 
-  // Fetch posts for this category
-  const query = `*[_type == "post" && "${CATEGORIES[slug]}" in categories[]->title] | order(publishedAt desc) {
+  const categoryName = CATEGORIES[slug];
+
+  // Fetch posts for this category, including all image fields, author, categories, and estimated word count
+  const query = `*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**")) && "${categoryName}" in categories[]->title] | order(coalesce(publishedAt, _createdAt) desc) {
     _id,
     title,
-    slug,
+    "slug": slug.current,
+    featuredImage,
+    mainImage,
+    coverImage,
+    "imageUrl": mainImage.asset->url,
+    "featuredImageUrl": featuredImage.asset->url,
+    "coverImageUrl": coverImage.asset->url,
     publishedAt,
+    "categories": categories[]->{ title },
     excerpt,
-    "readTime": readTime
+    "author": author->{ name, "slug": slug.current },
+    "estimatedWordCount": length(pt::text(body))
   }`;
   
   let posts = [];
@@ -66,19 +73,36 @@ export default async function CategoryPage({ params }) {
     console.error(`Failed to fetch posts for category ${slug}:`, error);
   }
 
-  const schemaJson = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
-      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://reconshield.in/blog' },
-      { '@type': 'ListItem', position: 3, name: CATEGORIES[slug], item: `https://reconshield.in/blog/category/${slug}` }
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `https://reconshield.in/blog/category/${slug}`,
+        "url": `https://reconshield.in/blog/category/${slug}`,
+        "name": `${categoryName} Research & Intelligence`,
+        "description": `Latest security research, analysis, and intelligence reports covering ${categoryName}.`,
+        "image": `https://reconshield.in${getCategoryFallbackImage(categoryName)}`,
+        "publisher": {
+          "@type": "Organization",
+          "name": "ReconShield",
+          "url": "https://reconshield.in"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://reconshield.in" },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://reconshield.in/blog" },
+          { "@type": "ListItem", "position": 3, "name": categoryName, "item": `https://reconshield.in/blog/category/${slug}` }
+        ]
+      }
     ]
   };
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="min-h-screen pt-24 pb-20 px-6">
         <div className="max-w-[1200px] mx-auto">
           
@@ -88,16 +112,16 @@ export default async function CategoryPage({ params }) {
               <li><ChevronRight className="w-3 h-3" /></li>
               <li><Link href="/blog" className="hover:text-[#00ff88] transition-colors">Research Blog</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
-              <li className="text-[#00ff88]">{CATEGORIES[slug]}</li>
+              <li className="text-[#00ff88]">{categoryName}</li>
             </ol>
           </nav>
 
           <header className="mb-12 border-b border-white/5 pb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {CATEGORIES[slug]}
+              {categoryName}
             </h1>
             <p className="text-xl text-gray-400">
-              Technical analysis and intelligence reports focusing on {CATEGORIES[slug].toLowerCase()}.
+              Technical analysis and intelligence reports focusing on {categoryName.toLowerCase()}.
             </p>
           </header>
 
@@ -110,31 +134,7 @@ export default async function CategoryPage({ params }) {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {posts.map((post) => (
-                <Link key={post._id} href={`/blog/${post.slug?.current || post.slug}`} className="group block h-full">
-                  <article className="h-full bg-[#0d1117] border border-white/5 hover:border-[#00ff88]/30 rounded-2xl p-6 transition-all flex flex-col">
-                    <h2 className="text-xl font-bold text-white mb-3 group-hover:text-[#00ff88] transition-colors line-clamp-2">
-                      {post.title}
-                    </h2>
-                    <p className="text-gray-400 text-sm mb-6 flex-grow line-clamp-3">
-                      {post.excerpt || 'Read the full intelligence report on this topic.'}
-                    </p>
-                    
-                    <div className="flex items-center gap-4 text-xs font-mono text-gray-500 mt-auto pt-4 border-t border-white/5">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5" />
-                        <span>
-                          {post.publishedAt 
-                            ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-                            : 'Unknown Date'}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5" />
-                        <span>{post.readTime || 5} min read</span>
-                      </div>
-                    </div>
-                  </article>
-                </Link>
+                <BlogCard key={post._id} post={post} defaultCategory={categoryName} />
               ))}
             </div>
           )}
@@ -143,3 +143,4 @@ export default async function CategoryPage({ params }) {
     </>
   );
 }
+
