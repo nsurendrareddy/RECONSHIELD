@@ -6,28 +6,69 @@ import { ChevronRight, FileText } from 'lucide-react';
 import BlogCard from '@/components/BlogCard';
 import { generateBaseMetadata, getCategoryFallbackImage } from '@/utils/metadata';
 
-const CATEGORIES = {
-  'internet-facing-assets': 'Internet-Facing Assets',
-  'osint-and-analysis': 'OSINT & Analysis',
-  'threat-intelligence': 'Threat Intelligence',
-  'vulnerability-research': 'Vulnerability Research',
-  'web-security': 'Web Security',
-  'ai-cybersecurity': 'AI Cybersecurity',
-  'attack-surface-analysis': 'Attack Surface Analysis',
-  'online-fraud': 'Online Fraud',
-  'attack-surface-management': 'Attack Surface Management',
-  'cyber-awareness': 'Cyber Awareness'
+// Maps incoming URL slugs to display names and database category titles
+const CATEGORY_MAP = {
+  'internet-facing-assets': {
+    displayName: 'Internet-Facing Assets',
+    dbTitle: 'Attack Surface Analysis'
+  },
+  'osint-and-analysis': {
+    displayName: 'OSINT & Analysis',
+    dbTitle: 'OSINT & Reconnaissance'
+  },
+  'osint-analysis': {
+    displayName: 'OSINT & Analysis',
+    dbTitle: 'OSINT & Reconnaissance'
+  },
+  'threat-intelligence': {
+    displayName: 'Threat Intelligence',
+    dbTitle: 'Threat Intelligence'
+  },
+  'vulnerability-research': {
+    displayName: 'Vulnerability Research',
+    dbTitle: 'Vulnerability Research'
+  },
+  'web-security': {
+    displayName: 'Web Security',
+    dbTitle: 'Web Security'
+  },
+  'ai-cybersecurity': {
+    displayName: 'AI Cybersecurity',
+    dbTitle: 'AI Cybersecurity'
+  },
+  'attack-surface-analysis': {
+    displayName: 'Attack Surface Analysis',
+    dbTitle: 'Attack Surface Analysis'
+  },
+  'online-fraud': {
+    displayName: 'Online Fraud',
+    dbTitle: 'Online Fraud'
+  },
+  'attack-surface-management': {
+    displayName: 'Attack Surface Management',
+    dbTitle: 'Attack Surface Management'
+  },
+  'cyber-awareness': {
+    displayName: 'Cyber Awareness',
+    dbTitle: 'Cyber Awareness'
+  }
 };
+
+export async function generateStaticParams() {
+  return Object.keys(CATEGORY_MAP).map((slug) => ({
+    slug: slug,
+  }));
+}
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const slug = resolvedParams?.slug;
   
-  if (!slug || !CATEGORIES[slug]) {
+  if (!slug || !CATEGORY_MAP[slug]) {
     return { title: 'Category Not Found' };
   }
 
-  const categoryName = CATEGORIES[slug];
+  const categoryName = CATEGORY_MAP[slug].displayName;
   const image = getCategoryFallbackImage(categoryName);
 
   return generateBaseMetadata({
@@ -42,14 +83,19 @@ export default async function CategoryPage({ params }) {
   const resolvedParams = await params;
   const slug = resolvedParams?.slug;
 
-  if (!slug || !CATEGORIES[slug]) {
+  if (!slug || !CATEGORY_MAP[slug]) {
     notFound();
   }
 
-  const categoryName = CATEGORIES[slug];
+  const categoryConfig = CATEGORY_MAP[slug];
+  const categoryName = categoryConfig.displayName;
+  const dbTitle = categoryConfig.dbTitle;
 
-  // Fetch posts for this category, including all image fields, author, categories, and estimated word count
-  const query = `*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**")) && "${categoryName}" in categories[]->title] | order(coalesce(publishedAt, _createdAt) desc) {
+  // Fetch posts for this category, using array-reference filtering with a title fallback for dataset robustness
+  const query = `*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**")) && (
+    $slug in categories[]->slug.current ||
+    $dbTitle in categories[]->title
+  )] | order(coalesce(publishedAt, _createdAt) desc) {
     _id,
     title,
     "slug": slug.current,
@@ -60,7 +106,7 @@ export default async function CategoryPage({ params }) {
     "featuredImageUrl": featuredImage.asset->url,
     "coverImageUrl": coverImage.asset->url,
     publishedAt,
-    "categories": categories[]->{ title },
+    "categories": categories[]->{ title, "slug": slug.current },
     excerpt,
     "author": author->{ name, "slug": slug.current },
     "estimatedWordCount": length(pt::text(body))
@@ -68,7 +114,7 @@ export default async function CategoryPage({ params }) {
   
   let posts = [];
   try {
-    posts = await client.fetch(query);
+    posts = await client.fetch(query, { slug, dbTitle });
   } catch (error) {
     console.error(`Failed to fetch posts for category ${slug}:`, error);
   }
@@ -143,4 +189,5 @@ export default async function CategoryPage({ params }) {
     </>
   );
 }
+
 
