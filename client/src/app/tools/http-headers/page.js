@@ -302,6 +302,34 @@ export default function SecurityHeadersPage() {
           </div>
         </section>
 
+        {/* Detailed Security Header Guides & Reference */}
+        <section className="py-20 bg-[#05080f] border-t border-white/5">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="flex items-center gap-4 mb-10">
+              <h2 className="font-mono text-xs tracking-[4px] uppercase text-amber-500 font-bold">// SECURITY HEADER GUIDES</h2>
+              <div className="h-[1px] flex-1 bg-[#1a2332]" />
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+              {[
+                { name: "Content-Security-Policy (CSP)", path: "content-security-policy", desc: "Hardens the browser environment against XSS and injection vectors." },
+                { name: "Strict-Transport-Security (HSTS)", path: "strict-transport-security", desc: "Forces secure HTTPS cryptographic channel negotiation." },
+                { name: "X-Frame-Options", path: "x-frame-options", desc: "Defeats Clickjacking attacks and malicious iframe embeddings." },
+                { name: "X-Content-Type-Options", path: "x-content-type-options", desc: "Disables MIME type sniffing attacks on resources." },
+                { name: "Server Header Leakage", path: "server", desc: "Prevents backend version disclosure to attackers." }
+              ].map((header, idx) => (
+                <Link key={idx} href={`/headers/${header.path}`} className="p-5 bg-surface-900 border border-white/5 hover:border-amber-500/30 rounded-2xl group transition-all flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-white font-bold text-sm mb-2 group-hover:text-amber-500 transition-colors font-mono">{header.name}</h3>
+                    <p className="text-xs text-gray-400 leading-relaxed mb-4">{header.desc}</p>
+                  </div>
+                  <span className="text-[10px] font-mono text-amber-500 group-hover:text-white transition-colors uppercase tracking-widest flex items-center gap-1">Read Guide <ChevronRight className="w-3 h-3" /></span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
       </div>
     </>
   );

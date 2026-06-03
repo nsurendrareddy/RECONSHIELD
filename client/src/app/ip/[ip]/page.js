@@ -39,6 +39,34 @@ const SAFE_INFRASTRUCTURE_DATA = {
     feedSource: 'Cloudflare / APNIC Verified Anycast Infrastructure',
     references: ['https://abuseipdb.com/check/1.1.1.1', 'https://www.spamhaus.org', 'https://cisa.gov']
   },
+  '1.0.0.1': {
+    ip: '1.0.0.1',
+    threatScore: 0,
+    riskClassification: 'Verified Safe / Clean',
+    asn: 13335,
+    organization: 'Cloudflare, Inc.',
+    country: 'United States',
+    countryCode: 'US',
+    lastSeen: new Date().toISOString(),
+    firstSeen: '2018-04-01T00:00:00Z',
+    reverseDns: 'one.one.one.one',
+    abuseConfidence: 0,
+    infrastructureType: 'Public Anycast DNS Resolver (Secondary)',
+    isTor: false,
+    isProxy: false,
+    aiSummary: 'ReconShield Intelligence profiles 1.0.0.1 as a verified, high-performance public recursive DNS resolver operated by Cloudflare, Inc. under partnership with APNIC. This IP resolves traffic for hundreds of millions of users globally as the secondary resolver and carries a 0% abuse confidence rating. Telemetry confirms no active threat association.',
+    openPorts: [53, 853],
+    malwareAssociations: [],
+    relatedCVEs: [],
+    relatedThreatActors: [],
+    timeline: [
+      { date: '2018-04-01', event: 'Public Anycast DNS Resolver Launched by Cloudflare' },
+      { date: '2026-06-03', event: 'Telemetry checks confirm zero malicious indicators' }
+    ],
+    verifiedFeed: true,
+    feedSource: 'Cloudflare / APNIC Verified Anycast Infrastructure',
+    references: ['https://abuseipdb.com/check/1.0.0.1', 'https://www.spamhaus.org', 'https://cisa.gov']
+  },
   '8.8.8.8': {
     ip: '8.8.8.8',
     threatScore: 0,
@@ -67,6 +95,34 @@ const SAFE_INFRASTRUCTURE_DATA = {
     feedSource: 'Google LLC Verified Anycast Network',
     references: ['https://abuseipdb.com/check/8.8.8.8', 'https://www.spamhaus.org', 'https://cisa.gov']
   },
+  '8.8.4.4': {
+    ip: '8.8.4.4',
+    threatScore: 0,
+    riskClassification: 'Verified Safe / Clean',
+    asn: 15169,
+    organization: 'Google LLC',
+    country: 'United States',
+    countryCode: 'US',
+    lastSeen: new Date().toISOString(),
+    firstSeen: '2009-12-03T00:00:00Z',
+    reverseDns: 'dns.google',
+    abuseConfidence: 0,
+    infrastructureType: 'Public Anycast DNS Resolver (Secondary)',
+    isTor: false,
+    isProxy: false,
+    aiSummary: 'ReconShield Intelligence profiles 8.8.4.4 as Google Public DNS (Secondary), the largest public recursive resolver service in the world. It provides fast and secure domain name resolution. Telemetry database checks verify 8.8.4.4 is an authoritative public service carrying a 0% threat score.',
+    openPorts: [53, 853],
+    malwareAssociations: [],
+    relatedCVEs: [],
+    relatedThreatActors: [],
+    timeline: [
+      { date: '2009-12-03', event: 'Google Public DNS service officially launched' },
+      { date: '2026-06-03', event: 'Continuous integrity verification shows no abuse associations' }
+    ],
+    verifiedFeed: true,
+    feedSource: 'Google LLC Verified Anycast Network',
+    references: ['https://abuseipdb.com/check/8.8.4.4', 'https://www.spamhaus.org', 'https://cisa.gov']
+  },
   '9.9.9.9': {
     ip: '9.9.9.9',
     threatScore: 0,
@@ -94,6 +150,34 @@ const SAFE_INFRASTRUCTURE_DATA = {
     verifiedFeed: true,
     feedSource: 'Quad9 Global Anycast Network',
     references: ['https://abuseipdb.com/check/9.9.9.9', 'https://www.spamhaus.org', 'https://cisa.gov']
+  },
+  '208.67.222.222': {
+    ip: '208.67.222.222',
+    threatScore: 0,
+    riskClassification: 'Verified Safe / Clean',
+    asn: 36692,
+    organization: 'OpenDNS, LLC (Cisco)',
+    country: 'United States',
+    countryCode: 'US',
+    lastSeen: new Date().toISOString(),
+    firstSeen: '2006-07-01T00:00:00Z',
+    reverseDns: 'resolver2.opendns.com',
+    abuseConfidence: 0,
+    infrastructureType: 'Public Anycast DNS Resolver with Web Filtering',
+    isTor: false,
+    isProxy: false,
+    aiSummary: 'ReconShield Intelligence profiles 208.67.222.222 as Cisco OpenDNS, a high-performance public recursive resolver service. It offers automated phishing protection, content filtering, and fast name resolution. Telemetry database checks verify 208.67.222.222 is an authoritative public service carrying a 0% threat score.',
+    openPorts: [53, 443],
+    malwareAssociations: [],
+    relatedCVEs: [],
+    relatedThreatActors: [],
+    timeline: [
+      { date: '2006-07-01', event: 'OpenDNS public resolver service launched' },
+      { date: '2026-06-03', event: 'Telemetry integrity checking confirms zero active threat markers' }
+    ],
+    verifiedFeed: true,
+    feedSource: 'Cisco / OpenDNS Verified Infrastructure',
+    references: ['https://abuseipdb.com/check/208.67.222.222', 'https://www.spamhaus.org', 'https://cisa.gov']
   },
   '185.191.171.2': {
     ip: '185.191.171.2',

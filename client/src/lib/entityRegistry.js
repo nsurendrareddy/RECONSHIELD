@@ -7,6 +7,10 @@ export const KNOWN_IPS = [
   '9.9.9.9',
   '185.191.171.2',
   '194.165.16.2',
+  // New whitelisted demo/example IPs
+  '8.8.4.4',
+  '1.0.0.1',
+  '208.67.222.222',
   // Active threat pulse IPs
   '185.122.204.10',
   '45.227.255.43',
@@ -22,7 +26,8 @@ export const KNOWN_ASNS = [
   'AS16509', // Amazon
   'AS8075',  // Microsoft
   'AS14618', // Amazon Dev
-  'AS54113'  // Fastly
+  'AS54113', // Fastly
+  'AS36692'  // Cisco OpenDNS
 ];
 
 export const KNOWN_PORTS = [
@@ -57,7 +62,8 @@ export const KNOWN_DOMAINS = [
   'github.com',
   'cloudflare.com',
   'microsoft.com',
-  'yahoo.com'
+  'yahoo.com',
+  'apple.com'
 ];
 
 // Helper checks for existence and validity

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Lock, Server, Shield, Network, ChevronRight } from 'lucide-react';
+import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 
 export const metadata = {
   title: 'SSL Configuration Intelligence Hub - ReconShield',
@@ -9,7 +10,7 @@ export const metadata = {
 };
 
 export default function SslHubPage() {
-  const commonDomains = ['google.com', 'github.com', 'microsoft.com', 'cloudflare.com', 'apple.com'];
+  const commonDomains = ['google.com', 'github.com', 'microsoft.com', 'cloudflare.com', 'apple.com'].filter(domain => KNOWN_DOMAINS.includes(domain));
   
   return (
     <div className="min-h-screen pb-24 font-sans bg-[#06090e]">

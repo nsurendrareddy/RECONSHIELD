@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Server, Network, Lock, Shield, ChevronRight } from 'lucide-react';
+import { KNOWN_IPS } from '@/lib/entityRegistry';
 
 export const metadata = {
   title: 'IP Intelligence Hub - ReconShield',
@@ -9,7 +10,7 @@ export const metadata = {
 };
 
 export default function IpIntelligenceHubPage() {
-  const sampleIps = ['8.8.8.8', '1.1.1.1', '9.9.9.9', '185.191.171.2', '194.165.16.2', '8.8.4.4', '1.0.0.1', '208.67.222.222'];
+  const sampleIps = ['8.8.8.8', '1.1.1.1', '9.9.9.9', '185.191.171.2', '194.165.16.2', '8.8.4.4', '1.0.0.1', '208.67.222.222'].filter(ip => KNOWN_IPS.includes(ip));
   
   return (
     <div className="min-h-screen pb-24 font-sans bg-[#06090e]">

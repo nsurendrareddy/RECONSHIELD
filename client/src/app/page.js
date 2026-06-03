@@ -368,6 +368,96 @@ export default async function Page() {
           </div>
         </section>
 
+        {/* ================= SEO INTERNAL LINK INDEX ================= */}
+        <section className="py-20 bg-[#070b12] border-b border-white/5">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="flex items-center gap-4 mb-10">
+              <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold">// PLATFORM RESOURCE INDEX</h2>
+              <div className="h-[1px] flex-1 bg-white/5" />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+              {/* Column 1: Popular Threat Intelligence */}
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono font-bold text-gray-300 uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> Popular Threat Intelligence
+                </h3>
+                <ul className="space-y-2 text-xs font-mono">
+                  <li><Link href="/ip/8.8.8.8" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP: 8.8.8.8</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/ip/1.1.1.1" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP: 1.1.1.1</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/ip/8.8.4.4" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP: 8.8.4.4</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/ip/1.0.0.1" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP: 1.0.0.1</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/ip/208.67.222.222" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP: 208.67.222.222</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/asn/AS15169" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>AS15169 (Google)</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/asn/AS13335" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>AS13335 (Cloudflare)</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/asn/AS714" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>AS714 (Apple)</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                </ul>
+              </div>
+
+              {/* Column 2: Security Header Research */}
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono font-bold text-gray-300 uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Security Header Research
+                </h3>
+                <ul className="space-y-2 text-xs font-mono">
+                  <li><Link href="/headers/server" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Server Response</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/headers/content-security-policy" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Content Security Policy</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/headers/x-frame-options" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>X-Frame-Options</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/headers/strict-transport-security" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>HSTS Policy</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/headers/x-content-type-options" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>X-Content-Type-Options</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                </ul>
+              </div>
+
+              {/* Column 3: DNS Intelligence Resources */}
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono font-bold text-gray-300 uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500" /> DNS Intelligence Resources
+                </h3>
+                <ul className="space-y-2 text-xs font-mono">
+                  <li><Link href="/dns-records/google.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>google.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/dns-records/reconshield.in" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>reconshield.in DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/dns-records/github.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>github.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/dns-records/cloudflare.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>cloudflare.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/dns-records/microsoft.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>microsoft.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/dns-records/yahoo.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>yahoo.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/dns-records/apple.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>apple.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                </ul>
+              </div>
+
+              {/* Column 4: Featured Cybersecurity Analysis */}
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono font-bold text-gray-300 uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-pink-500" /> Featured Cybersecurity Analysis
+                </h3>
+                <ul className="space-y-2 text-xs font-mono">
+                  <li><Link href="/ssl/google.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>google.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/ssl/reconshield.in" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>reconshield.in SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/ssl/github.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>github.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/ssl/cloudflare.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>cloudflare.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/ssl/microsoft.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>microsoft.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/ssl/yahoo.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>yahoo.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/ssl/apple.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>apple.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                </ul>
+              </div>
+
+              {/* Column 5: Latest Research */}
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono font-bold text-gray-300 uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88]" /> Latest Research
+                </h3>
+                <ul className="space-y-2 text-xs font-mono">
+                  <li><Link href="/blog/anatomy-of-passive-osint" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Passive OSINT mapping</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/blog/securing-bgp-route-leaks" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>BGP Route Leaks Analysis</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/blog/spf-dkim-dmarc-blueprint" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>SPF/DKIM Blueprint</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/blog/owasp-http-headers-hardening" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>HTTP Headers Hardening</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/blog/ssl-tls-regulatory-compliance" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>SSL Compliance</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/blog/shadow-it-exposed-ports" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Shadow IT Port Discovery</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ================= 6. COMPACT SCANNER CTA BANNER ================= */}
         <section className="py-20 bg-[#05080f] relative border-b border-white/5 overflow-hidden">
           {/* Accent glow lights */}
