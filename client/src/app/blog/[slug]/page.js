@@ -73,11 +73,20 @@ export default async function Page({ params }) {
     );
   }
 
-  // Fetch sidebar and related data
+  // Fetch sidebar and related data with individual catch handlers to prevent 500 crashes
   const [recentPosts, categories, relatedPosts] = await Promise.all([
-    client.fetch(recentPostsQuery, { slug }),
-    client.fetch(categoriesWithCountQuery),
-    client.fetch(relatedPostsQuery, { slug })
+    client.fetch(recentPostsQuery, { slug }).catch(err => {
+      console.error('Error fetching recent posts:', err);
+      return [];
+    }),
+    client.fetch(categoriesWithCountQuery).catch(err => {
+      console.error('Error fetching categories:', err);
+      return [];
+    }),
+    client.fetch(relatedPostsQuery, { slug }).catch(err => {
+      console.error('Error fetching related posts:', err);
+      return [];
+    })
   ]);
 
   const jsonLd = {

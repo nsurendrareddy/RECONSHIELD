@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Shield, Globe, Server, Activity, AlertTriangle, Cpu, Network, Lock, Search, History, ChevronRight } from 'lucide-react';
 import { generateDatasetSchema } from '@/utils/metadata';
+import { KNOWN_IPS } from '@/lib/entityRegistry';
+import RelatedIPs from '@/components/entities/RelatedIPs';
+
 
 // Phase 11: Edge/ISR Configuration
 export const revalidate = 3600; // ISR cache invalidation every hour
@@ -192,8 +195,6 @@ const isPrivateIP = (ip) => {
   const ipv6Private = /^(::1|fe80:|fc00:|fd00:)/i.test(ip);
   return ipv4Private || ipv6Private;
 };
-
-const KNOWN_IPS = ['8.8.8.8', '1.1.1.1', '9.9.9.9', '185.191.171.2', '194.165.16.2'];
 
 // Phase 10: Next.js SEO & OpenGraph Optimization
 export async function generateMetadata({ params }) {
@@ -617,6 +618,8 @@ export default async function IpEntityPage({ params }) {
                       </Link>
                     </div>
                   </div>
+                  
+                  <RelatedIPs currentIp={ip} />
                 </div>
               </div>
             </aside>

@@ -1,4 +1,11 @@
 import { NextResponse } from 'next/server';
+import { 
+  KNOWN_IPS, 
+  KNOWN_ASNS, 
+  KNOWN_PORTS, 
+  KNOWN_HEADERS, 
+  KNOWN_DOMAINS 
+} from './lib/entityRegistry';
 
 // Configuration for routes the middleware should run on
 export const config = {
@@ -7,9 +14,10 @@ export const config = {
     '/asn/:path*',
     '/ports/:path*',
     '/ssl/:path*',
-    '/dns/:path*',
+    '/dns-records/:path*',
     '/tools/whois/:path*',
-    '/subdomains/:path*'
+    '/subdomains/:path*',
+    '/headers/:path*'
   ],
 };
 
@@ -35,24 +43,6 @@ const isPrivateIP = (ip) => {
   return false;
 };
 
-const isValidPort = (portStr) => {
-  const port = parseInt(portStr, 10);
-  return !isNaN(port) && port >= 1 && port <= 65535;
-};
-
-const isValidASN = (asnStr) => {
-  const match = asnStr?.match(/^(?:AS)?(\d+)$/i);
-  if (!match) return false;
-  const num = parseInt(match[1], 10);
-  return num > 0 && num <= 4294967295;
-};
-
-const isValidDomain = (domain) => {
-  // Basic validation. Prevents obvious junk.
-  const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
-  return domainRegex.test(domain) && domain.length <= 253;
-};
-
 export function middleware(request) {
   const { pathname } = request.nextUrl;
   
@@ -72,32 +62,71 @@ export function middleware(request) {
     if (ipv4Regex.test(ip) && isPrivateIP(ip)) {
       return new NextResponse('Private/Internal IPs are restricted from scanning to prevent abuse.', { status: 403 });
     }
+
+    // Verify IP exists in our registry
+    if (!KNOWN_IPS.includes(ip)) {
+      return new NextResponse('IP Address Not Found in Threat Database', { status: 404 });
+    }
   }
 
   // 2. Port Validation
   if (pathname.startsWith('/ports/')) {
-    const port = pathname.replace('/ports/', '').split('/')[0];
-    if (!isValidPort(port)) {
+    const portStr = pathname.replace('/ports/', '').split('/')[0];
+    const port = parseInt(portStr, 10);
+    
+    if (isNaN(port) || port < 1 || port > 65535) {
       return new NextResponse('Invalid Port Range', { status: 400 });
+    }
+
+    // Verify port exists in our registry
+    if (!KNOWN_PORTS.includes(port)) {
+      return new NextResponse('Port Security Analysis Profile Not Found', { status: 404 });
     }
   }
 
   // 3. ASN Validation
   if (pathname.startsWith('/asn/')) {
-    const asn = pathname.replace('/asn/', '').split('/')[0];
-    if (!isValidASN(asn)) {
-      return new NextResponse('Invalid Autonomous System Number', { status: 400 });
+    const asnRaw = pathname.replace('/asn/', '').split('/')[0];
+    
+    // Extract ASN number format
+    const match = asnRaw.match(/^(?:AS)?(\d+)$/i);
+    if (!match) {
+      return new NextResponse('Invalid Autonomous System Number format', { status: 400 });
+    }
+    
+    const formattedAsn = `AS${match[1]}`;
+
+    // Verify ASN exists in our registry
+    if (!KNOWN_ASNS.includes(formattedAsn)) {
+      return new NextResponse('ASN Infrastructure Profile Not Found', { status: 404 });
     }
   }
 
-  // 4. Domain Validation (Applies to multiple routes)
-  const domainRoutes = ['/ssl/', '/dns/', '/tools/whois/', '/subdomains/'];
+  // 4. Headers Validation
+  if (pathname.startsWith('/headers/')) {
+    const header = pathname.replace('/headers/', '').split('/')[0].toLowerCase();
+    
+    if (!KNOWN_HEADERS.includes(header)) {
+      return new NextResponse('HTTP Header Security Analysis Not Found', { status: 404 });
+    }
+  }
+
+  // 5. Domain Validation (Applies to multiple routes)
+  const domainRoutes = ['/ssl/', '/dns-records/', '/tools/whois/', '/subdomains/'];
   const matchingRoute = domainRoutes.find(route => pathname.startsWith(route));
   
   if (matchingRoute) {
-    const domain = pathname.replace(matchingRoute, '').split('/')[0];
-    if (!isValidDomain(domain)) {
+    const domain = pathname.replace(matchingRoute, '').split('/')[0].toLowerCase();
+    
+    // Basic domain validation
+    const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
+    if (!domainRegex.test(domain) || domain.length > 253) {
       return new NextResponse('Invalid Domain Format', { status: 400 });
+    }
+
+    // Verify domain exists in our registry
+    if (!KNOWN_DOMAINS.includes(domain)) {
+      return new NextResponse('Domain Infrastructure Profile Not Found', { status: 404 });
     }
   }
 

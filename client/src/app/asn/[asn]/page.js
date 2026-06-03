@@ -5,6 +5,8 @@ import { notFound, redirect } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import RelatedASNs from '@/components/RelatedASNs';
 import { generateDatasetSchema } from '@/utils/metadata';
+import { KNOWN_ASNS } from '@/lib/entityRegistry';
+
 
 // ASN Validation (e.g. AS15169 or 15169)
 const isValidASN = (asn) => {
@@ -19,7 +21,7 @@ const extractAsnNumber = (asn) => {
   return match ? match[1] : null;
 };
 
-const KNOWN_ASNS = ['AS15169', 'AS13335', 'AS714', 'AS32934', 'AS16509'];
+
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;

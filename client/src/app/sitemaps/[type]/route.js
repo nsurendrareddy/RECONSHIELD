@@ -1,24 +1,86 @@
 import { NextResponse } from 'next/server';
 import { TOOLS } from '@/utils/toolsData';
 import { client, blogListQuery } from '@/utils/sanity';
+import { 
+  KNOWN_IPS, 
+  KNOWN_ASNS, 
+  KNOWN_PORTS, 
+  KNOWN_HEADERS, 
+  KNOWN_DOMAINS 
+} from '@/lib/entityRegistry';
 
 export const runtime = 'edge'; 
 
 const BASE_URL = 'https://reconshield.in';
 const STATIC_LAST_MODIFIED = new Date().toISOString();
 
-// Pre-defined static fallbacks for programmatic SEO routes to ensure sitemap is never empty
+// Centralized sitemap fallback data generated from verified existing pages
 const FALLBACK_DATA = {
-  ports: ['80', '443', '21', '22', '25', '53', '3306', '5432', '8080', '8443'],
-  headers: ['strict-transport-security', 'content-security-policy', 'x-frame-options', 'x-content-type-options', 'server'],
-  ssl: ['google.com', 'reconshield.in', 'github.com'],
-  asn: ['AS15169', 'AS13335', 'AS714', 'AS32934', 'AS16509'],
-  ip: ['8.8.8.8', '1.1.1.1', '9.9.9.9'],
-  dns: ['google.com', 'cloudflare.com', 'microsoft.com'],
-  whois: ['google.com', 'cloudflare.com'],
-  subdomains: ['google.com', 'yahoo.com'],
+  ports: KNOWN_PORTS.map(String),
+  headers: KNOWN_HEADERS,
+  ssl: KNOWN_DOMAINS,
+  asn: KNOWN_ASNS,
+  ip: KNOWN_IPS.slice(0, 5),
+  dns: KNOWN_DOMAINS,
+  whois: KNOWN_DOMAINS,
+  subdomains: KNOWN_DOMAINS,
   'malicious-ips': ['185.191.171.2', '194.165.16.2']
 };
+
+// Local registry verification to filter invalid/non-200 urls
+function isUrlIndexableAndValid(urlStr) {
+  try {
+    const url = new URL(urlStr);
+    const path = url.pathname;
+    
+    // Check ports
+    if (path.startsWith('/ports/')) {
+      const port = path.replace('/ports/', '');
+      return KNOWN_PORTS.includes(parseInt(port, 10));
+    }
+    
+    // Check IPs
+    if (path.startsWith('/ip/')) {
+      const ip = path.replace('/ip/', '');
+      return KNOWN_IPS.includes(ip);
+    }
+    
+    // Check ASNs
+    if (path.startsWith('/asn/')) {
+      const asn = path.replace('/asn/', '');
+      return KNOWN_ASNS.includes(asn.toUpperCase());
+    }
+    
+    // Check headers
+    if (path.startsWith('/headers/')) {
+      const header = path.replace('/headers/', '');
+      return KNOWN_HEADERS.includes(header.toLowerCase());
+    }
+    
+    // Check SSL, DNS, subdomains, whois
+    if (path.startsWith('/ssl/')) {
+      const domain = path.replace('/ssl/', '');
+      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+    }
+    if (path.startsWith('/dns-records/')) {
+      const domain = path.replace('/dns-records/', '');
+      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+    }
+    if (path.startsWith('/subdomains/')) {
+      const domain = path.replace('/subdomains/', '');
+      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+    }
+    if (path.startsWith('/tools/whois/')) {
+      const domain = path.replace('/tools/whois/', '');
+      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+    }
+
+    // Default true for core static pages, blog posts, and scanner tools
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
 export async function GET(request, { params }) {
   try {
@@ -87,7 +149,7 @@ export async function GET(request, { params }) {
           const backendRes = await fetch(`${backendUrl}/api/sitemap-generate?type=${entityType}&page=${page}`, {
             next: { revalidate: cacheTime } 
           });
-
+          
           if (backendRes.ok) {
              const textData = await backendRes.text();
              let extractedUrls = [];
@@ -114,33 +176,24 @@ export async function GET(request, { params }) {
                 !u.url.includes('null') &&
                 !u.url.includes(' ') &&
                 !u.url.includes('(') &&
-                !u.url.includes(')')
+                !u.url.includes(')') &&
+                isUrlIndexableAndValid(u.url)
              );
 
              if (validUrls.length > 0) {
-                 hasData = true;
-                 
-                 // Deduplicate URLs to prevent duplicate URL nodes
-                 const uniqueUrls = new Map();
-                 validUrls.forEach(u => uniqueUrls.set(u.url, u));
-                 
-                 for (const u of Array.from(uniqueUrls.values())) {
-                    try {
-                        // HTTP validation before sitemap insertion
-                        const response = await fetch(u.url, { method: 'HEAD', headers: { 'User-Agent': 'SitemapValidator' } });
-                        if (response.status === 200) {
-                            // Extract the final canonical URL (follows Next.js redirects)
-                            const finalUrl = response.url || u.url;
-                            const safeUrl = finalUrl.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-                            const lastmod = u.lastmod || STATIC_LAST_MODIFIED;
-                            const changefreq = u.changefreq || 'weekly';
-                            const priority = u.priority || '0.6';
-                            xml += `  <url>\n    <loc>${safeUrl}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
-                        }
-                    } catch(e) {
-                        // Skip if fetch fails
-                    }
-                 }
+                  hasData = true;
+                  
+                  // Deduplicate URLs to prevent duplicate URL nodes
+                  const uniqueUrls = new Map();
+                  validUrls.forEach(u => uniqueUrls.set(u.url, u));
+                  
+                  for (const u of Array.from(uniqueUrls.values())) {
+                    const safeUrl = u.url.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+                    const lastmod = u.lastmod || STATIC_LAST_MODIFIED;
+                    const changefreq = u.changefreq || 'weekly';
+                    const priority = u.priority || '0.6';
+                    xml += `  <url>\n    <loc>${safeUrl}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
+                  }
              }
           }
         } catch(e) {
@@ -161,7 +214,9 @@ export async function GET(request, { params }) {
             if (fallbackItems.length > 0) {
               for (const item of fallbackItems) {
                 const url = `${BASE_URL}/${pathPrefix}/${encodeURIComponent(item)}`;
-                xml += `  <url>\n    <loc>${url}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+                if (isUrlIndexableAndValid(url)) {
+                  xml += `  <url>\n    <loc>${url}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+                }
               }
             } else {
                // Minimal fallback for root entity type if no specific items exist
@@ -187,7 +242,6 @@ export async function GET(request, { params }) {
     });
   } catch (error) {
     console.error('Fatal Sitemap Error:', error);
-    // Returning 404 is safer than returning an empty <urlset> which triggers GSC malformed errors
     return new NextResponse('Not Found', { status: 404 });
   }
 }
