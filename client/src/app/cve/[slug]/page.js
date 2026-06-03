@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Shield, Globe, Server, Activity, AlertTriangle, Cpu, Network, Lock, Search, FileCode2, ChevronRight } from 'lucide-react';
 import { slugify } from '@/utils/slugify';
+import { generateDatasetSchema } from '@/utils/metadata';
+
 
 // Phase 11: Edge/ISR Configuration
 export const revalidate = 21600; // Cache for 6 hours (CVE base stats don't change frequently, but exploitation status might)
@@ -111,6 +113,12 @@ export default async function CveEntityPage({ params }) {
         publisher: { '@type': 'Organization', name: 'ReconShield Security' },
         datePublished: intel.publishedDate
       },
+      generateDatasetSchema({
+        name: `${intel.id} Vulnerability Analysis & Exploit Intelligence Data`,
+        description: `Vulnerability analysis and exploit intelligence dataset for ${intel.id} (${intel.title}). Contains CVSS rating of ${intel.cvss}, EPSS score of ${intel.epss}, CISA KEV listing status, and mitigation guidelines.`,
+        url: `https://reconshield.in/cve/${intel.id.toLowerCase()}`,
+        dateModified: new Date().toISOString()
+      }),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [

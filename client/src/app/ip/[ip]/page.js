@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Shield, Globe, Server, Activity, AlertTriangle, Cpu, Network, Lock, Search, History, ChevronRight } from 'lucide-react';
+import { generateDatasetSchema } from '@/utils/metadata';
 
 // Phase 11: Edge/ISR Configuration
 export const revalidate = 3600; // ISR cache invalidation every hour
@@ -311,13 +312,13 @@ export default async function IpEntityPage({ params }) {
           }
         ]
       },
-      {
-        '@type': 'Dataset',
-        '@id': `https://reconshield.in/ip/${ip}/#dataset`,
+      generateDatasetSchema({
         name: `Threat Data for ${ip}`,
-        description: `Open ports, malware associations, and abuse history for ${ip}.`,
-        license: 'https://creativecommons.org/licenses/by/4.0/'
-      }
+        description: `Comprehensive cybersecurity threat intelligence dataset for IP address ${ip}. Includes threat score of ${intel.threatScore}/100, risk classification of "${intel.riskClassification}", open ports (${intel.openPorts?.join(', ') || 'none'}), malware associations, and historical network telemetry details.`,
+        url: `https://reconshield.in/ip/${ip}`,
+        dateModified: intel.lastSeen
+      })
+
     ]
   };
 

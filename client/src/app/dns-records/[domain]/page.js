@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { Globe, Shield, Server, Activity, ChevronRight, AlertTriangle } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import { generateDatasetSchema } from '@/utils/metadata';
+
 
 const isValidDomain = (domain) => {
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
@@ -66,6 +68,12 @@ export default async function DnsIntelligencePage({ params }) {
         },
         url: `https://reconshield.in/dns/${domain}`
       },
+      generateDatasetSchema({
+        name: `${domain} DNS Configuration & Propagation Data`,
+        description: `Domain Name System configuration dataset for ${domain}. Highlights authoritative nameservers, active A/AAAA, MX, TXT, and NS records, and security profiles including SPF, DKIM, and DMARC spoofing protections.`,
+        url: `https://reconshield.in/dns-records/${domain}`,
+        dateModified: new Date().toISOString()
+      }),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [

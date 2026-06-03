@@ -4,6 +4,7 @@ import { Network, Shield, AlertTriangle, ChevronRight, Globe, Server } from 'luc
 import { notFound, redirect } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import RelatedASNs from '@/components/RelatedASNs';
+import { generateDatasetSchema } from '@/utils/metadata';
 
 // ASN Validation (e.g. AS15169 or 15169)
 const isValidASN = (asn) => {
@@ -81,17 +82,13 @@ export default async function AsnIntelligencePage({ params }) {
   const schemaJson = {
     '@context': 'https://schema.org',
     '@graph': [
-      {
-        '@type': 'Dataset',
-        '@id': `https://reconshield.in/asn/${formattedAsn}/#dataset`,
+      generateDatasetSchema({
         name: `${formattedAsn} IPv4/IPv6 Routing Allocation Data`,
-        description: `BGP routing tables, peering data, and threat intelligence scores associated with the autonomous system ${formattedAsn}.`,
-        creator: {
-          '@type': 'Organization',
-          name: 'ReconShield Threat Research'
-        },
-        url: `https://reconshield.in/asn/${formattedAsn}`
-      },
+        description: `Autonomous System routing allocation dataset for ${formattedAsn}. Contains BGP routing table metrics, prefix advertisements, network peering relationships, and organizational threat reputation details.`,
+        url: `https://reconshield.in/asn/${formattedAsn}`,
+        dateModified: new Date().toISOString()
+      })
+,
       {
         '@type': 'BreadcrumbList',
         itemListElement: [

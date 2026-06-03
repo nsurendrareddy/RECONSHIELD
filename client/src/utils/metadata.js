@@ -59,3 +59,51 @@ export const getCategoryFallbackImage = (categoryName) => {
   return '/blog/vuln.png';
 };
 
+export function generateDatasetSchema({
+  name,
+  description,
+  url,
+  dateModified,
+  keywords = [
+    "threat intelligence",
+    "ip reputation",
+    "osint",
+    "cybersecurity",
+    "passive reconnaissance",
+    "infrastructure exposure"
+  ]
+}) {
+  return {
+    '@type': 'Dataset',
+    '@id': `${url}/#dataset`,
+    'name': name,
+    'description': description,
+    'url': url,
+    'dateModified': dateModified || new Date().toISOString(),
+    'creator': {
+      '@type': 'Organization',
+      'name': 'ReconShield Intelligence',
+      'url': 'https://reconshield.in'
+    },
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'ReconShield Intelligence',
+      'url': 'https://reconshield.in',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': 'https://reconshield.in/logo.png'
+      }
+    },
+    'license': 'https://creativecommons.org/licenses/by-nc/4.0/',
+    'isAccessibleForFree': true,
+    'inLanguage': 'en',
+    'keywords': keywords,
+    'distribution': {
+      '@type': 'DataDownload',
+      'encodingFormat': 'application/json',
+      'contentUrl': url
+    }
+  };
+}
+
+

@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { Network, Search, Server, Globe, ChevronRight, Activity } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import { generateDatasetSchema } from '@/utils/metadata';
+
 
 const isValidDomain = (domain) => {
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
@@ -61,6 +63,12 @@ export default async function SubdomainIntelligencePage({ params }) {
         },
         url: `https://reconshield.in/subdomains/${domain}`
       },
+      generateDatasetSchema({
+        name: `${domain} Subdomain & Asset Inventory Data`,
+        description: `External asset mapping and subdomain enumeration dataset for ${domain}. Uncovers forgotten development servers, staging environments, API endpoints, and potential subdomain takeover vectors.`,
+        url: `https://reconshield.in/subdomains/${domain}`,
+        dateModified: new Date().toISOString()
+      }),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [

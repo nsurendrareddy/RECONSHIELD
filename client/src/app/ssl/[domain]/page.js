@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import { Lock, Shield, Server, Activity, ChevronRight, Globe } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import { generateDatasetSchema } from '@/utils/metadata';
+
 
 // Basic domain validation
 const isValidDomain = (domain) => {
@@ -63,6 +65,12 @@ export default async function SslIntelligencePage({ params }) {
         },
         url: `https://reconshield.in/ssl/${domain}`
       },
+      generateDatasetSchema({
+        name: `${domain} SSL/TLS Cryptographic Security Data`,
+        description: `Cryptographic security and TLS protocol details dataset for ${domain}. Features certificate chain audits, expiration validation, cipher suite evaluation, and secure configuration assessment.`,
+        url: `https://reconshield.in/ssl/${domain}`,
+        dateModified: new Date().toISOString()
+      }),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [

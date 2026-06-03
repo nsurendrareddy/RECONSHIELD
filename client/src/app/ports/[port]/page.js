@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import RelatedPorts from '@/components/entities/RelatedPorts';
 import PortSecurityContext from '@/components/entities/PortSecurityContext';
+import { generateDatasetSchema } from '@/utils/metadata';
+
 
 export const revalidate = 86400;
 
@@ -95,6 +97,12 @@ export default async function PortIntelligencePage({ params }) {
           name: 'ReconShield Threat Research'
         }
       },
+      generateDatasetSchema({
+        name: `Port ${port} (${portDetails.service}) Exposure & Security Data`,
+        description: `Cybersecurity analysis and service classification dataset for network port ${port}. Contains risk classification of "${portDetails.risk}", default protocol details, and recommended defensive configurations.`,
+        url: `https://reconshield.in/ports/${port}`,
+        dateModified: new Date().toISOString()
+      }),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
