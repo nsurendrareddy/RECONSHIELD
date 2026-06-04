@@ -128,7 +128,7 @@ export function renderMarkdown(mdString) {
 function parseInline(text) {
   const parts = [];
   let remaining = text;
-  const regex = /(\*\*.*?\*\*|`.*?`)/;
+  const regex = /(\*\*.*?\*\*|`.*?`|\[.*?\]\(.*?\))/;
 
   while (remaining) {
     const match = regex.exec(remaining);
@@ -155,6 +155,25 @@ function parseInline(text) {
           {matchedText.substring(1, matchedText.length - 1)}
         </code>
       );
+    } else if (matchedText.startsWith('[') && matchedText.includes('](')) {
+      const closeBracketIndex = matchedText.indexOf(']');
+      const linkText = matchedText.substring(1, closeBracketIndex);
+      const url = matchedText.substring(closeBracketIndex + 2, matchedText.length - 1);
+      const isExternal = url.startsWith('http://') || url.startsWith('https://');
+
+      if (isExternal) {
+        parts.push(
+          <a key={parts.length} href={url} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300 underline decoration-cyan-400/20 hover:decoration-cyan-400 transition-all">
+            {linkText}
+          </a>
+        );
+      } else {
+        parts.push(
+          <Link key={parts.length} href={url} className="text-cyan-400 hover:text-cyan-300 underline decoration-cyan-400/20 hover:decoration-cyan-400 transition-all">
+            {linkText}
+          </Link>
+        );
+      }
     }
 
     remaining = remaining.substring(matchIndex + matchedText.length);

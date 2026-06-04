@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { TOOLS } from '@/utils/toolsData';
 import { client, blogListQuery } from '@/utils/sanity';
+import { MOCK_POSTS_DATA } from '@/utils/mockBlogData';
 import { 
   KNOWN_IPS, 
   KNOWN_ASNS, 
@@ -105,6 +106,8 @@ export async function GET(request, { params }) {
         { url: `${BASE_URL}/contact`, priority: 0.4, freq: 'yearly' },
         { url: `${BASE_URL}/privacy`, priority: 0.3, freq: 'yearly' },
         { url: `${BASE_URL}/terms`, priority: 0.3, freq: 'yearly' },
+        { url: `${BASE_URL}/research-methodology`, priority: 0.5, freq: 'monthly' },
+        { url: `${BASE_URL}/security-disclosure`, priority: 0.5, freq: 'monthly' },
       ];
       staticUrls.forEach(({ url, priority, freq }) => {
         xml += `  <url>\n    <loc>${url}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>${freq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
@@ -117,26 +120,30 @@ export async function GET(request, { params }) {
        TOOLS.forEach(tool => {
           xml += `  <url>\n    <loc>${BASE_URL}/tools/${tool.id}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${tool.popular ? 0.9 : 0.8}</priority>\n  </url>\n`;
        });
-    }
-    // 3. Blog Sitemaps
-    else if (entityType === 'blog' && page === 1) {
-        xml += `  <url>\n    <loc>${BASE_URL}/blog</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
-        
-        try {
-            const posts = await client.fetch(blogListQuery);
-            const safePosts = (posts || []).filter(post => post?.slug?.current || typeof post?.slug === 'string');
-            
-            safePosts.forEach(post => {
-              const slug = post?.slug?.current || post?.slug;
-              if (slug && typeof slug === 'string') {
-                  const lastMod = post?.publishedAt || post?._createdAt || STATIC_LAST_MODIFIED;
-                  xml += `  <url>\n    <loc>${BASE_URL}/blog/${slug}</loc>\n    <lastmod>${new Date(lastMod).toISOString()}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
-              }
-            });
-        } catch (sanityError) {
-            console.error('Sanity fetch error in sitemap:', sanityError);
-        }
-    }
+     }
+     // 3. Blog Sitemaps
+     else if (entityType === 'blog' && page === 1) {
+         xml += `  <url>\n    <loc>${BASE_URL}/blog</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
+         
+         try {
+             const posts = await client.fetch(blogListQuery);
+             let safePosts = (posts || []).filter(post => post?.slug?.current || typeof post?.slug === 'string');
+             
+             if (safePosts.length === 0) {
+                 safePosts = Object.values(MOCK_POSTS_DATA);
+             }
+             
+             safePosts.forEach(post => {
+               const slug = post?.slug?.current || post?.slug;
+               if (slug && typeof slug === 'string') {
+                   const lastMod = post?.publishedAt || post?._createdAt || STATIC_LAST_MODIFIED;
+                   xml += `  <url>\n    <loc>${BASE_URL}/blog/${slug}</loc>\n    <lastmod>${new Date(lastMod).toISOString()}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+               }
+             });
+         } catch (sanityError) {
+             console.error('Sanity fetch error in sitemap:', sanityError);
+         }
+     }
     // 4. Dynamic Entity Sitemaps (IP, ASN, Ports, Domains, etc)
     else {
         let hasData = false;

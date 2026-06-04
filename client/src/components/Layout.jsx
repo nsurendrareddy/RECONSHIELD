@@ -248,6 +248,7 @@ export default function Layout({ children }) {
                 <li><Link href="/dns-analysis" className="hover:text-matrix-400 transition-colors">DNS Records Hub</Link></li>
               </ul>
             </div>
+
             <div>
               <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Legal</h4>
               <ul className="space-y-2 text-sm">
@@ -255,9 +256,12 @@ export default function Layout({ children }) {
                 <li><Link href="/privacy" className="hover:text-matrix-400 transition-colors">Privacy Policy</Link></li>
                 <li><Link href="/disclaimer" className="hover:text-[#00ff88] transition-colors text-amber-500/80 hover:text-amber-500">Legal Disclaimer</Link></li>
                 <li><Link href="/editorial-policy" className="hover:text-matrix-400 transition-colors">Editorial Policy</Link></li>
+                <li><Link href="/research-methodology" className="hover:text-matrix-400 transition-colors">Research Methodology</Link></li>
+                <li><Link href="/security-disclosure" className="hover:text-matrix-400 transition-colors">Security Disclosure</Link></li>
                 <li><Link href="/contact" className="hover:text-matrix-400 transition-colors">Contact Support</Link></li>
               </ul>
             </div>
+
             <div>
               <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Entity Intel</h4>
               <ul className="space-y-2 text-sm">

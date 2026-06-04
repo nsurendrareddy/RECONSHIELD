@@ -132,6 +132,32 @@ export function ToolPageContent({ toolId }) {
           acceptedAnswer: { '@type': 'Answer', text: f.a },
         })) || [],
       },
+      {
+        '@type': 'HowTo',
+        '@id': `https://reconshield.in/tools/${toolId}#howto`,
+        name: `How to use the ReconShield ${tool.name} Tool`,
+        description: `Learn how to perform a security query and analyze results with the ${tool.name} tool.`,
+        step: [
+          {
+            '@type': 'HowToStep',
+            url: `https://reconshield.in/tools/${toolId}#step-1`,
+            name: 'Enter Target Hostname',
+            text: 'Input the domain name or IP address you want to scan into the search bar.'
+          },
+          {
+            '@type': 'HowToStep',
+            url: `https://reconshield.in/tools/${toolId}#step-2`,
+            name: 'Start Security Assessment',
+            text: 'Click the Analyze or Scan button to trigger the passive security check.'
+          },
+          {
+            '@type': 'HowToStep',
+            url: `https://reconshield.in/tools/${toolId}#step-3`,
+            name: 'Review Exposure Findings',
+            text: 'Review the detailed, formatted output highlighting any security exposures, expiry warnings, or configuration gaps.'
+          }
+        ]
+      }
     ]
   };
 

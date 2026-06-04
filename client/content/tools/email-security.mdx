@@ -1,40 +1,120 @@
-## Email Protocol Vulnerabilities and Authentication
-The Simple Mail Transfer Protocol (SMTP), designed in the early days of the internet, lacks built-in sender verification mechanisms. When SMTP was created, it assumed all network nodes were trusted. Consequently, any sender can craft an email and specify any value in the `From:` header, enabling email spoofing.
+## What This Tool Does
 
-Today, email spoofing is the primary delivery mechanism for phishing, malware distribution, and Business Email Compromise (BEC) campaigns. To establish trust, three core DNS-based authentication protocols were designed: SPF, DKIM, and DMARC.
+The ReconShield **Email Security Tool** (SPF/DKIM/DMARC Analyzer) is a dedicated domain intelligence utility built to audit email authentication records. 
 
-## Sender Policy Framework (SPF)
-**Sender Policy Framework (SPF)** is a protocol defined in RFC 7208 that allows domain owners to publish a list of authorized IP addresses and mail servers allowed to send emails on behalf of their domain.
-- **How It Works:** When an email server receives a message claiming to originate from `example.com`, it queries the DNS TXT records for `example.com` to check the SPF policy. If the sending IP address is not listed, the email fails the SPF check.
-- **Syntax Breakdown:** A typical SPF record looks like: `v=spf1 ip4:192.0.2.1 include:_spf.google.com -all`
-  - `v=spf1`: Declares the SPF version.
-  - `ip4`: Explicitly authorizes a specific IPv4 address block.
-  - `include`: Authorizes a third-party email sender (such as Google Workspace or Microsoft 365) by importing their SPF records.
-  - `-all` (Fail): Instructs the receiver to reject any emails that do not match the authorized list. Alternatives include `~all` (SoftFail, which accepts the mail but flags it).
-- **The 10 DNS Lookup Limit:** To prevent denial-of-service attacks on DNS resolvers, the SPF specification dictates that evaluating an SPF record must not require more than **10 recursive DNS lookups**. If a domain includes many third-party services, it may exceed this limit, causing the SPF check to fail automatically. This can be resolved using "SPF flattening," which replaces domain includes with raw IP addresses.
+By querying and parsing Domain Name System (DNS) records, this tool validates the presence, syntax, and enforcement policy of the Sender Policy Framework (SPF), DomainKeys Identified Mail (DKIM), and Domain-based Message Authentication, Reporting, and Conformance (DMARC) configurations. 
 
-## DomainKeys Identified Mail (DKIM)
-While SPF verifies the sending server's IP address, it does not protect the email content from alteration in transit. **DomainKeys Identified Mail (DKIM)** (RFC 6376) addresses this by cryptographically signing email messages.
-- **Key Pairs:** The domain owner generates a public/private key pair. The private key remains secure on the outgoing mail server, while the public key is published in a DNS TXT record under a specific selector (e.g., `selector1._domainkey.example.com`).
-- **Signing Headers:** When an email is sent, the server calculates a cryptographic hash of the headers and body, signs it with the private key, and appends the signature to the email header.
-- **Verification:** The receiving server queries the public key from the sender's DNS and verifies the signature. If the signature matches, it proves that the email originated from the domain and was not tampered with during transit.
+This analyzer serves as an **email security auditor**, evaluating whether your domain is vulnerable to email spoofing, phishing, and brand abuse. It provides actionable remediation blueprints to help organizations enforce strict email security boundaries and protect their digital reputation.
 
-## DMARC: Enforcing Policies and Reporting
-SPF and DKIM operate independently and have limitations. For example, SPF validates the sender address defined in the hidden envelope header (Return-Path), not the visible `From:` address that users see.
+## Why This Matters For Security
 
-**DMARC (Domain-based Message Authentication, Reporting, and Conformance)** (RFC 7489) binds SPF and DKIM together by enforcing **Domain Alignment**:
-- **Alignment:** DMARC requires that the domain in the visible `From:` header matches the domain verified by SPF and/or DKIM.
-- **Polices:** DMARC defines a policy for handling failed messages:
-  - `p=none`: Monitor failures but deliver the email (used during setup).
-  - `p=quarantine`: Send failed emails to the spam/junk folder.
-  - `p=reject`: Instruct receiving servers to drop failed emails immediately.
-- **Reporting:** DMARC instructs receivers to send daily XML reports detailing which IPs are sending emails on behalf of the domain, allowing administrators to audit their email sender network.
+Email remains the primary communication channel for businesses worldwide, but its underlying protocols date back to the early days of the internet, when security was not a design constraint. Consequently, email is the leading attack vector in cyber warfare:
 
-## Implementing Secure Email Configurations
-To protect your domain reputation:
-- Publish an SPF record listing all legitimate email senders, ensuring it remains under the 10-lookup limit.
-- Configure DKIM signing on all outgoing mail servers and third-party SaaS integrations.
-- Set up a DMARC policy, starting at `p=none` with a reporting address (`rua=mailto:dmarc@example.com`), analyze the reports, resolve alignment issues, and escalate the policy to `p=reject`.
-- Implement inbound email filtering that checks SPF, DKIM, and DMARC flags to block spoofed external emails.
+- **Business Email Compromise (BEC):** Threat actors impersonate high-level executives or trusted partners to execute financial wire fraud or harvest sensitive data. BEC campaigns rely heavily on email spoofing, where the sender's domain address is forged.
+- **Phishing and Malware Delivery:** Phishing campaigns deliver malicious links or attachments to compromise employee workstations. If a domain lacks proper authentication, unauthorized actors can send emails using the domain, bypassing spam filters because the receiver cannot distinguish between legitimate and forged emails.
+- **Domain Reputation and Deliverability:** Failing to configure SPF, DKIM, and DMARC signals to mail providers (like Google, Microsoft, and Yahoo) that your domain is unmanaged. As a result, legitimate marketing or operational emails are frequently flagged as spam, destroying email deliverability rates.
+- **Brand Protection:** Brand spoofing damages trust. If customers receive phishing emails originating from your domain, they lose trust in your brand, leading to customer churn and brand damage.
+
+## How The Technology Works
+
+The Simple Mail Transfer Protocol (SMTP) lacks built-in sender verification. To establish trust, three complementary, DNS-based protocols were designed to work together:
+
+### 1. Sender Policy Framework (SPF - RFC 7208)
+SPF allows a domain owner to publish a list of authorized IP addresses and mail servers allowed to send emails on behalf of their domain.
+- **Evaluation:** When a mail server receives an email claiming to come from `example.com`, it checks the DNS TXT record for `example.com`. If the sending IP address matches an authorized IP in the SPF record, the check passes.
+- **The 10-DNS-Lookup Limit:** SPF has a strict evaluation limit. It must not require more than **10 recursive DNS lookups** (queries using `include`, `a`, `mx`, or `ptr` mechanisms). Exceeding this limit causes SPF validation to fail automatically, causing delivery issues. This is resolved by "SPF flattening."
+- **Syntax Qualifiers:**
+  - `-all` (Fail): Strict policy. Drop unauthorized emails.
+  - `~all` (SoftFail): Soft policy. Accept but flag emails.
+  - `?all` (Neutral): No policy. Treat as if no SPF record exists.
+
+### 2. DomainKeys Identified Mail (DKIM - RFC 6376)
+While SPF validates the sending IP, it does not protect the message content from being altered in transit. DKIM solves this by adding a cryptographic signature to the email headers.
+- **Key Pairs:** The domain owner generates a public/private key pair. The private key remains secure on the outgoing mail server, while the public key is published in a DNS TXT record under a selector (e.g., `s1._domainkey.example.com`).
+- **Signature Verification:** The outgoing server signs the email body and headers. The receiving server fetches the public key from the DNS and verifies the signature. If it matches, it proves that the email originated from the domain and was not tampered with.
+
+### 3. Domain-based Message Authentication, Reporting, and Conformance (DMARC - RFC 7489)
+SPF and DKIM operate independently. For example, SPF validates the sender address defined in the hidden envelope header (`Return-Path`), not the visible `From:` address that users see. DMARC binds them together by enforcing **Domain Alignment**:
+- **Alignment:** DMARC requires that the domain in the visible `From:` header matches the domain verified by SPF (envelope sender) and/or DKIM (signature domain).
+- **Enforcement Policies:**
+  - `p=none`: Monitor failures but deliver the email (used during initial configuration).
+  - `p=quarantine`: Send failed emails to the junk/spam folder.
+  - `p=reject`: Instruct receiving servers to block failed emails entirely.
+- **Reporting:** DMARC instructs receiving mail servers to send daily XML reports (sent to the address specified in the `rua` tag) detailing which IPs are sending emails on behalf of the domain, allowing administrators to audit their sender network.
+
+## Common Security Risks
+
+When auditing email configurations, look out for the following critical risks:
+
+### 1. DMARC Policy Set to 'none' (`p=none`)
+A policy of `p=none` is only intended for monitoring during initial setup. It does not instruct mail servers to block unauthorized emails. If your domain remains at `p=none`, threat actors can still forge your domain to send phishing emails. The policy must eventually be escalated to `p=reject`.
+
+### 2. Overly Permissive SPF Records
+Using the `+all` qualifier or including overly broad IP ranges (e.g., `/8` or `/16` ranges) authorizes thousands of unrelated servers to send emails on behalf of your domain, defeating the purpose of SPF.
+
+### 3. Stale Third-Party Includes
+Organizations often integrate third-party SaaS applications (like Zendesk, Mailchimp, or legacy CRM tools) and add them to their SPF records. If the organization cancels the service but forgets to remove the `include:` statement from their SPF record, they create a vulnerability where other customers of those SaaS platforms could potentially send emails authenticated under the organization's domain.
+
+## Step-by-Step Usage Guide
+
+To perform an audit and secure your email infrastructure using the ReconShield Email Security Tool, follow these operational steps:
+
+1. **Scan Your Domain:** Navigate to the [Email Security Tool](/tools/email-security) and input your domain.
+2. **Analyze the SPF Record:**
+   - Verify that the SPF record exists and uses the strict `-all` qualifier instead of `~all` or `?all`.
+   - Count the number of DNS lookups in the record. Ensure it is under the 10-lookup limit.
+3. **Verify DMARC Policy:**
+   - Ensure the policy (`p`) is set to `quarantine` or `reject`.
+   - Confirm that a reporting email is configured in the `rua` tag (e.g., `rua=mailto:dmarc-reports@example.com`) to receive compliance data.
+4. **Audit DKIM Key Strength:**
+   - Ensure you are using at least 2048-bit DKIM keys. 1024-bit keys are considered weak and can be cracked by well-resourced adversaries.
+5. **Implement DMARC Escalation:**
+   - Monitor DMARC reports for 2-4 weeks at `p=none` to identify legitimate sending sources (like billing tools or newsletters).
+   - Once all valid senders are configured with SPF and DKIM, escalate the policy to `p=quarantine; pct=100;`.
+   - After another 2 weeks of monitoring, escalate to the final hardened state: `p=reject; pct=100;`.
+6. **Re-Scan and Document:** Run regular scans to ensure no unauthorized records are introduced during infrastructure changes.
+
+## Real-World Examples
+
+### Case Study: Hijacking a Domain via Dangling SPF SaaS Includes
+A financial service provider integrated a cloud-based helpdesk solution and added the vendor's SPF include statement to their DNS record. Years later, they migrated to an internal ticketing system and closed the vendor account, but left the `include:vendor-spf.com` statement active in their SPF configuration.
+
+An unauthorized actor registered a free trial account on the same vendor platform, verified the domain inside the vendor console, and successfully sent authenticated phishing emails to the provider's clients. Because the vendor's IP addresses were still authorized in the provider's SPF record, the emails passed authentication checks.
+
+### Case Study: Threat Actor Impersonating CEO in Wire Transfer Fraud
+A construction firm became the victim of a BEC attack. A threat actor sent an email to the accounting department, appearing to come from the CEO's actual email address (`ceo@firm.com`), requesting an urgent $150,000 wire transfer. The email did not go to spam because the firm's DMARC policy was misconfigured as `p=none`. 
+
+The mail client delivered the forged email to the accountant's inbox. The accountant, trusting the visible `From:` address, completed the transfer. Implementing `p=reject` would have instructed the mail client to drop the spoofed email, blocking the attack at the gateway.
+
+## Frequently Asked Questions
+
+### What does the `pct` tag do in DMARC?
+The `pct` (percentage) tag specifies the percentage of emails to which the DMARC policy should be applied (e.g., `pct=50`). This allows organizations to gradually roll out enforcement policies (like `quarantine` or `reject`) to a subset of mail traffic to test for false positives before full enforcement.
+
+### What is the difference between SPF hard fail (`-all`) and soft fail (`~all`)?
+A hard fail (`-all`) instructs receiving servers to reject any email that does not originate from an IP address listed in the SPF record. A soft fail (`~all`) suggests that the server accept the email but flag it as suspicious or direct it to the spam folder.
+
+### How do I generate a DKIM key?
+DKIM keys are generated by your email hosting provider (e.g., Google Workspace, Microsoft 365) or your outgoing mail server software. The provider will generate the private key internally and provide you with a public key and selector to publish in your DNS configuration.
+
+### Can I have multiple SPF records?
+No. Publishing multiple SPF records on a single domain is a syntax violation and will cause SPF validation to fail automatically. If you need to authorize multiple email senders, they must be combined into a single SPF record.
+
+## Related Security Resources
+
+Continue hardening your domain boundary and network boundaries with these ReconShield modules:
+
+- **DNS Infrastructure Resolution:** Verify your name servers and query all DNS record types with the [DNS Lookup Tool](/tools/dns-lookup).
+- **Surface Boundary Scanning:** Map out your public subdomains and discover forgotten staging assets with the [Subdomain Finder](/tools/subdomain-finder).
+- **Security Exposure Assessment:** Test your web applications and server configurations for vulnerabilities using the [Security Exposure Assessment Tool](/tools/vulnerability-scanner).
+- **Email Blueprint Publications:** Read our comprehensive guide on mail security: [Demystifying SPF, DKIM, and DMARC: A Blueprint for Email Spoofing Defense](/blog/spf-dkim-dmarc-blueprint).
+
+## References
+
+1. **DMARC.org - Domain-based Message Authentication, Reporting, and Conformance:** [https://dmarc.org](https://dmarc.org)
+2. **IETF RFC 7208 - Sender Policy Framework (SPF):** [https://datatracker.ietf.org/doc/html/rfc7208](https://datatracker.ietf.org/doc/html/rfc7208)
+3. **IETF RFC 6376 - DomainKeys Identified Mail (DKIM) Signatures:** [https://datatracker.ietf.org/doc/html/rfc6376](https://datatracker.ietf.org/doc/html/rfc6376)
+4. **IETF RFC 7489 - Domain-based Message Authentication (DMARC):** [https://datatracker.ietf.org/doc/html/rfc7489](https://datatracker.ietf.org/doc/html/rfc7489)
+5. **M3AAWG Email Authentication Best Practices:** [https://www.m3aawg.org/documents/best-practices](https://www.m3aawg.org/documents/best-practices)
 
 {{CTABlock}}

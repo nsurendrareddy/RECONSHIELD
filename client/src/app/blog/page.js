@@ -29,6 +29,8 @@ const CATEGORIES = [
   { name: "internet-facing assets", icon: Network, color: "text-cyan-400", bg: "bg-cyan-500/10", border: "border-cyan-500/20", hover: "hover:border-cyan-500/20" }
 ];
 
+import { MOCK_POSTS_DATA } from '@/utils/mockBlogData';
+
 export default async function BlogPage() {
   let posts = [];
   
@@ -36,6 +38,10 @@ export default async function BlogPage() {
     posts = await client.fetch(blogListQuery);
   } catch (error) {
     console.error('Error fetching blog posts from Sanity:', error);
+  }
+
+  if (!posts || posts.length === 0) {
+    posts = Object.values(MOCK_POSTS_DATA);
   }
 
   // Fallback static posts if Sanity fetch fails or is empty for demo purposes
