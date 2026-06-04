@@ -9,6 +9,10 @@ import {
   KNOWN_HEADERS, 
   KNOWN_DOMAINS 
 } from '@/lib/entityRegistry';
+import { DNS_TYPES_DATA } from '@/utils/dnsTypesData';
+import { SSL_ERRORS_DATA } from '@/utils/sslErrorsData';
+import { EMAIL_AUTHS_DATA } from '@/utils/emailAuthsData';
+import { COMPARISONS_DATA } from '@/utils/comparisonsData';
 
 export const runtime = 'edge'; 
 
@@ -25,7 +29,10 @@ const FALLBACK_DATA = {
   dns: KNOWN_DOMAINS,
   whois: KNOWN_DOMAINS,
   subdomains: KNOWN_DOMAINS,
-  'malicious-ips': ['185.191.171.2', '194.165.16.2']
+  'malicious-ips': ['185.191.171.2', '194.165.16.2'],
+  'dns-types': Object.keys(DNS_TYPES_DATA),
+  'ssl-errors': Object.keys(SSL_ERRORS_DATA),
+  'email-auths': Object.keys(EMAIL_AUTHS_DATA)
 };
 
 // Local registry verification to filter invalid/non-200 urls
@@ -58,15 +65,32 @@ function isUrlIndexableAndValid(urlStr) {
       return KNOWN_HEADERS.includes(header.toLowerCase());
     }
     
-    // Check SSL, DNS, subdomains, whois
+    // Check SSL Errors first, then domain-specific SSL paths
+    if (path.startsWith('/ssl/errors/')) {
+      const err = path.replace('/ssl/errors/', '');
+      return Object.keys(SSL_ERRORS_DATA).includes(err);
+    }
     if (path.startsWith('/ssl/')) {
       const domain = path.replace('/ssl/', '');
       return KNOWN_DOMAINS.includes(domain.toLowerCase());
+    }
+
+    // Check DNS Types first, then domain-specific DNS paths
+    if (path.startsWith('/dns-records/types/')) {
+      const type = path.replace('/dns-records/types/', '');
+      return Object.keys(DNS_TYPES_DATA).includes(type);
     }
     if (path.startsWith('/dns-records/')) {
       const domain = path.replace('/dns-records/', '');
       return KNOWN_DOMAINS.includes(domain.toLowerCase());
     }
+
+    // Check Email Auths
+    if (path.startsWith('/email-auth/')) {
+      const auth = path.replace('/email-auth/', '');
+      return Object.keys(EMAIL_AUTHS_DATA).includes(auth);
+    }
+    
     if (path.startsWith('/subdomains/')) {
       const domain = path.replace('/subdomains/', '');
       return KNOWN_DOMAINS.includes(domain.toLowerCase());
@@ -108,7 +132,22 @@ export async function GET(request, { params }) {
         { url: `${BASE_URL}/terms`, priority: 0.3, freq: 'yearly' },
         { url: `${BASE_URL}/research-methodology`, priority: 0.5, freq: 'monthly' },
         { url: `${BASE_URL}/security-disclosure`, priority: 0.5, freq: 'monthly' },
+        { url: `${BASE_URL}/research`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/reports`, priority: 0.7, freq: 'weekly' },
+        { url: `${BASE_URL}/studies`, priority: 0.7, freq: 'weekly' },
+        { url: `${BASE_URL}/authors`, priority: 0.6, freq: 'monthly' },
+        { url: `${BASE_URL}/editorial-standards`, priority: 0.6, freq: 'monthly' },
+        { url: `${BASE_URL}/fact-checking-policy`, priority: 0.6, freq: 'monthly' },
+        { url: `${BASE_URL}/data-sources`, priority: 0.6, freq: 'monthly' },
+        { url: `${BASE_URL}/research-team`, priority: 0.6, freq: 'monthly' },
+        { url: `${BASE_URL}/compare`, priority: 0.8, freq: 'weekly' },
       ];
+
+      // Append dynamic comparison URLs
+      Object.keys(COMPARISONS_DATA).forEach(slug => {
+        staticUrls.push({ url: `${BASE_URL}/compare/${slug}`, priority: 0.8, freq: 'weekly' });
+      });
+
       staticUrls.forEach(({ url, priority, freq }) => {
         xml += `  <url>\n    <loc>${url}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>${freq}</changefreq>\n    <priority>${priority}</priority>\n  </url>\n`;
       });
@@ -217,6 +256,9 @@ export async function GET(request, { params }) {
             if (entityType === 'malicious-ips') pathPrefix = 'ip';
             if (entityType === 'cve') pathPrefix = 'cve';
             if (entityType === 'whois') pathPrefix = 'tools/whois';
+            if (entityType === 'dns-types') pathPrefix = 'dns-records/types';
+            if (entityType === 'ssl-errors') pathPrefix = 'ssl/errors';
+            if (entityType === 'email-auths') pathPrefix = 'email-auth';
             
             if (fallbackItems.length > 0) {
               for (const item of fallbackItems) {

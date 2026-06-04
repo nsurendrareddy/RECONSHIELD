@@ -27,6 +27,7 @@ const PORT_DATA = {
   110: { service: 'POP3', risk: 'Medium', protocol: 'TCP' },
   143: { service: 'IMAP', risk: 'Medium', protocol: 'TCP' },
   443: { service: 'HTTPS', risk: 'Low', protocol: 'TCP' },
+  587: { service: 'SMTP-SSL', risk: 'Medium', protocol: 'TCP' },
   3306: { service: 'MySQL', risk: 'High', protocol: 'TCP' },
   3389: { service: 'RDP', risk: 'Critical', protocol: 'TCP' },
   5432: { service: 'PostgreSQL', risk: 'High', protocol: 'TCP' },

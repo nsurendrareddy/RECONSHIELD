@@ -40,6 +40,7 @@ export const KNOWN_PORTS = [
   110,   // POP3
   143,   // IMAP
   443,   // HTTPS
+  587,   // SMTP SSL/TLS Submission
   3306,  // MySQL
   3389,  // RDP
   5432,  // PostgreSQL
