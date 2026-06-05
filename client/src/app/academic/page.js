@@ -104,13 +104,11 @@ export default function AcademicOutreachPage() {
                 </div>
 
                 <div className="shrink-0 flex items-center">
-                  <a 
-                    href={`/docs/labs/lab-${idx+1}.pdf`}
-                    download 
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono rounded-xl text-gray-300 hover:text-white transition-all cursor-pointer"
+                  <span 
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white/5 border border-white/5 text-xs font-mono rounded-xl text-gray-500 select-none"
                   >
-                    <FileText className="w-3.5 h-3.5 text-[#00ff88]" /> Download PDF Manual
-                  </a>
+                    <FileText className="w-3.5 h-3.5 text-gray-600" /> PDF Coming Soon
+                  </span>
                 </div>
               </div>
             ))}

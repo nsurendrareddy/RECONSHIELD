@@ -239,13 +239,13 @@ export default function Layout({ children }) {
                 <li><Link href="/scanner" className="hover:text-matrix-400 transition-colors">Security Scanner</Link></li>
                 <li><Link href="/tools/email-security" className="hover:text-matrix-400 transition-colors">Email Security Tool</Link></li>
                 <li><Link href="/blog" className="hover:text-matrix-400 transition-colors">Security Blog</Link></li>
-                <li><Link href="/about" className="hover:text-matrix-400 transition-colors">About Us</Link></li>
-                <li><Link href="/ip-intelligence" className="hover:text-matrix-400 transition-colors">IP Intelligence Hub</Link></li>
-                <li><Link href="/ports" className="hover:text-matrix-400 transition-colors">Ports Directory</Link></li>
-                <li><Link href="/asn" className="hover:text-matrix-400 transition-colors">ASN Directory</Link></li>
-                <li><Link href="/tools/http-headers" className="hover:text-matrix-400 transition-colors">Security Headers Hub</Link></li>
-                <li><Link href="/ssl" className="hover:text-matrix-400 transition-colors">SSL Analysis Hub</Link></li>
-                <li><Link href="/dns-analysis" className="hover:text-matrix-400 transition-colors">DNS Records Hub</Link></li>
+                <li><Link href="/about-reconshield" className="hover:text-matrix-400 transition-colors">About ReconShield</Link></li>
+                <li><Link href="/research-team" className="hover:text-matrix-400 transition-colors">Research Team</Link></li>
+                <li><Link href="/press" className="hover:text-matrix-400 transition-colors">Press Room</Link></li>
+                <li><Link href="/academic" className="hover:text-matrix-400 transition-colors">Academic Labs</Link></li>
+                <li><Link href="/resources" className="hover:text-matrix-400 transition-colors">Resources Library</Link></li>
+                <li><Link href="/opensource" className="hover:text-matrix-400 transition-colors">Open Source OSS</Link></li>
+                <li><Link href="/glossary" className="hover:text-matrix-400 transition-colors">Cyber Glossary</Link></li>
               </ul>
             </div>
 
@@ -265,11 +265,14 @@ export default function Layout({ children }) {
             <div>
               <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Entity Intel</h4>
               <ul className="space-y-2 text-sm">
-                <li><Link href="/ports/22" className="hover:text-matrix-400 transition-colors">Port 22 Analysis</Link></li>
-                <li><Link href="/ports/80" className="hover:text-matrix-400 transition-colors">Port 80 Analysis</Link></li>
-                <li><Link href="/asn/AS15169" className="hover:text-matrix-400 transition-colors">ASN AS15169 (Google)</Link></li>
-                <li><Link href="/ip/8.8.8.8" className="hover:text-matrix-400 transition-colors">IP 8.8.8.8</Link></li>
-                <li><Link href="/cve/CVE-2021-44228" className="hover:text-matrix-400 transition-colors">Log4Shell (CVE-2021-44228)</Link></li>
+                <li><Link href="/ports" className="hover:text-matrix-400 transition-colors">Ports Directory</Link></li>
+                <li><Link href="/asn" className="hover:text-matrix-400 transition-colors">ASN Directory</Link></li>
+                <li><Link href="/ip-intelligence" className="hover:text-matrix-400 transition-colors">IP Intelligence Hub</Link></li>
+                <li><Link href="/ssl" className="hover:text-matrix-400 transition-colors">SSL Analysis Hub</Link></li>
+                <li><Link href="/dns-analysis" className="hover:text-matrix-400 transition-colors">DNS Records Hub</Link></li>
+                <li><Link href="/technology" className="hover:text-matrix-400 transition-colors">Technology Detection</Link></li>
+                <li><Link href="/vulnerability" className="hover:text-matrix-400 transition-colors">Vulnerability DB</Link></li>
+                <li><Link href="/subdomains" className="hover:text-matrix-400 transition-colors">Subdomains Hub</Link></li>
               </ul>
             </div>
           </div>

@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
   const data = DNS_TYPES_DATA[recordType];
   
   if (!data) {
-    return { title: 'DNS Record Type Not Found' };
+    notFound();
   }
 
   return {

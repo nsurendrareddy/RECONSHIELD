@@ -280,7 +280,7 @@ export default async function TechnologyProgrammaticPage({ params }) {
         <div className="max-w-5xl mx-auto px-4 pt-8">
           
           <Breadcrumbs crumbs={[
-            { label: 'Website Technology Checker', href: '/tools/tech-detector' },
+            { label: 'Technology Detection Hub', href: '/technology' },
             { label: data.name, href: `/technology/${slug}` }
           ]} />
 
@@ -360,6 +360,41 @@ export default async function TechnologyProgrammaticPage({ params }) {
                       <p className="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
                     </div>
                   ))}
+                </div>
+              </div>
+
+              {/* Related Resources Hub & Sibling Links */}
+              <div className="pt-10 border-t border-white/5">
+                <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-wider">
+                  Related Technology Profiles
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {Object.keys(TECH_DATA)
+                    .filter(s => s !== slug)
+                    .slice(0, 4)
+                    .map(s => (
+                      <Link 
+                        key={s} 
+                        href={`/technology/${s}`} 
+                        className="bg-[#0d1117] border border-white/5 hover:border-teal-500/30 p-5 rounded-xl transition-all group flex flex-col justify-between"
+                      >
+                        <div>
+                          <span className="text-[10px] text-teal-400 font-mono uppercase tracking-wider">{TECH_DATA[s].category}</span>
+                          <h3 className="text-sm font-bold text-white group-hover:text-[#00ff88] transition-colors mt-1 mb-2">
+                            {TECH_DATA[s].name}
+                          </h3>
+                          <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">{TECH_DATA[s].desc}</p>
+                        </div>
+                        <div className="text-xs text-[#00ff88] font-mono mt-4 flex items-center gap-1 opacity-80">
+                          View Profile <ChevronRight className="w-3.5 h-3.5" />
+                        </div>
+                      </Link>
+                    ))}
+                </div>
+                <div className="mt-6 flex justify-end">
+                  <Link href="/technology" className="text-xs text-teal-400 hover:text-teal-300 font-mono flex items-center gap-1">
+                    Explore all technology profiles <ChevronRight className="w-4 h-4" />
+                  </Link>
                 </div>
               </div>
 

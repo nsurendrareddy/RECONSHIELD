@@ -1,7 +1,7 @@
 const { spawn } = require('child_process');
 const http = require('http');
 
-const PORT = 3009;
+const PORT = 3095;
 const BASE_URL = `http://localhost:${PORT}`;
 const MAX_CONCURRENT_REQUESTS = 5;
 
@@ -10,8 +10,6 @@ const IGNORED_PATHS = [
   '/api/revalidate',
   '/feed.xml',
   '/rss.xml',
-  '/dns-records/types/',
-  '/ssl/errors/',
   '/whois-lookup',
   '/dns-lookup',
   '/reverse-dns',

@@ -116,6 +116,13 @@ export function middleware(request) {
   const matchingRoute = domainRoutes.find(route => pathname.startsWith(route));
   
   if (matchingRoute) {
+    if (pathname.startsWith('/ssl/errors/')) {
+      return NextResponse.next();
+    }
+    if (pathname.startsWith('/dns-records/types/')) {
+      return NextResponse.next();
+    }
+
     const domain = pathname.replace(matchingRoute, '').split('/')[0].toLowerCase();
     
     // Whitelist programmatic topic guides

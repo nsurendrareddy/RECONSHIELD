@@ -18,7 +18,7 @@ export async function generateMetadata({ params }) {
   const data = SSL_ERRORS_DATA[errorCode];
   
   if (!data) {
-    return { title: 'SSL Error Not Found' };
+    notFound();
   }
 
   return {

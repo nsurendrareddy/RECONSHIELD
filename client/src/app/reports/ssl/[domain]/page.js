@@ -368,36 +368,36 @@ export default async function SslReportPage({ params }) {
             {/* Related Tools Sidebar */}
             <div className="lg:col-span-1 space-y-6">
               <div className="p-6 rounded-2xl bg-gradient-to-b from-[#0d1117] to-transparent border border-white/5 sticky top-24">
-                <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">Related Scan Profiles</h3>
+                <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">Related Compliance Reports</h3>
                 
                 <div className="space-y-3">
-                  <Link href={`/tools/dns-lookup?target=${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
-                    <div className="w-8 h-8 rounded-md bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20">
-                      <Shield className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-white">DNS Lookup</div>
-                      <div className="text-xs text-gray-500">Query nameservers</div>
-                    </div>
-                  </Link>
-
-                  <Link href={`/tools/subdomain-finder?target=${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/reports/subdomains/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:bg-orange-500/20">
                       <Activity className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-white">Subdomains</div>
-                      <div className="text-xs text-gray-500">Map attack boundary</div>
+                      <div className="text-sm font-semibold text-white group-hover:text-orange-400 transition-colors">Subdomain Report</div>
+                      <div className="text-xs text-gray-500">Domain boundary audit</div>
                     </div>
                   </Link>
 
-                  <Link href={`/tools/whois?target=${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/reports/ports/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20">
                       <Server className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-sm font-semibold text-white">WHOIS Lookup</div>
-                      <div className="text-xs text-gray-500">Check registrar registry</div>
+                      <div className="text-sm font-semibold text-white group-hover:text-purple-400 transition-colors">Port Exposure Report</div>
+                      <div className="text-xs text-gray-500">Open ports mapping</div>
+                    </div>
+                  </Link>
+
+                  <Link href={`/ssl/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                    <div className="w-8 h-8 rounded-md bg-emerald-500/10 flex items-center justify-center text-[#00ff88] group-hover:bg-[#00ff88]/20">
+                      <Lock className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-white group-hover:text-[#00ff88] transition-colors">SSL Hardening Profile</div>
+                      <div className="text-xs text-gray-500">Detail config options</div>
                     </div>
                   </Link>
                 </div>

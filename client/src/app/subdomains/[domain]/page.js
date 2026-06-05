@@ -146,7 +146,7 @@ export default async function SubdomainIntelligencePage({ params }) {
               <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
                 <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
                 <li><ChevronRight className="w-3 h-3" /></li>
-                <li><Link href="/tools/subdomain-finder" className="hover:text-[#00ff88] transition-colors">OSINT Mapping</Link></li>
+                <li><Link href="/subdomains" className="hover:text-[#00ff88] transition-colors">Subdomains Hub</Link></li>
                 <li><ChevronRight className="w-3 h-3" /></li>
                 <li className="text-[#00ff88]">{topic.title}</li>
               </ol>
@@ -199,6 +199,38 @@ export default async function SubdomainIntelligencePage({ params }) {
                         <p className="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
                       </div>
                     ))}
+                  </div>
+                </div>
+
+                {/* Sibling Topic Links */}
+                <div className="pt-10 border-t border-white/5">
+                  <h3 className="text-xl font-bold text-white mb-6">Related Subdomain Topics</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {SUBDOMAIN_TOPICS
+                      .filter(t => t !== domain)
+                      .slice(0, 4)
+                      .map(t => (
+                        <Link 
+                          key={t} 
+                          href={`/subdomains/${t}`} 
+                          className="bg-[#0d1117] border border-white/5 hover:border-orange-500/30 p-5 rounded-xl transition-all group flex flex-col justify-between"
+                        >
+                          <div>
+                            <h4 className="text-sm font-bold text-white group-hover:text-[#00ff88] mt-1 mb-2">
+                              {SUBDOMAIN_TOPICS_DATA[t].title}
+                            </h4>
+                            <p className="text-xs text-gray-400 leading-relaxed line-clamp-2">{SUBDOMAIN_TOPICS_DATA[t].description}</p>
+                          </div>
+                          <div className="text-xs text-[#00ff88] font-mono mt-4 flex items-center gap-1 opacity-80">
+                            Learn More <ChevronRight className="w-3.5 h-3.5" />
+                          </div>
+                        </Link>
+                      ))}
+                  </div>
+                  <div className="mt-6 flex justify-end">
+                    <Link href="/subdomains" className="text-xs text-orange-400 hover:text-orange-300 font-mono flex items-center gap-1">
+                      Explore all subdomain profiles & topics <ChevronRight className="w-4 h-4" />
+                    </Link>
                   </div>
                 </div>
 
@@ -297,7 +329,7 @@ export default async function SubdomainIntelligencePage({ params }) {
             <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
               <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
-              <li><Link href="/tools/subdomain-finder" className="hover:text-[#00ff88] transition-colors">OSINT Mapping</Link></li>
+              <li><Link href="/subdomains" className="hover:text-[#00ff88] transition-colors">Subdomains Hub</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
               <li className="text-[#00ff88]">{domain}</li>
             </ol>
@@ -386,6 +418,41 @@ export default async function SubdomainIntelligencePage({ params }) {
                   ))}
                 </div>
               </div>
+
+              {/* Related Resources Hub & Sibling Links */}
+              <div className="pt-10 border-t border-white/5">
+                <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-wider">
+                  Related Domain Maps
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {['google.com', 'github.com', 'microsoft.com', 'cloudflare.com', 'apple.com']
+                    .filter(d => d !== domain)
+                    .slice(0, 4)
+                    .map(d => (
+                      <Link 
+                        key={d} 
+                        href={`/subdomains/${d}`} 
+                        className="bg-[#0d1117] border border-white/5 hover:border-orange-500/30 p-5 rounded-xl transition-all group flex flex-col justify-between"
+                      >
+                        <div>
+                          <h3 className="text-sm font-bold text-white group-hover:text-[#00ff88] transition-colors mb-2">
+                            {d} Subdomains
+                          </h3>
+                          <p className="text-xs text-gray-400 leading-relaxed">View the external asset mapping footprint for {d}.</p>
+                        </div>
+                        <div className="text-xs text-[#00ff88] font-mono mt-4 flex items-center gap-1 opacity-80">
+                          View Map <ChevronRight className="w-3.5 h-3.5" />
+                        </div>
+                      </Link>
+                    ))}
+                </div>
+                <div className="mt-6 flex justify-end">
+                  <Link href="/subdomains" className="text-xs text-orange-400 hover:text-orange-300 font-mono flex items-center gap-1">
+                    Explore all subdomains & topics <ChevronRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+
             </div>
 
             <div className="lg:col-span-1 space-y-6">
