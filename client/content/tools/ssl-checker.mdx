@@ -92,14 +92,49 @@ TLS 1.3 is enabled by updating your web server software (e.g., Nginx 1.13.0+, Ap
 ### Why do mobile devices show SSL errors while desktop browsers connect fine?
 Desktop browsers have advanced certificate stores and often auto-download missing intermediate certificates from the internet. Mobile devices and API clients do not. If your web server is misconfigured and fails to serve the intermediate certificate, mobile users will encounter trust warnings.
 
+## Key Security Definitions
+
+Understand the core terminology of secure transport systems:
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+  <div class="p-6 rounded-xl bg-white/[0.02] border border-white/5" itemscope itemtype="https://schema.org/DefinedTerm">
+    <h3 class="text-[#00ff88] font-mono font-bold text-sm mb-2" itemprop="name">SSL Handshake</h3>
+    <p class="text-xs text-gray-400 leading-relaxed" itemprop="description">
+      An SSL handshake is the initialization process that establishes an encrypted session between a client and a server. It negotiates the protocol version, evaluates the server's certificate, and generates secure symmetric keys for the session.
+    </p>
+  </div>
+  
+  <div class="p-6 rounded-xl bg-white/[0.02] border border-white/5" itemscope itemtype="https://schema.org/DefinedTerm">
+    <h3 class="text-[#00ff88] font-mono font-bold text-sm mb-2" itemprop="name">Certificate Authority</h3>
+    <p class="text-xs text-gray-400 leading-relaxed" itemprop="description">
+      A Certificate Authority (CA) is a trusted entity that issues digital certificates. It verifies the identity of domain owners, enabling browsers to trust the cryptographic encryption keys presented by servers.
+    </p>
+  </div>
+
+  <div class="p-6 rounded-xl bg-white/[0.02] border border-white/5" itemscope itemtype="https://schema.org/DefinedTerm">
+    <h3 class="text-[#00ff88] font-mono font-bold text-sm mb-2" itemprop="name">Wildcard Certificate</h3>
+    <p class="text-xs text-gray-400 leading-relaxed" itemprop="description">
+      A wildcard certificate is a single public-key certificate that can secure a root domain and an unlimited number of its direct subdomains, designated by an asterisk (e.g., *.example.com).
+    </p>
+  </div>
+
+  <div class="p-6 rounded-xl bg-white/[0.02] border border-white/5" itemscope itemtype="https://schema.org/DefinedTerm">
+    <h3 class="text-[#00ff88] font-mono font-bold text-sm mb-2" itemprop="name">Cipher Suite</h3>
+    <p class="text-xs text-gray-400 leading-relaxed" itemprop="description">
+      A cipher suite is a standardized set of cryptographic algorithms used to establish a secure connection. It defines the key exchange, authentication, symmetric encryption, and message authentication code (MAC) algorithms.
+    </p>
+  </div>
+</div>
+
 ## Related Security Resources
 
 Expand your cryptographic auditing capability with these ReconShield resources:
 
-- **Security Headers Auditing:** Confirm your server enforces secure transport policies with the [Security Headers Analyzer](/tools/http-headers).
-- **Security Exposure Assessment:** Audit the entire external footprint of your applications using the [Security Exposure Assessment Tool](/tools/vulnerability-scanner).
+- **Security Headers Auditing:** Confirm your server enforces secure transport policies with the [HTTP Headers](/tools/http-headers) analyzer.
+- **Security Exposure Assessment:** Audit the entire external footprint of your applications using the [Vulnerability Scanner](/tools/vulnerability-scanner).
 - **Subdomain Footprinting:** Discover forgotten subdomains that may be hosting expired certificates with the [Subdomain Finder](/tools/subdomain-finder).
-- **Cryptographic Publications:** Read our research paper on transport compliance: [The Critical Role of SSL/TLS Ciphers in Regulatory Compliance Frameworks](/blog/ssl-tls-regulatory-compliance).
+- **Ownership Verification:** Verify domain registration and ownership records with the [WHOIS Checker](/tools/whois).
+- **DNS Resolution Check:** Verify DNS records and resolve hostnames with the [DNS Lookup](/tools/dns-lookup) tool.
 
 ## References
 

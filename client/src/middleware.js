@@ -118,6 +118,35 @@ export function middleware(request) {
   if (matchingRoute) {
     const domain = pathname.replace(matchingRoute, '').split('/')[0].toLowerCase();
     
+    // Whitelist programmatic topic guides
+    const sslTopics = [
+      'ssl-vs-tls', 
+      'tls-1-2-vs-tls-1-3', 
+      'certificate-chain', 
+      'cipher-suites', 
+      'self-signed-certificate',
+      'wildcard-certificate',
+      'pki-explained',
+      'https-security'
+    ];
+    const subdomainTopics = [
+      'subdomain-enumeration', 
+      'passive-enumeration', 
+      'certificate-transparency', 
+      'subdomain-takeover', 
+      'shadow-it',
+      'active-enumeration',
+      'asset-discovery',
+      'attack-surface-management'
+    ];
+    
+    if (matchingRoute === '/ssl/' && sslTopics.includes(domain)) {
+      return NextResponse.next();
+    }
+    if (matchingRoute === '/subdomains/' && subdomainTopics.includes(domain)) {
+      return NextResponse.next();
+    }
+    
     // Basic domain validation
     const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
     if (!domainRegex.test(domain) || domain.length > 253) {

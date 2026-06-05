@@ -203,33 +203,46 @@ export default async function ComparisonPage({ params }) {
     notFound();
   }
 
+  const graph = [
+    {
+      '@type': 'TechArticle',
+      '@id': `https://reconshield.in/compare/${slug}/#article`,
+      headline: data.title,
+      description: data.description,
+      publisher: {
+        '@type': 'Organization',
+        name: 'ReconShield Security',
+        url: 'https://reconshield.in'
+      },
+      author: {
+        '@type': 'Organization',
+        name: 'ReconShield Threat Research'
+      }
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
+        { '@type': 'ListItem', position: 2, name: 'Comparisons', item: 'https://reconshield.in/compare' },
+        { '@type': 'ListItem', position: 3, name: data.title, item: `https://reconshield.in/compare/${slug}` }
+      ]
+    }
+  ];
+
+  if (data.faqs && data.faqs.length > 0) {
+    graph.push({
+      '@type': 'FAQPage',
+      mainEntity: data.faqs.map(f => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      }))
+    });
+  }
+
   const schemaJson = {
     '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'TechArticle',
-        '@id': `https://reconshield.in/compare/${slug}/#article`,
-        headline: data.title,
-        description: data.description,
-        publisher: {
-          '@type': 'Organization',
-          name: 'ReconShield Security',
-          url: 'https://reconshield.in'
-        },
-        author: {
-          '@type': 'Organization',
-          name: 'ReconShield Threat Research'
-        }
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
-          { '@type': 'ListItem', position: 2, name: 'Comparisons', item: 'https://reconshield.in/compare' },
-          { '@type': 'ListItem', position: 3, name: data.title, item: `https://reconshield.in/compare/${slug}` }
-        ]
-      }
-    ]
+    '@graph': graph
   };
 
   return (
@@ -357,6 +370,23 @@ export default async function ComparisonPage({ params }) {
           <section className="prose prose-invert max-w-none text-gray-400 leading-relaxed mt-10">
             {renderMarkdown(data.content)}
           </section>
+
+          {/* FAQs Section */}
+          {data.faqs && data.faqs.length > 0 && (
+            <section className="mb-12 border-t border-white/5 pt-12">
+              <h2 className="text-xl font-bold font-display text-white mb-6 uppercase tracking-wider">
+                Frequently Asked Questions (FAQ)
+              </h2>
+              <div className="space-y-4">
+                {data.faqs.map((faq, i) => (
+                  <div key={i} className="p-5 rounded-xl bg-[#0d1117] border border-white/[0.05]">
+                    <h3 className="text-white font-semibold mb-2 text-sm font-mono">{faq.q}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed font-sans">{faq.a}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Backlink Authority Footer */}
           <section className="mt-16 pt-8 border-t border-white/5 bg-gradient-to-r from-matrix-400/5 to-transparent p-6 rounded-2xl border border-matrix-400/10">

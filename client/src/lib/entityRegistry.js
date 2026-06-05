@@ -54,7 +54,9 @@ export const KNOWN_HEADERS = [
   'content-security-policy',
   'x-frame-options',
   'strict-transport-security',
-  'x-content-type-options'
+  'x-content-type-options',
+  'referrer-policy',
+  'permissions-policy'
 ];
 
 export const KNOWN_DOMAINS = [

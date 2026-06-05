@@ -88,14 +88,42 @@ To close a port, you must either stop the software application that is listening
 ### Can this tool scan UDP ports?
 Passive port indexes (such as Shodan) do index common UDP services (like DNS on Port 53 or SNMP on Port 161). However, because UDP is connectionless, passive UDP data is generally less reliable than TCP data and should be verified using local configuration checks.
 
+## Key Security Definitions
+
+Understand the core terminology of network service auditing:
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-8">
+  <div class="p-6 rounded-xl bg-white/[0.02] border border-white/5" itemscope itemtype="https://schema.org/DefinedTerm">
+    <h3 class="text-[#ef4444] font-mono font-bold text-sm mb-2" itemprop="name">Active Reconnaissance</h3>
+    <p class="text-xs text-gray-400 leading-relaxed" itemprop="description">
+      Active reconnaissance is a security scanning methodology that directly interacts with the target network (e.g., sending probe packets) to discover open ports, active hosts, and operating systems.
+    </p>
+  </div>
+  
+  <div class="p-6 rounded-xl bg-white/[0.02] border border-white/5" itemscope itemtype="https://schema.org/DefinedTerm">
+    <h3 class="text-[#ef4444] font-mono font-bold text-sm mb-2" itemprop="name">Port Scanning</h3>
+    <p class="text-xs text-gray-400 leading-relaxed" itemprop="description">
+      Port scanning is a network exploration technique that sends packets to specific ports on a host to determine which services are listening, closed, or blocked by security firewalls.
+    </p>
+  </div>
+
+  <div class="p-6 rounded-xl bg-white/[0.02] border border-white/5" itemscope itemtype="https://schema.org/DefinedTerm">
+    <h3 class="text-[#ef4444] font-mono font-bold text-sm mb-2" itemprop="name">Threat Vector</h3>
+    <p class="text-xs text-gray-400 leading-relaxed" itemprop="description">
+      A threat vector is a path, route, or technique that an unauthorized actor uses to gain unauthorized access to a network, system, or application to deliver a malicious payload or execute exploits.
+    </p>
+  </div>
+</div>
+
 ## Related Security Resources
 
 Enhance your network security and attack surface mapping with these ReconShield modules:
 
-- **Security Exposure Assessment:** Test your web applications for deeper vulnerability patterns and configuration risks using our [Security Exposure Assessment Tool](/tools/vulnerability-scanner).
+- **Security Exposure Assessment:** Test your web applications for deeper vulnerability patterns and configuration risks using our [Vulnerability Scanner](/tools/vulnerability-scanner).
+- **IP Location and Ownership:** Geolocate target servers and check hosting providers using the [IP Lookup](/tools/ip-lookup) tool.
+- **Domain Identity Auditing:** Search registry ownership and creation dates using our [WHOIS Checker](/tools/whois).
+- **Subdomain Attack Surface:** Map forgotten development subdomains and virtual hosts with the [Subdomain Finder](/tools/subdomain-finder) tool.
 - **SSL/TLS Hardening:** Verify that your exposed web ports (443, 8443) are using secure cryptography with the [SSL Checker](/tools/ssl-checker).
-- **DNS Record Configuration:** Review your nameserver records and check for dangling subdomains using the [DNS Lookup Tool](/tools/dns-lookup).
-- **OSINT Research Publications:** Read our deep-dive analysis on shadow IT discovery: [Shadow IT Discovery: Passive Identification of Exposed Database and Administrative Ports](/blog/shadow-it-exposed-ports).
 
 ## References
 

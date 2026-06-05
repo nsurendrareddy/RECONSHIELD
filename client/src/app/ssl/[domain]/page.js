@@ -3,13 +3,21 @@ import Link from 'next/link';
 import { Lock, Shield, Server, Activity, ChevronRight, Globe } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { generateDatasetSchema } from '@/utils/metadata';
+import { SSL_TOPICS_DATA } from '@/utils/programmaticTopicsData';
+import { renderMarkdown } from '@/utils/markdownRenderer';
 
+const SSL_TOPICS = Object.keys(SSL_TOPICS_DATA);
 
 // Basic domain validation
 const isValidDomain = (domain) => {
+  if (SSL_TOPICS.includes(domain.toLowerCase())) return true;
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
   return domainRegex.test(domain);
 };
+
+export async function generateStaticParams() {
+  return SSL_TOPICS.map(domain => ({ domain }));
+}
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
@@ -17,6 +25,32 @@ export async function generateMetadata({ params }) {
 
   if (!domain || !isValidDomain(domain)) {
     return { title: 'Invalid Domain' };
+  }
+
+  // Check if it's a programmatic authority page
+  if (SSL_TOPICS_DATA[domain]) {
+    const topic = SSL_TOPICS_DATA[domain];
+    return {
+      title: topic.title,
+      description: topic.description,
+      alternates: {
+        canonical: `https://reconshield.in/ssl/${domain}`,
+      },
+      robots: { index: true, follow: true },
+      openGraph: {
+        url: `https://reconshield.in/ssl/${domain}`,
+        title: topic.title,
+        description: topic.description,
+        type: 'article',
+        images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: topic.title,
+        description: topic.description,
+        images: ['/og-image.png']
+      }
+    };
   }
 
   return {
@@ -50,7 +84,155 @@ export default async function SslIntelligencePage({ params }) {
     notFound();
   }
 
-  // Schema Generation
+  // Check if rendering a programmatic topic page
+  if (SSL_TOPICS_DATA[domain]) {
+    const topic = SSL_TOPICS_DATA[domain];
+
+    const schemaJson = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'TechArticle',
+          '@id': `https://reconshield.in/ssl/${domain}/#article`,
+          headline: topic.h1,
+          description: topic.description,
+          publisher: {
+            '@type': 'Organization',
+            name: 'ReconShield Security'
+          },
+          url: `https://reconshield.in/ssl/${domain}`
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
+            { '@type': 'ListItem', position: 2, name: topic.parentToolName, item: `https://reconshield.in${topic.parentToolPath}` },
+            { '@type': 'ListItem', position: 3, name: topic.h1, item: `https://reconshield.in/ssl/${domain}` },
+          ],
+        },
+        {
+          '@type': 'FAQPage',
+          mainEntity: topic.faqs.map(f => ({
+            '@type': 'Question',
+            name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a }
+          }))
+        },
+        ...(topic.howto ? [{
+          '@type': 'HowTo',
+          name: topic.howto.name,
+          description: topic.howto.description,
+          step: topic.howto.steps.map((step, idx) => ({
+            '@type': 'HowToStep',
+            position: idx + 1,
+            name: step.name,
+            text: step.text,
+            url: `https://reconshield.in/ssl/${domain}#step-${idx + 1}`
+          }))
+        }] : [])
+      ]
+    };
+
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
+        />
+        
+        <div className="min-h-screen pb-20">
+          <div className="max-w-5xl mx-auto px-4 pt-8">
+            
+            <nav aria-label="Breadcrumb" className="mb-8">
+              <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
+                <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
+                <li><ChevronRight className="w-3 h-3" /></li>
+                <li><Link href="/tools/ssl-checker" className="hover:text-[#00ff88] transition-colors">SSL Analysis</Link></li>
+                <li><ChevronRight className="w-3 h-3" /></li>
+                <li className="text-[#00ff88]">{topic.title}</li>
+              </ol>
+            </nav>
+
+            <div className="border-b border-white/10 pb-8 mb-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full text-[10px] font-mono text-green-400 mb-4 uppercase tracking-widest">
+                <Lock className="w-3 h-3" />
+                <span>SSL/TLS Authority Guide</span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+                {topic.h1}
+              </h1>
+              <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
+                {topic.intro}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-10">
+                
+                {/* Deep-dive Content */}
+                <article className="prose prose-invert max-w-none text-gray-400 leading-relaxed">
+                  {renderMarkdown(topic.content)}
+                </article>
+
+                {/* Conversion CTA Card (Phase 5) */}
+                <div className="mt-12 p-8 rounded-2xl border border-[#00ff88]/20 bg-gradient-to-br from-[#00ff88]/5 to-transparent relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-[#00ff88]/10 blur-[100px] rounded-full pointer-events-none" />
+                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-white">
+                    Validate Your Own TLS Configuration
+                  </h3>
+                  <p className="text-gray-400 mb-6 max-w-2xl leading-relaxed">
+                    Instantly identify cryptographic configuration risks, missing intermediate chains, and vulnerable protocol selections on your server.
+                  </p>
+                  <Link href="/tools/ssl-checker">
+                    <span className="inline-flex items-center justify-center bg-[#00ff88] hover:bg-[#00ff88]/90 text-black px-6 py-3 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(0,255,136,0.3)] hover:shadow-[0_0_30px_rgba(0,255,136,0.5)] cursor-pointer">
+                      Run Live SSL/TLS Scan
+                    </span>
+                  </Link>
+                </div>
+
+                {/* FAQs Section */}
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-wider border-b border-white/5 pb-2">Frequently Asked Questions</h2>
+                  <div className="space-y-4">
+                    {topic.faqs.map((faq, i) => (
+                      <div key={i} className="p-5 rounded-xl bg-[#0d1117] border border-white/[0.06]">
+                        <h3 className="text-white font-semibold mb-2 text-sm">{faq.q}</h3>
+                        <p className="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+              <div className="lg:col-span-1 space-y-6">
+                <div className="p-6 rounded-2xl bg-gradient-to-b from-[#0d1117] to-transparent border border-white/5 sticky top-24">
+                  <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">Related Security Guides</h3>
+                  
+                  <div className="space-y-3">
+                    {topic.related.map((rel, idx) => (
+                      <Link key={idx} href={rel.path} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                        <div className="w-8 h-8 rounded-md bg-[#00ff88]/10 flex items-center justify-center text-[#00ff88] group-hover:bg-[#00ff88]/20">
+                          <Lock className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-semibold text-white group-hover:text-[#00ff88] transition-colors">{rel.name}</div>
+                          <div className="text-xs text-gray-500">Security intelligence guide</div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Schema Generation for Domain pages
   const schemaJson = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -227,7 +409,7 @@ export default async function SslIntelligencePage({ params }) {
                     </div>
                   </Link>
 
-                  <Link href={`/tools/security-headers`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/tools/http-headers`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-yellow-500/10 flex items-center justify-center text-yellow-400 group-hover:bg-yellow-500/20">
                       <Shield className="w-4 h-4" />
                     </div>
@@ -237,7 +419,7 @@ export default async function SslIntelligencePage({ params }) {
                     </div>
                   </Link>
 
-                  <Link href={`/tools/whois-checker`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/tools/whois`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20">
                       <Server className="w-4 h-4" />
                     </div>

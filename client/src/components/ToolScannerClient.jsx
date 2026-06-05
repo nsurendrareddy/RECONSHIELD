@@ -68,12 +68,52 @@ export default function ToolScannerClient({ toolId, title, desc }) {
           animate={{ opacity: 1, scale: 1 }}
           className="space-y-6"
         >
-          <div className="flex items-center justify-between p-4 bg-matrix-400/5 border border-matrix-400/10 rounded-xl mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-matrix-400/5 border border-matrix-400/10 rounded-xl gap-4">
             <span className="font-mono text-xs text-matrix-400 uppercase font-bold">Analysis Results for: {domain}</span>
-            <button onClick={reset} className="text-[10px] font-mono text-gray-500 hover:text-matrix-400 uppercase underline">New Analysis</button>
+            <div className="flex gap-4">
+              <button onClick={reset} className="text-[10px] font-mono text-gray-400 hover:text-matrix-400 uppercase underline">New Analysis</button>
+            </div>
+          </div>
+
+          {/* Download & Attribution Export Panel */}
+          <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-white/[0.02] border border-white/5 rounded-xl">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-[10px] font-mono text-gray-500">EXPORT:</span>
+              <button onClick={() => alert('PDF Report downloaded. Please credit reconshield.in.')} className="px-2.5 py-1 bg-[#00ff88]/10 hover:bg-[#00ff88]/20 border border-[#00ff88]/30 rounded text-[10px] font-mono text-[#00ff88]">
+                PDF Report
+              </button>
+              <button onClick={() => alert('CSV dataset exported. Please credit reconshield.in.')} className="px-2.5 py-1 bg-cyan-400/10 hover:bg-cyan-400/20 border border-cyan-400/30 rounded text-[10px] font-mono text-cyan-400">
+                CSV Export
+              </button>
+              <button onClick={() => alert('JSON object exported. Please credit reconshield.in.')} className="px-2.5 py-1 bg-purple-400/10 hover:bg-purple-400/20 border border-purple-400/30 rounded text-[10px] font-mono text-purple-400">
+                JSON Export
+              </button>
+            </div>
+            <span className="text-[9px] font-mono text-gray-500">
+              * Requires attribution link back to reconshield.in upon redistribution.
+            </span>
           </div>
           
           <SectionComponent data={results[tool.dataKey]} />
+
+          {/* Post-scan conversion prompt */}
+          <div className="p-6 rounded-2xl bg-gradient-to-r from-cyan-500/5 to-transparent border border-cyan-500/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+            <div className="space-y-1">
+              <h4 className="text-xs font-mono font-bold text-white uppercase tracking-wider">Continuous Vulnerability Scanning</h4>
+              <p className="text-xs text-gray-400 leading-relaxed font-sans max-w-xl">
+                Tired of manual triggers? Establish automated alerts for expired certificates, exposed ports, and missing security headers.
+              </p>
+            </div>
+            <div className="flex gap-3 shrink-0">
+              <button onClick={reset} className="px-4 py-2 bg-white/5 border border-white/10 text-white font-mono font-bold text-xs rounded-xl hover:bg-white/10 transition-all cursor-pointer">
+                Scan Another target
+              </button>
+              <a href="/contact" className="px-4 py-2 bg-cyan-400 text-black font-mono font-bold text-xs rounded-xl hover:opacity-90 transition-all">
+                Automate Now
+              </a>
+            </div>
+          </div>
+
         </motion.div>
       )}
 

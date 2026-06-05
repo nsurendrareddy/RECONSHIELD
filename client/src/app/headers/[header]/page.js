@@ -8,10 +8,36 @@ const allowedHeaders = [
   'content-security-policy',
   'x-frame-options',
   'strict-transport-security',
-  'x-content-type-options'
+  'x-content-type-options',
+  'referrer-policy',
+  'permissions-policy'
 ];
 
 const headerData = {
+  'referrer-policy': {
+    name: 'Referrer-Policy',
+    icon: Globe,
+    desc: 'Governs which referrer information, sent in the Referer header, should be included with requests made.',
+    attackMitigation: 'Privacy Leakage, Session Token Leakage',
+    configExample: 'Referrer-Policy: strict-origin-when-cross-origin',
+    bestPractices: [
+      'Use strict-origin-when-cross-origin as a safe default',
+      'Avoid no-referrer-when-downgrade unless necessary',
+      'Do not pass sensitive URL parameters that could be leaked in referrers'
+    ]
+  },
+  'permissions-policy': {
+    name: 'Permissions-Policy',
+    icon: Shield,
+    desc: 'Allows web developers to selectively enable, disable, and modify the behavior of certain browser APIs and features.',
+    attackMitigation: 'Feature Misuse, Browser Resource Hijacking',
+    configExample: 'Permissions-Policy: geolocation=(), microphone=(), camera=()',
+    bestPractices: [
+      'Disable unneeded APIs globally using empty lists ()',
+      'Grant permissions selectively using origin whitelists',
+      'Audit iframe sandbox definitions to prevent permission inheritance'
+    ]
+  },
   'content-security-policy': {
     name: 'Content-Security-Policy (CSP)',
     icon: Shield,
@@ -243,4 +269,8 @@ export default async function HeaderIntelligencePage({ params }) {
       </div>
     </>
   );
+}
+
+export async function generateStaticParams() {
+  return allowedHeaders.map(header => ({ header }));
 }

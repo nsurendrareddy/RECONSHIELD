@@ -13,6 +13,7 @@ import { DNS_TYPES_DATA } from '@/utils/dnsTypesData';
 import { SSL_ERRORS_DATA } from '@/utils/sslErrorsData';
 import { EMAIL_AUTHS_DATA } from '@/utils/emailAuthsData';
 import { COMPARISONS_DATA } from '@/utils/comparisonsData';
+import { RESEARCH_REPORTS } from '@/utils/researchReportsData';
 
 export const runtime = 'edge'; 
 
@@ -23,17 +24,38 @@ const STATIC_LAST_MODIFIED = new Date().toISOString();
 const FALLBACK_DATA = {
   ports: KNOWN_PORTS.map(String),
   headers: KNOWN_HEADERS,
-  ssl: KNOWN_DOMAINS,
+  ssl: [
+    ...KNOWN_DOMAINS, 
+    'ssl-vs-tls', 
+    'tls-1-2-vs-tls-1-3', 
+    'certificate-chain', 
+    'cipher-suites', 
+    'self-signed-certificate',
+    'wildcard-certificate',
+    'pki-explained',
+    'https-security'
+  ],
   asn: KNOWN_ASNS,
   ip: KNOWN_IPS.slice(0, 5),
   dns: KNOWN_DOMAINS,
   whois: KNOWN_DOMAINS,
-  subdomains: KNOWN_DOMAINS,
+  subdomains: [
+    ...KNOWN_DOMAINS, 
+    'subdomain-enumeration', 
+    'passive-enumeration', 
+    'certificate-transparency', 
+    'subdomain-takeover', 
+    'shadow-it',
+    'active-enumeration',
+    'asset-discovery',
+    'attack-surface-management'
+  ],
   'malicious-ips': ['185.191.171.2', '194.165.16.2'],
   'dns-types': Object.keys(DNS_TYPES_DATA),
   'ssl-errors': Object.keys(SSL_ERRORS_DATA),
   'email-auths': Object.keys(EMAIL_AUTHS_DATA),
-  technology: ['react', 'nextjs', 'wordpress', 'shopify', 'cloudflare', 'nginx', 'apache']
+  technology: ['react', 'nextjs', 'wordpress', 'shopify', 'cloudflare', 'nginx', 'apache'],
+  vulnerability: ['sql-injection', 'stored-xss', 'reflected-xss', 'dom-xss', 'csrf', 'clickjacking', 'open-redirect', 'exposed-git', 'exposed-env', 'directory-listing', 'missing-csp', 'missing-hsts', 'missing-x-frame-options', 'missing-x-content-type-options', 'missing-dmarc', 'missing-spf', 'expired-ssl']
 };
 
 // Local registry verification to filter invalid/non-200 urls
@@ -42,6 +64,20 @@ function isUrlIndexableAndValid(urlStr) {
     const url = new URL(urlStr);
     const path = url.pathname;
     
+    // Check reports
+    if (path.startsWith('/reports/ssl/')) {
+      const domain = path.replace('/reports/ssl/', '');
+      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+    }
+    if (path.startsWith('/reports/subdomains/')) {
+      const domain = path.replace('/reports/subdomains/', '');
+      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+    }
+    if (path.startsWith('/reports/ports/')) {
+      const host = path.replace('/reports/ports/', '');
+      return KNOWN_IPS.includes(host) || KNOWN_DOMAINS.includes(host.toLowerCase());
+    }
+
     // Check ports
     if (path.startsWith('/ports/')) {
       const port = path.replace('/ports/', '');
@@ -73,6 +109,18 @@ function isUrlIndexableAndValid(urlStr) {
     }
     if (path.startsWith('/ssl/')) {
       const domain = path.replace('/ssl/', '');
+      if ([
+        'ssl-vs-tls', 
+        'tls-1-2-vs-tls-1-3', 
+        'certificate-chain', 
+        'cipher-suites', 
+        'self-signed-certificate',
+        'wildcard-certificate',
+        'pki-explained',
+        'https-security'
+      ].includes(domain.toLowerCase())) {
+        return true;
+      }
       return KNOWN_DOMAINS.includes(domain.toLowerCase());
     }
 
@@ -94,6 +142,18 @@ function isUrlIndexableAndValid(urlStr) {
     
     if (path.startsWith('/subdomains/')) {
       const domain = path.replace('/subdomains/', '');
+      if ([
+        'subdomain-enumeration', 
+        'passive-enumeration', 
+        'certificate-transparency', 
+        'subdomain-takeover', 
+        'shadow-it',
+        'active-enumeration',
+        'asset-discovery',
+        'attack-surface-management'
+      ].includes(domain.toLowerCase())) {
+        return true;
+      }
       return KNOWN_DOMAINS.includes(domain.toLowerCase());
     }
     if (path.startsWith('/tools/whois/')) {
@@ -103,6 +163,10 @@ function isUrlIndexableAndValid(urlStr) {
     if (path.startsWith('/technology/')) {
       const slug = path.replace('/technology/', '');
       return ['react', 'nextjs', 'wordpress', 'shopify', 'cloudflare', 'nginx', 'apache'].includes(slug.toLowerCase());
+    }
+    if (path.startsWith('/vulnerability/')) {
+      const slug = path.replace('/vulnerability/', '');
+      return ['sql-injection', 'stored-xss', 'reflected-xss', 'dom-xss', 'csrf', 'clickjacking', 'open-redirect', 'exposed-git', 'exposed-env', 'directory-listing', 'missing-csp', 'missing-hsts', 'missing-x-frame-options', 'missing-x-content-type-options', 'missing-dmarc', 'missing-spf', 'expired-ssl'].includes(slug.toLowerCase());
     }
 
     // Default true for core static pages, blog posts, and scanner tools
@@ -146,11 +210,40 @@ export async function GET(request, { params }) {
         { url: `${BASE_URL}/data-sources`, priority: 0.6, freq: 'monthly' },
         { url: `${BASE_URL}/research-team`, priority: 0.6, freq: 'monthly' },
         { url: `${BASE_URL}/compare`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/methodology`, priority: 0.6, freq: 'monthly' },
+        { url: `${BASE_URL}/update-policy`, priority: 0.5, freq: 'monthly' },
+        { url: `${BASE_URL}/glossary`, priority: 0.7, freq: 'weekly' },
+        { url: `${BASE_URL}/opensource`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/academic`, priority: 0.7, freq: 'weekly' },
+        { url: `${BASE_URL}/resources`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/about-reconshield`, priority: 0.7, freq: 'monthly' },
+        { url: `${BASE_URL}/press`, priority: 0.7, freq: 'monthly' },
+        { url: `${BASE_URL}/stats/tls-adoption`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats/tls-adoption/2026-06`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats/tls-adoption/2026-05`, priority: 0.7, freq: 'monthly' },
+        { url: `${BASE_URL}/stats/security-headers`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats/security-headers/2026-06`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats/security-headers/2026-05`, priority: 0.7, freq: 'monthly' },
+        { url: `${BASE_URL}/stats/email-security`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats/email-security/2026-06`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats/email-security/2026-05`, priority: 0.7, freq: 'monthly' },
+        { url: `${BASE_URL}/stats/open-port-exposure`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats/open-port-exposure/2026-06`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats/open-port-exposure/2026-05`, priority: 0.7, freq: 'monthly' },
+        { url: `${BASE_URL}/stats/subdomain-security`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats/subdomain-security/2026-06`, priority: 0.8, freq: 'weekly' },
+        { url: `${BASE_URL}/stats/subdomain-security/2026-05`, priority: 0.7, freq: 'monthly' },
       ];
 
       // Append dynamic comparison URLs
       Object.keys(COMPARISONS_DATA).forEach(slug => {
         staticUrls.push({ url: `${BASE_URL}/compare/${slug}`, priority: 0.8, freq: 'weekly' });
+      });
+
+      // Append research reports URLs
+      Object.keys(RESEARCH_REPORTS).forEach(slug => {
+        staticUrls.push({ url: `${BASE_URL}/research/${slug}`, priority: 0.7, freq: 'weekly' });
       });
 
       staticUrls.forEach(({ url, priority, freq }) => {
@@ -167,27 +260,27 @@ export async function GET(request, { params }) {
      }
      // 3. Blog Sitemaps
      else if (entityType === 'blog' && page === 1) {
-         xml += `  <url>\n    <loc>${BASE_URL}/blog</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
-         
-         try {
-             const posts = await client.fetch(blogListQuery);
-             let safePosts = (posts || []).filter(post => post?.slug?.current || typeof post?.slug === 'string');
-             
-             if (safePosts.length === 0) {
-                 safePosts = Object.values(MOCK_POSTS_DATA);
-             }
-             
-             safePosts.forEach(post => {
-               const slug = post?.slug?.current || post?.slug;
-               if (slug && typeof slug === 'string') {
-                   const lastMod = post?.publishedAt || post?._createdAt || STATIC_LAST_MODIFIED;
-                   xml += `  <url>\n    <loc>${BASE_URL}/blog/${slug}</loc>\n    <lastmod>${new Date(lastMod).toISOString()}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
-               }
-             });
-         } catch (sanityError) {
-             console.error('Sanity fetch error in sitemap:', sanityError);
-         }
-     }
+          xml += `  <url>\n    <loc>${BASE_URL}/blog</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
+          
+          try {
+              const posts = await client.fetch(blogListQuery);
+              let safePosts = (posts || []).filter(post => post?.slug?.current || typeof post?.slug === 'string');
+              
+              if (safePosts.length === 0) {
+                  safePosts = Object.values(MOCK_POSTS_DATA);
+              }
+              
+              safePosts.forEach(post => {
+                const slug = post?.slug?.current || post?.slug;
+                if (slug && typeof slug === 'string') {
+                    const lastMod = post?.publishedAt || post?._createdAt || STATIC_LAST_MODIFIED;
+                    xml += `  <url>\n    <loc>${BASE_URL}/blog/${slug}</loc>\n    <lastmod>${new Date(lastMod).toISOString()}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+                }
+              });
+          } catch (sanityError) {
+              console.error('Sanity fetch error in sitemap:', sanityError);
+          }
+      }
     // 4. Dynamic Entity Sitemaps (IP, ASN, Ports, Domains, etc)
     else {
         let hasData = false;
@@ -265,12 +358,36 @@ export async function GET(request, { params }) {
             if (entityType === 'ssl-errors') pathPrefix = 'ssl/errors';
             if (entityType === 'email-auths') pathPrefix = 'email-auth';
             if (entityType === 'technology') pathPrefix = 'technology';
+            if (entityType === 'vulnerability') pathPrefix = 'vulnerability';
             
             if (fallbackItems.length > 0) {
               for (const item of fallbackItems) {
                 const url = `${BASE_URL}/${pathPrefix}/${encodeURIComponent(item)}`;
                 if (isUrlIndexableAndValid(url)) {
                   xml += `  <url>\n    <loc>${url}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
+                }
+
+                // Add public report pages if applicable
+                if (entityType === 'ssl' && KNOWN_DOMAINS.includes(item.toLowerCase())) {
+                  const reportUrl = `${BASE_URL}/reports/ssl/${encodeURIComponent(item)}`;
+                  if (isUrlIndexableAndValid(reportUrl)) {
+                    xml += `  <url>\n    <loc>${reportUrl}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
+                  }
+                }
+                if (entityType === 'subdomains' && KNOWN_DOMAINS.includes(item.toLowerCase())) {
+                  const reportUrl = `${BASE_URL}/reports/subdomains/${encodeURIComponent(item)}`;
+                  if (isUrlIndexableAndValid(reportUrl)) {
+                    xml += `  <url>\n    <loc>${reportUrl}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
+                  }
+                }
+                if (entityType === 'ports' && KNOWN_PORTS.includes(parseInt(item, 10))) {
+                  // For ports, generate reports/ports/[host] using KNOWN_DOMAINS/KNOWN_IPS
+                  KNOWN_DOMAINS.forEach(dom => {
+                    const reportUrl = `${BASE_URL}/reports/ports/${encodeURIComponent(dom)}`;
+                    if (isUrlIndexableAndValid(reportUrl)) {
+                      xml += `  <url>\n    <loc>${reportUrl}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
+                    }
+                  });
                 }
               }
             } else {

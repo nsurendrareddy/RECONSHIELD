@@ -1,0 +1,692 @@
+// Data store for programmatic SSL and Subdomain authority pages
+export const SSL_TOPICS_DATA = {
+  'ssl-vs-tls': {
+    title: "SSL vs. TLS: Cryptographic Differences & Deprecation Timeline",
+    description: "Compare the legacy SSL protocol with the modern, secure TLS protocol. Learn why SSL is completely deprecated and how TLS 1.3 secures communication.",
+    h1: "SSL vs. TLS: Cryptographic Differences",
+    parentToolPath: "/tools/ssl-checker",
+    parentToolName: "SSL Checker",
+    category: "SSL/TLS Security",
+    intro: "A detailed comparison of SSL and TLS protocols, outlining deprecation timelines, security flaws, and configuration best practices.",
+    content: `
+## The Cryptographic Transition: SSL to TLS
+Although the terms "SSL" and "TLS" are frequently used interchangeably in marketing and daily conversation, they represent completely different generations of transport layer cryptography.
+
+### Historical Context & Deprecation
+- **SSL 1.0, 2.0, and 3.0:** Developed by Netscape in the 1990s. SSL 3.0 was released in 1996. Over the years, critical vulnerabilities like POODLE (Padding Oracle On Downgraded Legacy Encryption) and DROWN (Decrypting RSA with Obsolete and Weakened eNcryption) made all SSL versions cryptographically insecure. The Internet Engineering Task Force (IETF) officially deprecated SSL 3.0 in 2015 via RFC 7568.
+- **TLS 1.0 and 1.1:** Released in 1999 and 2006 respectively. These protocols relied on legacy hashing (MD5, SHA-1) and block ciphers susceptible to BEAST and Lucky Thirteen attacks. They were officially deprecated by the IETF in 2021 via RFC 8996.
+- **TLS 1.2:** Released in 2008 (RFC 5246). TLS 1.2 introduced support for Authenticated Encryption with Associated Data (AEAD) ciphers like AES-GCM, SHA-256 hashing, and customizable cipher suite negotiation. It remains the most widely deployed protocol version.
+- **TLS 1.3:** Released in 2018 (RFC 8446). TLS 1.3 is a complete overhaul. It streamlines the connection handshake, mandates Perfect Forward Secrecy, and drops all obsolete, insecure ciphers.
+
+### Cryptographic Protocol Comparison Table
+
+| Protocol Version | Release Year | Key Exchange Mechanisms | Encryption Strength | Security Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **SSL 2.0** | 1995 | RSA | Weak (40-bit / 128-bit) | **Deprecated (Insecure)** |
+| **SSL 3.0** | 1996 | RSA, DH | Weak (CBC-mode ciphers) | **Deprecated (Insecure)** |
+| **TLS 1.0** | 1999 | RSA, DH | Weak (MD5/SHA-1 signatures) | **Deprecated (Insecure)** |
+| **TLS 1.1** | 2006 | RSA, DH | Weak (CBC-mode ciphers) | **Deprecated (Insecure)** |
+| **TLS 1.2** | 2008 | ECDH, DH, RSA | Strong (AES-GCM, CHACHA20) | **Legacy Secure** |
+| **TLS 1.3** | 2018 | ECDHE, DHE only | Maximum (AEAD ciphers only) | **Active Standard** |
+
+### Key Functional Differences
+1. **Handshake Performance:** TLS 1.2 requires two full round-trips (2-RTT) to negotiate keys and verify certificates before sending application data. TLS 1.3 reduces this to a single round-trip (1-RTT) or even zero round-trips (0-RTT) for resuming sessions.
+2. **Cipher Suite Complexity:** TLS 1.2 supports hundreds of cipher suites, many of which are weak or complex to configure. TLS 1.3 supports only 5 highly secure cipher suites, removing configuration error opportunities.
+3. **Handshake Encryption:** In TLS 1.2, the certificate and server handshake metadata are sent in cleartext. TLS 1.3 encrypts the handshake messages much earlier, enhancing privacy against passive eavesdroppers.
+    `,
+    howto: {
+      name: "How to Disable Legacy SSL/TLS Versions in Nginx",
+      description: "Disable deprecated SSLv3, TLS 1.0, and TLS 1.1 protocols and restrict server connections to TLS 1.2 and TLS 1.3 only.",
+      steps: [
+        { name: "Locate Config File", text: "Open your Nginx virtual host configuration file (typically located at /etc/nginx/sites-available/default or /etc/nginx/nginx.conf)." },
+        { name: "Define SSL Protocols", text: "Locate or add the 'ssl_protocols' directive inside the server listening block, setting it explicitly to: ssl_protocols TLSv1.2 TLSv1.3;" },
+        { name: "Validate and Reload", text: "Run 'nginx -t' to verify the configuration syntax, then restart the service using 'systemctl reload nginx' to apply changes." }
+      ]
+    },
+    faqs: [
+      { q: "Can I still use SSL on my servers?", a: "No. All versions of SSL are deprecated and insecure. Web servers should be configured to disable SSL 2.0/3.0 and TLS 1.0/1.1 entirely, allowing only TLS 1.2 and TLS 1.3 connections." },
+      { q: "Is HTTPS the same as SSL?", a: "HTTPS is HTTP running on top of an encrypted transport session. Today, that session is secured via TLS, though it is still commonly referred to as SSL." },
+      { q: "How do I update my server to use TLS 1.3?", a: "Update your web server configuration (such as Nginx or Apache) by specifying the ssl_protocols directive to include 'TLSv1.2 TLSv1.3' and configure modern cipher suites." }
+    ],
+    related: [
+      { name: "TLS 1.2 vs. TLS 1.3", path: "/ssl/tls-1-2-vs-tls-1-3" },
+      { name: "Cipher Suites Guide", path: "/ssl/cipher-suites" },
+      { name: "Certificate Chain Trust", path: "/ssl/certificate-chain" }
+    ]
+  },
+  'tls-1-2-vs-tls-1-3': {
+    title: "TLS 1.2 vs. TLS 1.3: Speed, Latency, and Security Differences",
+    description: "Analyze the architectural differences between TLS 1.2 and TLS 1.3 protocols. Learn how TLS 1.3 reduces latency and culls insecure cipher suites.",
+    h1: "TLS 1.2 vs. TLS 1.3 Comparison",
+    parentToolPath: "/tools/ssl-checker",
+    parentToolName: "SSL Checker",
+    category: "SSL/TLS Security",
+    intro: "An in-depth look at the performance gains and security upgrades introduced in TLS 1.3 over its predecessor TLS 1.2.",
+    content: `
+## Streamlined Latency and Hardened Cryptography
+The introduction of TLS 1.3 represented the most significant evolution of transport security since the creation of the protocol.
+
+### Handshake Latency Optimization
+- **TLS 1.2 (2-RTT Handshake):** Establishing a secure socket required multiple message exchanges: ClientHello, ServerHello, Certificate, KeyExchange, and Finished. This created a visible latency penalty of two round-trips before the client could send a request.
+- **TLS 1.3 (1-RTT Handshake):** TLS 1.3 assumes the client knows the key exchange parameters. The client sends its key share on the first message (ClientHello). The server responds with its key share, certificate, and finishes in a single flight, reducing the setup overhead by 50%.
+
+### Handshake Flow Comparison
+
+| Feature Metric | TLS 1.2 Standard | TLS 1.3 Standard |
+| :--- | :--- | :--- |
+| **Handshake Round-Trips** | 2-RTT | 1-RTT |
+| **Session Resumption Speed** | 1-RTT (Session Tickets) | 0-RTT (Pre-Shared Keys) |
+| **Perfect Forward Secrecy** | Optional (Config dependent) | Mandatory (Enforced by design) |
+| **Client Certificate Privacy** | Sent in cleartext | Encrypted during handshake |
+| **Supported Cipher Suites** | ~200+ (Highly complex) | 5 (Ultra-secure AEAD) |
+
+### Session Resumption (0-RTT)
+For clients reconnecting to a server they recently visited, TLS 1.3 supports **Zero Round-Trip Time (0-RTT)** session resumption. The client uses pre-shared keys from the previous session to encrypt the very first packet, eliminating handshake latency entirely.
+
+### Culled Algorithms
+To ensure maximum security, TLS 1.3 removed several legacy algorithms:
+- **Static RSA Key Exchange:** Deprecated to enforce Perfect Forward Secrecy.
+- **CBC-Mode Ciphers:** Removed due to vulnerability to padding oracle attacks.
+- **Legacy Hashes:** MD5 and SHA-1 were removed due to collision vulnerabilities.
+    `,
+    howto: {
+      name: "How to Enable TLS 1.3 Support in Apache",
+      description: "Modify Apache HTTP Server virtual host parameters to activate the TLS 1.3 cryptographic protocol.",
+      steps: [
+        { name: "Verify Apache Version", text: "Ensure your Apache installation is version 2.4.37 or higher, and OpenSSL is version 1.1.1 or higher." },
+        { name: "Update ssl.conf", text: "Open your ssl.conf or target virtual host file and modify SSLProtocol to: SSLProtocol all -SSLv3 -TLSv1 -TLSv1.1" },
+        { name: "Restart Apache", text: "Test configuration using 'apachectl configtest' and apply with 'systemctl restart apache2'." }
+      ]
+    },
+    faqs: [
+      { q: "Why is Perfect Forward Secrecy mandatory in TLS 1.3?", a: "Perfect Forward Secrecy ensures that even if a server's long-term private key is compromised, historical session traffic recorded by an eavesdropper cannot be decrypted." },
+      { q: "What ciphers are supported in TLS 1.3?", a: "TLS 1.3 supports only 5 AEAD ciphers, primarily TLS_AES_256_GCM_SHA384 and TLS_CHACHA20_POLY1305_SHA256." },
+      { q: "Does TLS 1.3 speed up mobile browsing?", a: "Yes. On high-latency mobile networks, reducing the handshake from two round-trips to one round-trip significantly improves initial page load times." }
+    ],
+    related: [
+      { name: "SSL vs. TLS", path: "/ssl/ssl-vs-tls" },
+      { name: "Understanding Cipher Suites", path: "/ssl/cipher-suites" },
+      { name: "Self-Signed Certificates", path: "/ssl/self-signed-certificate" }
+    ]
+  },
+  'certificate-chain': {
+    title: "SSL/TLS Certificate Chain of Trust: Roots, Intermediates & Leaf Certs",
+    description: "Understand how the SSL/TLS certificate chain of trust works. Learn the role of root certificates, intermediate CAs, and leaf certificates in web security.",
+    h1: "The Certificate Chain of Trust Explained",
+    parentToolPath: "/tools/ssl-checker",
+    parentToolName: "SSL Checker",
+    category: "SSL/TLS Security",
+    intro: "A guide to how browsers verify the identity of a website using hierarchical digital signatures.",
+    content: `
+## How Browsers Verify Website Identity
+When you connect to a secure website, your browser does not check the site's certificate in isolation. Instead, it traces a path of digital signatures back to a trusted root authority.
+
+### The Hierarchical Structure
+1. **Root Certificate:** The anchor of trust. These certificates are self-signed and are stored directly in the trust stores of operating systems and web browsers (e.g., Apple, Microsoft, Mozilla root programs).
+2. **Intermediate Certificate:** Issued by a Root CA to delegate signing authority. By using intermediates, Root CAs can keep their primary private keys offline and secure.
+3. **Leaf (End-Entity) Certificate:** The SSL certificate issued directly to the website domain (e.g., \`reconshield.in\`). It is signed by an intermediate certificate.
+
+### The Chain Hierarchy
+
+\`\`\`text
+[ Root CA Certificate ]  <-- Trusted Root in Browser Store (Self-Signed)
+       |
+       v  (signs)
+[ Intermediate CA Certificate ] <-- Delegated Signing Authority (Keeps Root Offline)
+       |
+       v  (signs)
+[ Leaf/Domain Certificate ] <-- Installed on Nginx/Apache Web Server (e.g. yoursite.com)
+\`\`\`
+
+### The Missing Intermediate Error
+A common server misconfiguration occurs when a web server presents its leaf certificate but fails to include the intermediate certificates in the handshake. 
+While some browsers attempt to fetch the intermediate certificate automatically, others will block access and display a "Certificate Untrusted" or "Incomplete Chain" warning.
+    `,
+    howto: {
+      name: "How to Build a Full Chain SSL Certificate File",
+      description: "Combine your domain certificate with the intermediate CA certificates to resolve incomplete trust chain issues.",
+      steps: [
+        { name: "Collect Files", text: "Obtain your leaf certificate (e.g. domain.crt) and the intermediate certificate bundle (e.g. intermediate.crt) from your CA." },
+        { name: "Concatenate Certificates", text: "Run 'cat domain.crt intermediate.crt > fullchain.crt' in your terminal, ensuring the leaf certificate is at the top of the file." },
+        { name: "Apply to Web Server", text: "Reference 'fullchain.crt' in your web server configurations (e.g., ssl_certificate directive in Nginx)." }
+      ]
+    },
+    faqs: [
+      { q: "What is a root trust store?", a: "A repository of pre-installed root certificates maintained by operating system and browser vendors that dictates which authorities are trusted by default." },
+      { q: "How do I resolve an incomplete certificate chain error?", a: "Configure your web server to serve the full certificate chain (often called a 'fullchain.pem' or bundle), which contains both your leaf certificate and the necessary intermediates." },
+      { q: "Can a Root CA revoke an intermediate certificate?", a: "Yes. If an intermediate authority is compromised, the Root CA publishes a revocation notice via CRL or OCSP, causing browsers to instantly reject certificates signed by that intermediate." }
+    ],
+    related: [
+      { name: "SSL vs. TLS Differences", path: "/ssl/ssl-vs-tls" },
+      { name: "Self-Signed Certificate Risks", path: "/ssl/self-signed-certificate" },
+      { name: "Cipher Suites Guide", path: "/ssl/cipher-suites" }
+    ]
+  },
+  'cipher-suites': {
+    title: "Guide to SSL/TLS Cipher Suites: Structure, Security & Configuration",
+    description: "Learn what SSL/TLS cipher suites are, how to parse their naming structures, and how to configure secure algorithms on your server.",
+    h1: "TLS Cipher Suites: Security & Configuration",
+    parentToolPath: "/tools/ssl-checker",
+    parentToolName: "SSL Checker",
+    category: "SSL/TLS Security",
+    intro: "Demystifying the algorithmic suites that negotiate key exchange, bulk encryption, and message integrity in secure sessions.",
+    content: `
+## Anatomy of a Cipher Suite
+A cipher suite is a set of four cryptographic algorithms that work together to secure a transport connection. Let's parse a typical TLS 1.2 suite:
+
+\`\`\`text
+TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+\`\`\`
+
+1. **Protocol Identifier:** \`TLS\` denotes the transport protocol.
+2. **Key Exchange (ECDHE):** Elliptic Curve Diffie-Hellman Ephemeral negotiates the symmetric key, providing forward secrecy.
+3. **Authentication (RSA):** Verifies the server's identity using its digital certificate.
+4. **Symmetric Encryption (AES_128_GCM):** Advanced Encryption Standard with 128-bit key in Galois/Counter Mode encrypts the session payload.
+5. **Integrity Hash (SHA256):** Secure Hash Algorithm verifies that the transmitted packets have not been altered.
+
+### Insecure Cipher Suites to Avoid
+- **RC4 and 3DES:** Deprecated due to vulnerability to key recovery attacks (e.g., SWEET32).
+- **CBC-Mode Encryption:** Susceptible to padding oracle attacks.
+- **Static RSA Key Exchange:** Lacks forward secrecy; compromise of the server's private key exposes all past sessions.
+    `,
+    howto: {
+      name: "How to Configure Secure Cipher Suites in Nginx",
+      description: "Restrict cipher suites in Nginx to exclude weak legacy algorithms and enforce AEAD symmetric encryption.",
+      steps: [
+        { name: "Open Configuration Block", text: "Open your Nginx configuration file (/etc/nginx/nginx.conf) and find the SSL block." },
+        { name: "Set Cipher List", text: "Add or replace the 'ssl_ciphers' directive with a secure string, e.g. ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384';" },
+        { name: "Enforce Server Order", text: "Add 'ssl_prefer_server_ciphers on;' to force the server's cipher preferences over the client's preferences." }
+      ]
+    },
+    faqs: [
+      { q: "What makes a cipher suite 'secure' today?", a: "A secure cipher suite utilizes Ephemeral Diffie-Hellman (ECDHE) for key exchange, AES-GCM or ChaCha20-Poly1305 for symmetric encryption, and SHA-2 or SHA-3 for integrity." },
+      { q: "Why did TLS 1.3 simplify cipher suite names?", a: "TLS 1.3 mandates ECDHE and removes authentication from the cipher suite string, simplifying names to just encryption and hash, such as TLS_AES_256_GCM_SHA384." },
+      { q: "What happens if a client doesn't support the server's ciphers?", a: "The TLS handshake fails, and the browser displays a connection negotiation error (ERR_SSL_VERSION_OR_CIPHER_MISMATCH)." }
+    ],
+    related: [
+      { name: "TLS 1.2 vs. TLS 1.3", path: "/ssl/tls-1-2-vs-tls-1-3" },
+      { name: "Root & Intermediate Chain", path: "/ssl/certificate-chain" },
+      { name: "Self-Signed Certificate Risks", path: "/ssl/self-signed-certificate" }
+    ]
+  },
+  'self-signed-certificate': {
+    title: "Self-Signed SSL Certificates: Risks, Use Cases & Security Implications",
+    description: "Learn what self-signed certificates are, why they trigger browser security warnings, and when they are appropriate to deploy.",
+    h1: "Self-Signed Certificates: Security Risks & Best Practices",
+    parentToolPath: "/tools/ssl-checker",
+    parentToolName: "SSL Checker",
+    category: "SSL/TLS Security",
+    intro: "An analysis of self-signed cryptography, its utility in staging environments, and its vulnerability to interception on public networks.",
+    content: `
+## Cryptographic Encryption vs. Identity Verification
+A self-signed SSL/TLS certificate is signed by the same entity whose identity it certifies, rather than a publicly trusted Certificate Authority (CA) like Let's Encrypt or DigiCert.
+
+### The Identity Verification Gap
+While a self-signed certificate encrypts the connection payload just as effectively as a CA-signed certificate, it lacks third-party verification. 
+Because any attacker can generate a self-signed certificate claiming to represent any domain (e.g., \`google.com\`), client browsers have no way to verify identity. 
+Consequently, browsers block access with a full-screen warning: **"Your connection is not private."**
+
+### Inherent Security Vulnerability
+If used on the public internet, self-signed certificates expose users to **Man-in-the-Middle (MitM) attacks**. 
+An attacker positioned on the network can intercept connection requests, present their own self-signed certificate, decrypt the user's traffic, and re-encrypt it before passing it to the server.
+
+### Comparison: Self-Signed vs. Public CA Certificates
+
+| Feature | Self-Signed Certificate | Public CA Certificate |
+| :--- | :--- | :--- |
+| **Encryption Enabled** | Yes | Yes |
+| **Web Browser Trust** | No (Generates Security Warning) | Yes (Green Lock / Transparent Trust) |
+| **Setup Cost** | Free ($0) | Free (Let's Encrypt) to Paid (DigiCert) |
+| **Authentication Checked** | None | Domain control checked (DV, OV, EV) |
+| **Recommended Scope** | Dev / Local Sandbox / Internal VPC | Public Production Sites |
+
+### Safe Use Cases
+- **Isolated Staging & Development:** Testing local integrations where the test client has manually imported the self-signed root into its certificate trust store.
+- **Internal Microservices:** Encrypting back-end node-to-node communication inside a secure VPC.
+    `,
+    howto: {
+      name: "How to Generate a Self-Signed Certificate Using OpenSSL",
+      description: "Create a local self-signed certificate and private key for staging or development environments using the command-line utility.",
+      steps: [
+        { name: "Run OpenSSL Command", text: "Execute: openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365 -nodes" },
+        { name: "Enter Metadata", text: "Provide the requested organizational values and set the Common Name (CN) to localhost or your test IP." },
+        { name: "Install Key Files", text: "Securely move key.pem and cert.pem to your server configuration folder and restrict file read permissions." }
+      ]
+    },
+    faqs: [
+      { q: "Should I ever use a self-signed certificate in production?", a: "No. Public production sites must use certificates signed by a trusted public Certificate Authority to prevent browser blocks and protect users from MitM interception." },
+      { q: "What is the alternative to self-signed certs for local development?", a: "Utilities like mkcert allow developers to create locally trusted development certificates signed by a custom local CA." },
+      { q: "Do self-signed certificates expire?", a: "Yes, like CA certificates, they have validity windows. However, because they are self-generated, you can set the expiry duration to any length of time." }
+    ],
+    related: [
+      { name: "SSL vs. TLS Differences", path: "/ssl/ssl-vs-tls" },
+      { name: "Root & Intermediate Chain", path: "/ssl/certificate-chain" },
+      { name: "Cipher Suites Guide", path: "/ssl/cipher-suites" }
+    ]
+  },
+  'wildcard-certificate': {
+    title: "Wildcard SSL/TLS Certificates: Setup, Security Risks & Best Practices",
+    description: "Learn what wildcard SSL certificates are, how they secure multiple subdomains, and the security implications of using a single private key across servers.",
+    h1: "Wildcard Certificates: Implementation & Security Risks",
+    parentToolPath: "/tools/ssl-checker",
+    parentToolName: "SSL Checker",
+    category: "SSL/TLS Security",
+    intro: "A technical guide to wildcard certificates, detailing their setup process, operational benefits, and unique risk factors.",
+    content: `
+## Securing Dynamic Subdomains Under a Single Namespace
+A wildcard SSL/TLS certificate is a single digital certificate that secures a main domain and all of its first-level subdomains. Wildcard certificates use an asterisk (*) in the Common Name or Subject Alternative Name (SAN) fields.
+
+### For example:
+- A wildcard certificate for \`*.example.com\` secures:
+  - \`www.example.com\`
+  - \`api.example.com\`
+  - \`staging.example.com\`
+  - \`mail.example.com\`
+
+*Note: It will not secure second-level subdomains (e.g., \`dev.api.example.com\`) unless specifically issued for that level.*
+
+### Security Implications and Key Sharing
+While wildcard certificates reduce administrative overhead by allowing teams to manage one expiration date instead of dozens, they introduce a significant security drawback: **Shared Key Exposure**.
+If the same wildcard certificate is deployed across multiple web servers, mail servers, and staging platforms, a compromise on any single server (e.g. an unpatched development box) exposes the private key. With the private key in hand, an attacker can decrypt traffic to any subdomain covered by the wildcard namespace.
+    `,
+    howto: {
+      name: "How to Obtain Let's Encrypt Wildcard Certs via DNS Validation",
+      description: "Obtain a free wildcard certificate using certbot and DNS validation.",
+      steps: [
+        { name: "Install Certbot", text: "Verify that certbot is installed on your Linux client." },
+        { name: "Run Certbot Command", text: "Execute: certbot certonly --manual --preferred-challenges=dns -d '*.example.com' -d example.com" },
+        { name: "Add DNS TXT Record", text: "Create the specified '_acme-challenge' TXT record in your DNS zone file and wait for propagation before pressing enter." }
+      ]
+    },
+    faqs: [
+      { q: "Can I use wildcard certificates on multiple physical servers?", a: "Yes. You can copy the certificate and private key files to different servers, though this increases the exposure risk of the private key." },
+      { q: "Do wildcard certificates support EV validation?", a: "No. The CA/Browser Forum rules prohibit Extended Validation (EV) wildcard certificates to maintain identity trust standards." }
+    ],
+    related: [
+      { name: "SSL vs. TLS", path: "/ssl/ssl-vs-tls" },
+      { name: "Certificate Chain Trust", path: "/ssl/certificate-chain" }
+    ]
+  },
+  'pki-explained': {
+    title: "Public Key Infrastructure (PKI) Explained: Architecture & Components",
+    description: "Understand the core components of Public Key Infrastructure. Learn how asymmetric cryptography, CAs, and RAs build trust across the internet.",
+    h1: "Public Key Infrastructure (PKI) Architecture",
+    parentToolPath: "/tools/ssl-checker",
+    parentToolName: "SSL Checker",
+    category: "SSL/TLS Security",
+    intro: "A technical deep-dive into the framework of policies, hardware, software, and cryptography that validates digital identity.",
+    content: `
+## The Foundation of Trust in Open Networks
+Public Key Infrastructure (PKI) is a structured framework that manages the creation, distribution, storage, and revocation of digital certificates and public-key cryptography.
+
+### The Principal Components of a PKI
+1. **Certificate Authority (CA):** The entity that issues digital certificates, cryptographically signing them to verify domain ownership and organizational identity.
+2. **Registration Authority (RA):** Verifies the identity of entities requesting certificates before sending the approval to the CA.
+3. **Certificate Database:** A secure archive storing certificate records and metadata.
+4. **Certificate Revocation List (CRL):** A public registry listing certificates revoked prior to their scheduled expiration dates. Alternatively, **OCSP** (Online Certificate Status Protocol) provides real-time validity checks.
+    `,
+    howto: {
+      name: "How to Establish a Local Authority Root Certificate",
+      description: "Initialize a secure offline root certificate authority for private networks using OpenSSL.",
+      steps: [
+        { name: "Generate CA Key", text: "Create your CA private key: openssl genrsa -aes256 -out cakey.key 4096" },
+        { name: "Sign Root Cert", text: "Generate the root certificate: openssl req -x509 -new -nodes -key cakey.key -sha256 -days 3650 -out cacert.pem" },
+        { name: "Distribute CA Cert", text: "Deploy cacert.pem to client trust stores (e.g. /usr/local/share/ca-certificates/ on Linux) to trust downstream certs." }
+      ]
+    },
+    faqs: [
+      { q: "What is asymmetric encryption in PKI?", a: "Asymmetric encryption uses a public key to encrypt data and a mathematically related private key to decrypt it, ensuring security without pre-sharing keys." },
+      { q: "What is the difference between CRL and OCSP?", a: "CRL is a complete downloadable list of revoked certificates, whereas OCSP is an active API query to check the revocation status of a single certificate." }
+    ],
+    related: [
+      { name: "Root & Intermediate Chain", path: "/ssl/certificate-chain" },
+      { name: "Self-Signed Certificate Risks", path: "/ssl/self-signed-certificate" }
+    ]
+  },
+  'https-security': {
+    title: "Enforcing HTTPS Server Security: Protocols, Headers & Configurations",
+    description: "An enterprise guide to hardening HTTPS web server configurations. Learn how to implement HSTS, CSP, and secure cipher parameters.",
+    h1: "Enforcing HTTPS Server Security",
+    parentToolPath: "/tools/ssl-checker",
+    parentToolName: "SSL Checker",
+    category: "SSL/TLS Security",
+    intro: "A step-by-step configuration manual to harden SSL/TLS parameters and HTTP response headers on production web servers.",
+    content: `
+## Hardening the Web Server Endpoint
+Implementing HTTPS is only the first step. To achieve enterprise-grade security, administrators must harden protocol handshakes and security headers to prevent SSL stripping and connection downgrade attacks.
+
+### Mandatory Security Headers for HTTPS
+- **Strict-Transport-Security (HSTS):** Instructs the browser to load the site using HTTPS only, preventing users from accessing an unencrypted HTTP fallback.
+- **Content-Security-Policy (CSP):** Restricts the sources of content (scripts, images, stylesheets) that the browser is allowed to execute, mitigating Cross-Site Scripting (XSS).
+- **X-Frame-Options:** Prevents the site from being framed inside an iframe, blocking clickjacking attacks.
+- **X-Content-Type-Options:** Prevents the browser from MIME-sniffing file types away from the declared content-type headers.
+    `,
+    howto: {
+      name: "How to Configure Strict HSTS in Nginx",
+      description: "Deploy the Strict-Transport-Security header in Nginx configurations to prevent SSL stripping.",
+      steps: [
+        { name: "Open Nginx Config", text: "Locate your server block in /etc/nginx/sites-available/default." },
+        { name: "Add HSTS Header", text: "Insert the line: add_header Strict-Transport-Security \"max-age=63072000; includeSubDomains; preload\" always;" },
+        { name: "Validate and Reload", text: "Validate configurations using 'nginx -t' and apply using 'systemctl reload nginx'." }
+      ]
+    },
+    faqs: [
+      { q: "What is HSTS Preloading?", a: "HSTS Preloading is a list built into major browsers that enforces HTTPS-only connections for your domain before the user makes their first visit." },
+      { q: "Why is a 301 redirect better than a 302 for HTTPS redirection?", a: "A 301 redirect indicates a permanent redirection, prompting search engines and browsers to cache the secure HTTPS target address permanently." }
+    ],
+    related: [
+      { name: "SSL vs. TLS Differences", path: "/ssl/ssl-vs-tls" },
+      { name: "Understanding Cipher Suites", path: "/ssl/cipher-suites" }
+    ]
+  }
+};
+
+export const SUBDOMAIN_TOPICS_DATA = {
+  'subdomain-enumeration': {
+    title: "Subdomain Enumeration Guide: Active vs. Passive OSINT Discovery",
+    description: "Learn the methodologies of subdomain enumeration. Discover how mapping host infrastructure uncovers staging environments and shadow IT.",
+    h1: "Subdomain Enumeration: Attack Surface Mapping",
+    parentToolPath: "/tools/subdomain-finder",
+    parentToolName: "Subdomain Finder",
+    category: "infrastructure visibility",
+    intro: "A guide to mapping an organization's digital footprint using DNS discovery techniques.",
+    content: `
+## Mapping the External Boundary
+Subdomain enumeration is the process of identifying all child hostnames associated with a root domain. It is the foundational phase of any external security audit.
+
+### Why Mapping Subdomains is Critical
+Organizations often have hundreds of active subdomains. Some are managed, while others are forgotten development interfaces or legacy servers. 
+By enumerating subdomains, you can:
+- **Discover Shadow IT:** Locate testing servers or administrative panels deployed without the knowledge of the central security team.
+- **Prevent Cookie Stealing:** Find vulnerable subdomains that could allow attackers to hijack session cookies scoped to \`*.example.com\`.
+- **Identify Target Services:** Pinpoint specific hostnames (e.g., \`vpn.example.com\`, \`git.example.com\`) that indicate valuable entry points.
+
+### Active vs. Passive Enumeration
+- **Active Enumeration:** Sending direct queries and brute-forcing namespaces against the target nameservers.
+- **Passive Enumeration:** Querying public repositories, Certificate Transparency ledgers, and index caches.
+    `,
+    howto: {
+      name: "How to Enumerate Subdomains Passively using crt.sh",
+      description: "Query public Certificate Transparency database interfaces to map target domains passively.",
+      steps: [
+        { name: "Navigate to crt.sh", text: "Open crt.sh in your browser or construct an SQL database connection to crt.sh." },
+        { name: "Query Domain", text: "Enter your target domain using the SQL wildcard syntax (e.g., %.example.com) to pull all issued SSL certificates." },
+        { name: "Extract Unique Hosts", text: "Deduplicate the returned lists of subdomains to isolate active namespaces." }
+      ]
+    },
+    faqs: [
+      { q: "What is the difference between active and passive subdomain scanning?", a: "Active scanning queries the target nameservers directly or brute-forces domains. Passive scanning collects data from third-party databases, making it invisible to the target." },
+      { q: "Can wildcard DNS block subdomain discovery?", a: "Wildcard DNS (*.example.com resolves to the same IP) makes active brute-forcing difficult due to false positives, but passive discovery via CT logs is unaffected." },
+      { q: "How do I secure my subdomains from enumeration?", a: "You cannot prevent passive enumeration because CT logs are public. Focus instead on securing the endpoints and removing unused DNS records." }
+    ],
+    related: [
+      { name: "Passive Enumeration", path: "/subdomains/passive-enumeration" },
+      { name: "Certificate Transparency Logs", path: "/subdomains/certificate-transparency" },
+      { name: "Subdomain Takeover Risks", path: "/subdomains/subdomain-takeover" }
+    ]
+  },
+  'passive-enumeration': {
+    title: "Passive Subdomain Enumeration: Stealth Reconnaissance Techniques",
+    description: "Learn how to discover subdomains without interacting with the target server using stealth passive OSINT techniques.",
+    h1: "Passive Subdomain Enumeration: Stealth Recon",
+    parentToolPath: "/tools/subdomain-finder",
+    parentToolName: "Subdomain Finder",
+    category: "infrastructure visibility",
+    intro: "Master the art of reconnaissance using historical DNS databases, search dorking, and open registries.",
+    content: `
+## Gathering Intelligence Without Footprints
+Passive subdomain enumeration is the practice of mapping a target's DNS structure using third-party data aggregators. Because no packets are sent to the target's network, passive discovery cannot be detected or blocked by the target's firewalls.
+
+### Key Data Repositories
+1. **Certificate Transparency Logs:** Public ledgers where Certificate Authorities log all issued certificates. Querying these ledgers reveals every subdomain that has ever requested an SSL certificate.
+2. **Search Engine Scrapers:** Using search operators (like Google Dorks) to isolate index paths (e.g., \`site:target.com -www\`).
+3. **Passive DNS Archives:** Repositories that collect DNS resolution history from global recursive resolvers and ISPs.
+4. **Threat Intelligence APIs:** Aggregating data from security platforms (like SecurityTrails, Censys, and Shodan) that index public domains.
+    `,
+    howto: {
+      name: "How to Use Google Dorking for Subdomain Extraction",
+      description: "Construct advanced search syntax criteria to pull indexed subdomains passively from Google indices.",
+      steps: [
+        { name: "Format Base Query", text: "Type 'site:example.com' into the search input to list all indexed pages under your target domain." },
+        { name: "Exclude Common Nodes", text: "Refine your query by appending exclusion flags for high-volume subdomains, e.g. site:example.com -inurl:www" },
+        { name: "Identify Leak Areas", text: "Look for dev, staging, or admin keywords in the search index results." }
+      ]
+    },
+    faqs: [
+      { q: "Does passive scanning trigger security alerts?", a: "No. Passive scanning queries third-party databases, so your target's intrusion detection systems (IDS) will register zero traffic." },
+      { q: "Why are some passively discovered subdomains offline?", a: "Passive databases store historical data. A subdomain may have had a DNS record or certificate in the past but has since been decommissioned." },
+      { q: "How do I query CT logs passively?", a: "You can use public search interfaces like crt.sh or use the ReconShield Subdomain Finder, which automates log scraping." }
+    ],
+    related: [
+      { name: "Subdomain Enumeration Guide", path: "/subdomains/subdomain-enumeration" },
+      { name: "Certificate Transparency Logs", path: "/subdomains/certificate-transparency" },
+      { name: "Shadow IT Discovery", path: "/subdomains/shadow-it" }
+    ]
+  },
+  'active-enumeration': {
+    title: "Active Subdomain Enumeration: Brute-forcing, Zone Transfers & DNS Probing",
+    description: "Learn how active subdomain probing works. Discover techniques for brute-forcing, wildcards handling, and DNS zone transfers.",
+    h1: "Active Subdomain Enumeration Methodologies",
+    parentToolPath: "/tools/subdomain-finder",
+    parentToolName: "Subdomain Finder",
+    category: "infrastructure visibility",
+    intro: "A technical guide to direct DNS probing methods, wordlist selection, and resolving wildcard DNS boundaries.",
+    content: `
+## Probing DNS Infrastructure directly
+Unlike passive reconnaissance, active subdomain enumeration involves sending direct queries to target DNS authoritative nameservers to resolve hostnames.
+
+### Core Active Techniques
+1. **Dictionary Brute-Forcing:** Querying nameservers for a list of words prefixed to the root domain (e.g. \`admin.example.com\`, \`test.example.com\`).
+2. **DNS Zone Transfers (AXFR):** Attempting to query the zone configuration directly. If a nameserver is misconfigured, it will transmit the complete DNS database to the client.
+3. **DNS Wildcard Detection:** Verifying if the nameserver responds with a valid record for non-existent domains. Active scanners must detect wildcards to filter false positives.
+    `,
+    howto: {
+      name: "How to Test for DNS Zone Transfer (AXFR) Exposures",
+      description: "Use the host command utility to verify nameserver zone configurations.",
+      steps: [
+        { name: "Find Nameservers", text: "Query the target domain's authoritative nameservers: host -t ns example.com" },
+        { name: "Attempt AXFR", text: "Execute the zone transfer query against a nameserver: host -l example.com ns1.example.com" },
+        { name: "Analyze Output", text: "If the output shows 'Transfer failed', the server is secure. If it dumps the records, restrict AXFR access." }
+      ]
+    },
+    faqs: [
+      { q: "Is AXFR zone transfer enabled by default?", a: "No. Modern DNS systems disable AXFR transfers globally by default to prevent boundary mapping leaks." },
+      { q: "What tool is best for fast active DNS brute-forcing?", a: "Utilities like gobuster, subfinder, or amap are optimized for fast dictionary resolution." }
+    ],
+    related: [
+      { name: "Subdomain Enumeration Guide", path: "/subdomains/subdomain-enumeration" },
+      { name: "Passive Enumeration Techniques", path: "/subdomains/passive-enumeration" }
+    ]
+  },
+  'certificate-transparency': {
+    title: "Certificate Transparency (CT) Logs for Subdomain Discovery",
+    description: "Learn how Certificate Transparency logs function as a public ledger and why they are the most powerful passive subdomain discovery resource.",
+    h1: "Certificate Transparency (CT) Logs Explained",
+    parentToolPath: "/tools/subdomain-finder",
+    parentToolName: "Subdomain Finder",
+    category: "infrastructure visibility",
+    intro: "How an append-only ledger designed to prevent rogue certificates became a key resource for security reconnaissance.",
+    content: `
+## The Cryptographic Audit Trail
+Certificate Transparency (CT) is an open framework designed to monitor and audit the issuance of SSL/TLS certificates. The system mandates that Certificate Authorities (CAs) log every certificate they issue to public, cryptographically verifiable, append-only ledgers.
+
+### The Reconnaissance Leak
+While CT logs were created to detect rogue or unauthorized certificates (such as an attacker trying to issue a fake certificate for a bank), they also act as a directory of an organization's subdomains. 
+The moment a developer generates a certificate for a subdomain (e.g., \`staging-payment.example.com\`), that record is pushed to public CT logs. Security researchers query these logs via interfaces like crt.sh to map the entire external attack surface.
+    `,
+    howto: {
+      name: "How to Monitor Certificate Transparency Logs",
+      description: "Configure notifications to alert you when a new certificate is registered under your domain namespace.",
+      steps: [
+        { name: "Select Monitoring Tool", text: "Use third-party monitoring aggregators (such as Facebook CT Monitoring or Cloudflare CT alerts)." },
+        { name: "Register Domain", text: "Input your primary root domain under the watch dashboard parameters." },
+        { name: "Configure Webhooks", text: "Integrate email or Slack webhooks to notify security engineers immediately when certificates are issued." }
+      ]
+    },
+    faqs: [
+      { q: "What is an append-only ledger in CT?", a: "A database structure using Merkle Trees where records can only be added, never modified or deleted, ensuring the integrity of the certificate log." },
+      { q: "Can wildcard certificates hide subdomains in CT logs?", a: "Yes. If an organization generates a wildcard certificate (*.example.com), individual subdomains are not logged, limiting passive discovery via CT logs." },
+      { q: "Are CT logs updated in real-time?", a: "Yes, CAs typically log certificates within seconds of issuance, allowing researchers to monitor new hosts as they are created." }
+    ],
+    related: [
+      { name: "Subdomain Enumeration Guide", path: "/subdomains/subdomain-enumeration" },
+      { name: "Passive Reconnaissance", path: "/subdomains/passive-enumeration" },
+      { name: "Subdomain Takeovers", path: "/subdomains/subdomain-takeover" }
+    ]
+  },
+  'subdomain-takeover': {
+    title: "Subdomain Takeover Vulnerabilities: CNAME Hijacking & Remediation",
+    description: "What is a subdomain takeover? Learn how orphaned CNAME DNS records pointing to decommissioned third-party hosts allow attackers to hijack subdomains.",
+    h1: "Subdomain Takeover: CNAME Hijacking Guide",
+    parentToolPath: "/tools/subdomain-finder",
+    parentToolName: "Subdomain Finder",
+    category: "infrastructure visibility",
+    intro: "A step-by-step breakdown of how stale DNS records allow attackers to claim legitimate subdomain namespaces.",
+    content: `
+## Anatomy of a CNAME Hijacking
+A subdomain takeover occurs when a DNS record points to an external resource (like an AWS S3 bucket, GitHub Pages, or Zendesk) that has been deleted, but the DNS record remains active.
+
+### How a Takeover Happens
+1. **DNS Setup:** An organization sets a DNS record: \`docs.example.com CNAME example-bucket.s3.amazonaws.com\`.
+2. **Resource Decommission:** The organization deletes the AWS S3 bucket \`example-bucket\`, but forgets to delete the CNAME record from its DNS zone.
+3. **Attack Vector:** An attacker discovers that querying \`docs.example.com\` returns a "NoSuchBucket" error.
+4. **Exploitation:** The attacker registers their own S3 bucket named \`example-bucket\`. They now control the content served at \`docs.example.com\`.
+
+### Consequences
+- **Phishing Campaigns:** Attackers can host phishing forms on a trusted company subdomain.
+- **Session Hijacking:** Attackers can read session cookies scoped to \`*.example.com\` sent by the victim's browser.
+- **Bypassing Content Security Policies (CSP):** Many CSP rules trust the organization's own subdomains, allowing the hijacked subdomain to bypass script restrictions.
+    `,
+    howto: {
+      name: "How to Detect Dangling DNS Records",
+      description: "Audit CNAME record maps to identify potentially orphaned domains pointing to third-party endpoints.",
+      steps: [
+        { name: "Dump DNS Zone", text: "Export your domain nameservers zone configuration file or query the DNS interface." },
+        { name: "Resolve Targets", text: "Query the status of external services referenced by the CNAME entries (e.g. dig docs.example.com)." },
+        { name: "Verify Active Subscriptions", text: "Ensure the referenced buckets or tenant accounts exist. Remove CNAMEs for deprecated accounts." }
+      ]
+    },
+    faqs: [
+      { q: "How do I prevent subdomain takeovers?", a: "Ensure that DNS record removal is integrated into your cloud resource decommissioning workflow. Never delete a third-party account or cloud bucket without first deleting the corresponding DNS record." },
+      { q: "What DNS record types are vulnerable to takeovers?", a: "CNAME, DNAME, MX, and even A/AAAA records can be vulnerable if they point to third-party hosting platforms with dynamic IP allocation." },
+      { q: "Does the ReconShield Subdomain Finder detect takeovers?", a: "It identifies subdomains that resolve to external cloud endpoints, allowing administrators to audit if those targets are active." }
+    ],
+    related: [
+      { name: "Subdomain Enumeration Guide", path: "/subdomains/subdomain-enumeration" },
+      { name: "Certificate Transparency Logs", path: "/subdomains/certificate-transparency" },
+      { name: "Shadow IT Risks", path: "/subdomains/shadow-it" }
+    ]
+  },
+  'shadow-it': {
+    title: "Shadow IT Discovery: Identifying Exposed Subdomains and Cloud Assets",
+    description: "Uncover the security risks of Shadow IT. Learn how departments deploy unmanaged cloud resources and how subdomain audits regain visibility.",
+    h1: "Shadow IT Discovery & Asset Visibility",
+    parentToolPath: "/tools/subdomain-finder",
+    parentToolName: "Subdomain Finder",
+    category: "infrastructure visibility",
+    intro: "How continuous subdomain monitoring helps security teams regain control of unmanaged server deployments.",
+    content: `
+## The Security Risk of Unmanaged Assets
+Shadow IT refers to information technology systems, devices, software, applications, and services used by departments or individuals without explicit corporate approval or oversight.
+
+### How Subdomains Leak Shadow IT
+Marketing, product, and sales teams often need to deploy micro-sites, landing pages, or customer portals quickly. They might register subdomains (e.g., \`promo.example.com\`) and point them to external SaaS platforms or cloud environments (like Heroku or AWS). 
+If these resources are deployed outside the central IT security pipeline, they often:
+- Bypass corporate Web Application Firewalls (WAF).
+- Lack basic access controls or credential rotation.
+- Run outdated software versions vulnerable to exploitation.
+
+### Auditing for Shadow IT
+Continuous subdomain discovery is the most effective way to identify shadow IT. By mapping CT logs and DNS records, security teams can catalog every active asset and verify it against their authorized database inventory.
+    `,
+    howto: {
+      name: "How to Build a Subdomain Inventory Audit Process",
+      description: "Deploy automated tools to find and review unmapped domain subdomains.",
+      steps: [
+        { name: "Map DNS Space", text: "Perform weekly subdomain discovery audits utilizing passive CT logs." },
+        { name: "Cross-Reference Database", text: "Match resolved hosts against your database of approved assets." },
+        { name: "Investigate Mismatches", text: "Contact department heads to identify owners of new hostnames and verify service configurations." }
+      ]
+    },
+    faqs: [
+      { q: "What is the main danger of Shadow IT?", a: "The lack of visibility. If a security team does not know an asset exists, they cannot patch it, monitor it for intrusions, or verify its security configuration." },
+      { q: "How does subdomain discovery help locate Shadow IT?", a: "It finds hostnames pointing to unauthorized hosting environments or cloud providers, indicating where shadow assets are located." },
+      { q: "What should I do if I find a shadow IT subdomain?", a: "Identify the owner of the resource, audit its security, and either migrate it under central IT management or decommission it if it is no longer required." }
+    ],
+    related: [
+      { name: "Subdomain Enumeration Guide", path: "/subdomains/subdomain-enumeration" },
+      { name: "Passive Reconnaissance Techniques", path: "/subdomains/passive-enumeration" },
+      { name: "Subdomain Takeovers", path: "/subdomains/subdomain-takeover" }
+    ]
+  },
+  'asset-discovery': {
+    title: "Continuous Asset Discovery: Mapping Internal & External Host Boundaries",
+    description: "Learn how continuous asset discovery works. Map external digital footprints, locate rogue databases, and identify unmanaged servers.",
+    h1: "Continuous Asset Discovery & Attack Surface Mapping",
+    parentToolPath: "/tools/subdomain-finder",
+    parentToolName: "Subdomain Finder",
+    category: "infrastructure visibility",
+    intro: "How automated mapping discovers open servers, staging services, and cloud resources across the enterprise.",
+    content: `
+## Gaining Real-Time Visibility of internet-facing assets
+Asset discovery is the automated inventory mapping of all IT systems, hosts, servers, databases, and network interfaces deployed by an organization.
+
+### The Asset Lifecycle Problem
+In modern agile and cloud-native organizations, virtual instances, APIs, and CDN endpoints are provisioned and destroyed constantly. 
+Without automated tracking, IT inventories become outdated within days. This leaves unmonitored endpoints vulnerable to exploits, misconfigured ports, and certificate expiration.
+    `,
+    howto: {
+      name: "How to Catalog and Monitor Public Server Assets Automatically",
+      description: "Set up automated scans using ReconShield tools to catalog active domains.",
+      steps: [
+        { name: "Define Scoping Ranges", text: "Specify root domains and IP blocks assigned to your organization." },
+        { name: "Automate Scanning Pipeline", text: "Run automated subdomain mapping schedules to find newly resolved hosts." },
+        { name: "Alert on Changes", text: "Configure email hooks to flag the creation of any new web-facing server node." }
+      ]
+    },
+    faqs: [
+      { q: "What is an active asset database?", a: "A centralized register mapping hostnames, public IP addresses, running services, and certificates owned by the enterprise." },
+      { q: "Why is manual tracking of assets ineffective?", a: "Manual entries cannot scale with cloud auto-scaling environments, leading to forgotten nodes and security blindspots." }
+    ],
+    related: [
+      { name: "Subdomain Enumeration Guide", path: "/subdomains/subdomain-enumeration" },
+      { name: "Attack Surface Management", path: "/subdomains/attack-surface-management" }
+    ]
+  },
+  'attack-surface-management': {
+    title: "Enterprise Attack Surface Management: Visibility, Risks & Remediation",
+    description: "What is Attack Surface Management (ASM)? Learn how to map, evaluate, and secure external network exposures and vulnerable components.",
+    h1: "Enterprise Attack Surface Management (ASM)",
+    parentToolPath: "/tools/subdomain-finder",
+    parentToolName: "Subdomain Finder",
+    category: "infrastructure visibility",
+    intro: "A security framework to continuously map, evaluate, and harden an organization's public-facing digital assets.",
+    content: `
+## Defining and Restricting the Adversarial Target Space
+Attack Surface Management (ASM) is the continuous process of discovering, analyzing, and mitigating the security risks associated with an organization's public-facing digital footprint.
+
+### The Phases of Attack Surface Management
+1. **Discovery:** Active and passive mapping of all web domains, subdomains, IP blocks, open ports, and SaaS services.
+2. **Analysis & Attribution:** Linking discovered assets to business owners to identify shadow IT.
+3. **Risk Evaluation:** Checking nodes for software vulnerabilities, outdated certificates, and port exposure.
+4. **Remediation:** Implementing firewalls, disabling ports, patching software, or deleting dangling DNS entries.
+    `,
+    howto: {
+      name: "How to Setup an Attack Surface Audit Pipeline",
+      description: "Build a basic security audit pipeline using ReconShield tools to verify network exposures.",
+      steps: [
+        { name: "Run Subdomain Finder", text: "Perform a passive subdomain search for your root domain to identify active hosts." },
+        { name: "Scan Exposed Ports", text: "Audit identified host IPs using the Port Scanner to locate listening database or admin interfaces." },
+        { name: "Analyze SSL Configuration", text: "Verify transport layer parameters on port 443 endpoints using the SSL Checker." }
+      ]
+    },
+    faqs: [
+      { q: "What is the difference between ASM and vulnerability scanning?", a: "ASM focuses on finding unmapped assets and understanding the overall entry points, while vulnerability scanning looks for specific exploits inside known servers." },
+      { q: "Why is the external attack surface growing?", a: "Cloud adoption, API integration, remote work VPNs, and dynamic CDN networks have expanded the public boundary beyond traditional corporate firewalls." }
+    ],
+    related: [
+      { name: "Continuous Asset Discovery", path: "/subdomains/asset-discovery" },
+      { name: "Subdomain Enumeration Guide", path: "/subdomains/subdomain-enumeration" }
+    ]
+  }
+};

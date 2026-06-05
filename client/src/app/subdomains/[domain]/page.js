@@ -3,12 +3,20 @@ import Link from 'next/link';
 import { Network, Search, Server, Globe, ChevronRight, Activity } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { generateDatasetSchema } from '@/utils/metadata';
+import { SUBDOMAIN_TOPICS_DATA } from '@/utils/programmaticTopicsData';
+import { renderMarkdown } from '@/utils/markdownRenderer';
 
+const SUBDOMAIN_TOPICS = Object.keys(SUBDOMAIN_TOPICS_DATA);
 
 const isValidDomain = (domain) => {
+  if (SUBDOMAIN_TOPICS.includes(domain.toLowerCase())) return true;
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
   return domainRegex.test(domain);
 };
+
+export async function generateStaticParams() {
+  return SUBDOMAIN_TOPICS.map(domain => ({ domain }));
+}
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
@@ -16,6 +24,32 @@ export async function generateMetadata({ params }) {
 
   if (!domain || !isValidDomain(domain)) {
     return { title: 'Invalid Domain' };
+  }
+
+  // Check if it's a programmatic authority page
+  if (SUBDOMAIN_TOPICS_DATA[domain]) {
+    const topic = SUBDOMAIN_TOPICS_DATA[domain];
+    return {
+      title: topic.title,
+      description: topic.description,
+      alternates: {
+        canonical: `https://reconshield.in/subdomains/${domain}`,
+      },
+      robots: { index: true, follow: true },
+      openGraph: {
+        url: `https://reconshield.in/subdomains/${domain}`,
+        title: topic.title,
+        description: topic.description,
+        type: 'article',
+        images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: topic.title,
+        description: topic.description,
+        images: ['/og-image.png']
+      }
+    };
   }
 
   return {
@@ -49,6 +83,155 @@ export default async function SubdomainIntelligencePage({ params }) {
     notFound();
   }
 
+  // Check if rendering a programmatic topic page
+  if (SUBDOMAIN_TOPICS_DATA[domain]) {
+    const topic = SUBDOMAIN_TOPICS_DATA[domain];
+
+    const schemaJson = {
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'TechArticle',
+          '@id': `https://reconshield.in/subdomains/${domain}/#article`,
+          headline: topic.h1,
+          description: topic.description,
+          publisher: {
+            '@type': 'Organization',
+            name: 'ReconShield Security'
+          },
+          url: `https://reconshield.in/subdomains/${domain}`
+        },
+        {
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
+            { '@type': 'ListItem', position: 2, name: topic.parentToolName, item: `https://reconshield.in${topic.parentToolPath}` },
+            { '@type': 'ListItem', position: 3, name: topic.h1, item: `https://reconshield.in/subdomains/${domain}` },
+          ],
+        },
+        {
+          '@type': 'FAQPage',
+          mainEntity: topic.faqs.map(f => ({
+            '@type': 'Question',
+            name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a }
+          }))
+        },
+        ...(topic.howto ? [{
+          '@type': 'HowTo',
+          name: topic.howto.name,
+          description: topic.howto.description,
+          step: topic.howto.steps.map((step, idx) => ({
+            '@type': 'HowToStep',
+            position: idx + 1,
+            name: step.name,
+            text: step.text,
+            url: `https://reconshield.in/subdomains/${domain}#step-${idx + 1}`
+          }))
+        }] : [])
+      ]
+    };
+
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaJson) }}
+        />
+        
+        <div className="min-h-screen pb-20">
+          <div className="max-w-5xl mx-auto px-4 pt-8">
+            
+            <nav aria-label="Breadcrumb" className="mb-8">
+              <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
+                <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
+                <li><ChevronRight className="w-3 h-3" /></li>
+                <li><Link href="/tools/subdomain-finder" className="hover:text-[#00ff88] transition-colors">OSINT Mapping</Link></li>
+                <li><ChevronRight className="w-3 h-3" /></li>
+                <li className="text-[#00ff88]">{topic.title}</li>
+              </ol>
+            </nav>
+
+            <div className="border-b border-white/10 pb-8 mb-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-orange-500/10 border border-orange-500/20 rounded-full text-[10px] font-mono text-orange-400 mb-4 uppercase tracking-widest">
+                <Network className="w-3 h-3" />
+                <span>Subdomain OSINT Guide</span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+                {topic.h1}
+              </h1>
+              <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
+                {topic.intro}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-10">
+                
+                {/* Deep-dive Content */}
+                <article className="prose prose-invert max-w-none text-gray-400 leading-relaxed">
+                  {renderMarkdown(topic.content)}
+                </article>
+
+                {/* Conversion CTA Card (Phase 5) */}
+                <div className="mt-12 p-8 rounded-2xl border border-orange-500/20 bg-gradient-to-br from-orange-500/5 to-transparent relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 blur-[100px] rounded-full pointer-events-none" />
+                  <h3 className="text-xl md:text-2xl font-bold mb-3 text-white">
+                    Audit Your Subdomain Exposure
+                  </h3>
+                  <p className="text-gray-400 mb-6 max-w-2xl leading-relaxed">
+                    Map out forgotten development environments, staging configurations, and scan for dangling CNAME takeover vulnerabilities instantly.
+                  </p>
+                  <Link href="/tools/subdomain-finder">
+                    <span className="inline-flex items-center justify-center bg-orange-500 hover:bg-orange-500/90 text-black px-6 py-3 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:shadow-[0_0_30px_rgba(249,115,22,0.5)] cursor-pointer">
+                      Scan Subdomains Now
+                    </span>
+                  </Link>
+                </div>
+
+                {/* FAQs Section */}
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-wider border-b border-white/5 pb-2">Frequently Asked Questions</h2>
+                  <div className="space-y-4">
+                    {topic.faqs.map((faq, i) => (
+                      <div key={i} className="p-5 rounded-xl bg-[#0d1117] border border-white/[0.06]">
+                        <h3 className="text-white font-semibold mb-2 text-sm">{faq.q}</h3>
+                        <p className="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+              <div className="lg:col-span-1 space-y-6">
+                <div className="p-6 rounded-2xl bg-gradient-to-b from-[#0d1117] to-transparent border border-white/5 sticky top-24">
+                  <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">Related OSINT Guides</h3>
+                  
+                  <div className="space-y-3">
+                    {topic.related.map((rel, idx) => (
+                      <Link key={idx} href={rel.path} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                        <div className="w-8 h-8 rounded-md bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:bg-orange-500/20">
+                          <Network className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-sm font-semibold text-white group-hover:text-orange-400 transition-colors">{rel.name}</div>
+                          <div className="text-xs text-gray-500">OSINT analysis guide</div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Schema Generation for Domain pages
   const schemaJson = {
     '@context': 'https://schema.org',
     '@graph': [

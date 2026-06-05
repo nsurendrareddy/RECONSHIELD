@@ -2,19 +2,25 @@ import React from 'react';
 import Link from 'next/link';
 
 const CTABlock = () => (
-  <div className="mt-12 p-8 rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/5 to-transparent relative overflow-hidden">
-    <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 blur-[100px] rounded-full pointer-events-none" />
-    <h3 className="text-xl md:text-2xl font-bold mb-3 text-white">
-      Need Advanced Threat Intelligence?
-    </h3>
-    <p className="text-gray-400 mb-6 max-w-2xl leading-relaxed">
-      Use ReconShield's full suite for real-time infrastructure intelligence, continuous internet-facing assets monitoring, and automated exposure detection.
-    </p>
-    <Link href="/contact">
-      <button className="bg-cyan-500 hover:bg-cyan-400 text-black px-6 py-3 rounded-xl font-semibold transition-all shadow-[0_0_20px_rgba(6,182,212,0.3)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)] cursor-pointer">
-        Contact ReconShield Enterprise
-      </button>
-    </Link>
+  <div className="mt-12 p-8 rounded-2xl border border-[#00ff88]/20 bg-gradient-to-br from-[#00ff88]/5 to-transparent relative overflow-hidden">
+    <div className="absolute top-0 right-0 w-64 h-64 bg-[#00ff88]/10 blur-[100px] rounded-full pointer-events-none" />
+    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+      <div>
+        <h3 className="text-xl md:text-2xl font-bold mb-3 text-white">
+          Identify Network & Application Vulnerabilities
+        </h3>
+        <p className="text-gray-400 max-w-2xl leading-relaxed text-sm">
+          Exposing network services without regular audits is a high-risk liability. Use our automated Vulnerability Scanner to audit outdated packages, security configuration errors, and missing security headers.
+        </p>
+      </div>
+      <div className="flex-shrink-0">
+        <Link href="/tools/vulnerability-scanner">
+          <span className="inline-flex items-center justify-center bg-[#00ff88] hover:bg-[#00ff88]/90 text-black px-6 py-3 rounded-xl font-bold transition-all shadow-[0_0_20px_rgba(0,255,136,0.3)] hover:shadow-[0_0_30px_rgba(0,255,136,0.5)] cursor-pointer text-sm whitespace-nowrap">
+            Launch Security Scanner
+          </span>
+        </Link>
+      </div>
+    </div>
   </div>
 );
 

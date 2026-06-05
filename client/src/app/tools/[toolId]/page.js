@@ -130,17 +130,26 @@ export function ToolPageContent({ toolId }) {
   };
   const activeComparison = comparisonLinks[toolId];
 
-  // Get 3 related tools based on category
-  const relatedTools = TOOLS.filter(t => t.category === tool.category && t.id !== toolId).slice(0, 3);
-  if (relatedTools.length < 3) {
-    const extraTools = TOOLS.filter(t => t.category !== tool.category && t.id !== toolId).slice(0, 3 - relatedTools.length);
-    relatedTools.push(...extraTools);
+  // Get related tools mapping (Phase 2 Internal Linking Engine)
+  let relatedTools = [];
+  if (toolId === 'ssl-checker') {
+    relatedTools = TOOLS.filter(t => ['http-headers', 'vulnerability-scanner', 'whois', 'dns-lookup'].includes(t.id));
+  } else if (toolId === 'subdomain-finder') {
+    relatedTools = TOOLS.filter(t => ['dns-lookup', 'vulnerability-scanner', 'ssl-checker', 'port-scanner'].includes(t.id));
+  } else if (toolId === 'port-scanner') {
+    relatedTools = TOOLS.filter(t => ['vulnerability-scanner', 'ip-lookup', 'whois', 'subdomain-finder'].includes(t.id));
+  } else {
+    relatedTools = TOOLS.filter(t => t.category === tool.category && t.id !== toolId).slice(0, 3);
+    if (relatedTools.length < 3) {
+      const extraTools = TOOLS.filter(t => t.category !== tool.category && t.id !== toolId).slice(0, 3 - relatedTools.length);
+      relatedTools.push(...extraTools);
+    }
   }
 
   const baseGraph = [
     {
       '@type': 'WebApplication',
-      '@id': `https://reconshield.in/tools/${toolId}/#software`,
+      '@id': `https://reconshield.in/tools/${toolId}/#webapp`,
       name: `${tool.name} - Free Online Security Tool by ReconShield`,
       description: tool.desc,
       applicationCategory: 'SecurityApplication',
@@ -153,6 +162,33 @@ export function ToolPageContent({ toolId }) {
         priceCurrency: 'USD'
       },
       author: {
+        '@type': 'Organization',
+        name: 'ReconShield Security'
+      },
+      editor: {
+        '@type': 'Person',
+        name: 'ReconShield Threat Research Team',
+        url: 'https://reconshield.in/authors/reconshield-research'
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'ReconShield Security',
+        url: 'https://reconshield.in'
+      }
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': `https://reconshield.in/tools/${toolId}/#software`,
+      name: tool.name,
+      description: tool.desc,
+      applicationCategory: 'SecurityApplication',
+      operatingSystem: 'All',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD'
+      },
+      publisher: {
         '@type': 'Organization',
         name: 'ReconShield Security'
       }
@@ -289,8 +325,35 @@ export function ToolPageContent({ toolId }) {
               <li className="text-[#00ff88]">{tool.name}</li>
             </ol>
           </nav>
-          <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">
-            LAST UPDATED: June 2026
+          <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono text-gray-500 uppercase tracking-widest">
+            <span>Last Updated: June 2026</span>
+            <span className="text-gray-700">|</span>
+            <span>Reviewed By: <Link href="/authors/reconshield-research" className="text-cyan-400 hover:underline">ReconShield Research</Link></span>
+            <span className="text-gray-700">|</span>
+            <span>Ruleset: <Link href="/methodology" className="text-cyan-400 hover:underline">v1.4</Link></span>
+          </div>
+        </div>
+
+        {/* Trending Scans & Engagement Widget */}
+        <div className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs font-mono">
+          <div className="flex items-center gap-2 text-cyan-400 shrink-0">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span>TRENDING SCAN TARGETS:</span>
+          </div>
+          <div className="flex flex-wrap gap-3 text-gray-400">
+            {['reconshield.in', 'github.com', 'cloudflare.com', 'google.com'].map(dom => {
+              let reportPath = `/reports/ssl/${dom}`;
+              if (toolId === 'subdomain-finder') reportPath = `/reports/subdomains/${dom}`;
+              if (toolId === 'port-scanner') reportPath = `/reports/ports/${dom}`;
+              return (
+                <Link key={dom} href={reportPath} className="hover:text-white underline decoration-white/10">
+                  {dom}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
@@ -473,6 +536,15 @@ export function ToolPageContent({ toolId }) {
                 <Link href="/contact" className="text-xs font-mono font-bold text-matrix-400 hover:underline">
                   Contact Sales →
                 </Link>
+              </div>
+
+              <div className="mt-6 p-6 rounded-xl bg-white/[0.01] border border-white/5 space-y-3">
+                <h4 className="text-xs font-mono font-bold text-gray-400 uppercase tracking-wider">Methodology & Trust</h4>
+                <div className="flex flex-col gap-2 text-xs font-mono text-cyan-400">
+                  <Link href="/methodology" className="hover:underline">▸ Audit Methodology</Link>
+                  <Link href="/data-sources" className="hover:underline">▸ Data Sources</Link>
+                  <Link href="/update-policy" className="hover:underline">▸ Update Frequency</Link>
+                </div>
               </div>
             </div>
           </div>
