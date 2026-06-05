@@ -32,7 +32,8 @@ const FALLBACK_DATA = {
   'malicious-ips': ['185.191.171.2', '194.165.16.2'],
   'dns-types': Object.keys(DNS_TYPES_DATA),
   'ssl-errors': Object.keys(SSL_ERRORS_DATA),
-  'email-auths': Object.keys(EMAIL_AUTHS_DATA)
+  'email-auths': Object.keys(EMAIL_AUTHS_DATA),
+  technology: ['react', 'nextjs', 'wordpress', 'shopify', 'cloudflare', 'nginx', 'apache']
 };
 
 // Local registry verification to filter invalid/non-200 urls
@@ -98,6 +99,10 @@ function isUrlIndexableAndValid(urlStr) {
     if (path.startsWith('/tools/whois/')) {
       const domain = path.replace('/tools/whois/', '');
       return KNOWN_DOMAINS.includes(domain.toLowerCase());
+    }
+    if (path.startsWith('/technology/')) {
+      const slug = path.replace('/technology/', '');
+      return ['react', 'nextjs', 'wordpress', 'shopify', 'cloudflare', 'nginx', 'apache'].includes(slug.toLowerCase());
     }
 
     // Default true for core static pages, blog posts, and scanner tools
@@ -259,6 +264,7 @@ export async function GET(request, { params }) {
             if (entityType === 'dns-types') pathPrefix = 'dns-records/types';
             if (entityType === 'ssl-errors') pathPrefix = 'ssl/errors';
             if (entityType === 'email-auths') pathPrefix = 'email-auth';
+            if (entityType === 'technology') pathPrefix = 'technology';
             
             if (fallbackItems.length > 0) {
               for (const item of fallbackItems) {

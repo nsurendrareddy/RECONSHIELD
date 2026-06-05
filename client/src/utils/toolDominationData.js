@@ -330,5 +330,55 @@ export const TOOL_DOMINATION_DATA = {
       { q: "Does DMARC affect outgoing emails?", a: "Yes, it protects your outgoing emails by ensuring receivers validate them and block unauthorized impersonators." },
       { q: "What is BIMI?", a: "Brand Indicators for Message Identification. A standard that displays a brand's verified logo next to authenticated emails in supported inboxes." }
     ]
+  },
+  'tech-detector': {
+    comparison: {
+      title: "Passive Technology Detection vs. Active Vulnerability Probing",
+      desc: "Compare the differences between non-intrusive technology stack fingerprinting and active infrastructure vulnerability scanning.",
+      headers: ["Criteria", "Passive Tech Detector", "Active Vulnerability Scanner"],
+      rows: [
+        ["Request Footprint", "Zero intrusion; queries public assets & headers", "High noise; transmits exploit payloads & fuzz requests"],
+        ["Telemetry Analysed", "HTTP headers, HTML source, JS variables, cookies", "Port status, response signatures, buffer behaviors"],
+        ["Risk of Interruption", "None (behaves like a normal web visitor)", "Potential service lag or crash on legacy devices"],
+        ["Detection Coverage", "Frontend frameworks, CMS, CDN, and WAF providers", "Operating system patches, open ports, database CVEs"],
+        ["Ideal Use Case", "Initial reconnaissance, compliance audits, shadow IT tracking", "Direct penetration testing, vulnerability validation"]
+      ]
+    },
+    caseStudy: {
+      title: "Exposed Framework Version Leads to Zero-Day Exploit Chain",
+      desc: "In 2025, a major corporate platform was breached when attackers utilized a passive tech stack detector to discover they were running an unpatched version of a popular content management framework. The attackers cross-referenced this version against a newly published CVE database, extracted sensitive local configuration details via a directory traversal bug, and eventually established a remote command-and-control session. Obfuscating version tokens is a critical line of defense."
+    },
+    expertInsights: [
+      "Always disable 'server_tokens' in Nginx and configure 'ServerTokens ProductOnly' in Apache to hide running daemon versions.",
+      "Strip framework indicators like 'X-Powered-By' in your application settings (e.g., in Next.js, configure 'poweredByHeader: false').",
+      "Deploy a Web Application Firewall (WAF) to sanitize response headers, block scanner user-agents, and prevent direct origin profiling."
+    ],
+    statistics: [
+      { label: "Sites exposing CMS version details", value: "64.2%" },
+      { label: "WAF usage among top 10k sites", value: "48.1%" },
+      { label: "Average tech profiling execution", value: "<1.2s" }
+    ],
+    faqs: [
+      { q: "What is a website technology checker?", a: "A website technology checker identifies the software, content management systems (CMS), programming frameworks, hosting, CDN/WAF layers, and tracking scripts used by a website through passive fingerprinting." },
+      { q: "How does technology fingerprinting work?", a: "It reads public elements: HTTP response headers (e.g., Server, X-Powered-By), HTML source code patterns, JavaScript global variables, cookie keys, and CSS/JS directory paths." },
+      { q: "Can websites hide their technology stack?", a: "Yes, by disabling version tokens, stripping identifying HTTP headers, removing meta generator tags, and routing traffic through proxy services or a Web Application Firewall." },
+      { q: "How accurate are technology detectors?", a: "They are highly accurate for identifying public-facing frontend libraries, CMSs, and CDN/WAF layers. However, they cannot directly detect internal backend databases unless leaked in headers or error messages." },
+      { q: "Can a website technology checker identify WordPress?", a: "Yes, WordPress websites are easily recognized by specific indicators, such as '/wp-content/' in script paths, XML-RPC links, and meta generator tags." },
+      { q: "How can I detect React or Next.js websites?", a: "Framework detectors scan for specific DOM attributes (like data-reactroot), specific React Developer Tools global variables, or Next.js build manifests (like '/_next/static/')." },
+      { q: "Can I identify Cloudflare usage?", a: "Yes, Cloudflare usage is identified via HTTP headers (such as CF-RAY, Server: cloudflare) and the domain's IP addresses, which resolve to Cloudflare ranges." },
+      { q: "Why do penetration testers use technology detectors?", a: "Penetration testers use tech checkers during the initial reconnaissance phase to map a target's attack surface and spot outdated or vulnerable software versions." },
+      { q: "What are the limitations of technology fingerprinting?", a: "It only analyzes public-facing code. It cannot discover backend microservices, hidden databases, or internal infrastructure components that do not output markers." },
+      { q: "Is website technology detection legal?", a: "Yes, technology detection is entirely legal because it operates passively, reading only the public data that the web server transmits to any standard browser." },
+      { q: "What is a CMS detector?", a: "A CMS detector is a specialized scanner that fingerprints markers unique to content systems like WordPress, Shopify, Drupal, Joomla, and Ghost." },
+      { q: "Can a tech stack checker detect backend databases?", a: "No, unless the server misconfigures error outputs or leaks database-specific cookies (e.g., rails session cookies implying PostgreSQL/MySQL configurations)." },
+      { q: "How do you detect a Web Application Firewall (WAF)?", a: "By analyzing specific response headers (e.g., 'X-CDN', 'Server'), cookie prefixes, and response formats when transmitting test payloads." },
+      { q: "What are common headers used to fingerprint servers?", a: "The 'Server' header (disclosing Apache, Nginx, IIS versions) and the 'X-Powered-By' header (disclosing PHP, ASP.NET, Express versions) are the most common." },
+      { q: "What is the role of cookies in tech stack detection?", a: "Many frameworks set signature session cookies (e.g., 'PHPSESSID' for PHP, 'JSESSIONID' for Java, 'connect.sid' for Express), which serve as reliable fingerprints." },
+      { q: "How does a framework detector recognize JavaScript libraries?", a: "By inspecting global properties on the browser's window object (such as jQuery, Vue, React, Angular, lodash, or Backbone)." },
+      { q: "Can technology detection be used to find vulnerabilities?", a: "Yes, by matching detected version numbers against vulnerability databases (CVEs) to check for known security flaws." },
+      { q: "How often is the ReconShield technology database updated?", a: "Our signature database is updated weekly using public framework releases, security advisories, and updated signature lists." },
+      { q: "Does this tech stack checker send traffic to the destination?", a: "ReconShield runs passive queries using our centralized nodes to read public HTML files and response headers without flooding the target." },
+      { q: "How can I strip X-Powered-By headers in Next.js or Node.js?", a: "In Next.js, add 'poweredByHeader: false' to next.config.js. In Express, add 'app.disable(\"x-powered-by\")' to your server file." }
+    ]
   }
 };

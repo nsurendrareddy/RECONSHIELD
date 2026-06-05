@@ -20,6 +20,37 @@ export async function generateMetadata({ params }) {
   
   const tool = TOOLS.find(t => t.id === toolId) || TOOLS.find(t => t.id === 'dns-lookup');
   
+  if (toolId === 'tech-detector') {
+    return {
+      title: "Website Technology Checker – Detect CMS, Frameworks & Tech Stack",
+      description: "Free online website technology checker. Detect content management systems (CMS), javascript frameworks, CDNs, hosting providers, WAFs, and web infrastructure instantly.",
+      alternates: {
+        canonical: "https://reconshield.in/tools/tech-detector",
+      },
+      openGraph: {
+        url: "https://reconshield.in/tools/tech-detector",
+        title: "Website Technology Checker – Detect CMS & Web Frameworks",
+        description: "Analyze and identify any website's tech stack. Free CMS detector, framework lookup, and technology database fingerprinting tool.",
+        type: 'website',
+        siteName: 'ReconShield',
+        locale: 'en_US',
+        images: [
+          {
+            url: '/og-image.png',
+            width: 1200,
+            height: 630,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: "Website Technology Checker | Tech Stack Detector",
+        description: "Find out what technologies, hosting, and CMS any website is built with. Passive infrastructure visibility & profiling tool.",
+        images: ['/og-image.png']
+      }
+    };
+  }
+
   return {
     title: `${tool.name} Tool – Audit & Verify Security Configurations | ReconShield`,
     description: `Free enterprise-grade ${tool.name} tool. ${tool.desc} Analyze records, identify exposure gaps, and secure configurations instantly.`,
@@ -106,71 +137,131 @@ export function ToolPageContent({ toolId }) {
     relatedTools.push(...extraTools);
   }
 
+  const baseGraph = [
+    {
+      '@type': 'WebApplication',
+      '@id': `https://reconshield.in/tools/${toolId}/#software`,
+      name: `${tool.name} - Free Online Security Tool by ReconShield`,
+      description: tool.desc,
+      applicationCategory: 'SecurityApplication',
+      operatingSystem: 'All',
+      browserRequirements: 'Requires JavaScript. Requires HTML5.',
+      url: `https://reconshield.in/tools/${toolId}`,
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD'
+      },
+      author: {
+        '@type': 'Organization',
+        name: 'ReconShield Security'
+      }
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
+        { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://reconshield.in/tools' },
+        { '@type': 'ListItem', position: 3, name: tool.name, item: `https://reconshield.in/tools/${toolId}` },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: activeFaqs.map(f => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+    {
+      '@type': 'HowTo',
+      '@id': `https://reconshield.in/tools/${toolId}#howto`,
+      name: `How to use the ReconShield ${tool.name} Tool`,
+      description: `Learn how to perform a security query and analyze results with the ${tool.name} tool.`,
+      step: [
+        {
+          '@type': 'HowToStep',
+          url: `https://reconshield.in/tools/${toolId}#step-1`,
+          name: 'Enter Target Hostname',
+          text: 'Input the domain name or IP address you want to scan into the search bar.'
+        },
+        {
+          '@type': 'HowToStep',
+          url: `https://reconshield.in/tools/${toolId}#step-2`,
+          name: 'Start Security Assessment',
+          text: 'Click the Analyze or Scan button to trigger the passive security check.'
+        },
+        {
+          '@type': 'HowToStep',
+          url: `https://reconshield.in/tools/${toolId}#step-3`,
+          name: 'Review Exposure Findings',
+          text: 'Review the detailed, formatted output highlighting any security exposures, expiry warnings, or configuration gaps.'
+        }
+      ]
+    }
+  ];
+
+  if (toolId === 'tech-detector') {
+    // Override and expand graph for tech-detector to include WebApplication, SoftwareApplication, Organization, BreadcrumbList, FAQPage, HowTo
+    baseGraph[0] = {
+      '@type': 'WebApplication',
+      '@id': 'https://reconshield.in/tools/tech-detector/#webapp',
+      name: 'Website Technology Checker - ReconShield',
+      description: 'Analyze and identify Content Management Systems (CMS), web frameworks, analytics engines, JavaScript libraries, hosting platforms, and WAF/CDNs using passive fingerprinting.',
+      applicationCategory: 'SecurityApplication',
+      operatingSystem: 'All',
+      browserRequirements: 'Requires JavaScript. Requires HTML5.',
+      url: 'https://reconshield.in/tools/tech-detector',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD'
+      },
+      author: {
+        '@type': 'Organization',
+        '@id': 'https://reconshield.in/#organization'
+      }
+    };
+    
+    // Add SoftwareApplication
+    baseGraph.push({
+      '@type': 'SoftwareApplication',
+      '@id': 'https://reconshield.in/tools/tech-detector/#software',
+      name: 'Website Technology Checker',
+      description: 'Passive website technology checker, CMS detector, and framework analysis utility.',
+      applicationCategory: 'SecurityApplication',
+      operatingSystem: 'All',
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD'
+      },
+      publisher: {
+        '@type': 'Organization',
+        '@id': 'https://reconshield.in/#organization'
+      }
+    });
+
+    // Add Organization
+    baseGraph.push({
+      '@type': 'Organization',
+      '@id': 'https://reconshield.in/#organization',
+      name: 'ReconShield',
+      url: 'https://reconshield.in',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://reconshield.in/icon.png'
+      },
+      sameAs: [
+        'https://twitter.com/reconshield',
+        'https://linkedin.com/company/reconshield'
+      ]
+    });
+  }
+
   const schemaJson = {
     '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'WebApplication',
-        '@id': `https://reconshield.in/tools/${toolId}/#software`,
-        name: `${tool.name} - Free Online Security Tool by ReconShield`,
-        description: tool.desc,
-        applicationCategory: 'SecurityApplication',
-        operatingSystem: 'All',
-        browserRequirements: 'Requires JavaScript. Requires HTML5.',
-        url: `https://reconshield.in/tools/${toolId}`,
-        offers: {
-          '@type': 'Offer',
-          price: '0',
-          priceCurrency: 'USD'
-        },
-        author: {
-          '@type': 'Organization',
-          name: 'ReconShield Security'
-        }
-      },
-      {
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
-          { '@type': 'ListItem', position: 2, name: 'Tools', item: 'https://reconshield.in/tools' },
-          { '@type': 'ListItem', position: 3, name: tool.name, item: `https://reconshield.in/tools/${toolId}` },
-        ],
-      },
-      {
-        '@type': 'FAQPage',
-        mainEntity: activeFaqs.map(f => ({
-          '@type': 'Question',
-          name: f.q,
-          acceptedAnswer: { '@type': 'Answer', text: f.a },
-        })),
-      },
-      {
-        '@type': 'HowTo',
-        '@id': `https://reconshield.in/tools/${toolId}#howto`,
-        name: `How to use the ReconShield ${tool.name} Tool`,
-        description: `Learn how to perform a security query and analyze results with the ${tool.name} tool.`,
-        step: [
-          {
-            '@type': 'HowToStep',
-            url: `https://reconshield.in/tools/${toolId}#step-1`,
-            name: 'Enter Target Hostname',
-            text: 'Input the domain name or IP address you want to scan into the search bar.'
-          },
-          {
-            '@type': 'HowToStep',
-            url: `https://reconshield.in/tools/${toolId}#step-2`,
-            name: 'Start Security Assessment',
-            text: 'Click the Analyze or Scan button to trigger the passive security check.'
-          },
-          {
-            '@type': 'HowToStep',
-            url: `https://reconshield.in/tools/${toolId}#step-3`,
-            name: 'Review Exposure Findings',
-            text: 'Review the detailed, formatted output highlighting any security exposures, expiry warnings, or configuration gaps.'
-          }
-        ]
-      }
-    ]
+    '@graph': baseGraph
   };
 
   return (

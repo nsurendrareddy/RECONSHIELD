@@ -101,12 +101,12 @@ export const TOOLS = [
 
   {
     id: 'tech-detector',
-    name: 'Tech Detector',
+    name: 'Website Technology Checker',
     icon: Cpu,
     color: 'teal',
-    desc: 'Fingerprint CMS, frameworks, analytics tools, CDN, WAF, and technology stack of any website.',
-    tags: ['CMS Detection', 'Framework', 'CDN/WAF'],
-    popular: false,
+    desc: 'Identify Content Management Systems (CMS), web frameworks, CDNs, WAFs, analytics trackers, and complete technology stacks of any website.',
+    tags: ['CMS Detector', 'Framework Lookup', 'Tech Stack'],
+    popular: true,
     category: 'infrastructure visibility',
   },
   {
@@ -455,23 +455,23 @@ export const TOOL_SEO_CONTENT = {
 
   'tech-detector': {
     faqs: [
-      { q: "What is technology fingerprinting?", a: "It is the process of identifying the underlying software, frameworks, content management systems (CMS), and server configurations running a website." },
-      { q: "How does a tech detector work?", a: "It analyzes HTTP headers, HTML source code, JavaScript variables, cookies, and network request patterns to match signatures of known technologies." },
-      { q: "Can tech detection be blocked?", a: "Yes, security-conscious organizations often strip server headers (like X-Powered-By) and obfuscate client-side code to make fingerprinting difficult." }
+      { q: "What is a website technology checker?", a: "It is a utility that identifies the software, CMS platforms, frameworks, analytics tools, CDNs, and WAFs used to build and secure a target website." },
+      { q: "How does technology fingerprinting work?", a: "It analyzes HTTP response headers, HTML source code markers, JavaScript global variables, cookie identifiers, and network routes to detect signature matches." },
+      { q: "Can website owners block technology detection?", a: "Yes, organizations can strip server identification headers, remove HTML generator tags, obfuscate scripts, and deploy a WAF to hide their technology stack." }
     ],
     content: (
       <div className="prose prose-invert max-w-none mt-12">
         <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider">Uncovering the Tech Stack</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Modern websites are complex composites of various frameworks, libraries, analytics trackers, and Content Delivery Networks (CDNs). Our Tech Detector analyzes the target's frontend payload and HTTP responses to fingerprint the entire stack. From detecting underlying CMS platforms like WordPress or Ghost, to identifying frontend frameworks like React or Vue.js, and pinpointing infrastructure like Cloudflare or AWS.
+          Modern websites are complex composites of various frameworks, libraries, analytics trackers, and Content Delivery Networks (CDNs). Our Website Technology Checker analyzes the target's frontend payload and HTTP responses to fingerprint the entire stack. From detecting underlying CMS platforms like WordPress or Ghost, to identifying frontend frameworks like React or Vue.js, and pinpointing infrastructure like Cloudflare or AWS.
         </p>
 
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why unauthorized actors Profile Technology</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Why Security Researchers Profile Technology</h2>
         <p className="text-gray-400 leading-relaxed mb-6">
-          Technology fingerprinting is a critical step in the cyber kill chain. If an unauthorized actor identifies that a target is running an outdated version of jQuery, a vulnerable WordPress plugin, or an unpatched Microsoft IIS server, they can search abuse-DB or Metasploit for a pre-written abuse (CVE) specifically designed for that version. Security through obscurity is not enough, but leaking precise version numbers hands unauthorized actors a blueprint of your configuration risks.
+          Technology fingerprinting is a critical step in the reconnaissance phase of the security auditing cycle. If a researcher or auditor identifies that a target is running an outdated version of jQuery, a vulnerable WordPress plugin, or an unpatched web server, they can locate configuration risks before malicious actors do. Reducing the level of detail public servers disclose is a vital defense-in-depth practice.
         </p>
 
-        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Defending Against Fingerprinting</h2>
+        <h2 className="text-2xl font-display font-bold text-white mb-6 uppercase tracking-wider mt-10">Defending Against Tech Stack Enumeration</h2>
         <ul className="text-gray-400 leading-relaxed mb-6 list-disc pl-6 space-y-2">
           <li><strong>Remove Server Banners:</strong> Configure your web server (Nginx, Apache, IIS) to stop broadcasting its version number in the <code>Server</code> HTTP header.</li>
           <li><strong>Strip Framework Headers:</strong> Disable headers like <code>X-Powered-By: Express</code> or <code>X-AspNet-Version</code> in your application configuration.</li>
