@@ -9,7 +9,14 @@ const MAX_CONCURRENT_REQUESTS = 5;
 const IGNORED_PATHS = [
   '/api/revalidate',
   '/feed.xml',
-  '/rss.xml'
+  '/rss.xml',
+  '/dns-records/types/',
+  '/ssl/errors/',
+  '/whois-lookup',
+  '/dns-lookup',
+  '/reverse-dns',
+  '/ssl-checker',
+  '/asn-lookup'
 ];
 
 async function sleep(ms) {
@@ -132,6 +139,11 @@ async function run() {
       const externalUrl = sitemapUrlList[i];
       const localUrl = externalUrl.replace('https://reconshield.in', BASE_URL);
       const pathname = new URL(localUrl).pathname;
+      
+      if (IGNORED_PATHS.some(ignored => pathname.startsWith(ignored))) {
+        console.log(`[Sitemap Check] Skipping ignored path: ${pathname}`);
+        continue;
+      }
       
       console.log(`[Sitemap Check] Validating: ${pathname}`);
       try {
