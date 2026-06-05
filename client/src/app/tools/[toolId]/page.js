@@ -387,6 +387,33 @@ export function ToolPageContent({ toolId }) {
               {parsedMdxContent || seoConfig.content}
             </div>
 
+            {toolId === 'http-headers' && (
+              <div className="mt-12 border-t border-white/5 pt-12">
+                <h2 className="text-xl font-display font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-[#00ff88]" /> Security Headers Database
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[
+                    { slug: 'content-security-policy', name: 'Content-Security-Policy (CSP)', desc: 'Prevents Cross-Site Scripting (XSS) and code injection attacks.' },
+                    { slug: 'strict-transport-security', name: 'Strict-Transport-Security (HSTS)', desc: 'Forces secure HTTPS connections to prevent MitM and stripping attacks.' },
+                    { slug: 'x-frame-options', name: 'X-Frame-Options', desc: 'Protects visitors against clickjacking and UI redressing exploits.' },
+                    { slug: 'x-content-type-options', name: 'X-Content-Type-Options', desc: 'Prevents browsers from sniffing MIME types away from declarations.' },
+                    { slug: 'referrer-policy', name: 'Referrer-Policy', desc: 'Controls referrer information passed along in outgoing HTTP headers.' },
+                    { slug: 'permissions-policy', name: 'Permissions-Policy', desc: 'Enables or restricts browser API accesses and hardware features.' },
+                    { slug: 'server', name: 'Server Header Obfuscation', desc: 'Limits information disclosure about underlying web server signatures.' }
+                  ].map(head => (
+                    <Link key={head.slug} href={`/headers/${head.slug}`} className="bg-[#0d1117] border border-white/5 hover:border-[#00ff88]/30 p-5 rounded-xl transition-all group">
+                      <h3 className="text-sm font-bold text-[#00ff88] group-hover:text-white transition-colors mb-1 font-mono">{head.name}</h3>
+                      <p className="text-xs text-gray-400 leading-relaxed font-sans">{head.desc}</p>
+                      <div className="text-xs text-[#00ff88] font-mono mt-3 flex items-center gap-1 opacity-80">
+                        View Header Guide <ChevronRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Domination Enriched Sections */}
             {dominationInfo && (
               <div className="mt-12 space-y-12">

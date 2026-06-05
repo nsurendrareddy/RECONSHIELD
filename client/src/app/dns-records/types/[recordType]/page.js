@@ -177,6 +177,9 @@ export default async function DnsRecordTypePage({ params }) {
                     <li><Link href="/dns-records/types/aaaa-record" className="hover:text-blue-400 transition-colors">AAAA Record Security</Link></li>
                     <li><Link href="/dns-records/types/mx-record" className="hover:text-blue-400 transition-colors">MX Record Security</Link></li>
                     <li><Link href="/dns-records/types/txt-record" className="hover:text-blue-400 transition-colors">TXT Record Security</Link></li>
+                    <li><Link href="/dns-records/types/ns-record" className="hover:text-blue-400 transition-colors">NS Record Security</Link></li>
+                    <li><Link href="/dns-records/types/soa-record" className="hover:text-blue-400 transition-colors">SOA Record Security</Link></li>
+                    <li><Link href="/dns-records/types/ptr-record" className="hover:text-blue-400 transition-colors">PTR Record Security</Link></li>
                     <li><Link href="/dns-records/types/cname-record" className="hover:text-blue-400 transition-colors">CNAME Record Security</Link></li>
                   </ul>
                 </div>

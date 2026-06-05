@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default function PortsHubPage() {
-  const commonPorts = [21, 22, 23, 25, 53, 80, 110, 143, 443, 3306, 3389, 5432, 6379, 8080, 27017];
+  const commonPorts = [21, 22, 23, 25, 53, 80, 110, 143, 443, 587, 3306, 3389, 5432, 6379, 8080, 27017];
   
   return (
     <div className="min-h-screen pb-24 font-sans bg-[#06090e]">

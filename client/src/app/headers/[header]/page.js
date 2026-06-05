@@ -261,6 +261,19 @@ export default async function HeaderIntelligencePage({ params }) {
                     </div>
                   </Link>
                 </div>
+
+                <div className="mt-8 p-4 rounded-xl bg-white/[0.01] border border-white/[0.05]">
+                  <h4 className="text-xs font-mono font-bold text-white mb-2 uppercase tracking-wider">Topical Cluster</h4>
+                  <ul className="space-y-2 text-xs font-mono text-gray-500">
+                    <li><Link href="/headers/content-security-policy" className="hover:text-cyan-400 transition-colors">Content-Security-Policy</Link></li>
+                    <li><Link href="/headers/strict-transport-security" className="hover:text-cyan-400 transition-colors">Strict-Transport-Security</Link></li>
+                    <li><Link href="/headers/x-frame-options" className="hover:text-cyan-400 transition-colors">X-Frame-Options</Link></li>
+                    <li><Link href="/headers/x-content-type-options" className="hover:text-cyan-400 transition-colors">X-Content-Type-Options</Link></li>
+                    <li><Link href="/headers/referrer-policy" className="hover:text-cyan-400 transition-colors">Referrer-Policy</Link></li>
+                    <li><Link href="/headers/permissions-policy" className="hover:text-cyan-400 transition-colors">Permissions-Policy</Link></li>
+                    <li><Link href="/headers/server" className="hover:text-cyan-400 transition-colors">Server Header</Link></li>
+                  </ul>
+                </div>
               </div>
             </div>
 

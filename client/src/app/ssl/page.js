@@ -46,6 +46,32 @@ export default function SslHubPage() {
               </div>
             </section>
 
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
+                <Shield className="w-5 h-5 text-[#00ff88]" /> SSL/TLS Security Guides
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { slug: 'ssl-vs-tls', title: 'SSL vs. TLS Comparison', desc: 'Understanding the cryptographic differences and deprecation timelines.' },
+                  { slug: 'tls-1-2-vs-tls-1-3', title: 'TLS 1.2 vs. TLS 1.3', desc: 'Performance, latency, and cipher configuration upgrades in TLS 1.3.' },
+                  { slug: 'certificate-chain', title: 'Certificate Chain Trust', desc: 'How intermediate and root certificate authorities build trust chains.' },
+                  { slug: 'cipher-suites', title: 'Understanding Cipher Suites', desc: 'Analyzing key exchange, encryption, and hashing algorithm packages.' },
+                  { slug: 'self-signed-certificate', title: 'Self-Signed Certificate Risks', desc: 'Security implications and trust warning bypasses in internal networks.' },
+                  { slug: 'wildcard-certificate', title: 'Wildcard Certificate Guide', desc: 'Securing multiple subdomains with single wildcard certificates.' },
+                  { slug: 'pki-explained', title: 'Public Key Infrastructure (PKI)', desc: 'The architecture of asymmetric cryptography, CAs, and RAs.' },
+                  { slug: 'https-security', title: 'Enforcing HTTPS Server Security', desc: 'Hardening protocols, cipher parameters, and transport headers.' }
+                ].map(topic => (
+                  <Link key={topic.slug} href={`/ssl/${topic.slug}`} className="bg-[#0d1117] border border-white/5 hover:border-[#00ff88]/30 p-5 rounded-xl transition-all group">
+                    <h3 className="text-sm font-bold text-white group-hover:text-[#00ff88] transition-colors mb-1">{topic.title}</h3>
+                    <p className="text-xs text-gray-400 leading-relaxed font-sans">{topic.desc}</p>
+                    <div className="text-xs text-[#00ff88] font-mono mt-3 flex items-center gap-1 opacity-80">
+                      Learn More <ChevronRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+
             <section className="prose prose-invert max-w-none">
               <h2 className="text-2xl font-bold text-white mb-4">TLS Hardening & Compliance</h2>
               <p>

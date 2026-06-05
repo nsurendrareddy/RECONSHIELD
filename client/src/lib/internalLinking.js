@@ -66,7 +66,7 @@ const generateAsnRelations = (asnStr) => {
 const generatePortRelations = (portStr) => {
   const port = parseInt(portStr, 10);
   const webPorts = [80, 443, 8080];
-  const emailPorts = [25, 110, 143];
+  const emailPorts = [25, 110, 143, 587];
   const dbPorts = [3306, 5432, 6379, 27017];
   const adminPorts = [22, 23, 3389];
   

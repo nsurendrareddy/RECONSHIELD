@@ -46,6 +46,32 @@ export default function DnsAnalysisHubPage() {
               </div>
             </section>
 
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
+                <Network className="w-5 h-5 text-[#00ff88]" /> DNS Record Types Database
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  { slug: 'a-record', name: 'A Record', desc: 'Maps a domain name to a 32-bit IPv4 address.' },
+                  { slug: 'aaaa-record', name: 'AAAA Record', desc: 'Maps a domain name to a 128-bit IPv6 address.' },
+                  { slug: 'mx-record', name: 'MX Record', desc: 'Specifies mail servers responsible for receiving email.' },
+                  { slug: 'txt-record', name: 'TXT Record', desc: 'Hosts security policies (SPF, DMARC) and validation keys.' },
+                  { slug: 'ns-record', name: 'NS Record', desc: 'Delegates DNS zones to authoritative name servers.' },
+                  { slug: 'soa-record', name: 'SOA Record', desc: 'Stores administrative metadata and refresh intervals for a zone.' },
+                  { slug: 'ptr-record', name: 'PTR Record', desc: 'Enables reverse DNS lookup mapping an IP back to a domain.' },
+                  { slug: 'cname-record', name: 'CNAME Record', desc: 'Maps an alias domain hostname to a canonical domain name.' }
+                ].map(record => (
+                  <Link key={record.slug} href={`/dns-records/types/${record.slug}`} className="bg-[#0d1117] border border-white/5 hover:border-[#00ff88]/30 p-5 rounded-xl transition-all group">
+                    <h3 className="text-sm font-bold text-white group-hover:text-[#00ff88] transition-colors mb-1">{record.name}</h3>
+                    <p className="text-xs text-gray-400 leading-relaxed font-sans">{record.desc}</p>
+                    <div className="text-xs text-[#00ff88] font-mono mt-3 flex items-center gap-1 opacity-80">
+                      View Technical Guide <ChevronRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+
             <section className="prose prose-invert max-w-none">
               <h2 className="text-2xl font-bold text-white mb-4">Securing DNS Configurations</h2>
               <p>
