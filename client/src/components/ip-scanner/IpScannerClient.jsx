@@ -140,42 +140,42 @@ export default function IpScannerClient() {
     <div className="space-y-8 pb-20">
       <div className="relative">
         <div className="absolute -top-24 -left-24 w-64 h-64 bg-matrix-400/5 rounded-full blur-3xl -z-10" />
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-matrix-400 font-mono text-xs uppercase tracking-[0.2em]">
-              <Zap className="w-3 h-3" />
+        <div className="flex flex-col items-center text-center gap-8 mb-8">
+          <div className="space-y-3 max-w-2xl">
+            <div className="inline-flex items-center gap-2 text-matrix-400 font-mono text-xs uppercase tracking-[0.2em] bg-matrix-400/5 px-3 py-1 rounded-full border border-matrix-400/10">
+              <Zap className="w-3.5 h-3.5" />
               <span>Advanced infrastructure visibility</span>
             </div>
-            <h1 className="text-4xl font-display font-bold tracking-tight">
+            <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight text-white">
               IP <span className="text-glow-green text-matrix-400">Intelligence</span> Scanner
-            </h1>
-            <p className="text-gray-500 max-w-xl text-sm">
+            </h2>
+            <p className="text-gray-400 text-sm leading-relaxed">
               Comprehensive security configuration analysis and passive footprinting for any IP address or domain.
               Analyze infrastructure, security headers, and threat reputation in real-time.
             </p>
           </div>
 
-          <form onSubmit={handleScan} className="flex-1 max-w-lg relative group">
-            <div className="absolute inset-0 bg-matrix-400/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 -z-10" />
-            <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-2 p-1.5 sm:p-2 rounded-2xl bg-surface-900/50 border border-white/5 focus-within:border-matrix-400/50 transition-all">
-              <div className="flex-1 flex items-center gap-2 px-3 sm:px-4 min-h-[48px]">
-                <Search className="w-4 h-4 text-gray-500 shrink-0" />
+          <form onSubmit={handleScan} className="w-full max-w-2xl relative group">
+            <div className="absolute inset-0 bg-matrix-400/20 blur-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 -z-10" />
+            <div className="relative flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-2 rounded-2xl bg-surface-900 border border-white/10 focus-within:border-matrix-400/50 transition-all shadow-lg min-h-[64px]">
+              <div className="flex-1 flex items-center gap-3 px-4 min-h-[48px]">
+                <Search className="w-5 h-5 text-gray-500 shrink-0" />
                 <input
                   type="text"
                   value={target}
                   onChange={(e) => setTarget(e.target.value)}
-                  placeholder="IP or domain"
-                  className="w-full bg-transparent border-none outline-none text-matrix-400 placeholder-gray-600 text-sm font-mono"
+                  placeholder="Enter IP address or domain to analyze..."
+                  className="w-full bg-transparent border-none outline-none text-white placeholder-gray-500 text-base font-mono"
                   disabled={scanning}
                 />
               </div>
               
-              <div className="flex items-center justify-between sm:justify-end gap-2 px-3 sm:px-0">
-                <div className="flex items-center gap-1">
+              <div className="flex items-center justify-between sm:justify-end gap-3 px-3 sm:px-0">
+                <div className="flex items-center gap-1.5">
                   <button 
                     type="button"
                     onClick={handleGps}
-                    className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-matrix-400 transition-colors"
+                    className="p-3 hover:bg-white/5 rounded-xl text-gray-400 hover:text-matrix-400 transition-colors"
                     title="Use Browser GPS"
                   >
                     <Activity className="w-4 h-4" />
@@ -183,7 +183,7 @@ export default function IpScannerClient() {
                   <button 
                     type="button"
                     onClick={handleMyIp}
-                    className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-matrix-400 transition-colors"
+                    className="p-3 hover:bg-white/5 rounded-xl text-gray-400 hover:text-matrix-400 transition-colors"
                     title="Scan My IP"
                   >
                     <MapPin className="w-4 h-4" />
@@ -193,10 +193,10 @@ export default function IpScannerClient() {
                 <button
                   disabled={scanning}
                   type="submit"
-                  className="flex-1 sm:flex-none px-6 py-2.5 bg-matrix-400 text-surface-950 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-matrix-300 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 sm:flex-none px-8 py-3 bg-matrix-400 hover:bg-matrix-300 text-surface-950 rounded-xl font-bold text-xs uppercase tracking-widest disabled:opacity-50 transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(0,255,136,0.3)] hover:shadow-[0_0_25px_rgba(0,255,136,0.5)] cursor-pointer"
                 >
-                  {scanning ? <Activity className="w-3 h-3 animate-spin" /> : <Shield className="w-3 h-3" />}
-                  <span>{scanning ? '...' : 'Scan'}</span>
+                  {scanning ? <Activity className="w-4 h-4 animate-spin text-surface-950" /> : <Shield className="w-4 h-4 text-surface-950" />}
+                  <span>{scanning ? 'Scanning...' : 'Scan'}</span>
                 </button>
               </div>
             </div>
@@ -204,15 +204,15 @@ export default function IpScannerClient() {
         </div>
 
         {/* What You Get Section */}
-        <div className="mt-8">
+        <div className="mt-10 flex flex-col items-center">
           <h2 className="font-mono text-[10px] tracking-[3px] uppercase text-[#94a3b8] mb-4">// INTELLIGENCE COLLECTED</h2>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap justify-center gap-2 max-w-2xl">
             {[
               'ISP / Hosting Provider', 'ASN Number', 'Country & City', 
               'Abuse Confidence Score', 'Blocklist Presence', 'Reverse DNS', 
               'Proxy / VPN Detection', 'Threat Tags'
             ].map((p, i) => (
-              <div key={i} className="px-3 py-1.5 bg-[#0d1117] border border-[#1a2332] rounded-full flex items-center gap-2">
+              <div key={i} className="px-3.5 py-2 bg-[#0d1117] border border-[#1a2332] rounded-full flex items-center gap-2 hover:border-[#00ff88]/30 transition-all duration-300">
                 <span className="text-[#00ff8866] text-[10px]">▸</span>
                 <span className="font-mono text-[11px] text-[#64748b]">{p}</span>
               </div>
