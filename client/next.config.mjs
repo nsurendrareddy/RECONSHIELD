@@ -85,8 +85,7 @@ const nextConfig = {
       { source: '/port-scanner', destination: '/tools/port-scanner', permanent: true },
       { source: '/security-headers', destination: '/tools/http-headers', permanent: true },
       { source: '/ssl-checker', destination: '/tools/ssl-checker', permanent: true },
-      { source: '/vulnerability-scanner', destination: '/tools/vulnerability-scanner', permanent: true },
-      { source: '/subdomains', destination: '/tools/subdomain-finder', permanent: true }
+      { source: '/vulnerability-scanner', destination: '/tools/vulnerability-scanner', permanent: true }
     ];
   },
 };
