@@ -1,5 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
+import SecurityDefinitions from '@/components/definitions/SecurityDefinitions';
+import { SECURITY_DEFINITIONS } from '@/utils/securityDefinitionsData';
+
 
 const CTABlock = () => (
   <div className="mt-12 p-8 rounded-2xl border border-[#00ff88]/20 bg-gradient-to-br from-[#00ff88]/5 to-transparent relative overflow-hidden">
@@ -24,7 +27,7 @@ const CTABlock = () => (
   </div>
 );
 
-export function renderMarkdown(mdString) {
+export function renderMarkdown(mdString, toolId) {
   if (!mdString) return null;
 
   const lines = mdString.split('\n');
@@ -110,6 +113,23 @@ export function renderMarkdown(mdString) {
     // Check for CTA block placeholder
     if (line === '<CTABlock />' || line === '{{CTABlock}}') {
       elements.push(<CTABlock key={`cta-${i}`} />);
+      continue;
+    }
+
+    // Check for SecurityDefinitions placeholder
+    if (line === '<SecurityDefinitions />' || line === '{{SecurityDefinitions}}') {
+      const defData = SECURITY_DEFINITIONS[toolId];
+      if (defData) {
+        elements.push(
+          <SecurityDefinitions 
+            key={`sec-def-${i}`}
+            title={null}
+            description={null}
+            definitions={defData.definitions}
+            colorClass={defData.colorClass}
+          />
+        );
+      }
       continue;
     }
 

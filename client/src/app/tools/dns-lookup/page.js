@@ -534,8 +534,8 @@ export default function DnsLookupPage() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 font-mono text-xs text-purple-400">
-                  <Link href="/blog/spf-complete-guide" className="hover:underline flex items-center gap-1">▸ SPF DNS Record Guide <ChevronRight className="w-3.5 h-3.5" /></Link>
-                  <Link href="/blog/dkim-configuration-guide" className="hover:underline flex items-center gap-1">▸ DKIM Configuration Guide <ChevronRight className="w-3.5 h-3.5" /></Link>
+                  <Link href="/blog/spf-dkim-dmarc-blueprint" className="hover:underline flex items-center gap-1">▸ Email Security Blueprint <ChevronRight className="w-3.5 h-3.5" /></Link>
+                  <Link href="/blog/email-spoofing-prevention" className="hover:underline flex items-center gap-1">▸ Spoofing Prevention Guide <ChevronRight className="w-3.5 h-3.5" /></Link>
                 </div>
               </div>
 

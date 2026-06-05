@@ -535,7 +535,7 @@ export default function IpScannerPage() {
                 </div>
                 <div className="flex flex-col gap-2 font-mono text-xs text-purple-400">
                   <Link href="/blog/anatomy-of-passive-osint" className="hover:underline flex items-center gap-1">▸ Passive OSINT Blueprint <ChevronRight className="w-3.5 h-3.5" /></Link>
-                  <Link href="/blog/passive-reconnaissance-guide" className="hover:underline flex items-center gap-1">▸ Passive Recon Guide <ChevronRight className="w-3.5 h-3.5" /></Link>
+                  <Link href="/blog/osint-fundamentals" className="hover:underline flex items-center gap-1">▸ OSINT Fundamentals <ChevronRight className="w-3.5 h-3.5" /></Link>
                 </div>
               </div>
 

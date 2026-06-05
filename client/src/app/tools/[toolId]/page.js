@@ -115,7 +115,7 @@ export function ToolPageContent({ toolId }) {
     const filePath = path.join(process.cwd(), 'content', 'tools', `${toolId}.mdx`);
     if (fs.existsSync(filePath)) {
       const mdxRaw = fs.readFileSync(filePath, 'utf8');
-      parsedMdxContent = renderMarkdown(mdxRaw);
+      parsedMdxContent = renderMarkdown(mdxRaw, toolId);
     }
   } catch (err) {
     console.warn(`Error reading MDX file for ${toolId}:`, err);

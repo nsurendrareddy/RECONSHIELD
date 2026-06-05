@@ -534,8 +534,8 @@ export default function WhoisPage() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 font-mono text-xs text-purple-400">
-                  <Link href="/blog/what-is-whois-lookup" className="hover:underline flex items-center gap-1">▸ WHOIS Protocol Guide <ChevronRight className="w-3.5 h-3.5" /></Link>
-                  <Link href="/blog/whois-privacy-protection" className="hover:underline flex items-center gap-1">▸ Privacy Masking Guide <ChevronRight className="w-3.5 h-3.5" /></Link>
+                  <Link href="/blog/domain-ownership-verification" className="hover:underline flex items-center gap-1">▸ Domain Ownership Verification <ChevronRight className="w-3.5 h-3.5" /></Link>
+                  <Link href="/blog/domain-expiration-monitoring" className="hover:underline flex items-center gap-1">▸ Domain Expiration Monitoring <ChevronRight className="w-3.5 h-3.5" /></Link>
                 </div>
               </div>
 

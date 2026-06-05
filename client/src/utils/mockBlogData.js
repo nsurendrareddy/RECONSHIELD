@@ -134,53 +134,7 @@ Managing external assets exposure requires continuous inventory tracking. Passiv
   // ================= 20 PILLAR CONTENT ARTICLES =================
 
   // WHOIS CLUSTER
-  'what-is-whois-lookup': {
-    title: "What Is WHOIS Lookup: A Comprehensive Guide to Domain Registry Data",
-    slug: "what-is-whois-lookup",
-    publishedAt: "2026-06-03T10:00:00Z",
-    excerpt: "A complete deep dive explaining the WHOIS protocol, domain registrar databases, RDAP evolution, and how threat researchers query domain lookup records.",
-    categories: [{ title: "OSINT & analysis" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2450,
-    body: convertMarkdownToPortableText(`
-## Introduction to the WHOIS Directory
-The WHOIS directory acts as a global registry containing records of domain names, IP address blocks, and autonomous systems. Established in the early days of the internet, it serves as a public yellow pages for web-facing assets.
 
-### Understanding the WHOIS Protocol
-WHOIS queries were originally run on TCP port 43, returning plain text records. The Modern successor is the Registration Data Access Protocol (RDAP), which provides structured JSON outputs over HTTPS.
-
-### Critical Fields in WHOIS Data
-- **Registrar Name:** The company where the domain was purchased.
-- **Creation and Expiry Dates:** Essential for checking validity.
-- **Name Servers:** Define where the DNS zone file is hosted.
-- **EPP Status Flags:** Domain lock status flags.
-
-### Passive Investigation Scenarios
-Security analysts query WHOIS to identify domains created for phishing campaigns or mapping malicious infrastructure networks. Check our [WHOIS Checker](/tools/whois) to run queries passively.
-    `)
-  },
-  'whois-privacy-protection': {
-    title: "WHOIS Privacy Protection: Hiding Registrant Contact Details Safely",
-    slug: "whois-privacy-protection",
-    publishedAt: "2026-06-03T09:30:00Z",
-    excerpt: "Analyze how WHOIS Privacy masking works, GDPR regulations on registration details, and the trade-offs between anonymity and asset verification.",
-    categories: [{ title: "OSINT & analysis" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2150,
-    body: convertMarkdownToPortableText(`
-## The Need for Privacy Protection
-Historically, WHOIS registration records publicly exposed personal names, mailing addresses, email IDs, and phone numbers. This led to massive scraping by spammers and social engineers targeting administrative contacts.
-
-### How Privacy Masking Works
-Registrar privacy services replace personal contact details with proxy information. This ensures that public queries do not leak sensitive information.
-
-### GDPR and Redacted WHOIS
-Following GDPR implementation, ICANN redacted personal data fields by default for EU residents, shifting public data access models.
-
-### Threat Modeling for Domain Owners
-Exposed contact details represent a phishing risk. Organizations must mandate privacy protection while ensuring internal asset inventories remain updated.
-    `)
-  },
   'domain-ownership-verification': {
     title: "Domain Ownership Verification: Protocols for Validating Asset Authority",
     slug: "domain-ownership-verification",
@@ -361,50 +315,7 @@ If a secure HTTPS page requests scripts or images over unencrypted HTTP, browser
   },
 
   // EMAIL SECURITY CLUSTER
-  'spf-complete-guide': {
-    title: "SPF Complete Guide: Implementing Sender Policy Framework Records",
-    slug: "spf-complete-guide",
-    publishedAt: "2026-06-01T10:00:00Z",
-    excerpt: "Learn how to format SPF records, manage DNS lookup limits, and authorize sending mail servers safely.",
-    categories: [{ title: "Web Security" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2400,
-    body: convertMarkdownToPortableText(`
-## Understanding Sender Policy Framework
-SPF is a DNS TXT record defining which IP addresses are authorized to send email on behalf of your domain name.
 
-### SPF Record Syntax Explained
-Records start with \`v=spf1\` and utilize qualifiers like \`ip4\`, \`include\`, and policy flags like \`-all\` (Hard fail).
-
-### Managing the 10-DNS-Lookup Constraint
-SPF validation fails if evaluation takes more than 10 lookups. Resolve this by auditing includes or using SPF flattening.
-
-### Troubleshooting SPF Records
-Ensure only one SPF record is published on the domain. Duplicate records cause failure. Test records using [DNS Lookup](/tools/dns-lookup).
-    `)
-  },
-  'dkim-configuration-guide': {
-    title: "DKIM Configuration Guide: Cryptographic Key Signing for Mail",
-    slug: "dkim-configuration-guide",
-    publishedAt: "2026-06-01T09:30:00Z",
-    excerpt: "Step-by-step tutorial on generating DKIM key pairs, publishing selectors in DNS, and validating mail signatures.",
-    categories: [{ title: "Web Security" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2350,
-    body: convertMarkdownToPortableText(`
-## How DomainKeys Identified Mail Works
-DKIM adds a cryptographic signature to email headers, proving that the email body and headers were not modified in transit.
-
-### Generating Key Pairs
-Generate a public/private key pair. Publish the public key in your DNS zones and configure the mail server with the private key.
-
-### Selector Implementation
-Selectors allow domains to use multiple DKIM keys (e.g. \`google._domainkey.example.com\` vs \`microsoft._domainkey.example.com\`).
-
-### Rotations and Auditing
-Rotate DKIM keys yearly. Confirm public keys are readable in DNS. Validate records using [Email Security Tool](/tools/email-security).
-    `)
-  },
   'dmarc-enforcement-blueprint': {
     title: "DMARC Enforcement Blueprint: Transitioning to strict p=reject Policies",
     slug: "dmarc-enforcement-blueprint",
@@ -498,27 +409,7 @@ Active recon interacts directly with targets (scanning, probing). Passive recon 
 Always use anonymous proxy networks or sandbox environments when performing active validations to avoid leaking investigator metadata.
     `)
   },
-  'passive-reconnaissance-guide': {
-    title: "Passive Reconnaissance Guide: Mapping Targets Without Leaving a Footprint",
-    slug: "passive-reconnaissance-guide",
-    publishedAt: "2026-05-30T09:30:00Z",
-    excerpt: "How to use certificate transparency logs, search engines, and public databases to discover web assets safely.",
-    categories: [{ title: "OSINT & analysis" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2500,
-    body: convertMarkdownToPortableText(`
-## The Art of Stealth Intelligence
-Passive reconnaissance enables investigators to gather information on a target infrastructure without sending any packets to the target.
 
-### Information Sources
-- **Certificate Transparency Logs:** Exposes newly generated subdomains.
-- **DNS Caching Networks:** Query records via [DNS Lookup](/tools/dns-lookup).
-- **Public Scrapers:** Aggregated databases containing open port footprints.
-
-### Mapping Network Boundaries Passively
-Utilize passive port indexes (Censys, Shodan) to identify vulnerable endpoints. Refer to the [Port Scanner](/tools/port-scanner) passive module.
-    `)
-  },
   'attack-surface-mapping': {
     title: "Attack Surface Mapping: Documenting Exposed Infrastructure Boundary Configurations",
     slug: "attack-surface-mapping",
