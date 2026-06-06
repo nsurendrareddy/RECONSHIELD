@@ -271,8 +271,9 @@ export async function GET(request, { params }) {
               }
               
               safePosts.forEach(post => {
-                const slug = post?.slug?.current || post?.slug;
-                if (slug && typeof slug === 'string') {
+                const rawSlug = post?.slug?.current || post?.slug;
+                if (rawSlug && typeof rawSlug === 'string') {
+                    const slug = rawSlug.trim();
                     const lastMod = post?.publishedAt || post?._createdAt || STATIC_LAST_MODIFIED;
                     xml += `  <url>\n    <loc>${BASE_URL}/blog/${slug}</loc>\n    <lastmod>${new Date(lastMod).toISOString()}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
                 }

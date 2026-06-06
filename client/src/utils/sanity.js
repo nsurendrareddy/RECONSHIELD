@@ -8,6 +8,36 @@ export const client = createClient({
   useCdn: false, // Set to false to bypass Sanity CDN cache, since Next.js handles caching via ISR
 });
 
+function trimSlugs(val) {
+  if (!val) return val;
+  if (Array.isArray(val)) {
+    return val.map(trimSlugs);
+  }
+  if (typeof val === 'object') {
+    const trimmed = {};
+    for (const [key, value] of Object.entries(val)) {
+      if (key === 'slug' && typeof value === 'string') {
+        trimmed[key] = value.trim();
+      } else if (key === 'slug' && value && typeof value === 'object' && typeof value.current === 'string') {
+        trimmed[key] = {
+          ...value,
+          current: value.current.trim()
+        };
+      } else {
+        trimmed[key] = trimSlugs(value);
+      }
+    }
+    return trimmed;
+  }
+  return val;
+}
+
+const originalFetch = client.fetch.bind(client);
+client.fetch = async function (query, params, options) {
+  const result = await originalFetch(query, params, options);
+  return trimSlugs(result);
+};
+
 const builder = createImageUrlBuilder(client);
 
 export const urlFor = (source) => {
@@ -29,7 +59,7 @@ export const blogListQuery = `*[_type == "post" && defined(slug.current) && !(_i
   "estimatedWordCount": length(pt::text(body))
 }`;
 
-export const blogDetailQuery = `*[_type == "post" && slug.current == $slug][0] {
+export const blogDetailQuery = `*[_type == "post" && (slug.current == $slug || slug.current == $slug + " " || slug.current == " " + $slug || slug.current == " " + $slug + " " || slug.current == $slug + "%20" || slug.current == "%20" + $slug)][0] {
   _id,
   title,
   "slug": slug.current,
@@ -44,7 +74,7 @@ export const blogDetailQuery = `*[_type == "post" && slug.current == $slug][0] {
   "tags": tags[]
 }`;
 
-export const recentPostsQuery = `*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**")) && slug.current != $slug] | order(coalesce(publishedAt, _createdAt) desc)[0...3] {
+export const recentPostsQuery = `*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**")) && !(slug.current == $slug || slug.current == $slug + " " || slug.current == " " + $slug || slug.current == " " + $slug + " " || slug.current == $slug + "%20" || slug.current == "%20" + $slug)] | order(coalesce(publishedAt, _createdAt) desc)[0...3] {
   _id,
   title,
   "slug": slug.current,
@@ -59,7 +89,7 @@ export const categoriesWithCountQuery = `*[_type == "category"] {
   "count": count(*[_type == "post" && references(^._id)])
 }`;
 
-export const relatedPostsQuery = `*[_type == "post" && slug.current != $slug && count(categories[@._ref in *[_type == "post" && slug.current == $slug].categories[]._ref]) > 0] | order(publishedAt desc)[0...3] {
+export const relatedPostsQuery = `*[_type == "post" && !(slug.current == $slug || slug.current == $slug + " " || slug.current == " " + $slug || slug.current == " " + $slug + " " || slug.current == $slug + "%20" || slug.current == "%20" + $slug) && count(categories[@._ref in *[_type == "post" && (slug.current == $slug || slug.current == $slug + " " || slug.current == " " + $slug || slug.current == " " + $slug + " " || slug.current == $slug + "%20" || slug.current == "%20" + $slug)].categories[]._ref]) > 0] | order(publishedAt desc)[0...3] {
   _id,
   title,
   "slug": slug.current,
