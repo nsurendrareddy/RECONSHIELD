@@ -1,11 +1,11 @@
 export function convertMarkdownToPortableText(md) {
   const lines = md.split('\n');
   const blocks = [];
-  
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line) continue;
-    
+
     if (line.startsWith('## ')) {
       blocks.push({
         _key: `h2-${i}`,
@@ -135,28 +135,6 @@ Managing external assets exposure requires continuous inventory tracking. Passiv
 
   // WHOIS CLUSTER
 
-  'domain-ownership-verification': {
-    title: "Domain Ownership Verification: Protocols for Validating Asset Authority",
-    slug: "domain-ownership-verification",
-    publishedAt: "2026-06-03T09:00:00Z",
-    excerpt: "Discover the standard methodologies used to verify domain ownership, from DNS TXT verification to HTML file uploads and cryptographic signatures.",
-    categories: [{ title: "OSINT & analysis" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2300,
-    body: convertMarkdownToPortableText(`
-## Why Verify Domain Ownership?
-Before cloud providers (AWS, Google Cloud) or certificate authorities issue resources scoped to a domain, they must verify ownership authority.
-
-### Verification Methods
-- **DNS TXT Record Verification:** Adding a unique token string to your DNS zones. Check ours via [DNS Lookup](/tools/dns-lookup).
-- **HTML File Upload:** Uploading a unique token file to the root server.
-- **Email Validation:** Receiving verification tokens at contact addresses listed in the WHOIS lookup.
-- **Cryptographic Signatures:** Signing payloads using SSL private keys.
-
-### Security Vulnerabilities in Verification
-If CNAME records are left dangling, unauthorized actors can take over the subdomain and complete verification checks.
-    `)
-  },
   'domain-registrar-identification': {
     title: "Domain Registrar Identification: Mapping the Supply Chain of Web Assets",
     slug: "domain-registrar-identification",
