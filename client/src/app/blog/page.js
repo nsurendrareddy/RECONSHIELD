@@ -15,8 +15,8 @@ export const revalidate = 60; // ISR revalidate every 1 minute
 import { generateBaseMetadata } from '@/utils/metadata';
 
 export const metadata = generateBaseMetadata({
-  title: "Cybersecurity Research & Threat Intelligence Publication",
-  description: "Enterprise cybersecurity publication. Deep-dive OSINT research, vulnerability analysis, AI security intelligence, and internet-facing assets mapping tutorials.",
+  title: "Cybersecurity Blog & Threat Intelligence Research | ReconShield",
+  description: "Read the latest cybersecurity research, OSINT methodologies, network vulnerability analysis, and zero-day threat intelligence from ReconShield security experts.",
   path: '/blog'
 });
 
@@ -99,10 +99,16 @@ export default async function BlogPage() {
               Deep-dive operational intelligence, zero-day vulnerability analysis, and comprehensive OSINT methodologies authored by the ReconShield research division.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-gray-500 uppercase tracking-widest">
-              <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-blue-400" /> Fact Checked</div>
-              <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-cyan-400" /> Analyst Authored</div>
-              <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-matrix-400" /> Peer Reviewed</div>
+            <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-gray-500 uppercase tracking-widest mt-8">
+              <Link href="/fact-checking-policy" className="flex items-center gap-2 hover:text-blue-400 transition-colors"><CheckCircle2 className="w-4 h-4 text-blue-400" /> Fact Checked</Link>
+              <Link href="/authors" className="flex items-center gap-2 hover:text-cyan-400 transition-colors"><CheckCircle2 className="w-4 h-4 text-cyan-400" /> Analyst Authored</Link>
+              <Link href="/editorial-standards" className="flex items-center gap-2 hover:text-matrix-400 transition-colors"><CheckCircle2 className="w-4 h-4 text-matrix-400" /> Peer Reviewed</Link>
+            </div>
+            
+            <div className="text-[10px] font-mono text-gray-600 mt-6 flex items-center justify-center gap-2 uppercase tracking-widest">
+              <span>Last Publication Update: June 6, 2026</span>
+              <span>•</span>
+              <span>Chief Editor: Surendra Reddy</span>
             </div>
           </div>
         </section>
