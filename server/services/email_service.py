@@ -35,7 +35,7 @@ class EmailService:
 
             resend.Emails.send({
                 "from": "ReconShield <notifications@resend.dev>",
-                "to": "admin@reconshield.com", # In a real app, this would be a config
+                "to": "nsurendrareddy3@gmail.com",
                 "subject": f"New Contact: {data.get('name')}",
                 "html": html_content
             })
