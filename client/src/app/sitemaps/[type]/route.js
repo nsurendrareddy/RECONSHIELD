@@ -14,6 +14,7 @@ import { SSL_ERRORS_DATA } from '@/utils/sslErrorsData';
 import { EMAIL_AUTHS_DATA } from '@/utils/emailAuthsData';
 import { COMPARISONS_DATA } from '@/utils/comparisonsData';
 import { RESEARCH_REPORTS } from '@/utils/researchReportsData';
+import { GLOSSARY_TERMS } from '@/utils/glossaryData';
 
 export const runtime = 'edge'; 
 
@@ -244,6 +245,11 @@ export async function GET(request, { params }) {
       // Append research reports URLs
       Object.keys(RESEARCH_REPORTS).forEach(slug => {
         staticUrls.push({ url: `${BASE_URL}/research/${slug}`, priority: 0.7, freq: 'weekly' });
+      });
+
+      // Append glossary URLs
+      Object.keys(GLOSSARY_TERMS).forEach(slug => {
+        staticUrls.push({ url: `${BASE_URL}/glossary/${slug}`, priority: 0.8, freq: 'weekly' });
       });
 
       staticUrls.forEach(({ url, priority, freq }) => {
