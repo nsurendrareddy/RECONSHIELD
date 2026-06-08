@@ -1,11 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { Globe, Shield, Server, Activity, ChevronRight, AlertTriangle } from 'lucide-react';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { generateDatasetSchema } from '@/utils/metadata';
+import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 
 
 const isValidDomain = (domain) => {
+  const normalized = domain.toLowerCase();
+  if (!KNOWN_DOMAINS.includes(normalized)) return false;
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
   return domainRegex.test(domain);
 };
@@ -16,7 +19,7 @@ export async function generateMetadata({ params }) {
     const domain = resolvedParams?.domain?.toLowerCase();
 
     if (!domain || !isValidDomain(domain)) {
-      return { title: 'Invalid Domain' };
+      return { title: 'Invalid Domain', robots: { index: false } };
     }
 
     return {
@@ -25,7 +28,7 @@ export async function generateMetadata({ params }) {
       alternates: {
         canonical: `https://reconshield.in/dns-records/${domain}`,
       },
-      robots: { index: true, follow: true },
+      robots: { index: false, follow: true },
       openGraph: {
         url: `https://reconshield.in/dns-records/${domain}`,
         title: `${domain} DNS Profile`,
@@ -53,6 +56,8 @@ export default async function DnsIntelligencePage({ params }) {
     if (!domain || !isValidDomain(domain)) {
       notFound();
     }
+
+    redirect(`/dns/${domain}`);
 
   const schemaJson = {
     '@context': 'https://schema.org',

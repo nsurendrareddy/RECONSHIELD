@@ -5,11 +5,14 @@ import { notFound } from 'next/navigation';
 import { generateDatasetSchema } from '@/utils/metadata';
 import { SUBDOMAIN_TOPICS_DATA } from '@/utils/programmaticTopicsData';
 import { renderMarkdown } from '@/utils/markdownRenderer';
+import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 
 const SUBDOMAIN_TOPICS = Object.keys(SUBDOMAIN_TOPICS_DATA);
 
 const isValidDomain = (domain) => {
-  if (SUBDOMAIN_TOPICS.includes(domain.toLowerCase())) return true;
+  const normalized = domain.toLowerCase();
+  if (SUBDOMAIN_TOPICS.includes(normalized)) return true;
+  if (!KNOWN_DOMAINS.includes(normalized)) return false;
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
   return domainRegex.test(domain);
 };

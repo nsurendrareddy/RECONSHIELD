@@ -131,7 +131,10 @@ function isUrlIndexableAndValid(urlStr) {
       return Object.keys(DNS_TYPES_DATA).includes(type);
     }
     if (path.startsWith('/dns-records/')) {
-      const domain = path.replace('/dns-records/', '');
+      return false;
+    }
+    if (path.startsWith('/dns/')) {
+      const domain = path.replace('/dns/', '');
       return KNOWN_DOMAINS.includes(domain.toLowerCase());
     }
 
@@ -318,7 +321,17 @@ export async function GET(request, { params }) {
              }
 
              // Apply strict filter logic
-             const validUrls = extractedUrls.filter(
+             const mappedUrls = extractedUrls.map(u => {
+                 if (u && typeof u.url === 'string') {
+                    let newUrl = u.url;
+                    if (newUrl.includes('/dns-records/') && !newUrl.includes('/dns-records/types/')) {
+                       newUrl = newUrl.replace('/dns-records/', '/dns/');
+                    }
+                    return { ...u, url: newUrl };
+                 }
+                 return u;
+              });
+              const validUrls = mappedUrls.filter(
                 (u) =>
                 u &&
                 typeof u.url === 'string' &&
@@ -357,7 +370,7 @@ export async function GET(request, { params }) {
             
             // Map entity type to the exact path required
             let pathPrefix = entityType;
-            if (entityType === 'dns') pathPrefix = 'dns-records';
+            if (entityType === 'dns') pathPrefix = 'dns';
             if (entityType === 'malicious-ips') pathPrefix = 'ip';
             if (entityType === 'cve') pathPrefix = 'cve';
             if (entityType === 'whois') pathPrefix = 'tools/whois';

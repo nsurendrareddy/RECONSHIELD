@@ -5,12 +5,15 @@ import { notFound } from 'next/navigation';
 import { generateDatasetSchema } from '@/utils/metadata';
 import { SSL_TOPICS_DATA } from '@/utils/programmaticTopicsData';
 import { renderMarkdown } from '@/utils/markdownRenderer';
+import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 
 const SSL_TOPICS = Object.keys(SSL_TOPICS_DATA);
 
 // Basic domain validation
 const isValidDomain = (domain) => {
-  if (SSL_TOPICS.includes(domain.toLowerCase())) return true;
+  const normalized = domain.toLowerCase();
+  if (SSL_TOPICS.includes(normalized)) return true;
+  if (!KNOWN_DOMAINS.includes(normalized)) return false;
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
   return domainRegex.test(domain);
 };

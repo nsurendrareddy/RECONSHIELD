@@ -63,6 +63,28 @@ Passive reconnaissance represents a critical blind spot for many enterprise secu
 
 ### Key Investigation Vectors
 Security teams must assume that their entire public-facing architecture is mapped and regularly audit their DNS zone files to purge unused hostnames. Discovering subdomains is easiest through certificate logs.
+
+### The Methodology of Zero-Footprint Reconnaissance
+Modern threat intelligence starts with silent mapping. Passive Open Source Intelligence (OSINT) refers to the collection and analysis of data without directly interacting with the target system. Unlike active footprinting, which involves port scanning (e.g., Nmap) and application probing that immediately triggers firewalls and Intrusion Detection Systems (IDS), passive mapping leverages public, third-party databases.
+
+### 1. Certificate Transparency (CT) Logs
+Certificate Transparency is an open framework designed to monitor and audit SSL/TLS certificates. Whenever a certificate authority (CA) issues a certificate for a domain, they are legally required to log the certificate in a public, cryptographic ledger. While this prevents unauthorized certificates from being issued, it also acts as a public ledger of all subdomains created by an organization.
+For example, querying a CT log engine (like crt.sh) for \`example.com\` will immediately reveal subdomains such as:
+- \`dev-stage.internal.example.com\`
+- \`vpn-gateway.example.com\`
+- \`db-admin.example.com\`
+
+### 2. DNS Zone Cache Scraping
+Rather than querying the target's DNS servers directly, threat hunters query public DNS caches and recursive resolvers (like Cloudflare, Google DNS, or Quad9). By harvesting DNS propagation histories from open lookup records, attackers map out IP mappings without sending a single packet to the target network.
+
+### 3. WHOIS and Regional Internet Registries (RIRs)
+By querying RIR databases (such as ARIN, RIPE, APNIC, LACNIC, and AFRINIC), investigators identify IP prefixes, Autonomous System Numbers (ASNs), and registered administrative contacts. These profiles map the global infrastructure allocations of the target organization.
+
+### Hardening the Perimeter Against Passive Gathering
+Defense against passive OSINT requires a shift in threat modeling:
+- **Prune Dangling DNS Records:** Regularly clean up obsolete DNS records pointing to defunct cloud instances.
+- **Implement Wildcard Certificates:** Minimize the exposure of internal-use subdomains in public CT logs by using wildcard certificates (\`*.example.com\`) where appropriate.
+- **Monitor External Attack Surface:** Use threat intelligence portals to scan what databases have cached about your public assets.
     `)
   },
   'securing-bgp-route-leaks': {
@@ -76,6 +98,18 @@ Security teams must assume that their entire public-facing architecture is mappe
     body: convertMarkdownToPortableText(`
 ## Securing BGP Paths
 BGP route security remains the Achilles' heel of core internet routing. Rogue route advertisements can redirect enterprise traffic through adversarial infrastructure, enabling man-in-the-middle attacks. Security analysts must verify BGP path logs, configure explicit neighbor maps, and deploy RPKI certificates.
+
+### The Border Gateway Protocol Vulnerability
+The Border Gateway Protocol (BGP) was created during the early days of the internet, when routing was established on mutual trust. Under BGP, networks (Autonomous Systems) announce which IP address blocks they own. However, BGP does not natively validate whether a network actually has authorization to announce those prefixes.
+
+### BGP Hijacking and Route Leaks
+A BGP hijack occurs when an AS announces an IP prefix it does not own. This causes global routers to send traffic intended for the legitimate owner to the hijacker instead. A route leak is a configuration mistake where an AS announces routes learned from one peer to another peer, causing traffic to flow through unintended subnets. Both issues result in connectivity losses and metadata interception.
+
+### Deploying Cryptographic Guardrails (RPKI)
+The primary protection against BGP exploits is Resource Public Key Infrastructure (RPKI). RPKI allows network administrators to publish cryptographic statements called Route Origin Authorizations (ROAs). An ROA binds a specific IP prefix to a designated ASN, allowing BGP routers to validate incoming advertisements.
+- **Validate ROA Signatures:** Routers confirm if incoming BGP announcements match active cryptographic bindings.
+- **Enforce Strict Peer Filtering:** Configure neighbor relationships to ignore unauthorized prefix advertisements.
+- **Monitor Looking Glass Portals:** Regularly audit global routing tables to identify anomalous route announcements.
     `)
   },
   'spf-dkim-dmarc-blueprint': {
@@ -89,6 +123,26 @@ BGP route security remains the Achilles' heel of core internet routing. Rogue ro
     body: convertMarkdownToPortableText(`
 ## Hardening Email Infrastructure
 Email spoofing remains one of the primary delivery methods for business compromise payloads. By configuring SPF, DKIM, and strict DMARC enforcement policies, organizations can prevent malicious mail delivery using their domains.
+
+### Understanding the Email Defense Triad
+To prevent domain forgery and unauthorized email delivery, security administrators must coordinate three distinct DNS TXT records.
+
+### 1. Sender Policy Framework (SPF)
+SPF allows a domain owner to publish a list of IP addresses and mail servers authorized to send emails from their domain name. Receiving servers check this TXT record to see if the sending IP is whitelisted.
+Example SPF record:
+\`v=spf1 ip4:192.0.2.0/24 include:_spf.google.com ~all\`
+
+### 2. DomainKeys Identified Mail (DKIM)
+DKIM adds a cryptographic signature to email headers. The domain owner publishes a public key in their DNS records. Receiving servers use this key to decrypt the signature in the header, verifying that the email was sent by the domain owner and has not been altered in transit.
+
+### 3. Domain-based Message Authentication, Reporting, and Conformance (DMARC)
+DMARC ties SPF and DKIM together. It tells receiving servers how to handle emails that fail SPF or DKIM checks. It supports three policy levels:
+- **p=none:** Monitor delivery and send reports, but do not block emails.
+- **p=quarantine:** Deliver failing emails directly to the recipient's spam folder.
+- **p=reject:** Block failing emails at the gateway, preventing delivery entirely.
+
+### Moving Safely to Reject
+Transitioning to \`p=reject\` must be done in phases. Start with \`p=none\` to analyze the reports generated in the \`rua\` tag. Once all legitimate third-party senders (like Salesforce, Mailchimp) are properly aligned with SPF and DKIM, raise the policy to \`p=quarantine\` and eventually \`p=reject\`.
     `)
   },
   'owasp-http-headers-hardening': {
@@ -102,6 +156,27 @@ Email spoofing remains one of the primary delivery methods for business compromi
     body: convertMarkdownToPortableText(`
 ## OWASP HTTP Headers Hardening
 HTTP response security headers provide instructions to the browser on how to isolate web contexts. Content-Security-Policy (CSP), X-Frame-Options, and Strict-Transport-Security form the baseline core of website hardening.
+
+### Baseline Security Headers Definition
+By default, web browsers trust the content served by a domain. Security headers restrict browser permissions, preventing dynamic injection exploits.
+
+### 1. Content-Security-Policy (CSP)
+CSP allows developers to whitelist the origins of script execution, stylesheet rendering, and connection paths. This blocks Cross-Site Scripting (XSS) and data injection payloads.
+Example strict policy:
+\`Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted.cdn.com\`
+
+### 2. Strict-Transport-Security (HSTS)
+HSTS tells the browser that the site must only be accessed using HTTPS. If a user attempts to connect via HTTP, the browser automatically upgrades the connection to HTTPS before making the request.
+Example record:
+\`Strict-Transport-Security: max-age=63072000; includeSubDomains; preload\`
+
+### 3. X-Frame-Options
+Protects users against clickjacking attacks by dictating whether a browser should allow the page to be loaded inside an \`<iframe>\`. Use \`DENY\` or \`SAMEORIGIN\`.
+
+### 4. X-Content-Type-Options
+Prevents the browser from sniffing the MIME type of a file. Forcing the browser to follow the declared content-type block blocks drive-by downloads.
+Example record:
+\`X-Content-Type-Options: nosniff\`
     `)
   },
   'ssl-tls-regulatory-compliance': {
@@ -115,6 +190,18 @@ HTTP response security headers provide instructions to the browser on how to iso
     body: convertMarkdownToPortableText(`
 ## Cryptographic Protocol Auditing
 Outdated cryptographic handshakes (SSLv3, TLS 1.0, and TLS 1.1) represent severe configuration risks. Regulated environments must verify they only authenticate with TLS 1.2 and TLS 1.3 ciphers.
+
+### The Cryptographic Compliance Mandate
+As computing power increases, older cryptographic algorithms become vulnerable to decryption attacks. Under security frameworks like PCI-DSS and GDPR, using broken ciphers is a compliance violation.
+
+### Identifying Legacy Ciphers
+Legacy algorithms like RC4, 3DES, and DES are insecure. Similarly, connection exchanges using CBC (Cipher Block Chaining) modes are vulnerable to padding oracle attacks. Security auditors must verify that their web servers disable TLS 1.0 and TLS 1.1 entirely.
+
+### Best Practices for TLS Configurations
+To pass compliance audits, implement the following web server directives:
+- **Enforce TLS 1.2 and 1.3:** Disable all previous protocol handshakes.
+- **Select ECDHE Cipher Suites:** Ensure Perfect Forward Secrecy is active.
+- **Verify Certificate Trust Chains:** Audit certificates to confirm signatures use secure algorithms (e.g., SHA-256) rather than deprecated SHA-1.
     `)
   },
   'shadow-it-exposed-ports': {
@@ -128,6 +215,19 @@ Outdated cryptographic handshakes (SSLv3, TLS 1.0, and TLS 1.1) represent severe
     body: convertMarkdownToPortableText(`
 ## Shadow IT Exposed Interface Scanning
 Managing external assets exposure requires continuous inventory tracking. Passive port mapping identifies databases, management panels, and raw consoles exposed to the wider internet.
+
+### The Risk of Shadow IT
+Shadow IT refers to any system or software deployed by employees without the approval of the central IT security department. When developers expose databases (like MongoDB, PostgreSQL) or remote consoles (like SSH, RDP) to access services easily, they expose the organization to automated brute-force attacks and vulnerability exploitation.
+
+### Passive Discovery Mechanics
+Security teams must scan public datasets to discover these exposures without performing loud port scans. Search portals (like Shodan, Censys) index the public IP space daily.
+Auditors check:
+- **Port 3389 (RDP):** Windows Remote Desktop exposure.
+- **Port 22 (SSH):** Remote console exposures.
+- **Ports 3306 & 5432:** Raw database exposures.
+
+### Remediating Exposure Gaps
+If administrative services require remote access, place them behind a secure VPN gateway or Zero Trust network access (ZTNA) model. Never expose database interfaces directly to the public internet.
     `)
   },
 
