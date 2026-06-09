@@ -89,7 +89,7 @@ export default function RootLayout({ children }) {
         {/* Monetag Ads Script */}
         <Script
           src="https://quge5.com/88/tag.min.js"
-          data-zone="247948"
+          data-zone="247950"
           data-cfasync="false"
           strategy="beforeInteractive"
         />
