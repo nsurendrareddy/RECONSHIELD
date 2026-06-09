@@ -65,18 +65,15 @@ function isUrlIndexableAndValid(urlStr) {
     const url = new URL(urlStr);
     const path = url.pathname;
     
-    // Check reports
+    // Check reports (marked as noindex, do not place in sitemaps)
     if (path.startsWith('/reports/ssl/')) {
-      const domain = path.replace('/reports/ssl/', '');
-      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+      return false;
     }
     if (path.startsWith('/reports/subdomains/')) {
-      const domain = path.replace('/reports/subdomains/', '');
-      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+      return false;
     }
     if (path.startsWith('/reports/ports/')) {
-      const host = path.replace('/reports/ports/', '');
-      return KNOWN_IPS.includes(host) || KNOWN_DOMAINS.includes(host.toLowerCase());
+      return false;
     }
 
     // Check ports
