@@ -13,6 +13,7 @@ import { generateBaseMetadata } from '@/utils/metadata';
 import NewsletterForm from '@/components/NewsletterForm';
 import TopActiveThreats from '@/components/TopActiveThreats';
 import HeroSocVisual from '@/components/HeroSocVisual';
+import AdsterraNativeBanner from '@/components/ads/AdsterraNativeBanner';
 
 export const metadata = generateBaseMetadata({
   title: "ReconShield | Cybersecurity Research & Threat Intelligence Publication",
@@ -210,6 +211,10 @@ export default async function Page() {
           </div>
         </section>
 
+        <div className="max-w-[1200px] mx-auto px-6 pt-12">
+          <AdsterraNativeBanner />
+        </div>
+
         {/* ================= 2. FEATURED EDITORIAL RESEARCH ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
@@ -281,6 +286,10 @@ export default async function Page() {
             <TopActiveThreats />
           </div>
         </section>
+
+        <div className="max-w-[1200px] mx-auto px-6 pt-12">
+          <AdsterraNativeBanner />
+        </div>
 
         {/* ================= 4. LATEST CYBERSECURITY ARTICLES ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5">

@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
+import AdsterraSocialBar from "@/components/ads/AdsterraSocialBar";
 import { Inter, JetBrains_Mono, Rajdhani } from "next/font/google";
 import "./globals.css";
 
@@ -36,9 +37,6 @@ export const metadata = {
   },
   verification: {
     google: "Z0orCISb23IH0gqw02ckAwBvgyyqJdl5-QyrPcWeeKM",
-    other: {
-      monetag: "7aabe76ed141f0ed14b40475e99bf0c0",
-    },
   },
 };
 
@@ -86,13 +84,6 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
-        {/* Monetag Ads Script */}
-        <Script
-          src="https://quge5.com/88/tag.min.js"
-          data-zone="247950"
-          data-cfasync="false"
-          strategy="beforeInteractive"
-        />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
         {/* Google AdSense Script */}
@@ -109,6 +100,7 @@ export default function RootLayout({ children }) {
 
         <Analytics />
         <SpeedInsights />
+        <AdsterraSocialBar />
         {/* Site-wide JSON-LD */}
         <script
           type="application/ld+json"
@@ -160,23 +152,6 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* Monetag In-Page Script */}
-        <Script
-          id="monetag-inpage"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(s){s.dataset.zone='11124391',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
-          }}
-        />
-
-        {/* Monetag Vignette Script */}
-        <Script
-          id="monetag-vignette"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(s){s.dataset.zone='11124393',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
-          }}
-        />
       </body>
     </html>
   );
