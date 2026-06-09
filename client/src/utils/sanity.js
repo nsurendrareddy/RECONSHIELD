@@ -32,10 +32,26 @@ function trimSlugs(val) {
   return val;
 }
 
+function rewriteLegacyUrls(obj) {
+  if (!obj) return obj;
+  try {
+    let serialized = JSON.stringify(obj);
+    serialized = serialized
+      .replaceAll('/compare/port-scan-vs-vulnerability-scan', '/compare/port-scanner-vs-vulnerability-scanner')
+      .replaceAll('/ssl/ssl-vs-tls', '/compare/ssl-vs-tls')
+      .replaceAll('/ssl/tls-1-2-vs-tls-1-3', '/compare/tls-1-2-vs-tls-1-3');
+    return JSON.parse(serialized);
+  } catch (err) {
+    console.error('Error rewriting legacy URLs in fetch result:', err);
+    return obj;
+  }
+}
+
 const originalFetch = client.fetch.bind(client);
 client.fetch = async function (query, params, options) {
   const result = await originalFetch(query, params, options);
-  return trimSlugs(result);
+  const trimmed = trimSlugs(result);
+  return rewriteLegacyUrls(trimmed);
 };
 
 const builder = createImageUrlBuilder(client);

@@ -44,7 +44,7 @@ export const SSL_TOPICS_DATA = {
     "related": [
       {
         "name": "TLS 1.2 vs. TLS 1.3",
-        "path": "/ssl/tls-1-2-vs-tls-1-3"
+        "path": "/compare/tls-1-2-vs-tls-1-3"
       },
       {
         "name": "Cipher Suites Guide",
@@ -100,7 +100,7 @@ export const SSL_TOPICS_DATA = {
     "related": [
       {
         "name": "SSL vs. TLS",
-        "path": "/ssl/ssl-vs-tls"
+        "path": "/compare/ssl-vs-tls"
       },
       {
         "name": "Understanding Cipher Suites",
@@ -156,7 +156,7 @@ export const SSL_TOPICS_DATA = {
     "related": [
       {
         "name": "SSL vs. TLS Differences",
-        "path": "/ssl/ssl-vs-tls"
+        "path": "/compare/ssl-vs-tls"
       },
       {
         "name": "Self-Signed Certificate Risks",
@@ -212,7 +212,7 @@ export const SSL_TOPICS_DATA = {
     "related": [
       {
         "name": "TLS 1.2 vs. TLS 1.3",
-        "path": "/ssl/tls-1-2-vs-tls-1-3"
+        "path": "/compare/tls-1-2-vs-tls-1-3"
       },
       {
         "name": "Root & Intermediate Chain",
@@ -268,7 +268,7 @@ export const SSL_TOPICS_DATA = {
     "related": [
       {
         "name": "SSL vs. TLS Differences",
-        "path": "/ssl/ssl-vs-tls"
+        "path": "/compare/ssl-vs-tls"
       },
       {
         "name": "Root & Intermediate Chain",
@@ -320,7 +320,7 @@ export const SSL_TOPICS_DATA = {
     "related": [
       {
         "name": "SSL vs. TLS",
-        "path": "/ssl/ssl-vs-tls"
+        "path": "/compare/ssl-vs-tls"
       },
       {
         "name": "Certificate Chain Trust",
@@ -416,7 +416,7 @@ export const SSL_TOPICS_DATA = {
     "related": [
       {
         "name": "SSL vs. TLS Differences",
-        "path": "/ssl/ssl-vs-tls"
+        "path": "/compare/ssl-vs-tls"
       },
       {
         "name": "Understanding Cipher Suites",

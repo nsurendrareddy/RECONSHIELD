@@ -27,8 +27,6 @@ const FALLBACK_DATA = {
   headers: KNOWN_HEADERS,
   ssl: [
     ...KNOWN_DOMAINS, 
-    'ssl-vs-tls', 
-    'tls-1-2-vs-tls-1-3', 
     'certificate-chain', 
     'cipher-suites', 
     'self-signed-certificate',
@@ -108,8 +106,6 @@ function isUrlIndexableAndValid(urlStr) {
     if (path.startsWith('/ssl/')) {
       const domain = path.replace('/ssl/', '');
       if ([
-        'ssl-vs-tls', 
-        'tls-1-2-vs-tls-1-3', 
         'certificate-chain', 
         'cipher-suites', 
         'self-signed-certificate',

@@ -161,6 +161,8 @@ async function run() {
 
     // 4. Crawl HTML pages recursively
     console.log('Crawling internal links starting from homepage...');
+    const referrers = new Map();
+    
     while (toVisit.length > 0) {
       const path = toVisit.shift();
       if (visited.has(path)) continue;
@@ -177,6 +179,11 @@ async function run() {
         } else if (res.headers['content-type']?.includes('text/html')) {
           const newLinks = extractInternalLinks(res.body);
           for (const link of newLinks) {
+            if (!referrers.has(link)) {
+              referrers.set(link, new Set());
+            }
+            referrers.get(link).add(path);
+
             if (!visited.has(link) && !toVisit.includes(link)) {
               toVisit.push(link);
             }
@@ -197,7 +204,8 @@ async function run() {
     if (brokenLinks.length > 0) {
       console.error('\nList of broken URLs:');
       brokenLinks.forEach(b => {
-        console.error(`- ${b.url} (${b.source}) -> ${b.status || b.error}`);
+        const refs = referrers.has(b.url) ? Array.from(referrers.get(b.url)).join(', ') : 'unknown';
+        console.error(`- ${b.url} (${b.source}) -> ${b.status || b.error} (Linked from: ${refs})`);
       });
       hasErrors = true;
     }

@@ -62,6 +62,9 @@ const nextConfig = {
   },
   async redirects() {
     return [
+      { source: '/ssl/ssl-vs-tls', destination: '/compare/ssl-vs-tls', permanent: true },
+      { source: '/ssl/tls-1-2-vs-tls-1-3', destination: '/compare/tls-1-2-vs-tls-1-3', permanent: true },
+      { source: '/compare/port-scan-vs-vulnerability-scan', destination: '/compare/port-scanner-vs-vulnerability-scanner', permanent: true },
       {
         source: '/threat-intelligence',
         destination: '/tools/ip-lookup',

@@ -10,15 +10,32 @@ import { MOCK_POSTS_DATA } from '@/utils/mockBlogData';
 async function getPost(slug) {
   if (!slug || slug === 'undefined') return null;
   
+  let post = null;
   try {
     const sanityPost = await client.fetch(blogDetailQuery, { slug });
-    if (sanityPost) return sanityPost;
+    if (sanityPost) post = sanityPost;
   } catch (err) {
     console.error('>>> SANITY FETCH ERROR:', err);
   }
 
-  // Fallback to static mock articles
-  return MOCK_POSTS_DATA[slug] || null;
+  if (!post) {
+    post = MOCK_POSTS_DATA[slug] || null;
+  }
+
+  if (post) {
+    try {
+      let serialized = JSON.stringify(post);
+      serialized = serialized
+        .replaceAll('/compare/port-scan-vs-vulnerability-scan', '/compare/port-scanner-vs-vulnerability-scanner')
+        .replaceAll('/ssl/ssl-vs-tls', '/compare/ssl-vs-tls')
+        .replaceAll('/ssl/tls-1-2-vs-tls-1-3', '/compare/tls-1-2-vs-tls-1-3');
+      return JSON.parse(serialized);
+    } catch (replaceErr) {
+      console.error('Error rewriting links in post:', replaceErr);
+    }
+  }
+
+  return post;
 }
 
 export async function generateMetadata({ params }) {

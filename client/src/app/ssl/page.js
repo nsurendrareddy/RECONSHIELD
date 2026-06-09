@@ -61,7 +61,7 @@ export default function SslHubPage() {
                   { slug: 'pki-explained', title: 'Public Key Infrastructure (PKI)', desc: 'The architecture of asymmetric cryptography, CAs, and RAs.' },
                   { slug: 'https-security', title: 'Enforcing HTTPS Server Security', desc: 'Hardening protocols, cipher parameters, and transport headers.' }
                 ].map(topic => (
-                  <Link key={topic.slug} href={`/ssl/${topic.slug}`} className="bg-[#0d1117] border border-white/5 hover:border-[#00ff88]/30 p-5 rounded-xl transition-all group">
+                  <Link key={topic.slug} href={['ssl-vs-tls', 'tls-1-2-vs-tls-1-3'].includes(topic.slug) ? `/compare/${topic.slug}` : `/ssl/${topic.slug}`} className="bg-[#0d1117] border border-white/5 hover:border-[#00ff88]/30 p-5 rounded-xl transition-all group">
                     <h3 className="text-sm font-bold text-white group-hover:text-[#00ff88] transition-colors mb-1">{topic.title}</h3>
                     <p className="text-xs text-gray-400 leading-relaxed font-sans">{topic.desc}</p>
                     <div className="text-xs text-[#00ff88] font-mono mt-3 flex items-center gap-1 opacity-80">

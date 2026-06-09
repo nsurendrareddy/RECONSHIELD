@@ -12,7 +12,7 @@ export default function ContactClient() {
     message: ''
   })
   const [error, setError] = useState('')
-  const emailArr = ['nsurendrareddy3', 'gmail.com']
+  const emailArr = ['support', 'reconshield.in']
   const obfuscatedEmail = emailArr.join('@')
 
   const handleChange = (e) => {
@@ -86,7 +86,7 @@ export default function ContactClient() {
             <Mail className="w-5 h-5 text-gray-400 group-hover:text-matrix-400 transition-colors" />
             <div>
               <p className="text-sm font-semibold text-white group-hover:text-matrix-400 transition-colors">Direct Email</p>
-              <p className="text-xs font-mono text-matrix-400 uppercase">{obfuscatedEmail}</p>
+              <p className="text-xs font-mono text-matrix-400 lowercase">{obfuscatedEmail}</p>
             </div>
           </a>
         </div>
