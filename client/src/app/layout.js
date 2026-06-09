@@ -86,6 +86,13 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+        {/* Monetag Ads Script */}
+        <Script
+          src="https://quge5.com/88/tag.min.js"
+          data-zone="247948"
+          data-cfasync="false"
+          strategy="beforeInteractive"
+        />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
         {/* Google AdSense Script */}
@@ -93,14 +100,6 @@ export default function RootLayout({ children }) {
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
-
-        {/* Monetag Ads Script */}
-        <Script
-          src="https://quge5.com/88/tag.min.js"
-          data-zone="247948"
-          data-cfasync="false"
           strategy="afterInteractive"
         />
 
