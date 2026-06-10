@@ -199,9 +199,8 @@ export default function Layout({ children }) {
 
       {/* Main Content */}
       <main className={`${isBlogPage ? '' : 'max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8'} min-h-[80vh] relative`}>
-        <Ad728x90 />
+        <Ad728x90 key={pathname} />
         {children}
-        <Ad728x90 />
       </main>
 
       {/* Footer */}
