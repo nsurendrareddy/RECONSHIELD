@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { 
   Shield, Globe, Server, Lock, Terminal, CheckCircle2, ChevronRight, 
   Search, Activity, Target, Network, Info, Check, AlertTriangle, 
-  FileText, Send, MapPin, Database, Zap, BookOpen, Layers
+  FileText, Send, MapPin, Database, Zap, BookOpen, Layers, Users
 } from 'lucide-react';
 import { generateBaseMetadata } from '@/utils/metadata';
 
@@ -58,6 +58,26 @@ export default function IpScannerPage() {
     {
       q: "What is an Abuse Confidence Score?",
       a: "It is a percentage metric reflecting the confidence level that an IP is engaged in malicious activities. A higher percentage indicates multiple reliable reports of spamming, hacking, or scanning from that host."
+    },
+    {
+      q: "How do DNSBL and RBL databases collect threat data?",
+      a: "DNSBL (DNS-based Blocklist) and RBL (Real-time Blacklist) servers collect data through spam traps, honeypots, and log submissions from partner networks. If an IP sends email to a non-existent trap address or runs port scans on a honeypot, its IP is immediately blacklisted."
+    },
+    {
+      q: "What is BGP routing leakage and can it affect IP reputation?",
+      a: "Border Gateway Protocol (BGP) leaks occur when an Autonomous System erroneously announces IP prefix ownership. If IP ranges owned by benign companies are routed through malicious or compromised networks, their IP reputation can drop rapidly."
+    },
+    {
+      q: "What are the common indicators of a compromised corporate IP address?",
+      a: "Key indicators include sudden outbound spikes on ports 25 (SMTP), 22 (SSH), or 3389 (RDP), high volumes of DNS queries (DNS tunneling), connections to known command-and-control (C2) domains, and inclusion on public blacklists."
+    },
+    {
+      q: "How does residential proxy abuse differ from datacenter IP abuse?",
+      a: "Threat actors lease access to residential proxy networks (often built via SDKs embedded in free consumer software) to bypass rate limits and bot-detection scripts, making attacks look like legitimate home user traffic. Datacenter IPs are cheaper but easily blocked due to static ASN allocation."
+    },
+    {
+      q: "How can security teams automate IP threat intelligence processing?",
+      a: "Teams configure Security Orchestration, Automation, and Response (SOAR) workflows to ingest threat APIs. When a SIEM triggers an alert for an external IP, the SOAR queries the IP reputation, and if the risk score exceeds a threshold, blocks it on the perimeter firewall."
     }
   ];
 
@@ -69,72 +89,104 @@ export default function IpScannerPage() {
 
   const schemas = [
     {
-      "@type": "SoftwareApplication",
-      "@id": "https://reconshield.in/tools/ip-lookup#software",
-      "name": "ReconShield IP Reputation Checker",
-      "url": "https://reconshield.in/tools/ip-lookup",
-      "description": "Enterprise-grade IP reputation lookup and abuse check tool to verify blacklist status, threat intelligence, and IP risk scores.",
-      "applicationCategory": "UtilitiesApplication",
-      "operatingSystem": "Web-based",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "publisher": { "@id": "https://reconshield.in/#organization" }
-    },
-    {
-      "@type": "WebApplication",
-      "@id": "https://reconshield.in/tools/ip-lookup#webapp",
-      "name": "ReconShield IP Blacklist & Threat Scanner",
-      "url": "https://reconshield.in/tools/ip-lookup",
-      "description": "Evaluate IP risk scores, perform dynamic IP blacklist checks, and check IP reputation across 50+ global threat intelligence databases.",
-      "applicationCategory": "SecurityApplication",
-      "operatingSystem": "All",
-      "browserRequirements": "Requires JavaScript. Requires HTML5.",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-      "publisher": { "@id": "https://reconshield.in/#organization" }
-    },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://reconshield.in/tools/ip-lookup#breadcrumb",
-      "itemListElement": breadcrumbs.map((crumb, idx) => ({
-        "@type": "ListItem",
-        "position": idx + 1,
-        "name": crumb.name,
-        "item": crumb.url
-      }))
-    },
-    {
-      "@type": "TechArticle",
-      "@id": "https://reconshield.in/tools/ip-lookup#article",
-      "headline": "The Ultimate Guide to IP Reputation, Blacklists, and Cyber Threat Intelligence",
-      "description": "Learn how IP reputation is calculated, how to check if an IP is blacklisted, and how security operations centers use IP threat intelligence.",
-      "author": { "@type": "Person", "name": "Surendra Reddy" },
-      "publisher": { "@id": "https://reconshield.in/#organization" },
-      "url": "https://reconshield.in/tools/ip-lookup"
-    },
-    {
-      "@type": "HowTo",
-      "@id": "https://reconshield.in/tools/ip-lookup#howto",
-      "name": "How to check IP Reputation and Blacklist status",
-      "description": "A step-by-step guide on how to perform an IP reputation check and analyze threat levels.",
-      "step": [
-        { "@type": "HowToStep", "name": "Enter IP Address", "text": "Input the target IPv4 or IPv6 address in the search input field." },
-        { "@type": "HowToStep", "name": "Initiate Scan", "text": "Click 'Search' to analyze the IP across 50+ global threat blocklists and RIR datasets." },
-        { "@type": "HowToStep", "name": "Inspect Risk Metrics", "text": "Analyze the IP Risk Score, Abuse Confidence, ASN details, ISP location, and proxy/VPN status." }
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://reconshield.in/#organization",
+          "name": "ReconShield",
+          "url": "https://reconshield.in",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://reconshield.in/icon.png"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://reconshield.in/#website",
+          "url": "https://reconshield.in",
+          "name": "ReconShield",
+          "publisher": { "@id": "https://reconshield.in/#organization" }
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://reconshield.in/tools/ip-lookup#webpage",
+          "url": "https://reconshield.in/tools/ip-lookup",
+          "name": "IP Reputation Checker | Free IP Blacklist & Threat Lookup",
+          "isPartOf": { "@id": "https://reconshield.in/#website" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://reconshield.in/tools/ip-lookup#software",
+          "name": "ReconShield IP Reputation Checker",
+          "url": "https://reconshield.in/tools/ip-lookup",
+          "description": "Enterprise-grade IP reputation lookup and abuse check tool to verify blacklist status, threat intelligence, and IP risk scores.",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Web-based",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "publisher": { "@id": "https://reconshield.in/#organization" }
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://reconshield.in/tools/ip-lookup#webapp",
+          "name": "ReconShield IP Blacklist & Threat Scanner",
+          "url": "https://reconshield.in/tools/ip-lookup",
+          "description": "Evaluate IP risk scores, perform dynamic IP blacklist checks, and check IP reputation across 50+ global threat intelligence databases.",
+          "applicationCategory": "SecurityApplication",
+          "operatingSystem": "All",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "publisher": { "@id": "https://reconshield.in/#organization" }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "@id": "https://reconshield.in/tools/ip-lookup#breadcrumb",
+          "itemListElement": breadcrumbs.map((crumb, idx) => ({
+            "@type": "ListItem",
+            "position": idx + 1,
+            "name": crumb.name,
+            "item": crumb.url
+          }))
+        },
+        {
+          "@type": "TechArticle",
+          "@id": "https://reconshield.in/tools/ip-lookup#article",
+          "headline": "The Ultimate Guide to IP Reputation, Blacklists, and Cyber Threat Intelligence",
+          "description": "Learn how IP reputation is calculated, how to check if an IP is blacklisted, and how security operations centers use IP threat intelligence.",
+          "author": { "@type": "Person", "name": "Surendra Reddy" },
+          "publisher": { "@id": "https://reconshield.in/#organization" },
+          "url": "https://reconshield.in/tools/ip-lookup",
+          "isPartOf": { "@id": "https://reconshield.in/tools/ip-lookup#webpage" }
+        },
+        {
+          "@type": "HowTo",
+          "@id": "https://reconshield.in/tools/ip-lookup#howto",
+          "name": "How to check IP Reputation and Blacklist status",
+          "description": "A step-by-step guide on how to perform an IP reputation check and analyze threat levels.",
+          "step": [
+            { "@type": "HowToStep", "name": "Enter IP Address", "text": "Input the target IPv4 or IPv6 address in the search input field." },
+            { "@type": "HowToStep", "name": "Initiate Scan", "text": "Click 'Search' to analyze the IP across 50+ global threat blocklists and RIR datasets." },
+            { "@type": "HowToStep", "name": "Inspect Risk Metrics", "text": "Analyze the IP Risk Score, Abuse Confidence, ASN details, ISP location, and proxy/VPN status." }
+          ],
+          "isPartOf": { "@id": "https://reconshield.in/tools/ip-lookup#webpage" }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://reconshield.in/tools/ip-lookup#faq",
+          "mainEntity": faqs.map(faq => ({
+            "@type": "Question",
+            "name": faq.q,
+            "acceptedAnswer": { "@type": "Answer", "text": faq.a }
+          })),
+          "isPartOf": { "@id": "https://reconshield.in/tools/ip-lookup#webpage" }
+        }
       ]
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://reconshield.in/tools/ip-lookup#faq",
-      "mainEntity": faqs.map(faq => ({
-        "@type": "Question",
-        "name": faq.q,
-        "acceptedAnswer": { "@type": "Answer", "text": faq.a }
-      }))
     }
   ];
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({ "@context": "https://schema.org", "@graph": schemas }) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas[0]) }} />
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 overflow-hidden border-b border-white/5" aria-label="Tool Hero">
@@ -182,6 +234,23 @@ export default function IpScannerPage() {
                   <strong>IP reputation</strong> is a dynamic cybersecurity metric indicating the trustworthiness of an IP address. Calculated by scanning Real-time Blocklists (RBLs) and threat feeds, a poor IP reputation occurs when an IP is flagged for spamming, brute-force hacking, hosting malware, or running proxy/VPN gateways. Implementing regular IP blacklist checks prevents email delivery failures and protects corporate networks from cyber attacks.
                 </p>
               </div>
+              
+              <div className="border-t border-white/5 pt-4">
+                <span className="text-[10px] font-bold text-gray-500 block mb-2 font-mono uppercase tracking-wider">// Key Takeaways (Perplexity & Claude Optimized)</span>
+                <ul className="list-disc pl-5 text-gray-400 text-xs space-y-2 font-mono">
+                  <li>Aggregates indicators from 50+ DNSBL/RBL databases to compute absolute risk scores.</li>
+                  <li>Differentiates between commercial VPNs, open proxy tunnels, Tor exit nodes, and residential ISPs.</li>
+                  <li>Identifies hosting ASN contexts (e.g., bulletproof datacenters vs. consumer network blocks).</li>
+                  <li>Impacts B2B email deliverability, firewall routing policies, and e-commerce checkout fraud filters.</li>
+                </ul>
+              </div>
+
+              <div className="border-t border-white/5 pt-4">
+                <span className="text-[10px] font-bold text-gray-500 block mb-2 font-mono uppercase tracking-wider">// Expert Security Summary</span>
+                <p className="text-gray-400 text-xs leading-relaxed font-sans">
+                  From a forensic standpoint, IP address reputation acts as a transient state of infrastructure health. Since IPv4 resources are limited and constantly recycled, a reputation check must combine real-time blacklist queries with structural routing analysis (ASN registry, BGP updates, and subnet history) to prevent false positives during security log correlation.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -205,9 +274,36 @@ export default function IpScannerPage() {
               Maintaining a positive IP reputation is crucial for normal business operations. A degraded reputation causes immediate operational issues, such as outgoing corporate emails being automatically routed to spam folders, web portals blocking legitimate client access, and network firewalls blacklisting your entire IP range.
             </p>
 
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">How IP Reputation Works</h2>
+            <div className="bg-surface-900 border border-white/10 rounded-2xl p-6 my-6 not-prose">
+              <div className="flex gap-4">
+                <Info className="w-6 h-6 text-[#00ff88] shrink-0 mt-1" />
+                <div>
+                  <h4 className="text-white font-bold text-sm mb-1 font-mono">// Cybersecurity Definition: IP Reputation</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed font-sans">
+                    IP reputation is an infrastructure security score, typically evaluated on a scale from 0 to 100, that aggregates telemetry from networks, firewalls, and spam traps to predict the likelihood that an IP address will originate malicious payloads, spam, scans, or unauthorized traffic.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-surface-900 border border-white/10 rounded-2xl p-6 my-6 not-prose">
+              <div className="flex gap-4">
+                <Info className="w-6 h-6 text-[#00ff88] shrink-0 mt-1" />
+                <div>
+                  <h4 className="text-white font-bold text-sm mb-1 font-mono">// Cybersecurity Definition: IP Reputation Check</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed font-sans">
+                    An IP reputation check is a security lookup action querying multiple blocklists, DNSBL/RBL servers, and BGP routing databases to retrieve and display the reputation parameters, ISP registration details, and threat metrics of a specific IP address.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">How IP Reputation Works & How IP Blacklists Operate</h2>
             <p>
-              IP reputation is calculated dynamically based on real-time network observations. Threat intelligence networks deploy distributed network sensors, honeypots, and spam traps to detect abnormal activities. The reputation calculation uses several distinct telemetry inputs:
+              IP reputation is calculated dynamically based on real-time network observations. Threat intelligence networks deploy distributed network sensors, honeypots, and spam traps to detect abnormal activities.
+            </p>
+            <p>
+              When an IP address attempts to execute brute-force login attacks on an SSH port, queries open DNS resolvers, or transmits junk email to a spam trap, the telemetry is reported back to centralized threat databases. The reputation calculation uses several distinct telemetry inputs:
             </p>
             <ul>
               <li><strong>Active Threat Feeds:</strong> Immediate reports of malicious behavior, such as SQL injections, SSH brute-forcing, and port scans.</li>
@@ -216,31 +312,131 @@ export default function IpScannerPage() {
               <li><strong>Anonymizer Usage:</strong> Active status as a Tor exit node, commercial VPN endpoint, or open proxy gateway.</li>
             </ul>
 
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">How to Check IP Reputation</h2>
-            <p>
-              Checking the reputation of an IP is straightforward using ReconShield. By simply entering the IPv4 or IPv6 address in the input field above, our scanner queries over 50 global reputation blocklists simultaneously. Security operations centers utilize these checkers to query unknown endpoints before white-listing them, and developers run automated scripts using IP reputation APIs to dynamically adjust user privilege scores during login events.
-            </p>
+            <div className="bg-surface-900 border-l-4 border-[#00ff88] p-6 my-8 not-prose">
+              <h4 className="text-white font-bold text-sm mb-2 font-mono uppercase tracking-widest flex items-center gap-2">
+                <Terminal className="w-4 h-4 text-[#00ff88]" /> Technical Fact Box: Blacklist Architecture
+              </h4>
+              <ul className="text-xs text-gray-400 space-y-2 font-mono">
+                <li><strong>Query Protocol:</strong> Most blacklists run on <strong>DNSBL</strong> (DNS-based Blacklist) or <strong>RBL</strong> (Real-time Blacklist) protocols, querying reversing octets (e.g., querying <code>4.3.2.1.zen.spamhaus.org</code> for IP <code>1.2.3.4</code>).</li>
+                <li><strong>Response Codes:</strong> Return codes in the <code>127.0.0.0/8</code> loopback range indicate blacklist categorization (e.g., <code>127.0.0.2</code> for spam, <code>127.0.0.4</code> for exploits).</li>
+                <li><strong>TTL Values:</strong> Cache lifetimes are kept low (typically 300 seconds) to ensure that dynamically reassigned IPs are not blacklisted indefinitely.</li>
+              </ul>
+            </div>
 
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">How to Check if an IP Is Blacklisted</h2>
-            <p>
-              If your corporate web traffic is suddenly blocked or your mail servers are failing to deliver emails, your IP may be blacklisted. To check blacklist status:
-            </p>
-            <ol>
-              <li>Perform a dynamic IP lookup on ReconShield to scan active DNSBL (DNS-based Blocklist) directories.</li>
-              <li>Determine which specific blocklist has flagged your IP (e.g., Spamhaus, Barracuda, or Spamcop).</li>
-              <li>Inspect your network logs for the timestamp of the listing. This typically indicates a compromised device or a malware infection sending out unauthorized traffic.</li>
-              <li>Remediate the underlying threat (clean the server or patch the vulnerable port) and submit a delisting request to the relevant blocklist authority.</li>
-            </ol>
-
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Understanding Abuse Scores</h2>
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Understanding Abuse Scores & Risk Ratings</h2>
             <p>
               An <strong>Abuse Confidence Score</strong> is a percentage rating (from 0% to 100%) reflecting the mathematical probability that an IP address is actively engaged in malicious network behavior. A score of 0% indicates a clean IP with no reports, whereas a score of 100% signifies that multiple independent security databases have validated ongoing threat activity originating from the host within the last 24 to 48 hours.
             </p>
 
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">IP Risk Score Explained</h2>
+            <div className="bg-surface-900 border border-white/10 rounded-2xl p-6 my-6 not-prose">
+              <div className="flex gap-4">
+                <Info className="w-6 h-6 text-[#00ff88] shrink-0 mt-1" />
+                <div>
+                  <h4 className="text-white font-bold text-sm mb-1 font-mono">// Cybersecurity Definition: Abuse Score</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed font-sans">
+                    An abuse score is a percentage confidence index indicating the likelihood that an IP is actively compromised or participating in spamming, hacking, scanning, or DDoS campaigns, derived mathematically from verified logs.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <p>
-              Similar to abuse confidence, the <strong>IP Risk Score</strong> integrates static routing details with active threat intelligence. A hosting server IP located in a datacenter known for bulletproof hosting has a high baseline risk score, even if it has no active abuse reports. Conversely, residential dynamic IPs have low baseline scores, but their risk score spikes instantly when a spam campaign is detected.
+              Conversely, the <strong>IP Risk Score</strong> integrates static routing details with active threat intelligence. A hosting server IP located in a datacenter known for bulletproof hosting has a high baseline risk score, even if it has no active abuse reports. Conversely, residential dynamic IPs have low baseline scores, but their risk score spikes instantly when a spam campaign is detected.
             </p>
+
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">ASN Intelligence & ISP Analysis</h2>
+            <p>
+              Autonomous System Numbers (ASNs) represent network groups managed by a single organization (ISP, university, or tech enterprise). Analyzing the ASN is vital because malicious actors often buy bulk subnets from cheap, lax providers to launch automated attack campaigns.
+            </p>
+
+            <div className="bg-surface-900 border border-white/10 rounded-2xl p-6 my-6 not-prose">
+              <div className="flex gap-4">
+                <Info className="w-6 h-6 text-[#00ff88] shrink-0 mt-1" />
+                <div>
+                  <h4 className="text-white font-bold text-sm mb-1 font-mono">// Cybersecurity Definition: ASN Reputation</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed font-sans">
+                    ASN reputation represents the collective trustworthiness and security compliance level of a network operator’s subnets. It is calculated by measuring the ratio of blacklisted IP addresses to clean IP allocations within a specific Autonomous System Number.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <p>
+              By resolving the ASN during an IP lookup, you can determine who has administrative control over the IP address. For instance, if an IP belongs to an ASN managed by a reliable tier-1 telecom company, the threat profile is significantly lower than an IP originating from an offshore hosting provider specialized in unmonitored infrastructure.
+            </p>
+
+            <h3 className="text-xl font-bold mt-8 mb-4">Datacenter vs. Residential vs. Mobile Connection Classes</h3>
+            <p>
+              Network connections fall into three primary blocks:
+            </p>
+            <ol>
+              <li><strong>Datacenter/Hosting:</strong> Assigned to servers in facilities (e.g., AWS, DigitalOcean). High bandwidth and static nature make them ideal for botnets, but they are easily blocked.</li>
+              <li><strong>Residential:</strong> Assigned to consumers by home ISPs. Highly trusted because blocking a residential IP blocks a real customer. Attackers abuse residential proxy services to bypass fraud filters.</li>
+              <li><strong>Mobile:</strong> Assigned to cellular towers. IPs are shared among thousands of mobile devices using Carrier-Grade NAT (CGNAT), making blacklisting dangerous due to high collateral block rates.</li>
+            </ol>
+
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Threat Intelligence Applications & Hunt Workflows</h2>
+            <p>
+              Threat intelligence leverages reputation data to secure corporate perimeters. Rather than waiting for an attack to occur, security teams dynamically feed blocklists into automated firewall scripts. In threat hunting, investigators cross-reference IP addresses found in security logs against reputation directories to isolate advanced persistent threats (APTs).
+            </p>
+
+            <div className="bg-surface-900 border border-white/10 rounded-2xl p-6 my-8 not-prose">
+              <h4 className="text-white font-bold text-sm mb-4 font-mono uppercase tracking-widest flex items-center gap-2">
+                <Target className="w-5 h-5 text-[#00ff88]" /> Step-by-Step Forensic IP Investigation Workflow
+              </h4>
+              <div className="relative border-l-2 border-white/10 pl-6 ml-3 space-y-6">
+                <div>
+                  <span className="absolute -left-[7px] w-3 h-3 rounded-full bg-[#00ff88]" />
+                  <h5 className="text-white font-bold text-xs font-mono uppercase tracking-wider mb-1">01. Log Alert Isolation</h5>
+                  <p className="text-xs text-gray-400">Extract the foreign IP from your SIEM or web application access logs indicating high error rates (e.g., excessive 401 logins).</p>
+                </div>
+                <div>
+                  <span className="absolute -left-[7px] w-3 h-3 rounded-full bg-[#00ff88]" />
+                  <h5 className="text-white font-bold text-xs font-mono uppercase tracking-wider mb-1">02. ASN & Geolocation Lookup</h5>
+                  <p className="text-xs text-gray-400">Resolve the host's ASN. Identify if the connection originates from an unexpected country or datacenter block instead of your customer demographics.</p>
+                </div>
+                <div>
+                  <span className="absolute -left-[7px] w-3 h-3 rounded-full bg-[#00ff88]" />
+                  <h5 className="text-white font-bold text-xs font-mono uppercase tracking-wider mb-1">03. Blacklist & Abuse Verification</h5>
+                  <p className="text-xs text-gray-400">Query RBLs to see if the IP is actively reported for scanning or spam. Check the Abuse Confidence Score to measure confirmation reliability.</p>
+                </div>
+                <div>
+                  <span className="absolute -left-[7px] w-3 h-3 rounded-full bg-[#00ff88]" />
+                  <h5 className="text-white font-bold text-xs font-mono uppercase tracking-wider mb-1">04. VPN & Proxy Checks</h5>
+                  <p className="text-xs text-gray-400">Run routing tests to detect Tor nodes or VPN tunnels. Determine if the host is actively trying to anonymize their physical location.</p>
+                </div>
+                <div>
+                  <span className="absolute -left-[7px] w-3 h-3 rounded-full bg-[#00ff88]" />
+                  <h5 className="text-white font-bold text-xs font-mono uppercase tracking-wider mb-1">05. Policy Enforcement</h5>
+                  <p className="text-xs text-gray-400">Apply rules: trigger multi-factor authentication (MFA) for residential proxies, block datacenters outright, or temporarily ban high-abuse IPs.</p>
+                </div>
+              </div>
+            </div>
+
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">VPN, Proxy, and Botnet Detection</h2>
+            <p>
+              To evade detection, attackers proxy their connections through multiple intermediate systems. A proxy detection checker monitors ports commonly left open for proxy routing (such as 8080, 1080, or 3128). Commercial VPN detection maps the subnets bought by major VPN firms (like NordVPN or ExpressVPN).
+            </p>
+            <p>
+              Botnet detection looks for signs of device takeover. Compromised smart TVs, routers, and IP cameras form massive network clusters controlled by malware servers. When thousands of these devices coordinate, they can knock websites offline via Distributed Denial of Service (DDoS) campaigns.
+            </p>
+
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Email Reputation & Deliverability</h2>
+            <p>
+              Email deliverability is entirely bound to the IP address reputation of your mail server. If the IP address you use to send newsletters gets blacklisted, receivers like Gmail and Outlook will reject your mail or place it in the spam folder.
+            </p>
+            <p>
+              To protect email reputation, ensure your DNS contains correct SPF, DKIM, and DMARC verification records. Regularly audit sending server IPs to confirm that they have not been blacklisted due to server compromises or compromised user accounts sending mass spam messages.
+            </p>
+
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Security Team Use Cases & SOAR Integration</h2>
+            <p>
+              For Security Operations Centers (SOCs), querying IP addresses manually is highly inefficient. Enterprise teams integrate reputation lookups directly into Security Orchestration, Automation, and Response (SOAR) workflows.
+            </p>
+            <p>
+              When an alert is generated by an intrusion detection system (IDS), the SOAR automatically calls the IP reputation API, gathers threat intelligence metrics, and updates the local firewall policy to ban the IP address if it has an abuse confidence score exceeding 90%.
+            </p>
+
           </div>
         </section>
 
@@ -271,15 +467,15 @@ export default function IpScannerPage() {
                   </tr>
                   <tr className="hover:bg-white/[0.01]">
                     <td className="p-4 font-semibold text-white">Data Provided</td>
-                    <td className="p-4 border-l border-white/10">Abuse score, Blacklists, VPN status</td>
-                    <td className="p-4 border-l border-white/10">Registrar details, expiry dates, status locks</td>
-                    <td className="p-4 border-l border-white/10">A, AAAA, MX, TXT record allocations</td>
+                    <td className="p-4 border-l border-white/10">Abuse score, Blacklists, VPN status, ASN context</td>
+                    <td className="p-4 border-l border-white/10">Registrar details, expiry dates, status locks, RDAP JSON</td>
+                    <td className="p-4 border-l border-white/10">A, AAAA, MX, TXT record allocations, DNSSEC chain</td>
                   </tr>
                   <tr className="hover:bg-white/[0.01]">
                     <td className="p-4 font-semibold text-white">Cybersecurity Use Case</td>
                     <td className="p-4 border-l border-white/10">Filtering malicious traffic, blocking attacks</td>
-                    <td className="p-4 border-l border-white/10">Attribution, brand protection, takedowns</td>
-                    <td className="p-4 border-l border-white/10">SPF/DMARC auditing, DNS hijacking checks</td>
+                    <td className="p-4 border-l border-white/10">Attribution, brand protection, takedowns, OSINT</td>
+                    <td className="p-4 border-l border-white/10">SPF/DMARC auditing, DNS hijacking checks, routing</td>
                   </tr>
                   <tr className="hover:bg-white/[0.01]">
                     <td className="p-4 font-semibold text-white">ReconShield Tool Link</td>
@@ -291,27 +487,7 @@ export default function IpScannerPage() {
               </table>
             </div>
 
-            <h2 className="text-3xl font-display font-bold text-white mt-16 mb-6">Threat Intelligence and IP Analysis</h2>
-            <p>
-              In modern security operations centers (SOC), IP reputation analysis is paired with active Threat Intelligence. Threat intelligence involves analyzing not just if an IP is bad, but <em>why</em> it is bad, who controls it, and what campaign it belongs to. By combining ISP and ASN metadata with live threat feeds, threat hunters can map the infrastructure footprint of advanced persistent threat (APT) groups.
-            </p>
-
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Email Sender Reputation</h2>
-            <p>
-              Email delivery relies entirely on IP and domain reputation. If your outbound mail server's IP address gets listed on a Real-time Blocklist (RBL) like Spamhaus SBL/XBL, receiving mail servers will reject your messages. Regular auditing of email sender IPs alongside SPF and DMARC record checks is a fundamental step in mail delivery maintenance.
-            </p>
-
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">VPN and Proxy Detection</h2>
-            <p>
-              Threat actors hide their origin using VPNs, Tor exit nodes, and public proxies. Understanding whether an incoming connection is originating from a datacenter-hosted VPN tunnel or a direct residential fiber connection is critical for fraud detection and access control management.
-            </p>
-
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Botnet and Malware Detection</h2>
-            <p>
-              Compromised IoT devices are compiled into massive botnets used to execute DDoS attacks or distribute malware. ReconShield's checker cross-references incoming endpoints with known botnet controller directories, helping you secure applications from automated scanning.
-            </p>
-
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Common Blacklists</h2>
+            <h2 className="text-3xl font-display font-bold text-white mt-16 mb-6">Common Blacklists</h2>
             <p>
               There are hundreds of blocklists, but a few industry standards govern the web:
             </p>
@@ -320,16 +496,6 @@ export default function IpScannerPage() {
               <li><strong>AbuseIPDB:</strong> Crowdsourced database logging web hacks, SSH brute-forcing, and spam.</li>
               <li><strong>Barracuda Rep:</strong> Real-time lookup database tracking IP reputation for spam prevention.</li>
               <li><strong>CBL (Composite Blocking List):</strong> Automated blocklist tracking botnet malware infections.</li>
-            </ul>
-
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">How Security Teams Use IP Reputation</h2>
-            <p>
-              Security teams leverage reputation checker tools to protect company networks:
-            </p>
-            <ul>
-              <li><strong>Firewall Integration:</strong> Automatically ingest malicious IP feeds to block known C2 servers.</li>
-              <li><strong>SIEM Alerts:</strong> Flag internal servers communicating with bad IP addresses.</li>
-              <li><strong>Fraud Prevention:</strong> Block payment transactions originating from proxy/VPN networks.</li>
             </ul>
           </div>
         </section>
@@ -360,7 +526,7 @@ export default function IpScannerPage() {
             </div>
 
             <div className="text-center text-[10px] font-mono text-gray-600 uppercase tracking-widest">
-              Last Updated: June 2026 | Reviewed by ReconShield Editorial Board | Sources: IANA, RIRs, Spamhaus, AbuseIPDB
+              Last Updated: June 2026 | Reviewed by ReconShield Editorial Board | Sources: IANA, RIRs, Spamhaus, AbuseIPDB, IETF RFC standards
             </div>
           </div>
         </section>
