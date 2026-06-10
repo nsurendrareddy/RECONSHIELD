@@ -1,4 +1,57 @@
 /** @type {import('next').NextConfig} */
+const adsterraDomains = [
+  'https://www.highperformanceformat.com',
+  'https://*.highperformanceformat.com',
+  'https://pl29692251.effectivecpmnetwork.com',
+  'https://*.pl29692251.effectivecpmnetwork.com',
+  'https://pl29692252.effectivecpmnetwork.com',
+  'https://*.pl29692252.effectivecpmnetwork.com',
+  'https://effectivecpmnetwork.com',
+  'https://*.effectivecpmnetwork.com',
+  'https://protrafficinspector.com',
+  'https://*.protrafficinspector.com',
+  'https://exemplarfederallithe.com',
+  'https://*.exemplarfederallithe.com',
+  'https://kettledroopingcontinuation.com',
+  'https://*.kettledroopingcontinuation.com',
+  'https://consumeririssalary.com',
+  'https://*.consumeririssalary.com',
+  'https://realizationnewestfangs.com',
+  'https://*.realizationnewestfangs.com',
+  'https://zoologyfibre.com',
+  'https://*.zoologyfibre.com',
+  'https://cdn.storageimagedisplay.com',
+  'https://*.cdn.storageimagedisplay.com',
+  'https://sleepoverlimitprofound.com',
+  'https://*.sleepoverlimitprofound.com',
+  'https://preferencenail.com',
+  'https://*.preferencenail.com',
+  'https://fizzyacerbitymellow.com',
+  'https://*.fizzyacerbitymellow.com',
+  'http://cdn.storageimagedisplay.com',
+  'http://*.cdn.storageimagedisplay.com',
+  // Newly audited rotating domains (June 2026 Audit)
+  'https://spendsdetachment.com',
+  'https://*.spendsdetachment.com',
+  'https://furiousexpansion.com',
+  'https://*.furiousexpansion.com',
+  'https://flushpersist.com',
+  'https://*.flushpersist.com',
+  'https://cdn.show-sb.com',
+  'https://*.cdn.show-sb.com',
+  'https://ep1.adtrafficquality.google'
+];
+
+const cspHeader = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com ${adsterraDomains.join(' ')}`,
+  "style-src 'self' 'unsafe-inline'",
+  `img-src 'self' blob: data: https://cdn.sanity.io https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${adsterraDomains.join(' ')}`,
+  "font-src 'self' data:",
+  `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adsterraDomains.join(' ')}`,
+  `frame-src 'self' https://news.google.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com ${adsterraDomains.join(' ')}`
+].join('; ');
+
 const nextConfig = {
   images: {
     unoptimized: true,
@@ -26,7 +79,7 @@ const nextConfig = {
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
-          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://www.highperformanceformat.com https://*.highperformanceformat.com https://pl29692251.effectivecpmnetwork.com https://*.pl29692251.effectivecpmnetwork.com https://pl29692252.effectivecpmnetwork.com https://*.pl29692252.effectivecpmnetwork.com https://effectivecpmnetwork.com https://*.effectivecpmnetwork.com https://protrafficinspector.com https://*.protrafficinspector.com https://exemplarfederallithe.com https://*.exemplarfederallithe.com https://kettledroopingcontinuation.com https://*.kettledroopingcontinuation.com https://consumeririssalary.com https://*.consumeririssalary.com https://realizationnewestfangs.com https://*.realizationnewestfangs.com https://zoologyfibre.com https://*.zoologyfibre.com https://cdn.storageimagedisplay.com https://*.cdn.storageimagedisplay.com https://sleepoverlimitprofound.com https://*.sleepoverlimitprofound.com https://preferencenail.com https://*.preferencenail.com https://fizzyacerbitymellow.com https://*.fizzyacerbitymellow.com http://cdn.storageimagedisplay.com http://*.cdn.storageimagedisplay.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https://cdn.sanity.io https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org https://www.highperformanceformat.com https://*.highperformanceformat.com https://pl29692251.effectivecpmnetwork.com https://*.pl29692251.effectivecpmnetwork.com https://pl29692252.effectivecpmnetwork.com https://*.pl29692252.effectivecpmnetwork.com https://effectivecpmnetwork.com https://*.effectivecpmnetwork.com https://protrafficinspector.com https://*.protrafficinspector.com https://exemplarfederallithe.com https://*.exemplarfederallithe.com https://kettledroopingcontinuation.com https://*.kettledroopingcontinuation.com https://consumeririssalary.com https://*.consumeririssalary.com https://realizationnewestfangs.com https://*.realizationnewestfangs.com https://zoologyfibre.com https://*.zoologyfibre.com https://cdn.storageimagedisplay.com https://*.cdn.storageimagedisplay.com https://sleepoverlimitprofound.com https://*.sleepoverlimitprofound.com https://preferencenail.com https://*.preferencenail.com https://fizzyacerbitymellow.com https://*.fizzyacerbitymellow.com http://cdn.storageimagedisplay.com http://*.cdn.storageimagedisplay.com; font-src 'self' data:; connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* https://www.highperformanceformat.com https://*.highperformanceformat.com https://pl29692251.effectivecpmnetwork.com https://*.pl29692251.effectivecpmnetwork.com https://pl29692252.effectivecpmnetwork.com https://*.pl29692252.effectivecpmnetwork.com https://effectivecpmnetwork.com https://*.effectivecpmnetwork.com https://protrafficinspector.com https://*.protrafficinspector.com https://exemplarfederallithe.com https://*.exemplarfederallithe.com https://kettledroopingcontinuation.com https://*.kettledroopingcontinuation.com https://consumeririssalary.com https://*.consumeririssalary.com https://realizationnewestfangs.com https://*.realizationnewestfangs.com https://zoologyfibre.com https://*.zoologyfibre.com https://cdn.storageimagedisplay.com https://*.cdn.storageimagedisplay.com https://sleepoverlimitprofound.com https://*.sleepoverlimitprofound.com https://preferencenail.com https://*.preferencenail.com https://fizzyacerbitymellow.com https://*.fizzyacerbitymellow.com http://cdn.storageimagedisplay.com http://*.cdn.storageimagedisplay.com; frame-src 'self' https://news.google.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com https://www.highperformanceformat.com https://*.highperformanceformat.com https://pl29692251.effectivecpmnetwork.com https://*.pl29692251.effectivecpmnetwork.com https://pl29692252.effectivecpmnetwork.com https://*.pl29692252.effectivecpmnetwork.com https://effectivecpmnetwork.com https://*.effectivecpmnetwork.com https://protrafficinspector.com https://*.protrafficinspector.com https://exemplarfederallithe.com https://*.exemplarfederallithe.com https://kettledroopingcontinuation.com https://*.kettledroopingcontinuation.com https://consumeririssalary.com https://*.consumeririssalary.com https://realizationnewestfangs.com https://*.realizationnewestfangs.com https://zoologyfibre.com https://*.zoologyfibre.com https://cdn.storageimagedisplay.com https://*.cdn.storageimagedisplay.com https://sleepoverlimitprofound.com https://*.sleepoverlimitprofound.com https://preferencenail.com https://*.preferencenail.com https://fizzyacerbitymellow.com https://*.fizzyacerbitymellow.com http://cdn.storageimagedisplay.com http://*.cdn.storageimagedisplay.com;" }
+          { key: 'Content-Security-Policy', value: cspHeader }
         ],
       },
       {
