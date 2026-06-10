@@ -514,28 +514,28 @@ export default function IpScannerPage() {
               <div className="p-8 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/20 transition-all flex flex-col justify-between">
                 <div>
                   <Network className="w-8 h-8 text-cyan-400 mb-4" />
-                  <h4 className="text-white font-bold text-lg mb-2">Try Related Security Tools</h4>
+                  <h4 className="text-white font-bold text-lg mb-2">Try More Tools</h4>
                   <p className="text-xs text-gray-400 leading-relaxed mb-6">
                     Cross-reference registration details or inspect target cryptographic keys to compile a complete threat intelligence profile.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 font-mono text-xs text-cyan-400">
-                  <Link href="/tools/whois" className="hover:underline flex items-center gap-1">▸ Run WHOIS Owner Check <ChevronRight className="w-3.5 h-3.5" /></Link>
-                  <Link href="/tools/dns-lookup" className="hover:underline flex items-center gap-1">▸ Resolve Authoritative DNS <ChevronRight className="w-3.5 h-3.5" /></Link>
+                  <a href="https://www.effectivecpmnetwork.com/fe65rdif?key=82071772b3cc6d1de386046b7a927b03" target="_blank" rel="noopener noreferrer" className="hover:underline flex items-center gap-1">▸ Run WHOIS Owner Check <ChevronRight className="w-3.5 h-3.5" /></a>
+                  <a href="https://www.effectivecpmnetwork.com/fe65rdif?key=82071772b3cc6d1de386046b7a927b03" target="_blank" rel="noopener noreferrer" className="hover:underline flex items-center gap-1">▸ Resolve Authoritative DNS <ChevronRight className="w-3.5 h-3.5" /></a>
                 </div>
               </div>
 
               <div className="p-8 rounded-2xl bg-surface-900 border border-white/5 hover:border-purple-500/20 transition-all flex flex-col justify-between">
                 <div>
                   <FileText className="w-8 h-8 text-purple-400 mb-4" />
-                  <h4 className="text-white font-bold text-lg mb-2">Explore OSINT Guides</h4>
+                  <h4 className="text-white font-bold text-lg mb-2">Explore Resources</h4>
                   <p className="text-xs text-gray-400 leading-relaxed mb-6">
                     Read our latest research papers and expert guides on infrastructure mapping, BGP routing leaks, and email spoofing defenses.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 font-mono text-xs text-purple-400">
-                  <Link href="/blog/anatomy-of-passive-osint" className="hover:underline flex items-center gap-1">▸ Passive OSINT Blueprint <ChevronRight className="w-3.5 h-3.5" /></Link>
-                  <Link href="/blog/osint-fundamentals" className="hover:underline flex items-center gap-1">▸ OSINT Fundamentals <ChevronRight className="w-3.5 h-3.5" /></Link>
+                  <a href="https://www.effectivecpmnetwork.com/fe65rdif?key=82071772b3cc6d1de386046b7a927b03" target="_blank" rel="noopener noreferrer" className="hover:underline flex items-center gap-1">▸ Passive OSINT Blueprint <ChevronRight className="w-3.5 h-3.5" /></a>
+                  <a href="https://www.effectivecpmnetwork.com/fe65rdif?key=82071772b3cc6d1de386046b7a927b03" target="_blank" rel="noopener noreferrer" className="hover:underline flex items-center gap-1">▸ OSINT Fundamentals <ChevronRight className="w-3.5 h-3.5" /></a>
                 </div>
               </div>
 

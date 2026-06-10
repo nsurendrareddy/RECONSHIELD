@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Globe, Menu, X, ExternalLink } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
+import Ad728x90 from '@/components/ads/Ad728x90'
 
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 
@@ -198,7 +199,9 @@ export default function Layout({ children }) {
 
       {/* Main Content */}
       <main className={`${isBlogPage ? '' : 'max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8'} min-h-[80vh] relative`}>
+        <Ad728x90 />
         {children}
+        <Ad728x90 />
       </main>
 
       {/* Footer */}

@@ -5,8 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
-import Adsterra300x250 from '@/components/ads/Adsterra300x250'
-import AdsterraNativeBanner from '@/components/ads/AdsterraNativeBanner'
+import Ad300x250 from '@/components/ads/Ad300x250'
+import NativeBanner from '@/components/ads/NativeBanner'
 
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
@@ -32,8 +32,8 @@ const ptComponents = {
         </div>
       )
     },
-    adsterra300x250: () => <Adsterra300x250 />,
-    adsterraNative: () => <AdsterraNativeBanner />,
+    adsterra300x250: () => <Ad300x250 />,
+    adsterraNative: () => <NativeBanner />,
   },
   block: {
     h2: ({ children }) => {
@@ -385,6 +385,7 @@ FileETag None`,
         <div className="flex flex-col lg:flex-row gap-12 mb-20">
           {/* Article Body */}
           <div className="flex-1 min-w-0">
+            <NativeBanner />
             <div className="prose prose-invert max-w-none">
               <PortableText value={enrichedBody || []} components={ptComponents} />
             </div>

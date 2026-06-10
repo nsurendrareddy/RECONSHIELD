@@ -2,7 +2,8 @@ import Layout from "@/components/Layout";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
-import AdsterraSocialBar from "@/components/ads/AdsterraSocialBar";
+import SocialBar from "@/components/ads/SocialBar";
+import Popunder from "@/components/ads/Popunder";
 import { Inter, JetBrains_Mono, Rajdhani } from "next/font/google";
 import "./globals.css";
 
@@ -100,15 +101,8 @@ export default function RootLayout({ children }) {
 
         <Analytics />
         <SpeedInsights />
-        <AdsterraSocialBar />
-        {/* Monetag Vignette Script */}
-        <Script
-          id="monetag-vignette"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(s){s.dataset.zone='11124393',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
-          }}
-        />
+        <SocialBar />
+        <Popunder />
         {/* Site-wide JSON-LD */}
         <script
           type="application/ld+json"

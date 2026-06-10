@@ -7,6 +7,7 @@ import {
 
 import { generateBaseMetadata } from '@/utils/metadata';
 import ToolsHubClient from '@/components/ToolsHubClient';
+import NativeBanner from '@/components/ads/NativeBanner';
 
 export const metadata = generateBaseMetadata({
   title: "Cybersecurity Tools & Threat Intelligence Platform",
@@ -107,6 +108,7 @@ export default function ToolsHubPage() {
       <div className="bg-[#05080f]">
         
         <div className="max-w-[1200px] mx-auto px-6 py-20 space-y-32">
+          <NativeBanner />
           {/* Dynamic Tools Hub Client (Includes Search, Category Filtering, and Responsive Grid) */}
           <ToolsHubClient />
 
