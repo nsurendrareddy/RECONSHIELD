@@ -101,6 +101,14 @@ export default function RootLayout({ children }) {
         <Analytics />
         <SpeedInsights />
         <AdsterraSocialBar />
+        {/* Monetag Vignette Script */}
+        <Script
+          id="monetag-vignette"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(s){s.dataset.zone='11124393',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`
+          }}
+        />
         {/* Site-wide JSON-LD */}
         <script
           type="application/ld+json"
