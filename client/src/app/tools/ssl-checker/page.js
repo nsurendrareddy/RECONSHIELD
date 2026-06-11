@@ -13,8 +13,8 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 });
 
 export const metadata = generateBaseMetadata({
-  title: "SSL Checker Tool (Free) | Check SSL Certificate & TLS Security",
-  description: "Check SSL certificates, expiration dates, TLS versions, certificate chains, and website security settings with our free SSL Checker.",
+  title: "SSL Checker | Free SSL Certificate & TLS Security Auditor",
+  description: "Verify your website's SSL certificate installation with our free online ssl checker. Audit certificate validity, check expiry dates, and test TLS configurations.",
   path: "/tools/ssl-checker"
 });
 
@@ -201,7 +201,7 @@ export default function SslCheckerPage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            SSL Checker Tool
+            SSL Checker
           </h1>
           
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
@@ -427,8 +427,8 @@ export default function SslCheckerPage() {
               <li><strong>Public Key Signature:</strong> The public key algorithm and signature hash.</li>
             </ul>
 
-            {/* H2: SSL Certificate Expiration Checker */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">SSL Certificate Expiration Checker</h2>
+            {/* H2: Check SSL Certificate Expiry */}
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Check SSL Certificate Expiry</h2>
             <p>
               Under current CA/Browser Forum standards, certificates have a maximum validity period of **398 days** (~13 months). Expiry monitoring is critical: if a certificate expires, browsers will display a security warning, blocking visitors.
             </p>
@@ -436,8 +436,8 @@ export default function SslCheckerPage() {
               The ReconShield SSL Checker includes an **Expiration Risk Indicator** that calculates the remaining validity days and flags certificates nearing expiration, helping you prevent outages.
             </p>
 
-            {/* H2: SSL vs TLS Explained */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">SSL vs TLS Explained</h2>
+            {/* H2: TLS vs SSL */}
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">TLS vs SSL</h2>
             <p>
               SSL (Secure Sockets Layer) is the older, obsolete security protocol developed by Netscape. Due to cryptographic vulnerabilities, it was succeeded by TLS (Transport Layer Security). While everyone still uses the term 'SSL certificates', all modern network connections negotiate encryption using TLS 1.2 or TLS 1.3 protocols.
             </p>
@@ -694,7 +694,7 @@ export default function SslCheckerPage() {
         {/* FAQ Section */}
         <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
           <div className="max-w-[900px] mx-auto px-6">
-            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
+            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">SSL FAQ</h2>
             <div className="grid grid-cols-1 gap-6">
               {faqs.map((faq, index) => (
                 <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-cyan-500/20 transition-all">

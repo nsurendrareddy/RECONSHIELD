@@ -12,8 +12,8 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 });
 
 export const metadata = generateBaseMetadata({
-  title: "WHOIS Lookup Tool (Free) | Domain Owner & Registration Checker",
-  description: "Perform a free WHOIS lookup to check domain ownership, registrar details, registration dates, expiration dates, and domain intelligence insights.",
+  title: "Whois an IP | Free WHOIS Domain & IP Lookup Tool",
+  description: "Perform a free WHOIS query to check domain ownership details and whois an ip. Retrieve registrar profiles, registration timelines, and expiration dates instantly.",
   path: "/tools/whois"
 });
 
@@ -305,13 +305,13 @@ export default function WhoisPage() {
       {/* Deep Content Silo */}
       <div className="bg-[#05080f]">
         
-        {/* H2: What Is WHOIS Lookup? */}
+        {/* H2: How to WHOIS an IP Address */}
         <section className="py-20 border-b border-white/5">
           <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none prose-p:leading-relaxed prose-p:text-gray-400 prose-headings:text-white prose-a:text-[#00ff88] hover:prose-a:text-[#00cc6a]">
             
             <h2 className="text-3xl font-display font-bold mt-0 mb-6 flex items-center gap-3">
               <Activity className="w-8 h-8 text-[#00ff88]" />
-              What Is WHOIS Lookup?
+              How to WHOIS an IP Address
             </h2>
             <p>
               A <strong>WHOIS lookup</strong> is an information retrieval query designed to check public database registers for domain names, IP address delegations, and autonomous system allocations. Originating in the early 1982s under the oversight of the Internet Engineering Task Force (IETF) and ARPANET directory administrators, the WHOIS registry was structured to identify contacts responsible for operating networked equipment. 
@@ -320,8 +320,8 @@ export default function WhoisPage() {
               In modern internet infrastructure, every domain registration is logged into registry databases. A WHOIS query targets these registries to fetch metadata associated with domain name assignments. While historically this directory included the full names, emails, physical addresses, and telephone numbers of domain owners, contemporary privacy mandates (such as the GDPR and CCPA) redact this PII. The tool remains an invaluable asset for verifying domain ownership timelines, detecting infrastructure spoofing, and assessing cybersecurity threat postures.
             </p>
 
-            {/* H2: How WHOIS Lookup Works */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">How WHOIS Lookup Works</h2>
+            {/* H2: Understanding Domain Ownership Records */}
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Understanding Domain Ownership Records</h2>
             <p>
               The execution of a WHOIS query operates under a client-server paradigm. When a domain is checked using the ReconShield WHOIS Lookup engine, the request performs a sequence of lookup steps across several layers of the Domain Name System (DNS):
             </p>
@@ -682,7 +682,7 @@ export default function WhoisPage() {
         {/* FAQ Section */}
         <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
           <div className="max-w-[900px] mx-auto px-6">
-            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
+            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">WHOIS FAQ</h2>
             <div className="grid grid-cols-1 gap-6">
               {faqs.map((faq, index) => (
                 <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-[#00ff88]/20 transition-all">

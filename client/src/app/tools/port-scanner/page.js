@@ -13,8 +13,8 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 });
 
 export const metadata = generateBaseMetadata({
-  title: "Port Scanner Tool (Free) | Check Open Ports Online",
-  description: "Scan open ports, identify exposed services, and analyze network security risks using ReconShield's free Port Scanner.",
+  title: "Online Port Checker Tool | Check Open Ports Online",
+  description: "Scan open ports on any server using our free online port checker tool. Test firewalls, discover listening network services, and identify security exposures.",
   path: "/tools/port-scanner"
 });
 
@@ -201,7 +201,7 @@ export default function PortScannerPage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            Port Scanner Tool
+            Online Port Checker Tool
           </h1>
           
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
@@ -386,8 +386,8 @@ export default function PortScannerPage() {
               <li>Review the results to verify open ports, closed ports, and service banners.</li>
             </ol>
 
-            {/* H2: Common TCP Ports Explained */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Common TCP Ports Explained</h2>
+            {/* H2: Common Open Ports */}
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Common Open Ports</h2>
             <p>
               Standard TCP ports are assigned to specific services to ensure consistent network communication:
             </p>
@@ -412,8 +412,8 @@ export default function PortScannerPage() {
               <li><strong>Port 161 (SNMP):</strong> Used to monitor and manage network devices.</li>
             </ul>
 
-            {/* H2: Port Scanner vs Vulnerability Scanner */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Port Scanner vs Vulnerability Scanner</h2>
+            {/* H2: TCP vs UDP Ports */}
+            <h2 className="text-3xl font-display font-bold mt-16 mb-6">TCP vs UDP Ports</h2>
             <p>
               While similar, port scanners and vulnerability scanners serve different purposes:
             </p>
@@ -649,7 +649,7 @@ export default function PortScannerPage() {
         {/* FAQ Section */}
         <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
           <div className="max-w-[900px] mx-auto px-6">
-            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
+            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Port Scanner FAQ</h2>
             <div className="grid grid-cols-1 gap-6">
               {faqs.map((faq, index) => (
                 <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-red-500/20 transition-all">
