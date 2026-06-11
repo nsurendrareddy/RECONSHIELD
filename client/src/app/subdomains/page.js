@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 export default function SubdomainsHubPage() {
-  const commonDomains = ['google.com', 'github.com', 'microsoft.com', 'cloudflare.com', 'apple.com'].filter(domain => KNOWN_DOMAINS.includes(domain));
+  const commonDomains = ['google.com', 'github.com', 'microsoft.com', 'openai.com', 'cloudflare.com', 'apple.com'].filter(domain => KNOWN_DOMAINS.includes(domain));
   
   const topics = [
     { slug: 'subdomain-enumeration', title: 'Subdomain Enumeration', desc: 'Understanding the methodologies for mapping subdomains.' },

@@ -66,7 +66,8 @@ export const KNOWN_DOMAINS = [
   'cloudflare.com',
   'microsoft.com',
   'yahoo.com',
-  'apple.com'
+  'apple.com',
+  'openai.com'
 ];
 
 // Helper checks for existence and validity
