@@ -1,11 +1,18 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Search, Shield, Loader2, AlertTriangle, Terminal } from 'lucide-react'
 
-export default function SearchBar({ onScan, isScanning }) {
-  const [domain, setDomain] = useState('')
-  const [consent, setConsent] = useState(false)
+export default function SearchBar({ onScan, isScanning, initialTarget }) {
+  const [domain, setDomain] = useState(initialTarget || '')
+  const [consent, setConsent] = useState(!!initialTarget)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (initialTarget) {
+      setDomain(initialTarget);
+      setConsent(true);
+    }
+  }, [initialTarget]);
 
   const handleSubmit = (e) => {
     e.preventDefault()

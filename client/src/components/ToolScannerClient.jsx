@@ -33,6 +33,19 @@ const SECTION_MAP = {
 
 export default function ToolScannerClient({ toolId, title, desc }) {
   const { status, scanData, domain, scan, scanProgress, progress, reset } = useScan();
+  const [initialTarget, setInitialTarget] = React.useState('');
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const target = params.get('target') || '';
+      if (target) {
+        setInitialTarget(target);
+        scan(target);
+      }
+    }
+  }, [scan]);
+
   const results = scanData?.results || {};
   
   const tool = SECTION_MAP[toolId] || SECTION_MAP['dns-lookup'];
@@ -56,7 +69,7 @@ export default function ToolScannerClient({ toolId, title, desc }) {
       </motion.div>
 
       <div className="glass-card p-8 mb-10">
-        <SearchBar onScan={scan} isScanning={status === 'scanning'} />
+        <SearchBar onScan={scan} isScanning={status === 'scanning'} initialTarget={initialTarget} />
       </div>
 
       {status === 'scanning' && (

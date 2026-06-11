@@ -240,6 +240,7 @@ export default function Layout({ children }) {
               <ul className="space-y-2 text-sm">
                 <li><Link href="/scanner" className="hover:text-matrix-400 transition-colors">Security Scanner</Link></li>
                 <li><Link href="/tools/subdomain-finder" className="hover:text-matrix-400 transition-colors">Subdomain Finder</Link></li>
+                <li><Link href="/tools/dns-lookup" className="hover:text-matrix-400 transition-colors">DNS Lookup Tool</Link></li>
                 <li><Link href="/tools/email-security" className="hover:text-matrix-400 transition-colors">Email Security Tool</Link></li>
                 <li><Link href="/blog" className="hover:text-matrix-400 transition-colors">Security Blog</Link></li>
                 <li><Link href="/about-reconshield" className="hover:text-matrix-400 transition-colors">About ReconShield</Link></li>
