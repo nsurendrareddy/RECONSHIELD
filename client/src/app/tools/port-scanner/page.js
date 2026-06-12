@@ -620,9 +620,9 @@ export default function PortScannerPage() {
                   time: "6 min read"
                 },
                 {
-                  title: "Attack Surface Mapping: Documenting Exposed Infrastructure Boundary Configurations",
-                  desc: "A strategic roadmap to map public subnets, inventory exposed ports, and build a defensive perimeter strategy.",
-                  url: "/blog/attack-surface-mapping",
+                  title: "Securing BGP Route Leaks: Why Large ASNs Fall Victim to Hijacking Campaigns",
+                  desc: "Examine how Border Gateway Protocol routing errors redirect corporate subnets, and how to configure RPKI route verification.",
+                  url: "/blog/securing-bgp-route-leaks",
                   time: "8 min read"
                 },
                 {

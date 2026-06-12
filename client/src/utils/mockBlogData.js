@@ -417,27 +417,6 @@ Combat spoofing by ensuring you [align DNS records](/tools/dns-lookup) for:
 Use the [Email Security Tool](/tools/email-security) to check if your domain lacks quarantine or reject policies.
     `)
   },
-  'business-email-compromise-defense': {
-    title: "Business Email Compromise Defense: Blocking Inbound Impersonation Attacks",
-    slug: "business-email-compromise-defense",
-    publishedAt: "2026-06-01T08:00:00Z",
-    excerpt: "Analyzing BEC attack vectors, CEO fraud, invoice hijacks, and the administrative controls required to block phishing.",
-    categories: [{ title: "Web Security" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2700,
-    body: convertMarkdownToPortableText(`
-## Inside Business Email Compromise (BEC)
-BEC attacks focus on social engineering rather than malware, using spoofed executive identities to trick employees into transfers.
-
-### Preventing Domain Impersonation
-By implementing and auditing [strict SPF/DKIM and DMARC configurations](/tools/dns-lookup), you prevent threat actors from utilizing your domain in spoofing campaigns.
-
-### Technical & Administrative Controls
-- Enforce DMARC \`p=reject\` on all corporate root domains.
-- Implement employee security awareness training focusing on invoice change requests.
-- Deploy secure email gateways (SEG) with display name spoofing detection.
-    `)
-  },
 
   // OSINT CLUSTER
   'osint-fundamentals': {
@@ -466,47 +445,4 @@ Always use anonymous proxy networks or sandbox environments when performing acti
     `)
   },
 
-  'attack-surface-mapping': {
-    title: "Attack Surface Mapping: Documenting Exposed Infrastructure Boundary Configurations",
-    slug: "attack-surface-mapping",
-    publishedAt: "2026-05-30T09:00:00Z",
-    excerpt: "How to inventory digital assets, detect shadow IT configurations, and mitigate exposures across cloud networks.",
-    categories: [{ title: "OSINT & analysis" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2750,
-    body: convertMarkdownToPortableText(`
-## Defining the External Attack Surface
-The attack surface includes all public-facing assets (subdomains, open ports, web apps, mail servers) exposed to threat actors.
-
-### Steps to Map Your Attack Surface
-1. Domain Discovery: [Find root domains and subdomains](/tools/dns-lookup) and resolve their active mappings.
-2. **Port Auditing:** Run a [network port check](/tools/port-scanner) to identify active network services.
-3. **Configuration Check:** Check security headers and TLS protocol suites, and run [IP reputation assessments](/tools/ip-lookup) to detect compromised nodes.
-
-### Continuous Attack Surface Management
-Deploy continuous exposure audits to catch shadow IT before vulnerabilities are abused. Run scans via [Security Exposure Assessment](/tools/vulnerability-scanner).
-    `)
-  },
-
-  'threat-intelligence-collection': {
-    title: "Threat Intelligence Collection: Aggregating Feeds for Boundary Hardening",
-    slug: "threat-intelligence-collection",
-    publishedAt: "2026-05-30T08:00:00Z",
-    excerpt: "How to compile IP blacklists, identify compromised credentials, and automate exposure updates.",
-    categories: [{ title: "OSINT & analysis" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2650,
-    body: convertMarkdownToPortableText(`
-## The Value of Threat Intelligence
-Threat intelligence provides context on which threats represent active risks to your specific organization.
-
-### Intelligence Collection Feeds
-- **Open-source feeds:** Malicious IP lists, [bad reputation domains](/tools/dns-lookup) that should be audited for DNS anomalies.
-- **Credential dumps:** Exposed credentials from breaches.
-- **Passive indicators:** Certificate logs indicating phishing setups.
-
-### Integrating Intelligence Into Defensive Configurations
-Inject blocked IP lists into edge WAF configurations and restrict access to exposed services based on reputation telemetry. Utilizing an automated [IP blacklist lookup tool](/tools/ip-lookup) helps teams dynamically check if their hosts are listed in active threat indicators, which can be correlated with [active port scanning](/tools/port-scanner) to isolate exposed management endpoints.
-    `)
-  }
 };

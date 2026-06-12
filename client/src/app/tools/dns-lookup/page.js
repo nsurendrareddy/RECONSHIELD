@@ -774,10 +774,10 @@ export default function DnsLookupPage() {
                   readTime: "8 min read"
                 },
                 {
-                  title: "Business Email Compromise Defense: Blocking Inbound Impersonation Attacks",
-                  desc: "Examine key authentication parameters and DNS policy controls to defend against phishing and CEO fraud.",
-                  url: "/blog/business-email-compromise-defense",
-                  readTime: "9 min read"
+                  title: "OWASP Top 10 Web Hardening: Defending HTTP Headers",
+                  desc: "Audit HTTP response configurations to prevent clickjacking, cross-site scripting, and MIME sniffing attacks.",
+                  url: "/blog/owasp-http-headers-hardening",
+                  readTime: "8 min read"
                 },
                 {
                   title: "The Anatomy of Passive OSINT: Mapping Infrastructure Without Noise",

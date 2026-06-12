@@ -560,10 +560,10 @@ export default function IpScannerPage() {
                   time: "7 min read"
                 },
                 {
-                  title: "Threat Intelligence Collection: Aggregating Feeds for Boundary Hardening",
-                  desc: "Verify how security teams compile IP reputation blacklists, track compromised credentials, and block command-and-control targets.",
-                  url: "/blog/threat-intelligence-collection",
-                  time: "8 min read"
+                  title: "OSINT Fundamentals: The Building Blocks of Passive Information Gathering",
+                  desc: "Learn the core techniques of passive data gathering, DNS record harvesting, and boundary footprint auditing.",
+                  url: "/blog/osint-fundamentals",
+                  time: "7 min read"
                 }
               ].map((article, idx) => (
                 <Link key={idx} href={article.url} className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group flex flex-col justify-between">
