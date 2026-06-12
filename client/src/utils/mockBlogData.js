@@ -68,7 +68,7 @@ Security teams must assume that their entire public-facing architecture is mappe
 Modern threat intelligence starts with silent mapping. Passive Open Source Intelligence (OSINT) refers to the collection and analysis of data without directly interacting with the target system. Unlike active footprinting, which involves [probing open ports](/tools/port-scanner) (e.g., Nmap) and application probing that immediately triggers firewalls and Intrusion Detection Systems (IDS), passive mapping leverages public, third-party databases.
 
 ### 1. Certificate Transparency (CT) Logs
-Certificate Transparency is an open framework designed to monitor and audit SSL/TLS certificates. Whenever a certificate authority (CA) issues a certificate for a domain, they are legally required to log the certificate in a public, cryptographic ledger. While this prevents unauthorized certificates from being issued, it also acts as a public ledger of all subdomains created by an organization.
+Certificate Transparency is an open framework designed to monitor and audit SSL/TLS certificates. Whenever a certificate authority (CA) issues a certificate for a domain, they are legally required to log the certificate in a public, cryptographic ledger. While this prevents unauthorized certificates from being issued, it also acts as a public ledger of all subdomains created by an organization. Once subdomains are discovered, auditors perform a [web technology stack lookup](/tools/tech-detector) to identify target frameworks running on those nodes.
 For example, querying a CT log engine (like crt.sh) for \`example.com\` will immediately reveal subdomains such as:
 - \`dev-stage.internal.example.com\`
 - \`vpn-gateway.example.com\`
@@ -122,7 +122,7 @@ The primary protection against BGP exploits is Resource Public Key Infrastructur
     estimatedWordCount: 1390,
     body: convertMarkdownToPortableText(`
 ## Hardening Email Infrastructure
-Email spoofing remains one of the primary delivery methods for business compromise payloads. By configuring SPF, DKIM, and strict DMARC enforcement policies, organizations can prevent malicious mail delivery using their domains.
+Email spoofing remains one of the primary delivery methods for business compromise payloads. By configuring SPF, DKIM, and strict DMARC enforcement policies, organizations can prevent malicious mail delivery using their domains. Conducting an automated [email security audit](/tools/email-security) validates that all active protocols align with standard sender parameters.
 
 ### Understanding the Email Defense Triad
 To prevent domain forgery and unauthorized email delivery, security administrators must coordinate three distinct [DNS TXT records](/tools/dns-lookup) that define authorized sending sources.
@@ -155,10 +155,10 @@ Transitioning to \`p=reject\` must be done in phases. Start with \`p=none\` to a
     estimatedWordCount: 1250,
     body: convertMarkdownToPortableText(`
 ## OWASP HTTP Headers Hardening
-HTTP response security headers provide instructions to the browser on how to isolate web contexts. Content-Security-Policy (CSP), X-Frame-Options, and Strict-Transport-Security form the baseline core of website hardening.
+HTTP response security headers provide instructions to the browser on how to isolate web contexts. Content-Security-Policy (CSP), X-Frame-Options, and Strict-Transport-Security form the baseline core of website hardening. Running a [security headers checker](/tools/http-headers) scan is essential to audit which parameters are active.
 
 ### Baseline Security Headers Definition
-By default, web browsers trust the content served by a domain. Security headers restrict browser permissions, preventing dynamic injection exploits.
+By default, web browsers trust the content served by a domain. Security headers restrict browser permissions, preventing dynamic injection exploits. To verify what server technologies and headers your site is exposing, you can audit your site using the [online technology detector](/tools/tech-detector).
 
 ### 1. Content-Security-Policy (CSP)
 CSP allows developers to whitelist the origins of script execution, stylesheet rendering, and connection paths. This blocks Cross-Site Scripting (XSS) and data injection payloads.
@@ -189,7 +189,7 @@ Example record:
     estimatedWordCount: 2100,
     body: convertMarkdownToPortableText(`
 ## Cryptographic Protocol Auditing
-Outdated cryptographic handshakes (SSLv3, TLS 1.0, and TLS 1.1) represent severe configuration risks. Regulated environments must verify they only authenticate with TLS 1.2 and TLS 1.3 ciphers.
+Outdated cryptographic handshakes (SSLv3, TLS 1.0, and TLS 1.1) represent severe configuration risks. Regulated environments must verify they only authenticate with TLS 1.2 and TLS 1.3 ciphers. Executing a regular [TLS configuration checker](/tools/ssl-checker) scan helps identify deprecated protocols active on your servers.
 
 ### The Cryptographic Compliance Mandate
 As computing power increases, older cryptographic algorithms become vulnerable to decryption attacks. Under security frameworks like PCI-DSS and GDPR, using broken ciphers is a compliance violation.
@@ -214,7 +214,7 @@ To pass compliance audits, implement the following web server directives:
     estimatedWordCount: 1670,
     body: convertMarkdownToPortableText(`
 ## Shadow IT Exposed Interface Scanning
-Managing external assets exposure requires continuous inventory tracking. Passive port mapping identifies databases, management panels, and raw consoles exposed to the wider internet. Initiating an active [online port checker scan](/tools/port-scanner) allows administrators to verify if these ports are currently accepting external connections.
+Managing external assets exposure requires continuous inventory tracking. Passive port mapping identifies databases, management panels, and raw consoles exposed to the wider internet. Initiating an active [online port checker scan](/tools/port-scanner) allows administrators to verify if these ports are currently accepting external connections. Furthermore, identifying the [exposed website technology stack](/tools/tech-detector) helps audit if these interfaces run vulnerable versions. Executing a [website vulnerability scan](/tools/vulnerability-scanner) is essential to discover exposed CMS platforms and unpatched database software.
 
 ### The Risk of Shadow IT
 Shadow IT refers to any system or software deployed by employees without the approval of the central IT security department. When developers expose databases (like MongoDB, PostgreSQL) or remote consoles (like SSH, RDP) to access services easily, they expose the organization to automated brute-force attacks and vulnerability exploitation.
@@ -322,7 +322,7 @@ TLS 1.3 reduces the handshake to a single round-trip (1-RTT), and supports 0-RTT
 TLS 1.3 removes support for weak algorithms like RC4, 3DES, MD5, SHA-1, and CBC-mode ciphers.
 
 ### Enabling TLS 1.3 On Web Servers
-Configure modern web servers like Nginx or Apache to support TLS 1.2 and TLS 1.3, disabling older configurations.
+Configure modern web servers like Nginx or Apache to support TLS 1.2 and TLS 1.3, disabling older configurations. You can verify your active protocol versions and cipher support using our free [TLS configuration checker](/tools/ssl-checker).
     `)
   },
   'ssl-expiry-monitoring': {
@@ -363,7 +363,7 @@ Merely obtaining an SSL certificate is not enough. You must secure the configura
 Disable SSLv2, SSLv3, TLS 1.0, and TLS 1.1 completely in server configurations.
 
 ### 2. Configure Cipher Strength
-Prefer Elliptic Curve Diffie-Hellman (ECDHE) exchange ciphers to achieve Perfect Forward Secrecy (PFS).
+Prefer Elliptic Curve Diffie-Hellman (ECDHE) exchange ciphers to achieve Perfect Forward Secrecy (PFS). Run an [inspect SSL certificate](/tools/ssl-checker) audit to verify your cipher configuration status.
 
 ### 3. Enforce Strict-Transport-Security (HSTS)
 HSTS forces browsers to only connect via HTTPS. Verify HSTS configuration using [Security Headers Analyzer](/tools/http-headers).
@@ -432,7 +432,7 @@ Use the [Email Security Tool](/tools/email-security) to check if your domain lac
 OSINT is the collection and analysis of data gathered from publicly available sources to produce actionable intelligence.
 
 ### Passive vs Active Reconnaissance
-Active recon interacts directly with targets (scanning, probing). Active scans rely on [checking open TCP ports](/tools/port-scanner) and software versions. Passive recon [queries third-party datasets](/tools/dns-lookup)—such as cached public DNS resolvers—avoiding direct detection. To gather initial metadata, hunters leverage tools like the [IP geolocation lookup](/tools/ip-lookup) to footprint the registry owner.
+Active recon interacts directly with targets (scanning, probing). Active scans rely on [checking open TCP ports](/tools/port-scanner) and software versions. Running a regular [website vulnerability scan](/tools/vulnerability-scanner) helps security teams inventory and prioritize unpatched exposures before malicious scans occur. Passive recon [queries third-party datasets](/tools/dns-lookup)—such as cached public DNS resolvers—avoiding direct detection. To gather initial metadata, hunters leverage tools like the [IP geolocation lookup](/tools/ip-lookup) and [technology fingerprinting tools](/tools/tech-detector) to footprint the registry owner and active server software.
 
 ### The OSINT Lifecycle
 1. Requirements identification.

@@ -558,6 +558,65 @@ export default function TechDetectorPage() {
           </div>
         </section>
 
+        {/* Technology Intelligence Learning Center Section */}
+        <section className="py-20 bg-[#0a0d14] border-t border-b border-white/5" aria-label="Technology Intelligence Learning Center">
+          <div className="max-w-[1000px] mx-auto px-6 font-sans">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">Technology Intelligence Learning Center</h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed">
+              Understand the mechanics of website fingerprinting, Content-Security-Policy parameters, and passive OSINT infrastructure discovery.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "OWASP Top 10 Web Configuration Audits: Hardening HTTP Headers",
+                  desc: "Learn how Content-Security-Policy (CSP) and MIME-type sniffing checks safeguard applications and prevent stack signature leaks.",
+                  url: "/blog/owasp-http-headers-hardening",
+                  time: "7 min read"
+                },
+                {
+                  title: "The Anatomy of Passive OSINT: Mapping Infrastructure Without Noise",
+                  desc: "Examine how security teams map subdomains via transparency logs and resolve target server technologies anonymously.",
+                  url: "/blog/anatomy-of-passive-osint",
+                  time: "6 min read"
+                },
+                {
+                  title: "Shadow IT Discovery: Passive Identification of Exposed Database and Administrative Ports",
+                  desc: "Audit exposed panels, database protocols, and CMS platforms to prevent automated brute-force attacks.",
+                  url: "/blog/shadow-it-exposed-ports",
+                  time: "7 min read"
+                },
+                {
+                  title: "OSINT Fundamentals: The Building Blocks of Passive Information Gathering",
+                  desc: "Compare active website stack checks against passive registrar database lookups to run secure security audits.",
+                  url: "/blog/osint-fundamentals",
+                  time: "7 min read"
+                }
+              ].map((article, idx) => (
+                <Link key={idx} href={article.url} className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between text-xs font-mono text-gray-500 mb-3">
+                      <span className="flex items-center gap-1.5 text-cyan-400/80">
+                        <BookOpen className="w-3.5 h-3.5" /> Technical Guide
+                      </span>
+                      <span>{article.time}</span>
+                    </div>
+                    <h3 className="text-white font-bold text-base mb-2 group-hover:text-cyan-400 transition-colors leading-snug">
+                      {article.title}
+                    </h3>
+                    <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                      {article.desc}
+                    </p>
+                  </div>
+                  <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">
+                    Read Article <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Semantic Internal Links (Phase 7 - Internal Linking) */}
         <section className="py-20 bg-[#05080f]" aria-label="Related Security Tools">
           <div className="max-w-[1000px] mx-auto px-6">

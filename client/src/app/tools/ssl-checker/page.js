@@ -642,6 +642,65 @@ export default function SslCheckerPage() {
           </div>
         </section>
 
+        {/* SSL & HTTPS Security Learning Center Section */}
+        <section className="py-20 bg-[#0a0d14] border-t border-b border-white/5" aria-label="SSL & HTTPS Security Learning Center">
+          <div className="max-w-[1000px] mx-auto px-6 font-sans">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">SSL & HTTPS Security Learning Center</h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed">
+              Expand your knowledge on public key infrastructures, TLS configurations, and automated certificate monitoring.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "SSL Certificate Explained: Public Key Cryptography and Public Trust Chains",
+                  desc: "Learn how public-key cryptography secures browsers, and how hierarchical trust models validate domain certificates.",
+                  url: "/blog/ssl-certificate-explained",
+                  time: "8 min read"
+                },
+                {
+                  title: "TLS 1.3 Guide: Implementation, Ciphers, and Performance Hardening",
+                  desc: "Understand handshake speed optimizations, 0-RTT parameters, and deprecated ciphers like RC4 or 3DES.",
+                  url: "/blog/tls-1-3-guide",
+                  time: "7 min read"
+                },
+                {
+                  title: "SSL Expiry Monitoring: Automating Renewal Pipelines for Zero Outages",
+                  desc: "Configure automated renew scripts using Certbot and Let's Encrypt to protect staging domains and subdomains.",
+                  url: "/blog/ssl-expiry-monitoring",
+                  time: "8 min read"
+                },
+                {
+                  title: "SSL Troubleshooting: Resolving Common Certificate and Trust Errors",
+                  desc: "Diagnose connection blocks, name mismatch alerts, mixed content issues, and missing intermediate certificates.",
+                  url: "/blog/ssl-troubleshooting",
+                  time: "6 min read"
+                }
+              ].map((article, idx) => (
+                <Link key={idx} href={article.url} className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between text-xs font-mono text-gray-500 mb-3">
+                      <span className="flex items-center gap-1.5 text-cyan-400/80">
+                        <BookOpen className="w-3.5 h-3.5" /> Technical Guide
+                      </span>
+                      <span>{article.time}</span>
+                    </div>
+                    <h3 className="text-white font-bold text-base mb-2 group-hover:text-cyan-400 transition-colors leading-snug">
+                      {article.title}
+                    </h3>
+                    <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                      {article.desc}
+                    </p>
+                  </div>
+                  <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">
+                    Read Article <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Semantic Internal Links (Phase 7 - Internal Linking) */}
         <section className="py-20 bg-[#05080f]" aria-label="Related Security Tools">
           <div className="max-w-[1000px] mx-auto px-6">
