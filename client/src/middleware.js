@@ -123,7 +123,7 @@ export function middleware(request) {
       return NextResponse.next();
     }
 
-    const domain = pathname.replace(matchingRoute, '').split('/')[0].toLowerCase();
+    const domain = decodeURIComponent(pathname.replace(matchingRoute, '').split('/')[0]).toLowerCase();
     
     // Whitelist programmatic topic guides
     const sslTopics = [

@@ -124,11 +124,11 @@ function isUrlIndexableAndValid(urlStr) {
       return Object.keys(DNS_TYPES_DATA).includes(type);
     }
     if (path.startsWith('/dns-records/')) {
-      return false;
+      const domain = path.replace('/dns-records/', '');
+      return KNOWN_DOMAINS.includes(domain.toLowerCase());
     }
     if (path.startsWith('/dns/')) {
-      const domain = path.replace('/dns/', '');
-      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+      return false;
     }
 
     // Check Email Auths
@@ -317,9 +317,9 @@ export async function GET(request, { params }) {
              const mappedUrls = extractedUrls.map(u => {
                  if (u && typeof u.url === 'string') {
                     let newUrl = u.url;
-                    if (newUrl.includes('/dns-records/') && !newUrl.includes('/dns-records/types/')) {
-                       newUrl = newUrl.replace('/dns-records/', '/dns/');
-                    }
+                    if (newUrl.includes('/dns/') && !newUrl.includes('/dns-records/')) {
+                        newUrl = newUrl.replace('/dns/', '/dns-records/');
+                     }
                     return { ...u, url: newUrl };
                  }
                  return u;
@@ -363,7 +363,7 @@ export async function GET(request, { params }) {
             
             // Map entity type to the exact path required
             let pathPrefix = entityType;
-            if (entityType === 'dns') pathPrefix = 'dns';
+            if (entityType === 'dns') pathPrefix = 'dns-records';
             if (entityType === 'malicious-ips') pathPrefix = 'ip';
             if (entityType === 'cve') pathPrefix = 'cve';
             if (entityType === 'whois') pathPrefix = 'tools/whois';
