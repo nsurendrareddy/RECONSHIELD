@@ -62,7 +62,7 @@ export const MOCK_POSTS_DATA = {
 Passive reconnaissance represents a critical blind spot for many enterprise security programs. While active scans are logged, passive data gathering using certificate transparency logs and regional caching databases leaves zero footprints on target systems.
 
 ### Key Investigation Vectors
-Security teams must assume that their entire public-facing architecture is mapped and regularly audit their DNS zone files to purge unused hostnames. Discovering subdomains is easiest through certificate logs.
+Security teams must assume that their entire public-facing architecture is mapped and regularly audit their [DNS zone files](/tools/dns-lookup) to purge unused hostnames. Discovering subdomains is easiest through certificate logs.
 
 ### The Methodology of Zero-Footprint Reconnaissance
 Modern threat intelligence starts with silent mapping. Passive Open Source Intelligence (OSINT) refers to the collection and analysis of data without directly interacting with the target system. Unlike active footprinting, which involves port scanning (e.g., Nmap) and application probing that immediately triggers firewalls and Intrusion Detection Systems (IDS), passive mapping leverages public, third-party databases.
@@ -100,7 +100,7 @@ Defense against passive OSINT requires a shift in threat modeling:
 BGP route security remains the Achilles' heel of core internet routing. Rogue route advertisements can redirect enterprise traffic through adversarial infrastructure, enabling man-in-the-middle attacks. Security analysts must verify BGP path logs, configure explicit neighbor maps, and deploy RPKI certificates.
 
 ### The Border Gateway Protocol Vulnerability
-The Border Gateway Protocol (BGP) was created during the early days of the internet, when routing was established on mutual trust. Under BGP, networks (Autonomous Systems) announce which IP address blocks they own. However, BGP does not natively validate whether a network actually has authorization to announce those prefixes.
+The Border Gateway Protocol (BGP) was created during the early days of the internet, when routing was established on mutual trust. Under BGP, networks (Autonomous Systems) announce which [IP address blocks](/tools/dns-lookup) they own, which map to DNS A/AAAA records. However, BGP does not natively validate whether a network actually has authorization to announce those prefixes.
 
 ### BGP Hijacking and Route Leaks
 A BGP hijack occurs when an AS announces an IP prefix it does not own. This causes global routers to send traffic intended for the legitimate owner to the hijacker instead. A route leak is a configuration mistake where an AS announces routes learned from one peer to another peer, causing traffic to flow through unintended subnets. Both issues result in connectivity losses and metadata interception.
@@ -125,7 +125,7 @@ The primary protection against BGP exploits is Resource Public Key Infrastructur
 Email spoofing remains one of the primary delivery methods for business compromise payloads. By configuring SPF, DKIM, and strict DMARC enforcement policies, organizations can prevent malicious mail delivery using their domains.
 
 ### Understanding the Email Defense Triad
-To prevent domain forgery and unauthorized email delivery, security administrators must coordinate three distinct DNS TXT records.
+To prevent domain forgery and unauthorized email delivery, security administrators must coordinate three distinct [DNS TXT records](/tools/dns-lookup) that define authorized sending sources.
 
 ### 1. Sender Policy Framework (SPF)
 SPF allows a domain owner to publish a list of IP addresses and mail servers authorized to send emails from their domain name. Receiving servers check this TXT record to see if the sending IP is whitelisted.
@@ -245,7 +245,7 @@ If administrative services require remote access, place them behind a secure VPN
     estimatedWordCount: 2200,
     body: convertMarkdownToPortableText(`
 ## Understanding Registrars vs Registries
-The registry (e.g. Verisign) manages the TLD. The registrar sells individual domains to consumers.
+The registry (e.g. Verisign) [delegates the TLD](/tools/dns-lookup) root zones. The registrar sells individual domains to consumers.
 
 ### Evaluating Registrar Security Features
 - **Two-Factor Authentication (2FA):** Mandatory for preventing hijackings.
@@ -266,7 +266,7 @@ When dealing with a phishing site, security teams locate the abuse email from th
     estimatedWordCount: 2400,
     body: convertMarkdownToPortableText(`
 ## The Catastrophic Cost of Domain Dropping
-If a corporate domain expires, speculators or threat actors can purchase it immediately, capturing active traffic and inbound emails.
+If a corporate domain expires, speculators or threat actors can purchase it immediately, breaking the original [DNS configuration](/tools/dns-lookup) and capturing active traffic and inbound emails.
 
 ### Expiration Timelines
 - **Auto-Renewal Period:** Typically 30-45 days past expiration.
@@ -289,7 +289,7 @@ Set critical domains to auto-renew, register domains for multi-year periods, and
     estimatedWordCount: 2500,
     body: convertMarkdownToPortableText(`
 ## What Is an SSL Certificate?
-An SSL/TLS certificate is a digital credential binding a public key to a specific domain identity. It forms the backbone of HTTPS.
+An SSL/TLS certificate is a digital credential [digitally binding a public key](/tools/dns-lookup) to a specific domain identity that resolves via standard DNS. It forms the backbone of HTTPS.
 
 ### Public Key Cryptography
 SSL uses asymmetric encryption (RSA/ECC) to securely share session keys, enabling fast symmetric encryption for web traffic.
@@ -357,7 +357,7 @@ Incorporate [SSL Checker](/tools/ssl-checker) scripts into CI/CD pipelines to ca
     estimatedWordCount: 2700,
     body: convertMarkdownToPortableText(`
 ## Hardening the Transport Layer
-Merely obtaining an SSL certificate is not enough. You must secure the configurations of your web servers.
+Merely obtaining an SSL certificate is not enough. You must secure the configurations of your web servers and implement [DNS zone hardening](/tools/dns-lookup) like CAA and DNSSEC.
 
 ### 1. Disable Outdated Protocols
 Disable SSLv2, SSLv3, TLS 1.0, and TLS 1.1 completely in server configurations.
@@ -385,7 +385,7 @@ When users encounter SSL connection blocks, administrators must systematically t
 If your server fails to send the intermediate certificate, mobile devices will block connections. Verify chain paths using the [SSL Checker](/tools/ssl-checker).
 
 ### 2. Hostname Mismatch Alerts
-Occurs when the domain requested does not match the names listed in the SAN (Subject Alternative Name) field.
+Occurs when the domain requested does not match the [names listed in the SAN](/tools/dns-lookup) (Subject Alternative Name) field, which can be verified by resolving CNAME and A record structures.
 
 ### 3. Mixed Content Vulnerabilities
 If a secure HTTPS page requests scripts or images over unencrypted HTTP, browsers block the resource loading.
@@ -404,7 +404,7 @@ If a secure HTTPS page requests scripts or images over unencrypted HTTP, browser
     estimatedWordCount: 2800,
     body: convertMarkdownToPortableText(`
 ## The Role of DMARC
-DMARC dictates what receiving servers should do if SPF or DKIM checks fail. It relies on SPF/DKIM alignment with the From header.
+DMARC dictates what receiving servers should do if [SPF or DKIM checks](/tools/dns-lookup) fail, verifying message alignment. It relies on SPF/DKIM alignment with the From header.
 
 ### DMARC Policy Stages
 - **p=none:** Monitor reports without blocking traffic.
@@ -430,10 +430,10 @@ DMARC dictates what receiving servers should do if SPF or DKIM checks fail. It r
 The original SMTP protocol did not authenticate sender identities, allowing anyone to modify headers to appear as any address.
 
 ### The Triad of Defense
-Combat spoofing by enforcing:
-1. **SPF:** IP mapping.
-2. **DKIM:** Cryptographic proof.
-3. **DMARC:** Enforcement rule.
+Combat spoofing by ensuring you [align DNS records](/tools/dns-lookup) for:
+1. SPF: IP mapping.
+2. DKIM: Cryptographic proof.
+3. DMARC: Enforcement rule.
 
 ### Verifying Spoofing Exposures
 Use the [Email Security Tool](/tools/email-security) to check if your domain lacks quarantine or reject policies.
@@ -452,7 +452,7 @@ Use the [Email Security Tool](/tools/email-security) to check if your domain lac
 BEC attacks focus on social engineering rather than malware, using spoofed executive identities to trick employees into transfers.
 
 ### Preventing Domain Impersonation
-By implementing strict SPF/DKIM and DMARC configurations, you prevent threat actors from utilizing your domain in spoofing campaigns.
+By implementing and auditing [strict SPF/DKIM and DMARC configurations](/tools/dns-lookup), you prevent threat actors from utilizing your domain in spoofing campaigns.
 
 ### Technical & Administrative Controls
 - Enforce DMARC \`p=reject\` on all corporate root domains.
@@ -475,7 +475,7 @@ By implementing strict SPF/DKIM and DMARC configurations, you prevent threat act
 OSINT is the collection and analysis of data gathered from publicly available sources to produce actionable intelligence.
 
 ### Passive vs Active Reconnaissance
-Active recon interacts directly with targets (scanning, probing). Passive recon queries third-party datasets, avoiding detection.
+Active recon interacts directly with targets (scanning, probing). Passive recon [queries third-party datasets](/tools/dns-lookup)—such as cached public DNS resolvers—avoiding direct detection.
 
 ### The OSINT Lifecycle
 1. Requirements identification.
@@ -501,7 +501,7 @@ Always use anonymous proxy networks or sandbox environments when performing acti
 The attack surface includes all public-facing assets (subdomains, open ports, web apps, mail servers) exposed to threat actors.
 
 ### Steps to Map Your Attack Surface
-1. **Domain Discovery:** Find root domains and subdomains.
+1. Domain Discovery: [Find root domains and subdomains](/tools/dns-lookup) and resolve their active mappings.
 2. **Port Auditing:** Identify active network services.
 3. **Configuration Check:** Check security headers and TLS protocol suites.
 
@@ -541,7 +541,7 @@ Prune dangling DNS entries to prevent subdomain takeovers. Validate CNAME destin
 Threat intelligence provides context on which threats represent active risks to your specific organization.
 
 ### Intelligence Collection Feeds
-- **Open-source feeds:** Malicious IP lists, bad reputation domains.
+- **Open-source feeds:** Malicious IP lists, [bad reputation domains](/tools/dns-lookup) that should be audited for DNS anomalies.
 - **Credential dumps:** Exposed credentials from breaches.
 - **Passive indicators:** Certificate logs indicating phishing setups.
 

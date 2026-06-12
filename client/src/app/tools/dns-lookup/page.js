@@ -752,6 +752,56 @@ export default function DnsLookupPage() {
           </div>
         </section>
 
+        {/* Related DNS Guides Section */}
+        <section className="py-20 bg-[#0a0d14] border-t border-b border-white/5" aria-label="Related DNS Guides">
+          <div className="max-w-[1000px] mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">Related DNS & Security Guides</h2>
+            <p className="text-gray-400 text-sm text-center mb-10 max-w-xl mx-auto font-sans leading-relaxed">
+              Expand your knowledge on domain security, email authentication, and DNS reconnaissance with our deep-dive technical tutorials.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "Demystifying SPF, DKIM, and DMARC: A Blueprint for Email Spoofing Defense",
+                  desc: "Learn how to coordinate DNS TXT records to protect corporate domains from unauthorized sender forgery.",
+                  url: "/blog/spf-dkim-dmarc-blueprint",
+                  readTime: "7 min read"
+                },
+                {
+                  title: "Subdomain Enumeration: Methods for Discovering Hidden Target Namespaces",
+                  desc: "Compare passive certificate scraping and active DNS brute-forcing to surface staging hosts and shadow assets.",
+                  url: "/blog/subdomain-enumeration",
+                  readTime: "9 min read"
+                },
+                {
+                  title: "DMARC Enforcement Blueprint: Transitioning to strict p=reject Policies",
+                  desc: "A step-by-step roadmap to audit report alignments and safely enforce email receiver blocklists.",
+                  url: "/blog/dmarc-enforcement-blueprint",
+                  readTime: "10 min read"
+                },
+                {
+                  title: "The Anatomy of Passive OSINT: Mapping Infrastructure Without Noise",
+                  desc: "Discover how threat hunters map corporate attack surfaces silently using cached DNS caching resolver queries.",
+                  url: "/blog/anatomy-of-passive-osint",
+                  readTime: "8 min read"
+                }
+              ].map((guide, idx) => (
+                <Link key={idx} href={guide.url} className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between text-xs font-mono text-gray-500 mb-3">
+                      <span className="flex items-center gap-1.5 text-[#00ff88]/80"><BookOpen className="w-3.5 h-3.5" /> Technical Guide</span>
+                      <span>{guide.readTime}</span>
+                    </div>
+                    <h3 className="text-white font-bold text-base mb-2 group-hover:text-[#00ff88] transition-colors leading-snug">{guide.title}</h3>
+                    <p className="text-xs text-gray-400 leading-relaxed mb-4">{guide.desc}</p>
+                  </div>
+                  <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1 mt-auto">Read Article <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section */}
         <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
           <div className="max-w-[900px] mx-auto px-6">
