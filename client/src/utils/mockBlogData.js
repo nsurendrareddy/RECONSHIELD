@@ -283,113 +283,51 @@ Set critical domains to auto-renew, register domains for multi-year periods, and
     title: "SSL Certificate Explained: Public Key Cryptography and Public Trust Chains",
     slug: "ssl-certificate-explained",
     publishedAt: "2026-06-02T10:00:00Z",
-    excerpt: "A complete guide explaining how SSL/TLS certificates secure web browsers using public key cryptography and hierarchical trust models.",
+    excerpt: "",
     categories: [{ title: "Web Security" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2500,
-    body: convertMarkdownToPortableText(`
-## What Is an SSL Certificate?
-An SSL/TLS certificate is a digital credential [digitally binding a public key](/tools/dns-lookup) to a specific domain identity that resolves via standard DNS. It forms the backbone of HTTPS.
-
-### Public Key Cryptography
-SSL uses asymmetric encryption (RSA/ECC) to securely share session keys, enabling fast symmetric encryption for web traffic.
-
-### The Cryptographic Chain of Trust
-Certificates are signed in a chain: Root CA signs Intermediate CA, which signs the Leaf certificate. Validate yours using [SSL Checker](/tools/ssl-checker).
-
-### Types of Validation
-- **Domain Validation (DV):** Quick domain authority checks.
-- **Organization Validation (OV):** Verifies business registration.
-- **Extended Validation (EV):** Strict verification models.
-    `)
+    estimatedWordCount: 0,
+    body: convertMarkdownToPortableText("")
   },
   'tls-1-3-guide': {
     title: "TLS 1.3 Guide: Implementation, Ciphers, and Performance Hardening",
     slug: "tls-1-3-guide",
     publishedAt: "2026-06-02T09:30:00Z",
-    excerpt: "A detailed technical review of TLS 1.3, explaining handshake improvements, zero round-trip times (0-RTT), and deprecated cipher suites.",
+    excerpt: "",
     categories: [{ title: "Web Security" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2600,
-    body: convertMarkdownToPortableText(`
-## The Evolution of Transport Encryption
-TLS 1.3 represents a major redesign of the handshake protocol, prioritizing speed and eliminating legacy cryptographic vulnerabilities.
-
-### Key Handshake Improvements
-TLS 1.3 reduces the handshake to a single round-trip (1-RTT), and supports 0-RTT for repeating clients.
-
-### Deprecated Cryptographic Algorithms
-TLS 1.3 removes support for weak algorithms like RC4, 3DES, MD5, SHA-1, and CBC-mode ciphers.
-
-### Enabling TLS 1.3 On Web Servers
-Configure modern web servers like Nginx or Apache to support TLS 1.2 and TLS 1.3, disabling older configurations. You can verify your active protocol versions and cipher support using our free [TLS configuration checker](/tools/ssl-checker).
-    `)
+    estimatedWordCount: 0,
+    body: convertMarkdownToPortableText("")
   },
   'ssl-expiry-monitoring': {
     title: "SSL Expiry Monitoring: Automating Renewal Pipelines for Zero Outages",
     slug: "ssl-expiry-monitoring",
     publishedAt: "2026-06-02T09:00:00Z",
-    excerpt: "How to design automated alert systems for SSL certificate expiration monitoring, avoiding browser warning blocks.",
+    excerpt: "",
     categories: [{ title: "Web Security" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2300,
-    body: convertMarkdownToPortableText(`
-## The Danger of Expired Certificates
-Expired certificates trigger block warnings in browsers, halting e-commerce transactions and destroying organic rankings.
-
-### Automating Renewals with ACME
-Using tools like Certbot and Let's Encrypt automated renew scripts prevents manual scheduling errors.
-
-### Monitoring Staging and Subdomains
-Staging environments and API subdomains are often missed in manual audits. Discover them via the [Subdomain Finder](/tools/subdomain-finder).
-
-### Setting Up Expiry Check Alerts
-Incorporate [SSL Checker](/tools/ssl-checker) scripts into CI/CD pipelines to catch expiring assets.
-    `)
+    estimatedWordCount: 0,
+    body: convertMarkdownToPortableText("")
   },
   'https-security-best-practices': {
     title: "HTTPS Security Best Practices: Hardening Web Server Transport Security",
     slug: "https-security-best-practices",
     publishedAt: "2026-06-02T08:30:00Z",
-    excerpt: "A blueprint for securing web servers, configuring cipher suites, enabling HSTS, and implementing perfect forward secrecy.",
+    excerpt: "",
     categories: [{ title: "Web Security" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2700,
-    body: convertMarkdownToPortableText(`
-## Hardening the Transport Layer
-Merely obtaining an SSL certificate is not enough. You must secure the configurations of your web servers and implement [DNS zone hardening](/tools/dns-lookup) like CAA and DNSSEC.
-
-### 1. Disable Outdated Protocols
-Disable SSLv2, SSLv3, TLS 1.0, and TLS 1.1 completely in server configurations.
-
-### 2. Configure Cipher Strength
-Prefer Elliptic Curve Diffie-Hellman (ECDHE) exchange ciphers to achieve Perfect Forward Secrecy (PFS). Run an [inspect SSL certificate](/tools/ssl-checker) audit to verify your cipher configuration status.
-
-### 3. Enforce Strict-Transport-Security (HSTS)
-HSTS forces browsers to only connect via HTTPS. Verify HSTS configuration using [Security Headers Analyzer](/tools/http-headers).
-    `)
+    estimatedWordCount: 0,
+    body: convertMarkdownToPortableText("")
   },
   'ssl-troubleshooting': {
     title: "SSL Troubleshooting: Resolving Common Certificate and Trust Errors",
     slug: "ssl-troubleshooting",
     publishedAt: "2026-06-02T08:00:00Z",
-    excerpt: "A diagnostic guide for resolving trust chain failures, mixed content errors, and name mismatch alerts.",
+    excerpt: "",
     categories: [{ title: "Web Security" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2250,
-    body: convertMarkdownToPortableText(`
-## Diagnosing Connection Handshake Failures
-When users encounter SSL connection blocks, administrators must systematically troubleshoot the root cause.
-
-### 1. Broken Trust Chains (Missing Intermediates)
-If your server fails to send the intermediate certificate, mobile devices will block connections. Verify chain paths using the [SSL Checker](/tools/ssl-checker).
-
-### 2. Hostname Mismatch Alerts
-Occurs when the domain requested does not match the [names listed in the SAN](/tools/dns-lookup) (Subject Alternative Name) field, which can be verified by resolving CNAME and A record structures.
-
-### 3. Mixed Content Vulnerabilities
-If a secure HTTPS page requests scripts or images over unencrypted HTTP, browsers block the resource loading.
-    `)
+    estimatedWordCount: 0,
+    body: convertMarkdownToPortableText("")
   },
 
   // EMAIL SECURITY CLUSTER
