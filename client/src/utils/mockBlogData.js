@@ -65,7 +65,7 @@ Passive reconnaissance represents a critical blind spot for many enterprise secu
 Security teams must assume that their entire public-facing architecture is mapped and regularly audit their [DNS zone files](/tools/dns-lookup) to purge unused hostnames. Discovering subdomains is easiest through certificate logs.
 
 ### The Methodology of Zero-Footprint Reconnaissance
-Modern threat intelligence starts with silent mapping. Passive Open Source Intelligence (OSINT) refers to the collection and analysis of data without directly interacting with the target system. Unlike active footprinting, which involves port scanning (e.g., Nmap) and application probing that immediately triggers firewalls and Intrusion Detection Systems (IDS), passive mapping leverages public, third-party databases.
+Modern threat intelligence starts with silent mapping. Passive Open Source Intelligence (OSINT) refers to the collection and analysis of data without directly interacting with the target system. Unlike active footprinting, which involves [probing open ports](/tools/port-scanner) (e.g., Nmap) and application probing that immediately triggers firewalls and Intrusion Detection Systems (IDS), passive mapping leverages public, third-party databases.
 
 ### 1. Certificate Transparency (CT) Logs
 Certificate Transparency is an open framework designed to monitor and audit SSL/TLS certificates. Whenever a certificate authority (CA) issues a certificate for a domain, they are legally required to log the certificate in a public, cryptographic ledger. While this prevents unauthorized certificates from being issued, it also acts as a public ledger of all subdomains created by an organization.
@@ -78,7 +78,7 @@ For example, querying a CT log engine (like crt.sh) for \`example.com\` will imm
 Rather than querying the target's DNS servers directly, threat hunters query public DNS caches and recursive resolvers (like Cloudflare, Google DNS, or Quad9). By harvesting DNS propagation histories from open lookup records, attackers map out IP mappings without sending a single packet to the target network.
 
 ### 3. WHOIS and Regional Internet Registries (RIRs)
-By querying RIR databases (such as ARIN, RIPE, APNIC, LACNIC, and AFRINIC), investigators identify IP prefixes, Autonomous System Numbers (ASNs), and registered administrative contacts. These profiles map the global infrastructure allocations of the target organization.
+By querying RIR databases (such as ARIN, RIPE, APNIC, LACNIC, and AFRINIC), investigators identify IP prefixes, Autonomous System Numbers (ASNs), and registered administrative contacts. These profiles map the global infrastructure allocations of the target organization, which can be investigated via an [IP address registry lookup](/tools/ip-lookup) to detect unmapped network assets.
 
 ### Hardening the Perimeter Against Passive Gathering
 Defense against passive OSINT requires a shift in threat modeling:
@@ -103,7 +103,7 @@ BGP route security remains the Achilles' heel of core internet routing. Rogue ro
 The Border Gateway Protocol (BGP) was created during the early days of the internet, when routing was established on mutual trust. Under BGP, networks (Autonomous Systems) announce which [IP address blocks](/tools/dns-lookup) they own, which map to DNS A/AAAA records. However, BGP does not natively validate whether a network actually has authorization to announce those prefixes.
 
 ### BGP Hijacking and Route Leaks
-A BGP hijack occurs when an AS announces an IP prefix it does not own. This causes global routers to send traffic intended for the legitimate owner to the hijacker instead. A route leak is a configuration mistake where an AS announces routes learned from one peer to another peer, causing traffic to flow through unintended subnets. Both issues result in connectivity losses and metadata interception.
+A BGP hijack occurs when an AS announces an IP prefix it does not own. This causes global routers to send traffic intended for the legitimate owner to the hijacker instead, which can be diagnosed by performing an [IP blacklist and routing lookup](/tools/ip-lookup) to check for route hijacking indicators. A route leak is a configuration mistake where an AS announces routes learned from one peer to another peer, causing traffic to flow through unintended subnets. Both issues result in connectivity losses and metadata interception.
 
 ### Deploying Cryptographic Guardrails (RPKI)
 The primary protection against BGP exploits is Resource Public Key Infrastructure (RPKI). RPKI allows network administrators to publish cryptographic statements called Route Origin Authorizations (ROAs). An ROA binds a specific IP prefix to a designated ASN, allowing BGP routers to validate incoming advertisements.
@@ -214,13 +214,13 @@ To pass compliance audits, implement the following web server directives:
     estimatedWordCount: 1670,
     body: convertMarkdownToPortableText(`
 ## Shadow IT Exposed Interface Scanning
-Managing external assets exposure requires continuous inventory tracking. Passive port mapping identifies databases, management panels, and raw consoles exposed to the wider internet.
+Managing external assets exposure requires continuous inventory tracking. Passive port mapping identifies databases, management panels, and raw consoles exposed to the wider internet. Initiating an active [online port checker scan](/tools/port-scanner) allows administrators to verify if these ports are currently accepting external connections.
 
 ### The Risk of Shadow IT
 Shadow IT refers to any system or software deployed by employees without the approval of the central IT security department. When developers expose databases (like MongoDB, PostgreSQL) or remote consoles (like SSH, RDP) to access services easily, they expose the organization to automated brute-force attacks and vulnerability exploitation.
 
 ### Passive Discovery Mechanics
-Security teams must scan public datasets to discover these exposures without performing loud port scans. Search portals (like Shodan, Censys) index the public IP space daily.
+Security teams must scan public datasets to discover these exposures without performing loud port scans. Search portals (like Shodan, Censys) index the public IP space daily. By performing an [IP reputation and port check](/tools/ip-lookup) on your external subnets, you can identify which of your servers are flagged on global threat blocklists.
 Auditors check:
 - **Port 3389 (RDP):** Windows Remote Desktop exposure.
 - **Port 22 (SSH):** Remote console exposures.
@@ -394,29 +394,7 @@ If a secure HTTPS page requests scripts or images over unencrypted HTTP, browser
 
   // EMAIL SECURITY CLUSTER
 
-  'dmarc-enforcement-blueprint': {
-    title: "DMARC Enforcement Blueprint: Transitioning to strict p=reject Policies",
-    slug: "dmarc-enforcement-blueprint",
-    publishedAt: "2026-06-01T09:00:00Z",
-    excerpt: "How to deploy DMARC, monitor reports, align SPF/DKIM domains, and safely block phishing emails.",
-    categories: [{ title: "Web Security" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2800,
-    body: convertMarkdownToPortableText(`
-## The Role of DMARC
-DMARC dictates what receiving servers should do if [SPF or DKIM checks](/tools/dns-lookup) fail, verifying message alignment. It relies on SPF/DKIM alignment with the From header.
 
-### DMARC Policy Stages
-- **p=none:** Monitor reports without blocking traffic.
-- **p=quarantine:** Send failed emails to the spam folder.
-- **p=reject:** Drop unauthorized emails entirely.
-
-### Designing the Transition Blueprint
-1. Deploy \`p=none\` and configure report collection in the \`rua\` tag.
-2. Align all third-party email providers.
-3. Move policy to \`p=quarantine\`, and finally \`p=reject\`.
-    `)
-  },
   'email-spoofing-prevention': {
     title: "Email Spoofing Prevention: Defensive Protocols against Domain Forgery",
     slug: "email-spoofing-prevention",
@@ -475,7 +453,7 @@ By implementing and auditing [strict SPF/DKIM and DMARC configurations](/tools/d
 OSINT is the collection and analysis of data gathered from publicly available sources to produce actionable intelligence.
 
 ### Passive vs Active Reconnaissance
-Active recon interacts directly with targets (scanning, probing). Passive recon [queries third-party datasets](/tools/dns-lookup)—such as cached public DNS resolvers—avoiding direct detection.
+Active recon interacts directly with targets (scanning, probing). Active scans rely on [checking open TCP ports](/tools/port-scanner) and software versions. Passive recon [queries third-party datasets](/tools/dns-lookup)—such as cached public DNS resolvers—avoiding direct detection. To gather initial metadata, hunters leverage tools like the [IP geolocation lookup](/tools/ip-lookup) to footprint the registry owner.
 
 ### The OSINT Lifecycle
 1. Requirements identification.
@@ -502,32 +480,14 @@ The attack surface includes all public-facing assets (subdomains, open ports, we
 
 ### Steps to Map Your Attack Surface
 1. Domain Discovery: [Find root domains and subdomains](/tools/dns-lookup) and resolve their active mappings.
-2. **Port Auditing:** Identify active network services.
-3. **Configuration Check:** Check security headers and TLS protocol suites.
+2. **Port Auditing:** Run a [network port check](/tools/port-scanner) to identify active network services.
+3. **Configuration Check:** Check security headers and TLS protocol suites, and run [IP reputation assessments](/tools/ip-lookup) to detect compromised nodes.
 
 ### Continuous Attack Surface Management
 Deploy continuous exposure audits to catch shadow IT before vulnerabilities are abused. Run scans via [Security Exposure Assessment](/tools/vulnerability-scanner).
     `)
   },
-  'subdomain-enumeration': {
-    title: "Subdomain Enumeration: Methods for Discovering Hidden Target Namespaces",
-    slug: "subdomain-enumeration",
-    publishedAt: "2026-05-30T08:30:00Z",
-    excerpt: "Comparing passive certificate scraping and active DNS brute-forcing to discover hidden subdomains.",
-    categories: [{ title: "OSINT & analysis" }],
-    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 2300,
-    body: convertMarkdownToPortableText(`
-## Why Enumerate Subdomains?
-Threat actors look for unmanaged subdomains (e.g. \`staging-api.example.com\`) which often use weaker credentials and outdated software.
 
-### Passive Subdomain Scraped Sources
-Query Certificate Transparency (CT) logs, scrape search engines, and retrieve DNS indexes using passive tools.
-
-### Mitigating Subdomain Risks
-Prune dangling DNS entries to prevent subdomain takeovers. Validate CNAME destinations using our [DNS Lookup](/tools/dns-lookup) tool.
-    `)
-  },
   'threat-intelligence-collection': {
     title: "Threat Intelligence Collection: Aggregating Feeds for Boundary Hardening",
     slug: "threat-intelligence-collection",
@@ -546,7 +506,7 @@ Threat intelligence provides context on which threats represent active risks to 
 - **Passive indicators:** Certificate logs indicating phishing setups.
 
 ### Integrating Intelligence Into Defensive Configurations
-Inject blocked IP lists into edge WAF configurations and restrict access to exposed services based on reputation telemetry.
+Inject blocked IP lists into edge WAF configurations and restrict access to exposed services based on reputation telemetry. Utilizing an automated [IP blacklist lookup tool](/tools/ip-lookup) helps teams dynamically check if their hosts are listed in active threat indicators, which can be correlated with [active port scanning](/tools/port-scanner) to isolate exposed management endpoints.
     `)
   }
 };

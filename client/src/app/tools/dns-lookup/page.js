@@ -768,16 +768,16 @@ export default function DnsLookupPage() {
                   readTime: "7 min read"
                 },
                 {
-                  title: "Subdomain Enumeration: Methods for Discovering Hidden Target Namespaces",
-                  desc: "Compare passive certificate scraping and active DNS brute-forcing to surface staging hosts and shadow assets.",
-                  url: "/blog/subdomain-enumeration",
-                  readTime: "9 min read"
+                  title: "Email Spoofing Prevention: Defensive Protocols against Domain Forgery",
+                  desc: "A comprehensive review of spoofing vectors, SMTP exploits, and how to align DNS records to protect your brand.",
+                  url: "/blog/email-spoofing-prevention",
+                  readTime: "8 min read"
                 },
                 {
-                  title: "DMARC Enforcement Blueprint: Transitioning to strict p=reject Policies",
-                  desc: "A step-by-step roadmap to audit report alignments and safely enforce email receiver blocklists.",
-                  url: "/blog/dmarc-enforcement-blueprint",
-                  readTime: "10 min read"
+                  title: "Business Email Compromise Defense: Blocking Inbound Impersonation Attacks",
+                  desc: "Examine key authentication parameters and DNS policy controls to defend against phishing and CEO fraud.",
+                  url: "/blog/business-email-compromise-defense",
+                  readTime: "9 min read"
                 },
                 {
                   title: "The Anatomy of Passive OSINT: Mapping Infrastructure Without Noise",

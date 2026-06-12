@@ -597,6 +597,65 @@ export default function PortScannerPage() {
           </div>
         </section>
 
+        {/* Port Scanning Learning Center Section */}
+        <section className="py-20 bg-[#0a0d14] border-t border-b border-white/5" aria-label="Port Scanning Learning Center">
+          <div className="max-w-[1000px] mx-auto px-6 font-sans">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">Port Scanning Learning Center</h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed">
+              Master the methodology of network port checks, active vs passive reconnaissance, shadow IT discovery, and attack surface mapping.
+            </p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  title: "Shadow IT Discovery: Passive Identification of Exposed Database and Administrative Ports",
+                  desc: "Learn how employees leave critical databases and SSH/RDP administration panels exposed, and how to scan them safely.",
+                  url: "/blog/shadow-it-exposed-ports",
+                  time: "7 min read"
+                },
+                {
+                  title: "The Anatomy of Passive OSINT: Mapping Infrastructure Without Noise",
+                  desc: "Examine how attackers compile targets through cached recursive DNS records and RIR indexes before running active port checks.",
+                  url: "/blog/anatomy-of-passive-osint",
+                  time: "6 min read"
+                },
+                {
+                  title: "Attack Surface Mapping: Documenting Exposed Infrastructure Boundary Configurations",
+                  desc: "A strategic roadmap to map public subnets, inventory exposed ports, and build a defensive perimeter strategy.",
+                  url: "/blog/attack-surface-mapping",
+                  time: "8 min read"
+                },
+                {
+                  title: "OSINT Fundamentals: The Building Blocks of Passive Information Gathering",
+                  desc: "Compare active port probing against passive public caches to protect your investigator metadata during recon.",
+                  url: "/blog/osint-fundamentals",
+                  time: "7 min read"
+                }
+              ].map((article, idx) => (
+                <Link key={idx} href={article.url} className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-red-500/30 transition-all group flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between text-xs font-mono text-gray-500 mb-3">
+                      <span className="flex items-center gap-1.5 text-red-400/80">
+                        <BookOpen className="w-3.5 h-3.5" /> Technical Guide
+                      </span>
+                      <span>{article.time}</span>
+                    </div>
+                    <h3 className="text-white font-bold text-base mb-2 group-hover:text-red-400 transition-colors leading-snug">
+                      {article.title}
+                    </h3>
+                    <p className="text-xs text-gray-400 leading-relaxed mb-4">
+                      {article.desc}
+                    </p>
+                  </div>
+                  <span className="text-red-400 text-xs font-mono flex items-center gap-1 mt-auto">
+                    Read Article <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Semantic Internal Links (Phase 7 - Internal Linking) */}
         <section className="py-20 bg-[#05080f]" aria-label="Related Security Tools">
           <div className="max-w-[1000px] mx-auto px-6">
