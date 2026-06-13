@@ -5,6 +5,8 @@ const adDomains = [
   // Monetag Vignette and Ad Domains (June 2026 Audit)
   'https://n6wxm.com',
   'https://*.n6wxm.com',
+  'https://nap5k.com',
+  'https://*.nap5k.com',
   'https://cdn.show-creative1.com',
   'https://*.cdn.show-creative1.com',
   'https://workdeadlinededicate.com',
@@ -17,12 +19,9 @@ const adDomains = [
   'https://*.tzegilo.com',
   'https://fleraprt.com',
   'https://*.fleraprt.com',
-  // Monetag MultiTag & Push Notification Domains
-  'https://quge5.com',
-  'https://*.quge5.com',
-  'https://5gvci.com',
-  'https://*.5gvci.com',
   // Monetag Dynamic Script Connections
+  'https://jhnwr.com',
+  'https://*.jhnwr.com',
   'https://6opo.com',
   'https://*.6opo.com',
   'https://auqot.com',
