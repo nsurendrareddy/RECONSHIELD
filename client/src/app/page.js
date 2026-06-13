@@ -10,11 +10,12 @@ import {
 } from 'lucide-react';
 
 import { generateBaseMetadata } from '@/utils/metadata';
-
-import NewsletterForm from '@/components/NewsletterForm';
-import TopActiveThreats from '@/components/TopActiveThreats';
-import HeroSocVisual from '@/components/HeroSocVisual';
-import NativeBanner from '@/components/ads/NativeBanner';
+import {
+  DynamicNewsletterForm,
+  DynamicTopActiveThreats,
+  DynamicHeroSocVisual,
+  DynamicNativeBanner
+} from '@/components/DynamicWidgets';
 
 export const metadata = generateBaseMetadata({
   title: "ReconShield | Cybersecurity Research & Threat Intelligence Publication",
@@ -205,7 +206,7 @@ export default async function Page() {
 
               {/* Right Column: Animated SOC Telemetry Box */}
               <div className="lg:col-span-5 min-h-[352px] flex items-center">
-                <HeroSocVisual />
+                <DynamicHeroSocVisual />
               </div>
 
             </div>
@@ -213,7 +214,7 @@ export default async function Page() {
         </section>
 
         <div className="max-w-[1200px] mx-auto px-6 pt-12">
-          <NativeBanner />
+          <DynamicNativeBanner />
         </div>
 
         {/* ================= 2. FEATURED EDITORIAL RESEARCH ================= */}
@@ -284,12 +285,12 @@ export default async function Page() {
         {/* ================= 3. THREAT INTELLIGENCE HIGHLIGHTS ================= */}
         <section className="bg-[#05080f] py-12 border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
-            <TopActiveThreats />
+            <DynamicTopActiveThreats />
           </div>
         </section>
 
         <div className="max-w-[1200px] mx-auto px-6 pt-12">
-          <NativeBanner />
+          <DynamicNativeBanner />
         </div>
 
         {/* ================= 4. LATEST CYBERSECURITY ARTICLES ================= */}
@@ -629,7 +630,7 @@ export default async function Page() {
               Join thousands of cybersecurity analysts, developers, and compliance auditors who receive our weekly threat briefings, zero-day CVE alerts, and defensive tutorials.
             </p>
             
-            <NewsletterForm 
+            <DynamicNewsletterForm 
               accentColor="bg-[#00ff88] hover:bg-[#00e077]"
               buttonTextColor="text-surface-950"
               inputClass="px-6 py-4 w-full sm:w-96 text-sm"

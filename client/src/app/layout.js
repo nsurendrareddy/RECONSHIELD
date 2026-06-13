@@ -2,9 +2,6 @@ import Layout from "@/components/Layout";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
-import SocialBar from "@/components/ads/SocialBar";
-import Popunder from "@/components/ads/Popunder";
-import LazyAdSense from "@/components/ads/LazyAdSense";
 import { Inter, JetBrains_Mono, Rajdhani } from "next/font/google";
 import "./globals.css";
 
@@ -88,16 +85,12 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
-        <LazyAdSense />
-
         <Layout>
           {children}
         </Layout>
 
         <Analytics />
         <SpeedInsights />
-        <SocialBar />
-        <Popunder />
         {/* Site-wide JSON-LD */}
         <script
           type="application/ld+json"

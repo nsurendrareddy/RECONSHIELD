@@ -7,8 +7,10 @@ import dynamic from 'next/dynamic'
 import Ad728x90 from '@/components/ads/Ad728x90'
 
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
-
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
+const SocialBar = dynamic(() => import("@/components/ads/SocialBar"), { ssr: false });
+const Popunder = dynamic(() => import("@/components/ads/Popunder"), { ssr: false });
+const LazyAdSense = dynamic(() => import("@/components/ads/LazyAdSense"), { ssr: false });
 
 export default function Layout({ children }) {
   const pathname = usePathname()
@@ -221,7 +223,7 @@ export default function Layout({ children }) {
             
             {/* Newsletter Signup */}
             <div>
-              <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>// WEEKLY INTEL</h4>
+              <h3 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>// WEEKLY INTEL</h3>
               <p className="text-[11px] text-[#94a3b8] mb-4 leading-relaxed">Get the latest threat intelligence and OSINT guides.</p>
               <NewsletterForm
                 accentColor="bg-matrix-400/10 hover:bg-matrix-400/20"
@@ -235,7 +237,7 @@ export default function Layout({ children }) {
             </div>
 
             <div>
-              <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Platform</h4>
+              <h3 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Platform</h3>
               <ul className="space-y-2 text-sm">
                 <li><Link href="/scanner" className="hover:text-matrix-400 transition-colors">Security Scanner</Link></li>
                 <li><Link href="/tools/subdomain-finder" className="hover:text-matrix-400 transition-colors">Subdomain Finder</Link></li>
@@ -253,7 +255,7 @@ export default function Layout({ children }) {
             </div>
 
             <div>
-              <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Legal</h4>
+              <h3 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Legal</h3>
               <ul className="space-y-2 text-sm">
                 <li><Link href="/terms" className="hover:text-matrix-400 transition-colors">Terms of Use</Link></li>
                 <li><Link href="/privacy" className="hover:text-matrix-400 transition-colors">Privacy Policy</Link></li>
@@ -266,7 +268,7 @@ export default function Layout({ children }) {
             </div>
 
             <div>
-              <h4 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Entity Intel</h4>
+              <h3 className={`text-xs font-mono font-bold uppercase tracking-widest mb-4 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>Entity Intel</h3>
               <ul className="space-y-2 text-sm">
                 <li><Link href="/ports" className="hover:text-matrix-400 transition-colors">Ports Directory</Link></li>
                 <li><Link href="/asn" className="hover:text-matrix-400 transition-colors">ASN Directory</Link></li>
@@ -309,6 +311,9 @@ export default function Layout({ children }) {
         </div>
       </footer>
       <CookieBanner />
+      <LazyAdSense />
+      <SocialBar />
+      <Popunder />
     </div>
   )
 }
