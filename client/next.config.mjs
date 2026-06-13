@@ -21,14 +21,26 @@ const adDomains = [
   'https://quge5.com',
   'https://*.quge5.com',
   'https://5gvci.com',
-  'https://*.5gvci.com'
+  'https://*.5gvci.com',
+  // Monetag Dynamic Script Connections
+  'https://6opo.com',
+  'https://*.6opo.com',
+  'https://auqot.com',
+  'https://*.auqot.com',
+  'https://jmosl.com',
+  'https://*.jmosl.com',
+  'https://094kk.com',
+  'https://*.094kk.com',
+  // rtmark tracking/ads
+  'https://my.rtmark.net',
+  'https://*.rtmark.net'
 ];
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com ${adDomains.join(' ')}`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://va.vercel-scripts.com ${adDomains.join(' ')}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   `img-src 'self' blob: data: https://cdn.sanity.io https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${adDomains.join(' ')}`,
   "font-src 'self' data: https://fonts.gstatic.com",
