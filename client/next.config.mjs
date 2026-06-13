@@ -39,7 +39,23 @@ const adsterraDomains = [
   'https://*.flushpersist.com',
   'https://cdn.show-sb.com',
   'https://*.cdn.show-sb.com',
-  'https://ep1.adtrafficquality.google'
+  'https://ep1.adtrafficquality.google',
+  'https://ep2.adtrafficquality.google',
+  // Monetag Vignette and Ad Domains (June 2026 Audit)
+  'https://n6wxm.com',
+  'https://*.n6wxm.com',
+  'https://cdn.show-creative1.com',
+  'https://*.cdn.show-creative1.com',
+  'https://workdeadlinededicate.com',
+  'https://*.workdeadlinededicate.com',
+  'https://ldrws.com',
+  'https://*.ldrws.com',
+  'https://bobapsoabauns.com',
+  'https://*.bobapsoabauns.com',
+  'https://tzegilo.com',
+  'https://*.tzegilo.com',
+  'https://fleraprt.com',
+  'https://*.fleraprt.com'
 ];
 
 const isDev = process.env.NODE_ENV !== 'production';
@@ -47,11 +63,11 @@ const isDev = process.env.NODE_ENV !== 'production';
 const cspHeader = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com ${adsterraDomains.join(' ')}`,
-  "style-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   `img-src 'self' blob: data: https://cdn.sanity.io https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${adsterraDomains.join(' ')}`,
-  "font-src 'self' data:",
+  "font-src 'self' data: https://fonts.gstatic.com",
   `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adsterraDomains.join(' ')}`,
-  `frame-src 'self' https://news.google.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com ${adsterraDomains.join(' ')}`
+  `frame-src 'self' https://news.google.com https://www.google.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com ${adsterraDomains.join(' ')}`
 ].join('; ');
 
 const nextConfig = {
