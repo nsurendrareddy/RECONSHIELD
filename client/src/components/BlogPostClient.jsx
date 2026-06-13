@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
+
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
   types: {
