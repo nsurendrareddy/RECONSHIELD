@@ -1,17 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
+import useUserInteraction from '@/hooks/useUserInteraction';
 
 export default function Ad300x250() {
   const iframeRef = useRef(null);
   const [mounted, setMounted] = useState(false);
+  const hasInteracted = useUserInteraction();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted || !iframeRef.current) return;
+    if (!mounted || !hasInteracted || !iframeRef.current) return;
 
     const iframe = iframeRef.current;
     const doc = iframe.contentDocument || iframe.contentWindow.document;
@@ -52,20 +54,22 @@ export default function Ad300x250() {
       `);
       doc.close();
     }
-  }, [mounted]);
+  }, [mounted, hasInteracted]);
 
   if (!mounted) return null;
 
   return (
     <div className="flex justify-center my-6 min-h-[250px] w-full bg-surface-900/10 rounded-lg overflow-hidden">
-      <iframe
-        ref={iframeRef}
-        title="Adsterra 300x250 Banner"
-        width="300"
-        height="250"
-        style={{ border: 'none', overflow: 'hidden', background: 'transparent' }}
-        scrolling="no"
-      />
+      {hasInteracted && (
+        <iframe
+          ref={iframeRef}
+          title="Adsterra 300x250 Banner"
+          width="300"
+          height="250"
+          style={{ border: 'none', overflow: 'hidden', background: 'transparent' }}
+          scrolling="no"
+        />
+      )}
     </div>
   );
 }

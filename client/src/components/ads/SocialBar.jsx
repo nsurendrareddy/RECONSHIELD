@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect } from 'react';
+import useUserInteraction from '@/hooks/useUserInteraction';
 
 export default function SocialBar() {
+  const hasInteracted = useUserInteraction();
+
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!hasInteracted || typeof window === 'undefined') return;
     if (document.querySelector('script[src*="pl29692251.effectivecpmnetwork.com"]')) {
       return;
     }
@@ -20,7 +23,7 @@ export default function SocialBar() {
         script.parentNode.removeChild(script);
       }
     };
-  }, []);
+  }, [hasInteracted]);
 
   return null;
 }

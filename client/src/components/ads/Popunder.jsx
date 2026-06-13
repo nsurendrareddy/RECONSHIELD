@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect } from 'react';
+import useUserInteraction from '@/hooks/useUserInteraction';
 
 export default function Popunder() {
+  const hasInteracted = useUserInteraction();
+
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!hasInteracted || typeof window === 'undefined') return;
 
     // 24 hour frequency cap check
     const lastShown = localStorage.getItem('adsterra_popunder_last_shown');
@@ -33,7 +36,7 @@ export default function Popunder() {
         script.parentNode.removeChild(script);
       }
     };
-  }, []);
+  }, [hasInteracted]);
 
   return null;
 }

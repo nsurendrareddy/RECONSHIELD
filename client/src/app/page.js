@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import ResponsiveImage from '@/components/ResponsiveImage';
 import { client, homepageBlogQuery, urlFor } from '@/utils/sanity';
 import { 
   Shield, Target, Activity, Cpu, MapPin, Network, 
@@ -171,7 +172,7 @@ export default async function Page() {
       <div className="bg-[#05080f] min-h-screen">
         {/* ================= 1. HERO SECTION ================= */}
         <section className="relative pt-28 pb-20 overflow-hidden border-b border-white/5 bg-[#070b12]">
-          <div className="absolute inset-0 bg-[url('/matrix-bg.png')] bg-repeat opacity-[0.01] pointer-events-none" />
+          <div className="absolute inset-0 bg-[url('/matrix-bg.svg')] bg-repeat opacity-[0.01] pointer-events-none" />
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full bg-[#00ff88]/5 blur-[120px] rounded-full pointer-events-none" />
           
           <div className="max-w-[1200px] mx-auto px-6 relative z-10">
@@ -203,7 +204,7 @@ export default async function Page() {
               </div>
 
               {/* Right Column: Animated SOC Telemetry Box */}
-              <div className="lg:col-span-5">
+              <div className="lg:col-span-5 min-h-[352px] flex items-center">
                 <HeroSocVisual />
               </div>
 
@@ -229,13 +230,13 @@ export default async function Page() {
                   {/* Image Grid Column */}
                   <div className="lg:col-span-7 relative aspect-[16/10] lg:aspect-auto min-h-[300px] bg-surface-950 overflow-hidden">
                     {featuredPost.mainImage ? (
-                      <Image
-                        src={urlFor(featuredPost.mainImage).width(800).height(500).fit('crop').auto('format').url()}
+                      <ResponsiveImage
+                        image={featuredPost.mainImage}
                         alt={featuredPost.title}
-                        fill
-                        priority
-                        sizes="(max-width: 1024px) 100vw, 800px"
-                        className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
+                        fill={true}
+                        priority={true}
+                        sizes="(max-width: 1024px) 100vw, 680px"
+                        className="group-hover:scale-[1.02] transition-transform duration-700"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-surface-900 to-surface-950 flex items-center justify-center">
@@ -261,7 +262,7 @@ export default async function Page() {
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-6 border-t border-white/5 text-[9px] font-mono text-gray-500 uppercase tracking-wider">
+                    <div className="flex items-center justify-between pt-6 border-t border-white/5 text-[9px] font-mono text-gray-400 uppercase tracking-wider">
                       <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-full bg-[#1a2332] flex items-center justify-center text-[#00ff88] text-[8px] font-bold">
                           {getInitials(featuredPost.author?.name)}
@@ -296,8 +297,8 @@ export default async function Page() {
           <div className="max-w-[1200px] mx-auto px-6">
             <div className="flex items-center justify-between mb-12">
               <div>
-                <span className="font-mono text-xs text-gray-500 uppercase tracking-widest">// RECENT DISCLOSURES</span>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Latest Intelligence Briefings</h3>
+                <span className="font-mono text-xs text-gray-400 uppercase tracking-widest">// RECENT DISCLOSURES</span>
+                <h2 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Latest Intelligence Briefings</h2>
               </div>
               <Link href="/blog" className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#00ff88] hover:text-white uppercase tracking-widest transition-colors">
                 View All Articles <ArrowRight className="w-3.5 h-3.5" />
@@ -309,13 +310,13 @@ export default async function Page() {
                 <Link href={`/blog/${post.slug?.current || post.slug}`} key={post._id} className="group flex flex-col bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all duration-300 rounded-2xl overflow-hidden shadow-lg">
                   <div className="relative aspect-video w-full bg-surface-950 overflow-hidden border-b border-white/5">
                     {post.mainImage ? (
-                      <Image
-                        src={urlFor(post.mainImage).width(360).height(202).fit('crop').auto('format').url()}
+                      <ResponsiveImage
+                        image={post.mainImage}
                         alt={post.title}
                         width={360}
                         height={202}
-                        sizes="(max-width: 768px) 100vw, 360px"
-                        className="object-cover w-full h-auto group-hover:scale-[1.03] transition-transform duration-700"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 360px"
+                        className="group-hover:scale-[1.03] transition-transform duration-700"
                       />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-surface-950 to-surface-900 flex items-center justify-center">
@@ -327,13 +328,13 @@ export default async function Page() {
                     <span className="font-mono text-[9px] tracking-[2px] uppercase text-[#00ff88] mb-3">
                       {post.categories?.[0]?.title || 'INTELLIGENCE'}
                     </span>
-                    <h4 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-[#00ff88] transition-colors line-clamp-2">
+                    <h3 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-[#00ff88] transition-colors line-clamp-2">
                       {post.title}
-                    </h4>
+                    </h3>
                     <p className="text-gray-400 text-xs leading-relaxed line-clamp-2 mb-6">
                       {post.excerpt}
                     </p>
-                    <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5 font-mono text-[9px] text-gray-500 uppercase">
+                    <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5 font-mono text-[9px] text-gray-400 uppercase">
                       <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {calculateReadTime(post)} MIN READ</span>
                       <span>{formatDate(post.publishedAt || post._createdAt)}</span>
                     </div>
@@ -350,7 +351,7 @@ export default async function Page() {
             <div className="flex items-center justify-between mb-12">
               <div>
                 <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// CATEGORY SILOS</span>
-                <h3 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Topical Intelligence Hubs</h3>
+                <h2 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Topical Intelligence Hubs</h2>
               </div>
             </div>
 
@@ -498,7 +499,7 @@ export default async function Page() {
                     <span>Launch Scanner</span>
                     <ArrowRight className="w-4 h-4 text-surface-950" />
                   </Link>
-                  <div className="flex items-center gap-1.5 text-xs font-mono text-gray-500">
+                  <div className="flex items-center gap-1.5 text-xs font-mono text-gray-400">
                     <CheckCircle2 className="w-4 h-4 text-[#00ff88] shrink-0" />
                     <span>Authorized Research Policy Compliant</span>
                   </div>
@@ -517,7 +518,7 @@ export default async function Page() {
                       <span className="w-2 h-2 rounded-full bg-yellow-500/30" />
                       <span className="w-2 h-2 rounded-full bg-green-500/30" />
                     </div>
-                    <span className="font-mono text-[8px] text-gray-500 uppercase tracking-widest">passive_preview.sh</span>
+                    <span className="font-mono text-[8px] text-gray-400 uppercase tracking-widest">passive_preview.sh</span>
                   </div>
 
                   {/* Mock Input Bar */}
@@ -529,15 +530,15 @@ export default async function Page() {
                   {/* Mock Output Rows */}
                   <div className="space-y-2.5 font-mono text-[10px] text-gray-400">
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> Email Auth (SPF/DMARC)</span>
+                      <span className="text-gray-400 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> Email Auth (SPF/DMARC)</span>
                       <span className="text-[#00ff88]">[VALID]</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> SSL/TLS Cipher Suites</span>
+                      <span className="text-gray-400 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> SSL/TLS Cipher Suites</span>
                       <span className="text-cyber-400">[SECURE]</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> HTTP Security Headers</span>
+                      <span className="text-gray-400 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> HTTP Security Headers</span>
                       <span className="text-purple-400">[AUDITED]</span>
                     </div>
                   </div>
@@ -559,15 +560,15 @@ export default async function Page() {
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00ff88]/10 text-[#00ff88] text-[10px] font-mono uppercase tracking-widest rounded mb-6">
                     <Award className="w-3.5 h-3.5" /> Lead Researcher & Founder
                   </div>
-                  <h3 className="text-2xl font-display font-bold text-white mb-4">Surendra Reddy</h3>
+                  <h2 className="text-2xl font-display font-bold text-white mb-4">Surendra Reddy</h2>
                   <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-6 font-mono">
                     Surendra Reddy is a cybersecurity engineer, OSINT developer, and lead publisher of ReconShield. Specializing in defensive threat analysis and internet-facing assets mapping, Surendra oversees editorial validation, fact-checking technical guides, and securing programmatic resources.
                   </p>
                   <div className="space-y-2 mb-8">
-                    <div className="flex items-center gap-2 text-xs text-gray-500 font-mono">
+                    <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
                       <CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> Certified Threat Intelligence Analyst (CTIA)
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-500 font-mono">
+                    <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
                       <CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> Passive Reconnaissance and Threat Hunting Specialist
                     </div>
                   </div>
@@ -589,7 +590,7 @@ export default async function Page() {
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 text-blue-400 text-[10px] font-mono uppercase tracking-widest rounded mb-6">
                     <Shield className="w-3.5 h-3.5" /> Integrity Assurance
                   </div>
-                  <h3 className="text-2xl font-display font-bold text-white mb-4">Editorial Integrity & Ethics</h3>
+                  <h2 className="text-2xl font-display font-bold text-white mb-4">Editorial Integrity & Ethics</h2>
                   <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-6">
                     ReconShield is dedicated to lawful and authorized cybersecurity auditing. We believe that public threat intelligence must serve as defensive assets, not offensive instruction. Our editorial staff enforces strict constraints:
                   </p>
@@ -634,7 +635,7 @@ export default async function Page() {
               inputClass="px-6 py-4 w-full sm:w-96 text-sm"
               buttonClass="px-8 py-4 text-xs font-mono tracking-widest font-bold"
             />
-            <p className="text-[10px] text-gray-600 mt-4 font-mono uppercase tracking-wider">Fact checked intelligence. 100% spam-free. Unsubscribe anytime.</p>
+            <p className="text-[10px] text-gray-400 mt-4 font-mono uppercase tracking-wider">Fact checked intelligence. 100% spam-free. Unsubscribe anytime.</p>
           </div>
         </section>
       </div>

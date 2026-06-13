@@ -1,18 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
+import useUserInteraction from '@/hooks/useUserInteraction';
 
 export default function Ad728x90() {
   const iframeRef = useRef(null);
   const [mounted, setMounted] = useState(false);
   const [iframeHeight, setIframeHeight] = useState(90);
+  const hasInteracted = useUserInteraction();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted || !iframeRef.current) return;
+    if (!mounted || !hasInteracted || !iframeRef.current) return;
 
     const iframe = iframeRef.current;
     const doc = iframe.contentDocument || iframe.contentWindow.document;
@@ -46,7 +48,7 @@ export default function Ad728x90() {
               'width' : 728,
               'params' : {}
             };
-          <\/script>
+          </script>
           <script type="text/javascript" src="https://www.highperformanceformat.com/ad055ae12ee78ddc0ebf1be2e3a5830f/invoke.js"><\/script>
           <script type="text/javascript">
             function sendHeight() {
@@ -55,7 +57,7 @@ export default function Ad728x90() {
             }
             window.addEventListener('load', sendHeight);
             setTimeout(sendHeight, 1500);
-          <\/script>
+          </script>
         </body>
         </html>
       `);
@@ -69,7 +71,7 @@ export default function Ad728x90() {
     };
     window.addEventListener('message', handleMsg);
     return () => window.removeEventListener('message', handleMsg);
-  }, [mounted]);
+  }, [mounted, hasInteracted]);
 
   if (!mounted) return null;
 
@@ -78,14 +80,16 @@ export default function Ad728x90() {
       className="hidden md:flex justify-center my-6 w-full bg-surface-900/10 rounded-lg"
       style={{ minHeight: `${iframeHeight}px` }}
     >
-      <iframe
-        ref={iframeRef}
-        title="Adsterra 728x90 Banner"
-        width="728"
-        height={iframeHeight}
-        style={{ border: 'none', overflow: 'hidden', background: 'transparent' }}
-        scrolling="no"
-      />
+      {hasInteracted && (
+        <iframe
+          ref={iframeRef}
+          title="Adsterra 728x90 Banner"
+          width="728"
+          height={iframeHeight}
+          style={{ border: 'none', overflow: 'hidden', background: 'transparent' }}
+          scrolling="no"
+        />
+      )}
     </div>
   );
 }

@@ -4,12 +4,13 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import SocialBar from "@/components/ads/SocialBar";
 import Popunder from "@/components/ads/Popunder";
+import LazyAdSense from "@/components/ads/LazyAdSense";
 import { Inter, JetBrains_Mono, Rajdhani } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
-const jetbrains = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-jetbrains" });
-const rajdhani = Rajdhani({ subsets: ["latin"], weight: ["500", "600", "700"], display: "swap", variable: "--font-rajdhani" });
+const inter = Inter({ subsets: ["latin"], display: "fallback", variable: "--font-inter" });
+const jetbrains = JetBrains_Mono({ subsets: ["latin"], display: "fallback", variable: "--font-jetbrains" });
+const rajdhani = Rajdhani({ subsets: ["latin"], weight: ["500", "600", "700"], display: "optional", variable: "--font-rajdhani" });
 
 export const metadata = {
   metadataBase: new URL("https://reconshield.in"),
@@ -87,13 +88,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
-        {/* Google AdSense Script */}
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        <LazyAdSense />
 
         <Layout>
           {children}

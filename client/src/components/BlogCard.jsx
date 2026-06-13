@@ -113,7 +113,7 @@ export default function BlogCard({ post, defaultCategory }) {
           </div>
 
           {/* Read Time & Date */}
-          <div className="flex items-center gap-3 text-[9px] font-mono text-gray-500">
+          <div className="flex items-center gap-3 text-[9px] font-mono text-gray-400">
             <span className="flex items-center gap-0.5">
               <Clock className="w-3 h-3" /> {readTime}M
             </span>

@@ -42,9 +42,11 @@ const adsterraDomains = [
   'https://ep1.adtrafficquality.google'
 ];
 
+const isDev = process.env.NODE_ENV !== 'production';
+
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com ${adsterraDomains.join(' ')}`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com ${adsterraDomains.join(' ')}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' blob: data: https://cdn.sanity.io https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${adsterraDomains.join(' ')}`,
   "font-src 'self' data:",

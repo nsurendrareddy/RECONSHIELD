@@ -1,18 +1,20 @@
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
+import useUserInteraction from '@/hooks/useUserInteraction';
 
 export default function NativeBanner() {
   const iframeRef = useRef(null);
   const [mounted, setMounted] = useState(false);
   const [iframeHeight, setIframeHeight] = useState('150px');
+  const hasInteracted = useUserInteraction();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted || !iframeRef.current) return;
+    if (!mounted || !hasInteracted || !iframeRef.current) return;
 
     const iframe = iframeRef.current;
     const doc = iframe.contentDocument || iframe.contentWindow.document;
@@ -73,20 +75,22 @@ export default function NativeBanner() {
     return () => {
       window.removeEventListener('message', handleMessage);
     };
-  }, [mounted]);
+  }, [mounted, hasInteracted]);
 
   if (!mounted) return null;
 
   return (
     <div className="w-full my-8 flex justify-center bg-surface-900/10 rounded-lg overflow-hidden" style={{ minHeight: '150px' }}>
-      <iframe
-        ref={iframeRef}
-        title="Adsterra Native Banner"
-        width="100%"
-        height={iframeHeight}
-        style={{ border: 'none', overflow: 'hidden', background: 'transparent', width: '100%', maxWidth: '1000px' }}
-        scrolling="no"
-      />
+      {hasInteracted && (
+        <iframe
+          ref={iframeRef}
+          title="Adsterra Native Banner"
+          width="100%"
+          height={iframeHeight}
+          style={{ border: 'none', overflow: 'hidden', background: 'transparent', width: '100%', maxWidth: '1000px' }}
+          scrolling="no"
+        />
+      )}
     </div>
   );
 }

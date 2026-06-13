@@ -8,6 +8,7 @@ import { urlFor } from '@/utils/sanity';
  * Replaces standard next/image with an SEO-optimized implementation
  * natively connected to Sanity Assets CDN via our local proxy.
  * Bypasses Vercel's runtime optimization to save overages.
+ * Supports standard properties like sizes, priority, and fill.
  */
 export default function ResponsiveImage({ 
   image, // Sanity Image object or Sanity CDN URL
@@ -15,7 +16,9 @@ export default function ResponsiveImage({
   priority = false, 
   width = 1200,
   height = 800,
-  className = "" 
+  fill = false,
+  className = "",
+  sizes = "(max-width: 400px) 400px, (max-width: 800px) 800px, 1200px"
 }) {
   if (!image) return null;
 
@@ -42,30 +45,36 @@ export default function ResponsiveImage({
       <Image 
         src={image} 
         alt={alt} 
-        fill={!width || !height}
-        width={width || undefined}
-        height={height || undefined}
+        fill={fill}
+        width={fill ? undefined : width}
+        height={fill ? undefined : height}
         priority={priority}
         loading={priority ? 'eager' : 'lazy'}
         className={`object-cover ${className}`}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        sizes={sizes}
       />
     );
   }
 
   // Enforce Immutable Caching by routing through our Next.js rewrite proxy
-  const proxyUrl = (url) => url.replace('https://cdn.sanity.io/', '/sanity-cdn/');
+  const proxyUrl = (url) => {
+    if (!url) return '';
+    return url.replace('https://cdn.sanity.io/', '/sanity-cdn/');
+  };
 
   return (
-    <div className={`relative overflow-hidden ${className}`} style={{ aspectRatio: `${width}/${height}` }}>
+    <div 
+      className={`${fill ? 'absolute inset-0 w-full h-full' : 'relative'} overflow-hidden ${className}`} 
+      style={!fill ? { aspectRatio: `${width}/${height}` } : undefined}
+    >
       {/* Native img tag leveraging Sanity CDN responsive srcSet */}
       <img
         src={proxyUrl(src)}
         srcSet={`${proxyUrl(thumbnail)} 400w, ${proxyUrl(medium)} 800w, ${proxyUrl(large)} 1200w`}
-        sizes="(max-width: 400px) 400px, (max-width: 800px) 800px, 1200px"
+        sizes={sizes}
         alt={alt}
-        width={width}
-        height={height}
+        width={fill ? undefined : width}
+        height={fill ? undefined : height}
         loading={priority ? 'eager' : 'lazy'}
         fetchPriority={priority ? 'high' : 'auto'}
         decoding={priority ? 'sync' : 'async'}
