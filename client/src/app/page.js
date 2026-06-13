@@ -13,8 +13,7 @@ import { generateBaseMetadata } from '@/utils/metadata';
 import {
   DynamicNewsletterForm,
   DynamicTopActiveThreats,
-  DynamicHeroSocVisual,
-  DynamicNativeBanner
+  DynamicHeroSocVisual
 } from '@/components/DynamicWidgets';
 
 export const metadata = generateBaseMetadata({
@@ -213,9 +212,7 @@ export default async function Page() {
           </div>
         </section>
 
-        <div className="max-w-[1200px] mx-auto px-6 pt-12">
-          <DynamicNativeBanner />
-        </div>
+
 
         {/* ================= 2. FEATURED EDITORIAL RESEARCH ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5">
@@ -289,9 +286,7 @@ export default async function Page() {
           </div>
         </section>
 
-        <div className="max-w-[1200px] mx-auto px-6 pt-12">
-          <DynamicNativeBanner />
-        </div>
+
 
         {/* ================= 4. LATEST CYBERSECURITY ARTICLES ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5">

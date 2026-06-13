@@ -9,7 +9,6 @@ import { TOOL_DOMINATION_DATA } from '@/utils/toolDominationData';
 import AuthorizedUseBanner from '@/components/AuthorizedUseBanner';
 import { SemanticToolLinks } from '@/components/SemanticLinks';
 import { renderMarkdown } from '@/utils/markdownRenderer';
-import Ad300x250 from '@/components/ads/Ad300x250';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
@@ -526,11 +525,7 @@ export function ToolPageContent({ toolId }) {
           {/* Right Column: Sidebar (Related Tools) */}
           <div className="lg:col-span-1">
             <div className="sticky top-24">
-              {toolId === 'port-scanner' && (
-                <div className="mb-6 flex justify-center">
-                  <Ad300x250 />
-                </div>
-              )}
+
               <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">Related Tools</h3>
               <div className="space-y-4">
                 {relatedTools.map(t => {

@@ -27,7 +27,6 @@ const MapUpdater = dynamic(() => Promise.resolve(({ center }) => {
 }), { ssr: false });
 
 import ScanTerminalLog from '@/components/ip-scanner/ScanTerminalLog'
-import Ad300x250 from '@/components/ads/Ad300x250'
 
 export default function IpScannerClient() {
   const [target, setTarget] = useState('')
@@ -361,9 +360,7 @@ export default function IpScannerClient() {
                       ))}
                    </div>
                 </div>
-              <div className="flex justify-center mt-6">
-                <Ad300x250 />
-              </div>
+
               </motion.div>
             ) : null}
           </AnimatePresence>

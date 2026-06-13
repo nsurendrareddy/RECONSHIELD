@@ -4,12 +4,8 @@ import { usePathname } from 'next/navigation'
 import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Globe, Menu, X, ExternalLink } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
-import Ad728x90 from '@/components/ads/Ad728x90'
-
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
-const SocialBar = dynamic(() => import("@/components/ads/SocialBar"), { ssr: false });
-const Popunder = dynamic(() => import("@/components/ads/Popunder"), { ssr: false });
 const LazyAdSense = dynamic(() => import("@/components/ads/LazyAdSense"), { ssr: false });
 
 export default function Layout({ children }) {
@@ -201,7 +197,6 @@ export default function Layout({ children }) {
 
       {/* Main Content */}
       <main className={`${isBlogPage ? '' : 'max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8'} min-h-[80vh] relative`}>
-        <Ad728x90 key={pathname} />
         {children}
       </main>
 
@@ -312,8 +307,6 @@ export default function Layout({ children }) {
       </footer>
       <CookieBanner />
       <LazyAdSense />
-      <SocialBar />
-      <Popunder />
     </div>
   )
 }

@@ -1,44 +1,5 @@
 /** @type {import('next').NextConfig} */
-const adsterraDomains = [
-  'https://www.highperformanceformat.com',
-  'https://*.highperformanceformat.com',
-  'https://pl29692251.effectivecpmnetwork.com',
-  'https://*.pl29692251.effectivecpmnetwork.com',
-  'https://pl29692252.effectivecpmnetwork.com',
-  'https://*.pl29692252.effectivecpmnetwork.com',
-  'https://effectivecpmnetwork.com',
-  'https://*.effectivecpmnetwork.com',
-  'https://protrafficinspector.com',
-  'https://*.protrafficinspector.com',
-  'https://exemplarfederallithe.com',
-  'https://*.exemplarfederallithe.com',
-  'https://kettledroopingcontinuation.com',
-  'https://*.kettledroopingcontinuation.com',
-  'https://consumeririssalary.com',
-  'https://*.consumeririssalary.com',
-  'https://realizationnewestfangs.com',
-  'https://*.realizationnewestfangs.com',
-  'https://zoologyfibre.com',
-  'https://*.zoologyfibre.com',
-  'https://cdn.storageimagedisplay.com',
-  'https://*.cdn.storageimagedisplay.com',
-  'https://sleepoverlimitprofound.com',
-  'https://*.sleepoverlimitprofound.com',
-  'https://preferencenail.com',
-  'https://*.preferencenail.com',
-  'https://fizzyacerbitymellow.com',
-  'https://*.fizzyacerbitymellow.com',
-  'http://cdn.storageimagedisplay.com',
-  'http://*.cdn.storageimagedisplay.com',
-  // Newly audited rotating domains (June 2026 Audit)
-  'https://spendsdetachment.com',
-  'https://*.spendsdetachment.com',
-  'https://furiousexpansion.com',
-  'https://*.furiousexpansion.com',
-  'https://flushpersist.com',
-  'https://*.flushpersist.com',
-  'https://cdn.show-sb.com',
-  'https://*.cdn.show-sb.com',
+const adDomains = [
   'https://ep1.adtrafficquality.google',
   'https://ep2.adtrafficquality.google',
   // Monetag Vignette and Ad Domains (June 2026 Audit)
@@ -55,19 +16,24 @@ const adsterraDomains = [
   'https://tzegilo.com',
   'https://*.tzegilo.com',
   'https://fleraprt.com',
-  'https://*.fleraprt.com'
+  'https://*.fleraprt.com',
+  // Monetag MultiTag & Push Notification Domains
+  'https://quge5.com',
+  'https://*.quge5.com',
+  'https://5gvci.com',
+  'https://*.5gvci.com'
 ];
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com ${adsterraDomains.join(' ')}`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com ${adDomains.join(' ')}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  `img-src 'self' blob: data: https://cdn.sanity.io https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${adsterraDomains.join(' ')}`,
+  `img-src 'self' blob: data: https://cdn.sanity.io https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${adDomains.join(' ')}`,
   "font-src 'self' data: https://fonts.gstatic.com",
-  `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adsterraDomains.join(' ')}`,
-  `frame-src 'self' https://news.google.com https://www.google.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com ${adsterraDomains.join(' ')}`
+  `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adDomains.join(' ')}`,
+  `frame-src 'self' https://news.google.com https://www.google.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com ${adDomains.join(' ')}`
 ].join('; ');
 
 const nextConfig = {

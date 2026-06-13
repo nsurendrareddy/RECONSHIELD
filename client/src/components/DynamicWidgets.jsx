@@ -13,6 +13,4 @@ export const DynamicTopActiveThreats = dynamic(() => import('@/components/TopAct
   loading: () => <div className="w-full min-h-[380px] bg-surface-900/20 border border-white/5 rounded-2xl animate-pulse" />
 });
 
-export const DynamicNativeBanner = dynamic(() => import('@/components/ads/NativeBanner'), { ssr: false });
-
 export const DynamicNewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false });

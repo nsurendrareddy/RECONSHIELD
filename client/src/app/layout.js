@@ -94,6 +94,56 @@ export default function RootLayout({ children }) {
             `
           }}
         />
+
+        {/* Monetag MultiTag Script */}
+        <Script
+          id="monetag-multitag"
+          strategy="afterInteractive"
+          src="https://quge5.com/88/tag.min.js"
+          data-zone="247948"
+          data-cfasync="false"
+        />
+
+        {/* Monetag Push Notification Service Worker Registration */}
+        <Script
+          id="register-sw"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+                var register = function() {
+                  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    var exists = false;
+                    for (var i = 0; i < registrations.length; i++) {
+                      if (registrations[i].active && registrations[i].active.scriptURL.includes('/sw.js')) {
+                        exists = true;
+                        break;
+                      }
+                    }
+                    if (!exists) {
+                      navigator.serviceWorker.register('/sw.js')
+                        .then(function(reg) {
+                          console.log('Monetag ServiceWorker registered successfully with scope:', reg.scope);
+                        })
+                        .catch(function(err) {
+                          console.error('Monetag ServiceWorker registration failed:', err);
+                        });
+                    } else {
+                      console.log('Monetag ServiceWorker already registered.');
+                    }
+                  }).catch(function(err) {
+                    navigator.serviceWorker.register('/sw.js');
+                  });
+                };
+                if (document.readyState === 'complete') {
+                  register();
+                } else {
+                  window.addEventListener('load', register);
+                }
+              }
+            `
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
         <Layout>

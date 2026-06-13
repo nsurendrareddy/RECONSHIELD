@@ -5,9 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
-import Ad300x250 from '@/components/ads/Ad300x250'
-import NativeBanner from '@/components/ads/NativeBanner'
-
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
   types: {
@@ -32,8 +29,6 @@ const ptComponents = {
         </div>
       )
     },
-    adsterra300x250: () => <Ad300x250 />,
-    adsterraNative: () => <NativeBanner />,
   },
   block: {
     h2: ({ children }) => {
@@ -106,66 +101,8 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
     return true;
   });
 
-  // Dynamic insertion of Adsterra ads (300x250 and Native Banner) into portable text blocks
   const enrichedBody = useMemo(() => {
-    if (!cleanBody) return [];
-    
-    // Find the index of the conclusion section or fallback to the last h2 block
-    let conclusionIndex = -1;
-    let lastH2Index = -1;
-    
-    for (let i = 0; i < cleanBody.length; i++) {
-      const block = cleanBody[i];
-      if (block._type === 'block' && block.style === 'h2') {
-        lastH2Index = i;
-        const text = block.children?.map(child => child.text).join('').toLowerCase() || '';
-        if (
-          text.includes('conclusion') || 
-          text.includes('summary') || 
-          text.includes('mitigation') || 
-          text.includes('recommendation')
-        ) {
-          conclusionIndex = i;
-          break;
-        }
-      }
-    }
-    
-    const nativeBannerInsertIndex = conclusionIndex !== -1 ? conclusionIndex : (lastH2Index !== -1 ? lastH2Index : cleanBody.length);
-
-    const result = [];
-    let paragraphCount = 0;
-    let inPageAdInserted = false;
-
-    for (let i = 0; i < cleanBody.length; i++) {
-      // Insert native banner before conclusion/last h2
-      if (i === nativeBannerInsertIndex) {
-        result.push({ _key: 'adsterra-native-ad', _type: 'adsterraNative' });
-      }
-
-      const block = cleanBody[i];
-      result.push(block);
-
-      // Insert 300x250 ad after 3rd paragraph
-      if (block._type === 'block' && block.style === 'normal') {
-        paragraphCount++;
-        if (paragraphCount === 3 && !inPageAdInserted) {
-          result.push({ _key: 'adsterra-300x250-ad', _type: 'adsterra300x250' });
-          inPageAdInserted = true;
-        }
-      }
-    }
-
-    // Fallbacks if ads were not inserted
-    if (!inPageAdInserted && result.length > 0) {
-      result.push({ _key: 'adsterra-300x250-ad', _type: 'adsterra300x250' });
-    }
-    
-    if (nativeBannerInsertIndex === cleanBody.length) {
-      result.push({ _key: 'adsterra-native-ad', _type: 'adsterraNative' });
-    }
-
-    return result;
+    return cleanBody || [];
   }, [cleanBody]);
 
   // Extract headings for Table of Contents
@@ -385,7 +322,6 @@ FileETag None`,
         <div className="flex flex-col lg:flex-row gap-12 mb-20">
           {/* Article Body */}
           <div className="flex-1 min-w-0">
-            <NativeBanner />
             <div className="prose prose-invert max-w-none">
               <PortableText value={enrichedBody || []} components={ptComponents} />
             </div>
