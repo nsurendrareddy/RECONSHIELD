@@ -145,7 +145,7 @@ export default async function StatsArchivePage({ params }) {
                 <div className="space-y-2 text-xs leading-relaxed text-gray-400 font-sans w-full">
                   <strong className="text-white">APA Reference format</strong>
                   <div className="p-3 bg-black rounded border border-white/5 text-[10px] font-mono text-yellow-300 select-all break-all leading-relaxed">
-                    ReconShield Threat Research. ({archive.split('-')[0]}). {data.title} ({formattedMonth} Snapshot). Retrieved from https://reconshield.in/stats/${category}/${archive}
+                    ReconShield Threat Research. ({archive.split('-')[0]}). {data.title} ({formattedMonth} Snapshot). Retrieved from https://reconshield.in/stats/{category}/{archive}
                   </div>
                 </div>
               </div>

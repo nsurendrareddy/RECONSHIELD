@@ -18,7 +18,10 @@ export async function generateMetadata({ params }) {
   const data = SSL_ERRORS_DATA[errorCode];
   
   if (!data) {
-    notFound();
+    return {
+      title: 'SSL Error Diagnostic Report Not Found | ReconShield',
+      robots: { index: false }
+    };
   }
 
   return {

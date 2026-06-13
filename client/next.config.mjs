@@ -142,7 +142,9 @@ const nextConfig = {
       { source: '/security-headers', destination: '/tools/http-headers', permanent: true },
       { source: '/ssl-checker', destination: '/tools/ssl-checker', permanent: true },
       { source: '/vulnerability-scanner', destination: '/tools/vulnerability-scanner', permanent: true },
-      { source: '/dns/:domain', destination: '/dns-records/:domain', permanent: true }
+      { source: '/dns/:domain', destination: '/dns-records/:domain', permanent: true },
+      { source: '/blog/categories', destination: '/blog', permanent: true },
+      { source: '/blog/categories/:slug', destination: '/blog/category/:slug', permanent: true }
     ];
   },
 };

@@ -18,7 +18,10 @@ export async function generateMetadata({ params }) {
   const data = DNS_TYPES_DATA[recordType];
   
   if (!data) {
-    notFound();
+    return {
+      title: 'DNS Record Type Analysis Not Found | ReconShield',
+      robots: { index: false }
+    };
   }
 
   return {

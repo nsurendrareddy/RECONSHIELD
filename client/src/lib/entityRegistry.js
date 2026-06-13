@@ -21,9 +21,12 @@ export const KNOWN_IPS = [
 export const KNOWN_ASNS = [
   'AS15169', // Google
   'AS13335', // Cloudflare
+  'AS712',   // Apple
   'AS714',   // Apple
+  'AS715',   // Apple
   'AS32934', // Facebook
   'AS16509', // Amazon
+  'AS16510', // Amazon alternate
   'AS8075',  // Microsoft
   'AS14618', // Amazon Dev
   'AS54113', // Fastly

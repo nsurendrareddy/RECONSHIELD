@@ -15,6 +15,7 @@ export const config = {
     '/ports/:path*',
     '/ssl/:path*',
     '/dns-records/:path*',
+    '/dns/:path*',
     '/tools/whois/:path*',
     '/subdomains/:path*',
     '/headers/:path*'
@@ -45,6 +46,12 @@ const isPrivateIP = (ip) => {
 
 export function middleware(request) {
   const { pathname } = request.nextUrl;
+  
+  // Redirect legacy /dns/ routes to /dns-records/
+  if (pathname.startsWith('/dns/')) {
+    const domain = decodeURIComponent(pathname.replace('/dns/', '').split('/')[0]).toLowerCase();
+    return NextResponse.redirect(new URL(`/dns-records/${domain}`, request.url), 301);
+  }
   
   // 1. IP Validation & Crawl Budget Control
   if (pathname.startsWith('/ip/')) {
@@ -116,10 +123,10 @@ export function middleware(request) {
   const matchingRoute = domainRoutes.find(route => pathname.startsWith(route));
   
   if (matchingRoute) {
-    if (pathname.startsWith('/ssl/errors/')) {
+    if (pathname.startsWith('/ssl/errors')) {
       return NextResponse.next();
     }
-    if (pathname.startsWith('/dns-records/types/')) {
+    if (pathname.startsWith('/dns-records/types')) {
       return NextResponse.next();
     }
 
