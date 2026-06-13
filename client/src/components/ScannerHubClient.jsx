@@ -370,7 +370,7 @@ export default function ScannerHubClient({ latestPosts }) {
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-mono uppercase tracking-widest"
             >
               <Terminal className="w-3.5 h-3.5 text-blue-400" />
-              <span>Passive Diagnostics Suite</span>
+              <span>Passive Security Diagnostics</span>
             </motion.div>
 
             {/* Page Title & Subtitle */}
@@ -381,10 +381,10 @@ export default function ScannerHubClient({ latestPosts }) {
               className="space-y-3"
             >
               <h1 className="text-4xl sm:text-6xl font-display font-extrabold text-white tracking-tight uppercase leading-none">
-                Passive Diagnostics Suite
+                Website Security Scanner
               </h1>
               <p className="text-lg sm:text-xl font-mono text-transparent bg-clip-text bg-gradient-to-r from-matrix-400 via-cyber-400 to-neon-400 uppercase tracking-widest font-bold">
-                Infrastructure Exposure Diagnostics
+                Passive Vulnerability & Attack Surface Assessment
               </p>
             </motion.div>
 

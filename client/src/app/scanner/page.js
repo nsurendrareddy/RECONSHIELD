@@ -3,15 +3,16 @@ import Link from 'next/link';
 import { 
   Shield, Globe, Server, Lock, Terminal, CheckCircle2, ChevronRight, 
   Search, Activity, Target, Network, Info, Check, AlertTriangle, 
-  FileText, Send, HelpCircle, BookOpen, Key, Database, Clock, ArrowRight
+  FileText, Send, HelpCircle, BookOpen, Key, Database, Clock, ArrowRight,
+  Eye, Zap, ListTodo, ShieldAlert, Award
 } from 'lucide-react';
 import { generateBaseMetadata } from '@/utils/metadata';
 import ScannerHubClient from '@/components/ScannerHubClient';
 import { client, homepageBlogQuery } from '@/utils/sanity';
 
 export const metadata = generateBaseMetadata({
-  title: "Website Security Scanner (Free) | AI-Powered Security Assessment",
-  description: "Scan websites for security weaknesses, vulnerabilities, misconfigurations, and exposure risks with ReconShield's free website security scanner.",
+  title: "Free Website Security Scanner & Vulnerability Assessment Tool",
+  description: "Audit domains with our free online website security scanner. Run passive vulnerability assessments for SSL certificates, open ports, security headers, and attack surface configurations.",
   path: "/scanner"
 });
 
@@ -64,69 +65,49 @@ export default async function ScannerPage() {
   const faqs = [
     {
       q: "What is a website security scanner?",
-      a: "A website security scanner is an automated application that audits online platforms for security vulnerabilities, configuration errors, and exposure risks. It evaluates HTTP response headers, SSL/TLS handshakes, open ports, and DNS settings to calculate an overall risk profile."
+      a: "A website security scanner is an automated tool that analyzes public domains for configuration issues, certificate exposures, and protocol vulnerabilities. ReconShield runs non-intrusive tests against HTTP response headers, SSL/TLS configurations, DNSSEC, open ports, and mail records to produce a security score."
     },
     {
-      q: "How does website security scanning work?",
-      a: "Website security scanning maps public assets by querying server response codes, validating SSL certificates, auditing DNS records, and checking active ports. The tool processes these signatures to find outdated software, weak encryption protocols, or misconfigured elements."
+      q: "How does passive scanning work?",
+      a: "Passive scanning gathers domain configurations, registrar data, certificate transparency (CT) logs, and DNS records from public lookup indices. Unlike active vulnerability scanning, it does not send exploit payloads or trigger network intrusion detection systems (IDS)."
     },
     {
-      q: "What vulnerabilities can be detected?",
-      a: "Our scanner identifies missing security headers (like Content Security Policy), deprecated TLS protocol versions, weak cipher suites, insecure cookies, email spoofing risks (via SPF/DMARC), exposed administrative ports, and public subdomains that increase your attack surface."
+      q: "Is passive scanning legal?",
+      a: "Yes, passive scanning is 100% legal. It only requests publicly accessible infrastructure information and cached records, which web servers freely transmit. It does not exploit systems or attempt unauthorized entry."
+    },
+    {
+      q: "Can ReconShield find vulnerabilities?",
+      a: "Yes. ReconShield identifies high-risk exposures including missing HTTP security headers, deprecated TLS versions, weak cryptographic ciphers, open administrative ports, invalid SPF/DMARC email records, and outdated web server frameworks."
     },
     {
       q: "What is attack surface analysis?",
-      a: "Attack surface analysis is the continuous process of mapping all public-facing digital assets, including hosts, domains, subdomains, and ports. It helps organizations identify exposed entry points that could be targeted by unauthorized threat actors."
+      a: "Attack surface analysis is the continuous cataloging of all public-facing digital assets, subdomains, open TCP/UDP ports, host records, and network ranges. Identifying these entry points helps companies harden their systems before threat actors exploit them."
+    },
+    {
+      q: "How often should I scan my website?",
+      a: "Website scans should be performed weekly or after any major configuration and code deployments. Because new security vulnerability disclosures (CVEs) occur daily, automated audits help ensure security hygiene remains up to date."
     },
     {
       q: "What is the difference between passive and active scanning?",
-      a: "Passive scanning gathers information from public DNS records, cached threat intelligence, and server response headers without sending exploit payloads. Active scanning sends intrusive packets directly to a target, which can cause operational disruptions."
+      a: "Passive scanning is non-intrusive and reads publicly accessible records with zero risk of downtime. Active scanning interacts directly with server components, using scripting and exploit payloads to discover internal system bugs, which requires target authorization."
     },
     {
-      q: "How often should security scans be performed?",
-      a: "Security scans should be run weekly or after any major configuration changes. Because new security vulnerabilities (CVEs) are discovered daily and network components evolve, continuous auditing is essential to maintain solid defense profiles."
+      q: "Can this scanner detect SQL injection or XSS?",
+      a: "Passive tools do not execute form submissions or database queries to detect active SQL injection. However, ReconShield checks for missing defensive configurations like Content Security Policy (CSP), which is the primary browser-side mitigation for Cross-Site Scripting (XSS)."
     },
     {
-      q: "What is the ReconShield Security Score?",
-      a: "The ReconShield Security Score is a metric from 0 to 100 calculated by evaluating your SSL certificate strength, security header configurations, DNS record validity, and email authentication parameters to represent your baseline defense health."
+      q: "What makes email security relevant to a website security scanner?",
+      a: "Email protocols (SPF, DKIM, DMARC) are managed in domain DNS records. If misconfigured, threat actors can spoof corporate email addresses, damage sending domain reputation, and launch phishing campaigns targeting users."
     },
     {
-      q: "What is the ReconShield Exposure Score?",
-      a: "The ReconShield Exposure Score measures the visibility of your public assets. It calculates risk based on exposed administrative ports, active subdomains, IP co-locations, and server banners that disclose operating software versions."
-    },
-    {
-      q: "What is the ReconShield Trust Rating?",
-      a: "The ReconShield Trust Rating (graded A+ to F) represents your overall compliance with cybersecurity best practices. It correlates security header implementations, SSL cipher strength, and DMARC enforcement policies to grade your domain."
-    },
-    {
-      q: "What is a vulnerability assessment?",
-      a: "A vulnerability assessment is a technical review of security gaps within an information technology environment. It identifies, quantifies, and ranks vulnerabilities using standard severity frameworks like CVSS to guide remediation workflows."
-    },
-    {
-      q: "How do I improve my security score?",
-      a: "To improve your score, deploy missing HTTP security headers (like HSTS and CSP), transition DMARC policy rules to reject (p=reject), update SSL settings to enforce TLS 1.3, and close unnecessary open network ports."
-    },
-    {
-      q: "Why is DNSSEC security auditing important?",
-      a: "DNSSEC auditing ensures that domain name records are cryptographically signed. This prevents DNS spoofing and cache poisoning attacks, ensuring that visitors are routed to your authentic web servers rather than malicious duplicates."
-    },
-    {
-      q: "Can a security checker identify spam risk?",
-      a: "Yes. The scanner checks email authentication protocols (SPF, DKIM, and DMARC). If these records are missing, invalid, or misconfigured, it flags a domain spoofing risk, which leads to lower email deliverability."
-    },
-    {
-      q: "What is website fingerprinting?",
-      a: "Website fingerprinting is a reconnaissance technique that maps web technologies, framework versions, and host configurations. It allows administrators to audit their assets, but also helps hackers find targets with unpatched vulnerabilities."
-    },
-    {
-      q: "Does the tool scan internal databases?",
-      a: "No. ReconShield is a non-intrusive, passive security scanner. It only evaluates public-facing records, response headers, and open ports. It cannot access, modify, or query internal database tables or backend server files."
+      q: "How do I fix a low security score?",
+      a: "Fixing a low score involves: 1) Deploying strict security headers (HSTS, CSP, X-Frame-Options); 2) Updating TLS configurations to support only TLS 1.2 and 1.3; 3) Enabling strict DMARC rules (p=reject); 4) Closing exposed administration ports."
     }
   ];
 
   const breadcrumbs = [
     { name: "Home", url: "https://reconshield.in" },
-    { name: "Scanner", url: "https://reconshield.in/scanner" }
+    { name: "Website Security Scanner", url: "https://reconshield.in/scanner" }
   ];
 
   const schemas = [
@@ -154,18 +135,18 @@ export default async function ScannerPage() {
           "@type": "WebPage",
           "@id": "https://reconshield.in/scanner#webpage",
           "url": "https://reconshield.in/scanner",
-          "name": "Website Security Scanner (Free) | AI-Powered Security Assessment",
+          "name": "Free Website Security Scanner & Vulnerability Assessment Tool",
           "isPartOf": { "@id": "https://reconshield.in/#website" }
         },
         {
           "@type": "SoftwareApplication",
           "@id": "https://reconshield.in/scanner#software",
-          "name": "ReconShield Website Security Scanner Suite",
+          "name": "ReconShield Website Security Scanner",
           "url": "https://reconshield.in/scanner",
-          "description": "Free online website security scanner to check SSL certificates, HTTP response headers, DMARC policies, open ports, and technology vulnerabilities.",
+          "description": "Free online security assessment and vulnerability assessment tool. Evaluates SSL certificates, HTTP headers, DNS configurations, open ports, and email security protocols passively.",
           "applicationCategory": "SecurityApplication",
           "operatingSystem": "All",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "offers": { "@type": "Offer", "price": "0.00", "priceCurrency": "USD" },
           "publisher": { "@id": "https://reconshield.in/#organization" }
         },
         {
@@ -368,120 +349,265 @@ export default async function ScannerPage() {
       {/* Main Educational Guide */}
       <div className="bg-[#05080f]">
         
-        {/* H2: What Is a Website Security Scanner? */}
-        <section className="py-20 border-b border-white/5">
+        {/* Section 1: What Is a Website Security Scanner? */}
+        <section className="py-20 border-b border-white/5" aria-labelledby="section-what-is">
           <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none prose-p:leading-relaxed prose-p:text-gray-400 prose-headings:text-white prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
             
-            <h2 className="text-3xl font-display font-bold mt-0 mb-6 flex items-center gap-3">
+            <h2 id="section-what-is" className="text-3xl font-display font-bold mt-0 mb-6 flex items-center gap-3">
               <Key className="w-8 h-8 text-cyan-400" />
               What Is a Website Security Scanner?
             </h2>
             <p>
-              A <strong>website security scanner</strong> is an automated system designed to scan web domains for security flaws, configuration issues, and public exposure risks. Unlike basic checkers, ReconShield works as an AI-powered security assessment platform, analyzing your external attack surface, tracking host reputations, and validating cryptographic settings.
+              A <strong>website security scanner</strong> is an automated software application designed to audit web-facing domains, evaluate system configurations, and flag security exposures. In modern web environments, security cannot be treated as a single perimeter wall. Instead, administrators must implement a defense-in-depth architecture. Using an online security scanner allows security teams and developers to run non-intrusive tests to map out public exposures and fix misconfigurations before threat actors exploit them.
+            </p>
+            <p>
+              Unlike legacy scanning frameworks that require server-side agents or invasive scripting, ReconShield functions as a passive security scanner. It harvests public intelligence records, inspects host metadata, and correlates DNS data. This process ensures a robust assessment of your attack surface without risking application downtime or violating compliance rules.
             </p>
 
-            {/* H2: How Website Security Assessments Work */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">How Website Security Assessments Work</h2>
+            <h3 className="text-xl font-bold mt-10 mb-4 flex items-center gap-2">
+              <Globe className="w-5 h-5 text-cyan-400" />
+              DNS Security & Zone Records Analysis
+            </h3>
             <p>
-              Security assessment engines query target systems to analyze response parameters. By compiling domain registry records, evaluating SSL certificate handshakes, checking DNSSEC keys, and mapping open ports, the scanner builds a detailed security posture profile.
+              Domain Name System (DNS) configurations represent the foundational routing layer of the web. A security scanner inspects zone records to ensure that name servers are configured securely and that DNSSEC (Domain Name System Security Extensions) cryptographic signatures are enabled. DNSSEC protects visitors from cache poisoning and DNS spoofing campaigns. Furthermore, auditing DNS includes reviewing CAA (Certification Authority Authorization) records to specify exactly which certificate authorities are permitted to issue SSL certificates for the domain, preventing unauthorized certificate generation. To run an in-depth investigation on your zone structures, you can use our <Link href="/tools/dns-lookup">comprehensive DNS Lookup utility</Link> or retrieve registry locks with a <Link href="/tools/whois">detailed WHOIS Lookup query</Link>.
             </p>
 
-            {/* H2: What ReconShield Scanner Analyzes */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">What ReconShield Scanner Analyzes</h2>
+            <h3 className="text-xl font-bold mt-10 mb-4 flex items-center gap-2">
+              <Lock className="w-5 h-5 text-cyan-400" />
+              SSL/TLS Certificate & Handshake Inspection
+            </h3>
             <p>
-              ReconShield performs a multi-layered passive analysis, inspecting:
-            </p>
-            <ul>
-              <li><strong>Domain Intelligence:</strong> Registration locks, WHOIS timestamps, and server locations.</li>
-              <li><strong>DNS Security:</strong> Cryptographic DNSSEC settings and DNS records.</li>
-              <li><strong>SSL/TLS Layers:</strong> Cipher suite compatibility and handshake protocols.</li>
-              <li><strong>HTTP Headers:</strong> Content-Security-Policy (CSP), HSTS, and X-Frame-Options rules.</li>
-              <li><strong>Email Security:</strong> SPF record lookups, DKIM selectors, and DMARC alignments.</li>
-            </ul>
-
-            {/* H2: Domain Intelligence Analysis */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Domain Intelligence Analysis</h2>
-            <p>
-              Analyzing domain registration records reveals registrar details, registration duration, and administrative transfer locks. This intelligence helps security teams track registration expiration risks and prevent unauthorized domain hijacking.
+              Secure Sockets Layer (SSL) and Transport Layer Security (TLS) establish encrypted tunnels between client browsers and hosting servers. A website security scanner evaluates the cryptographic strength of these tunnels. The scanner audits the certificate chain of trust, expiration timelines, key lengths (e.g., RSA 2048-bit or ECC 256-bit), and negotiated protocol versions. Enforcing modern TLS 1.3 protocols and disabling outdated TLS 1.0 and 1.1 versions is critical to block man-in-the-middle (MitM) decryption attacks. Developers can audit their certificate configurations directly using our <Link href="/tools/ssl-checker">online SSL Checker tool</Link> to ensure compatibility and compliance with standards.
             </p>
 
-            {/* H2: DNS Security Assessment */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">DNS Security Assessment</h2>
+            <h3 className="text-xl font-bold mt-10 mb-4 flex items-center gap-2">
+              <Shield className="w-5 h-5 text-cyan-400" />
+              HTTP Security Headers & Client-Side Protections
+            </h3>
             <p>
-              DNS security audits verify DNSSEC key configurations and check zone file parameters. These safeguards prevent DNS hijacking, cache poisoning, and unauthorized redirection of your web visitors.
+              HTTP response headers allow servers to control how modern browsers render web pages and execute scripts. Hardening these policies is a critical step in client-side defense. Important headers include <code>Content-Security-Policy (CSP)</code> to prevent cross-site scripting (XSS), <code>Strict-Transport-Security (HSTS)</code> to enforce HTTPS usage, and <code>X-Frame-Options</code> to block clickjacking attempts. A dedicated <Link href="/tools/http-headers">HTTP Security Headers Checker</Link> scans server headers to ensure defensive parameters are deployed correctly, limiting the browser's execution boundaries.
             </p>
 
-            {/* H2: SSL/TLS Security Analysis */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">SSL/TLS Security Analysis</h2>
+            <h3 className="text-xl font-bold mt-10 mb-4 flex items-center gap-2">
+              <Send className="w-5 h-5 text-cyan-400" />
+              Email Security Auditing & Anti-Spoofing Protocol Alignment
+            </h3>
             <p>
-              Cryptographic layer audits inspect key length parameters, certificate expiry dates, and cipher configurations. Enforcing modern protocols like TLS 1.3 protects visitor data from interception.
+              Email phishing is a leading vector for corporate brand impersonation and business email compromise (BEC). A domain security scanner reviews email authentication records deployed in a domain's DNS zones. These protocols include SPF (Sender Policy Framework), DKIM (DomainKeys Identified Mail), and DMARC (Domain-based Message Authentication, Reporting, and Conformance). Establishing a strict DMARC rule (such as <code>p=reject</code>) instructs receiving servers to block emails that fail alignment tests. Administrators should leverage a dedicated <Link href="/tools/email-security">Email Security Checker</Link> to ensure SPF lookups remain under the RFC-mandated limit of 10 and prevent domain spoofing.
             </p>
 
-            {/* H2: Security Headers Analysis */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Security Headers Analysis</h2>
+            <h3 className="text-xl font-bold mt-10 mb-4 flex items-center gap-2">
+              <Database className="w-5 h-5 text-cyan-400" />
+              Web Technology Stack Fingerprinting
+            </h3>
             <p>
-              HTTP response headers allow servers to restrict browser execution environments. Deploying strict policies (like CSP, HSTS, and X-Frame-Options) helps prevent client-side XSS and clickjacking attacks.
+              Technology stack fingerprinting involves analyzing public server response headers, cookies, and page structures to identify CMS systems (such as WordPress or Next.js), scripting libraries, CDNs, and active firewalls (WAF). Knowing these technologies allows administrators to match components against vulnerability databases (like CVEs) and patch outdated packages. Utilizing a <Link href="/tools/tech-detector">web technology stack detector</Link> helps maintain visibility over software configurations across all corporate assets.
             </p>
 
-            {/* H2: Email Security Analysis */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Email Security Analysis</h2>
+            <h3 className="text-xl font-bold mt-10 mb-4 flex items-center gap-2">
+              <Target className="w-5 h-5 text-cyan-400" />
+              Passive Attack Surface Discovery & OSINT Reconnaissance
+            </h3>
             <p>
-              Email validation verifies SPF lookup counts, DKIM public keys, and DMARC rules. Transitioning DMARC policies to reject (`p=reject`) protects your brand reputation from domain spoofing and phishing campaigns.
+              An organization's attack surface consists of all internet-accessible entry points. Attack surface discovery uses Open Source Intelligence (OSINT) to find active subdomains, trace hosting providers, map IP spaces, and query recursive records. Identifying these assets is critical to prevent dangling DNS entries and subdomain takeover vulnerabilities. Security teams can run a <Link href="/tools/subdomain-finder">passive subdomain discovery tool</Link> alongside a <Link href="/tools/port-scanner">passive network Port Scanner</Link> to map their network perimeter and close unneeded open ports.
             </p>
 
-            {/* H2: Infrastructure Exposure Detection */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Infrastructure Exposure Detection</h2>
-            <p>
-              Exposed boundaries include active administrative ports, server version banners, and shared hosting networks. The scanner maps these public network attributes to identify potential vulnerabilities.
+          </div>
+        </section>
+
+        {/* Section 2: Passive vs Active Security Scanning */}
+        <section className="py-20 border-b border-white/5 bg-[#0a0d14]/30" aria-labelledby="section-passive-active">
+          <div className="max-w-[1000px] mx-auto px-6">
+            <h2 id="section-passive-active" className="text-3xl font-display font-bold text-white mb-6 text-center">
+              Passive vs Active Security Scanning
+            </h2>
+            <p className="text-gray-400 text-sm leading-relaxed text-center max-w-3xl mx-auto mb-10">
+              Understanding the difference between passive and active methodologies is essential when selecting a vulnerability assessment tool. Both methodologies play key roles in cybersecurity, but they differ significantly in their risk profile, speed, compliance requirements, and execution.
             </p>
 
-            {/* H2: Attack Surface Discovery */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Attack Surface Discovery</h2>
-            <p>
-              Attack surface analysis maps all public assets, subdomains, and open ports. Keeping this map updated helps organizations audit exposed components and reduce their entry footprint.
+            <div className="overflow-x-auto border border-white/10 rounded-2xl bg-surface-900/50 backdrop-blur-md">
+              <table className="min-w-full divide-y divide-white/10 font-sans">
+                <thead>
+                  <tr className="bg-surface-950 text-left">
+                    <th className="py-4 px-6 text-xs font-mono font-bold text-white uppercase tracking-wider">Comparison Metric</th>
+                    <th className="py-4 px-6 text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider">Passive Security Scanning (ReconShield)</th>
+                    <th className="py-4 px-6 text-xs font-mono font-bold text-purple-400 uppercase tracking-wider">Active Vulnerability Scanning</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 text-xs text-gray-300">
+                  <tr>
+                    <td className="py-4 px-6 font-bold text-white">System Safety</td>
+                    <td className="py-4 px-6 text-emerald-400 font-semibold">100% Safe. Zero risk of service disruption or server crashes.</td>
+                    <td className="py-4 px-6 text-yellow-400">Potential Risk. Can trigger database locks, application faults, or resource exhaustion.</td>
+                  </tr>
+                  <tr>
+                    <td className="py-4 px-6 font-bold text-white">Detection Capability</td>
+                    <td className="py-4 px-6">Exposed records, SSL/TLS settings, security headers, open ports, mail records, tech stacks.</td>
+                    <td className="py-4 px-6">Deep code vulnerabilities, SQL injection, buffer overflows, remote code execution (RCE).</td>
+                  </tr>
+                  <tr>
+                    <td className="py-4 px-6 font-bold text-white">Authorization Needs</td>
+                    <td className="py-4 px-6 text-emerald-400 font-semibold">None. Uses publicly accessible DNS, HTTP records, and public search logs.</td>
+                    <td className="py-4 px-6 text-red-400 font-semibold">Strict Authorization Required. Scanning without permission can be illegal.</td>
+                  </tr>
+                  <tr>
+                    <td className="py-4 px-6 font-bold text-white">Primary Use Cases</td>
+                    <td className="py-4 px-6">Continuous perimeter auditing, third-party risk management (TPRM), supply chain audits, rapid OSINT.</td>
+                    <td className="py-4 px-6">Internal systems auditing, pre-release software validation, deep penetration testing.</td>
+                  </tr>
+                  <tr>
+                    <td className="py-4 px-6 font-bold text-white">Operational Risk Level</td>
+                    <td className="py-4 px-6 text-emerald-400 font-bold uppercase">Zero Risk</td>
+                    <td className="py-4 px-6 text-red-400 font-bold uppercase">Moderate to High Risk</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="text-gray-500 text-[11px] font-mono mt-4 text-center">
+              * Note: Passive assessments are ideal for continuous digital hygiene and checking third-party dependencies, whereas active testing is suited for internal code review.
+            </p>
+          </div>
+        </section>
+
+        {/* Section 3: What Can ReconShield Detect? */}
+        <section className="py-20 border-b border-white/5" aria-labelledby="section-detect-capabilities">
+          <div className="max-w-[1000px] mx-auto px-6">
+            <h2 id="section-detect-capabilities" className="text-3xl font-display font-bold text-white mb-6 text-center">
+              What Can ReconShield Detect?
+            </h2>
+            <p className="text-gray-400 text-sm leading-relaxed text-center max-w-3xl mx-auto mb-12">
+              Our passive vulnerability assessment engine correlates public records to flag security exposures. ReconShield maps your external attack surface to identify critical risks across seven primary categories:
             </p>
 
-            {/* H2: Technology Stack Intelligence */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Technology Stack Intelligence</h2>
-            <p>
-              Fingerprinting active web software identifies CMS platforms, JavaScript libraries, and hosting providers. Tracking these software versions allows administrators to locate and patch outdated components.
-            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 font-sans">
+              
+              <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/20 transition-all">
+                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4">
+                  <Globe className="w-5 h-5" />
+                </div>
+                <h4 className="text-white font-bold text-base mb-2 uppercase tracking-wide">1. DNS Misconfigurations</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Detects missing DNSSEC records, wildcard entries, and misconfigured nameservers. Identifying these issues is key to preventing DNS hijacking and domain takeover attacks.
+                </p>
+              </div>
 
-            {/* H2: Website Risk Scoring */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Website Risk Scoring</h2>
-            <p>
-              ReconShield scores domains by evaluating security headers, cryptographic setups, mail authentication records, and open ports against standard CVSS metrics to grade overall security health.
-            </p>
+              <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/20 transition-all">
+                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4">
+                  <Lock className="w-5 h-5" />
+                </div>
+                <h4 className="text-white font-bold text-base mb-2 uppercase tracking-wide">2. SSL Certificate Issues</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Identifies expired certificates, self-signed keys, mismatch errors, weak cipher suites, and outdated protocol versions like TLS 1.0/1.1 to help secure data in transit.
+                </p>
+              </div>
 
-            {/* H2: Threat Intelligence Correlation */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Threat Intelligence Correlation</h2>
-            <p>
-              Correlating server signatures with real-time CVE vulnerability lists and threat blocklists helps security teams prioritize and address high-risk exposures.
-            </p>
+              <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/20 transition-all">
+                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4">
+                  <Shield className="w-5 h-5" />
+                </div>
+                <h4 className="text-white font-bold text-base mb-2 uppercase tracking-wide">3. Missing Security Headers</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Flags missing client-side protections like Content-Security-Policy (CSP), Strict-Transport-Security (HSTS), X-Frame-Options, and referrer policies that mitigate XSS and clickjacking.
+                </p>
+              </div>
 
-            {/* H2: Website Security Best Practices */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">Website Security Best Practices</h2>
-            <p>
-              Implement these essential website security best practices:
-            </p>
-            <ul>
-              <li>Configure strict HTTP security headers (like Content Security Policy).</li>
-              <li>Enforce modern TLS 1.3 cryptographic suites and monitor certificate expiry.</li>
-              <li>Secure email systems by deploying DMARC policies with reject rules.</li>
-              <li>Close unnecessary open ports and restrict administrative service visibility.</li>
-            </ul>
+              <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/20 transition-all">
+                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4">
+                  <Terminal className="w-5 h-5" />
+                </div>
+                <h4 className="text-white font-bold text-base mb-2 uppercase tracking-wide">4. Open Network Ports</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Passively tracks exposed administrative interfaces (such as SSH on port 22, RDP on port 3389, Telnet, or public database connections) to reduce entry routes.
+                </p>
+              </div>
 
-            {/* H2: How Security Teams Use ReconShield */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">How Security Teams Use ReconShield</h2>
-            <p>
-              Security teams integrate ReconShield's passive assessment platform into their CI/CD deployment pipelines, perform weekly perimeter audits, and generate security reports to maintain defense baselines.
-            </p>
+              <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/20 transition-all">
+                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4">
+                  <Send className="w-5 h-5" />
+                </div>
+                <h4 className="text-white font-bold text-base mb-2 uppercase tracking-wide">5. Email Authentication Problems</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Audits SPF records for lookups over the limit, checks DKIM selector validity, and flags missing or weak DMARC policies (like <code>p=none</code>) that expose domains to spoofing.
+                </p>
+              </div>
 
-            {/* H2: ReconShield Scanner vs Traditional Vulnerability Scanners */}
-            <h2 className="text-3xl font-display font-bold mt-16 mb-6">ReconShield Scanner vs Traditional Vulnerability Scanners</h2>
-            <p>
-              Traditional vulnerability scanners often send disruptive exploit payloads to target servers, risking downtime. ReconShield uses passive, non-intrusive checks to audit configurations safely from cached records and response headers.
-            </p>
+              <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/20 transition-all">
+                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4">
+                  <Database className="w-5 h-5" />
+                </div>
+                <h4 className="text-white font-bold text-base mb-2 uppercase tracking-wide">6. Technology Stack Exposure</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Fingerprints server types, CMS frameworks, CDN setups, and software versions. Disclosing these details can help threat actors identify targets with known CVEs.
+                </p>
+              </div>
+
+              <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/20 transition-all md:col-span-2 lg:col-span-1">
+                <div className="w-10 h-10 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4">
+                  <Target className="w-5 h-5" />
+                </div>
+                <h4 className="text-white font-bold text-base mb-2 uppercase tracking-wide">7. Attack Surface Visibility</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Compiles active subdomains, public IP ranges, and ASN routing paths. Maintaining this inventory helps prevent shadow IT exposures and orphan subdomains.
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* Section 4: Conversion Optimization: Why Choose ReconShield? */}
+        <section className="py-20 bg-[#0a0d14]/40 border-b border-white/5" aria-labelledby="section-why-reconshield">
+          <div className="max-w-[1000px] mx-auto px-6 font-sans">
+            <h2 id="section-why-reconshield" className="text-3xl font-display font-bold text-white mb-10 text-center uppercase tracking-wide">
+              Transform Your Security Workflow
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+              <div className="p-8 rounded-3xl bg-gradient-to-b from-[#0d1117] to-transparent border border-white/5 relative overflow-hidden text-center">
+                <Zap className="w-8 h-8 text-cyan-400 mb-4 mx-auto" />
+                <h4 className="text-white font-bold text-lg mb-2">Key Features</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Modular diagnostic engines, auto-correlated scores (Security, Exposure, Trust), and real-time DNS queries packaged in a zero-configuration dashboard.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-gradient-to-b from-[#0d1117] to-transparent border border-white/5 relative overflow-hidden text-center">
+                <ListTodo className="w-8 h-8 text-[#00ff88] mb-4 mx-auto" />
+                <h4 className="text-white font-bold text-lg mb-2">Primary Use Cases</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Continuous digital hygiene audits, rapid OSINT during security assessments, third-party vendor risk scoring, and post-deployment validation.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-gradient-to-b from-[#0d1117] to-transparent border border-white/5 relative overflow-hidden text-center">
+                <Award className="w-8 h-8 text-purple-400 mb-4 mx-auto" />
+                <h4 className="text-white font-bold text-lg mb-2">System Benefits</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  100% passive scans carry no operational risk. Review your configurations legally, instantly, and with zero setup or impact on target servers.
+                </p>
+              </div>
+            </div>
+
+            {/* Why Choose & Trusted By */}
+            <div className="p-8 rounded-3xl bg-surface-900 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="space-y-3 max-w-xl">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 text-[10px] font-mono uppercase tracking-wider">
+                  <ShieldAlert className="w-3.5 h-3.5" /> Built for Modern Security Teams
+                </div>
+                <h3 className="text-white font-bold text-xl uppercase tracking-wide">Trusted by Security Professionals</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  ReconShield is designed by security practitioners to provide developers and engineers with clear, actionable security indicators. Our scoring models are grounded in verified frameworks including the OWASP Top 10, NIST Guidelines, CISA directives, and CVSS parameters.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-4 shrink-0 text-center font-mono">
+                <div className="p-4 bg-surface-950 border border-white/5 rounded-2xl w-32">
+                  <span className="text-white font-bold text-lg block">100%</span>
+                  <span className="text-gray-500 text-[9px] uppercase">Compliance</span>
+                </div>
+                <div className="p-4 bg-surface-950 border border-white/5 rounded-2xl w-32">
+                  <span className="text-cyan-400 font-bold text-lg block">Passive</span>
+                  <span className="text-gray-500 text-[9px] uppercase">Recon Only</span>
+                </div>
+              </div>
+            </div>
 
           </div>
         </section>
@@ -525,9 +651,8 @@ export default async function ScannerPage() {
                 { name: "5. SSL Checker", desc: "Audit TLS cipher suite strength, certificate chains, and handshake errors.", link: "/tools/ssl-checker" },
                 { name: "6. HTTP Headers", desc: "Evaluate security headers (CSP, HSTS) to protect visitors from scripting threats.", link: "/tools/http-headers" },
                 { name: "7. Port Scanner", desc: "Scan network hosts passively to check for exposed administrative interfaces.", link: "/tools/port-scanner" },
-                { name: "8. IP Lookup", desc: "Check IP address geolocation records, Autonomous System Numbers (ASN), and reputations.", link: "/tools/ip-lookup" },
-                { name: "9. Email Security", desc: "Audit email authentication controls (SPF, DKIM, DMARC) to prevent brand spoofing.", link: "/tools/email-security" },
-                { name: "10. Vulnerability Scanner", desc: "Aggregate perimeter exposure data, score security configs, and prioritize updates.", link: "/tools/vulnerability-scanner" }
+                { name: "8. Email Security Check", desc: "Audit email authentication controls (SPF, DKIM, DMARC) to prevent brand spoofing.", link: "/tools/email-security" },
+                { name: "9. Vulnerability Scanner", desc: "Aggregate perimeter exposure data, score security configs, and prioritize updates.", link: "/tools/vulnerability-scanner" }
               ].map((step, idx) => (
                 <div key={idx} className="p-4 rounded-xl bg-surface-900 border border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:border-cyan-500/20 transition-all">
                   <div>
@@ -543,7 +668,7 @@ export default async function ScannerPage() {
           </div>
         </section>
 
-        {/* E-E-A-T section (Phase 9) */}
+        {/* E-E-A-T section */}
         <section className="py-20 border-b border-white/5">
           <div className="max-w-[1000px] mx-auto px-6">
             
@@ -599,7 +724,7 @@ export default async function ScannerPage() {
         <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
           <div className="max-w-[900px] mx-auto px-6">
             <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
-            <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-1 gap-6 text-sans">
               {faqs.map((faq, index) => (
                 <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-cyan-500/20 transition-all">
                   <h3 className="text-lg font-bold text-white mb-3 font-display">{faq.q}</h3>
