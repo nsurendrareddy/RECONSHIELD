@@ -84,62 +84,38 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* Monetag Vignette Ad Script */}
+        {/* Monetag Vignette Banner */}
         <Script
           id="monetag-vignette"
           strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(s){s.dataset.zone='11124393',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
-            `
-          }}
+          src="https://n6wxm.com/vignette.min.js"
+          data-zone="11124393"
         />
 
-        {/* Monetag MultiTag Script */}
+        {/* Monetag In-Page Push */}
         <Script
-          id="monetag-multitag"
+          id="monetag-inpage-push"
           strategy="afterInteractive"
-          src="https://quge5.com/88/tag.min.js"
-          data-zone="247948"
-          data-cfasync="false"
+          src="https://nap5k.com/tag.min.js"
+          data-zone="11124391"
         />
 
-        {/* Monetag Push Notification Service Worker Registration */}
+        {/* Clean up old Monetag Service Worker */}
         <Script
-          id="register-sw"
+          id="unregister-sw"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-                var register = function() {
-                  navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                    var exists = false;
-                    for (var i = 0; i < registrations.length; i++) {
-                      if (registrations[i].active && registrations[i].active.scriptURL.includes('/sw.js')) {
-                        exists = true;
-                        break;
-                      }
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                  for (var i = 0; i < registrations.length; i++) {
+                    if (registrations[i].active && registrations[i].active.scriptURL.includes('/sw.js')) {
+                      registrations[i].unregister().then(function(success) {
+                        if (success) console.log('Monetag ServiceWorker unregistered.');
+                      });
                     }
-                    if (!exists) {
-                      navigator.serviceWorker.register('/sw.js')
-                        .then(function(reg) {
-                          console.log('Monetag ServiceWorker registered successfully with scope:', reg.scope);
-                        })
-                        .catch(function(err) {
-                          console.error('Monetag ServiceWorker registration failed:', err);
-                        });
-                    } else {
-                      console.log('Monetag ServiceWorker already registered.');
-                    }
-                  }).catch(function(err) {
-                    navigator.serviceWorker.register('/sw.js');
-                  });
-                };
-                if (document.readyState === 'complete') {
-                  register();
-                } else {
-                  window.addEventListener('load', register);
-                }
+                  }
+                });
               }
             `
           }}
