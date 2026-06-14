@@ -11,80 +11,76 @@ const IpScannerClient = dynamic(() => import('@/components/ip-scanner/IpScannerC
   loading: () => <div className="min-h-[600px] animate-pulse bg-surface-900/50 rounded-3xl" />
 });
 
-export const metadata = generateBaseMetadata({
-  title: "IP Reputation Checker | Free IP Blacklist & Threat Lookup",
-  description: "Perform a free IP reputation check. Verify real-time blacklist status, abuse confidence scores, VPN/proxy detection, and ISP/ASN routing details instantly.",
-  path: "/tools/ip-lookup"
-});
+export const metadata = {
+  ...generateBaseMetadata({
+    title: "Free IP Lookup - IP Geolocation & Reputation Checker | ReconShield",
+    description: "Free IP lookup tool for geolocation, reputation check, and threat intelligence. Verify IP addresses, check blacklists, and analyze network data instantly.",
+    path: "/tools/ip-lookup",
+    image: "https://reconshield.in/og-image-ip.png"
+  }),
+  keywords: [
+    "ip lookup", "free ip checker", "ip geolocation", "ip address lookup", "ip reputation checker",
+    "ip blacklist checker", "check ip address", "ip location finder", "whats my ip location", "ip threat intelligence",
+    "free ip geolocation lookup tool", "check ip address reputation online", "ip blacklist checker free", "verify ip address location", "ip reputation scoring tool"
+  ],
+  appleWebApp: {
+    capable: true,
+    title: "ReconShield",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent"
+  }
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0d14",
+};
 
 export default function IpScannerPage() {
   const faqs = [
     {
-      q: "What is an IP reputation check?",
-      a: "An IP reputation check is a security lookup that queries global threat intelligence databases to assess the risk level of an IP address. It determines whether the IP is flagged on blacklists (DNSBL/RBL), associated with spam, brute-force attempts, or malware, and calculates an IP risk score."
+      q: "What is an IP lookup?",
+      a: "An IP lookup is a query process that resolves an Internet Protocol address to retrieve its physical geographic location, network provider (ISP), Autonomous System Number (ASN), and reputation profile across security blacklists."
     },
     {
-      q: "How does ReconShield calculate the IP Risk Score?",
-      a: "ReconShield aggregates real-time telemetry from over 50 global threat feeds, blocklists, and Regional Internet Registries (RIRs). The score is calculated based on factors like active abuse reports, association with botnet networks, hosting type (residential vs. hosting provider), and proxy/VPN status."
+      q: "What is IP geolocation?",
+      a: "IP geolocation is the identification of the geographic location of a device using its IP address. This data includes the country, region, city, zip code, latitude, longitude, and timezone associated with the IP allocation."
     },
     {
-      q: "Can this tool detect commercial VPNs, proxies, or Tor exit nodes?",
-      a: "Yes. Our scanner inspects network routing telemetry and compares the target IP against updated lists of commercial VPN servers, public web proxies, and Tor exit node directories to determine anonymization status."
+      q: "How does the IP reputation checker work?",
+      a: "The IP reputation checker queries multiple threat intelligence feeds, spam honeypots, and real-time blacklists (RBLs) to determine if an IP address has been flagged for malicious activities like spamming, port scanning, or malware distribution."
     },
     {
-      q: "Why is email deliverability impacted by IP reputation?",
-      a: "Mail servers run real-time checks on the sending IP against blocklists like Spamhaus. If the sending IP has a poor reputation score or is flagged on RBLs, receiving servers (Google, Microsoft) will block or route your emails to the spam folder."
+      q: "Can this free IP checker detect VPNs or proxies?",
+      a: "Yes. Our scanner inspects network routing headers and compares the target IP against updated directories of commercial VPN servers, public web proxies, Tor exit nodes, and hosting provider subnets to detect anonymization."
     },
     {
-      q: "How can I improve my network's IP reputation?",
-      a: "To improve reputation, scan your internal network for malware or open proxy nodes, secure exposed ports, verify email authentication (SPF, DKIM, DMARC), and request delisting from specific blacklists once the malicious activity has been remediated."
+      q: "What is an IP blacklist check?",
+      a: "An IP blacklist check verifies if a specific IP address is currently blocked by major email filters, spam prevention databases (like Spamhaus), or web application firewalls due to reported abuse or compromises."
     },
     {
-      q: "What databases are queried during the reputation check?",
-      a: "We query major global threat databases, including Spamhaus, AbuseIPDB, Barracuda, Project Honey Pot, CleanTalk, and various public blocklists maintained by cybersecurity intelligence entities."
+      q: "How does email deliverability relate to IP reputation?",
+      a: "Mail systems query real-time blocklists before accepting incoming messages. If your outbound email server's IP has a high risk score, servers like Google and Microsoft will block your emails or direct them to spam folders."
     },
     {
-      q: "Is an IP reputation check permanent?",
-      a: "No. IP reputation is dynamic and updates constantly. If malicious activities halt, and the IP is clean during subsequent validation cycles, threat intelligence systems will automatically restore a positive score over time."
+      q: "Is IP threat intelligence data real-time?",
+      a: "Yes. ReconShield aggregates telemetry from over 50 global threat feeds and real-time blacklists to calculate live IP risk scores and confidence levels."
     },
     {
-      q: "What is the difference between IP lookup and WHOIS?",
-      a: "IP lookup maps the network layer, returning details on routing, ISP, ASN, geolocation, and threat profile. WHOIS operates at the domain registration layer, revealing registrar info, owner contact, and nameservers."
-    },
-    {
-      q: "Why should I monitor ASN routing details?",
-      a: "Monitoring Autonomous System Numbers (ASNs) helps security teams identify if an IP belongs to a reputable ISP or a bulletproof hosting provider frequently abused by threat actors to host malicious payloads."
-    },
-    {
-      q: "What is an Abuse Confidence Score?",
-      a: "It is a percentage metric reflecting the confidence level that an IP is engaged in malicious activities. A higher percentage indicates multiple reliable reports of spamming, hacking, or scanning from that host."
-    },
-    {
-      q: "How do DNSBL and RBL databases collect threat data?",
-      a: "DNSBL (DNS-based Blocklist) and RBL (Real-time Blacklist) servers collect data through spam traps, honeypots, and log submissions from partner networks. If an IP sends email to a non-existent trap address or runs port scans on a honeypot, its IP is immediately blacklisted."
-    },
-    {
-      q: "What is BGP routing leakage and can it affect IP reputation?",
-      a: "Border Gateway Protocol (BGP) leaks occur when an Autonomous System erroneously announces IP prefix ownership. If IP ranges owned by benign companies are routed through malicious or compromised networks, their IP reputation can drop rapidly."
-    },
-    {
-      q: "What are the common indicators of a compromised corporate IP address?",
-      a: "Key indicators include sudden outbound spikes on ports 25 (SMTP), 22 (SSH), or 3389 (RDP), high volumes of DNS queries (DNS tunneling), connections to known command-and-control (C2) domains, and inclusion on public blacklists."
-    },
-    {
-      q: "How does residential proxy abuse differ from datacenter IP abuse?",
-      a: "Threat actors lease access to residential proxy networks (often built via SDKs embedded in free consumer software) to bypass rate limits and bot-detection scripts, making attacks look like legitimate home user traffic. Datacenter IPs are cheaper but easily blocked due to static ASN allocation."
-    },
-    {
-      q: "How can security teams automate IP threat intelligence processing?",
-      a: "Teams configure Security Orchestration, Automation, and Response (SOAR) workflows to ingest threat APIs. When a SIEM triggers an alert for an external IP, the SOAR queries the IP reputation, and if the risk score exceeds a threshold, blocks it on the perimeter firewall."
+      q: "How do I improve or clean a bad IP reputation?",
+      a: "To restore a poor reputation score, identify and eliminate the source of malicious traffic on your network, configure email security protocols (SPF, DKIM, DMARC), and request a delisting review from major blocklists once clean."
     }
   ];
 
   const breadcrumbs = [
     { name: "Home", url: "https://reconshield.in" },
     { name: "Tools", url: "https://reconshield.in/tools" },
-    { name: "IP Reputation Check", url: "https://reconshield.in/tools/ip-lookup" }
+    { name: "IP Lookup", url: "https://reconshield.in/tools/ip-lookup" }
   ];
 
   const schemas = [
@@ -112,31 +108,29 @@ export default function IpScannerPage() {
           "@type": "WebPage",
           "@id": "https://reconshield.in/tools/ip-lookup#webpage",
           "url": "https://reconshield.in/tools/ip-lookup",
-          "name": "IP Reputation Checker | Free IP Blacklist & Threat Lookup",
+          "name": "Free IP Lookup - IP Geolocation & Reputation Checker | ReconShield",
           "isPartOf": { "@id": "https://reconshield.in/#website" }
         },
         {
           "@type": "SoftwareApplication",
           "@id": "https://reconshield.in/tools/ip-lookup#software",
-          "name": "ReconShield IP Reputation Checker",
+          "name": "ReconShield IP Geolocation & Reputation Checker",
           "url": "https://reconshield.in/tools/ip-lookup",
-          "description": "Enterprise-grade IP reputation lookup and abuse check tool to verify blacklist status, threat intelligence, and IP risk scores.",
-          "applicationCategory": "UtilitiesApplication",
-          "operatingSystem": "Web-based",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
-        },
-        {
-          "@type": "WebApplication",
-          "@id": "https://reconshield.in/tools/ip-lookup#webapp",
-          "name": "ReconShield IP Blacklist & Threat Scanner",
-          "url": "https://reconshield.in/tools/ip-lookup",
-          "description": "Evaluate IP risk scores, perform dynamic IP blacklist checks, and check IP reputation across 50+ global threat intelligence databases.",
+          "description": "Free IP lookup and geolocation tool to check blacklist status, threat intelligence, and IP risk scores.",
           "applicationCategory": "SecurityApplication",
           "operatingSystem": "All",
-          "browserRequirements": "Requires JavaScript. Requires HTML5.",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
+          "publisher": { "@id": "https://reconshield.in/#organization" },
+          "featureList": [
+            "100% Free - Unlimited IP lookups with no cost",
+            "Geolocation Data - Country, city, coordinates, and timezone",
+            "Blacklist Checking - Verify against multiple spam and threat databases",
+            "Reputation Scoring - Real-time threat intelligence and risk assessment",
+            "IPv4 & IPv6 Support - Check both legacy and modern IP addresses",
+            "ISP & ASN Information - Network ownership and routing data",
+            "No Registration - Start checking IPs instantly",
+            "Privacy-Focused - We don't store or log your queries"
+          ]
         },
         {
           "@type": "BreadcrumbList",
@@ -151,7 +145,7 @@ export default function IpScannerPage() {
         {
           "@type": "TechArticle",
           "@id": "https://reconshield.in/tools/ip-lookup#article",
-          "headline": "The Ultimate Guide to IP Reputation, Blacklists, and Cyber Threat Intelligence",
+          "headline": "Free IP Lookup and Geolocation Verification Guide",
           "description": "Learn how IP reputation is calculated, how to check if an IP is blacklisted, and how security operations centers use IP threat intelligence.",
           "author": { "@type": "Person", "name": "Surendra Reddy" },
           "publisher": { "@id": "https://reconshield.in/#organization" },
@@ -200,11 +194,11 @@ export default function IpScannerPage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            IP Reputation Checker
+            Free IP Lookup Tool - IP Geolocation &amp; Reputation Checker
           </h1>
           
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
-            Evaluate any host's security profile. Check IP reputation, identify blacklist status, search for threat intelligence data, and calculate an IP risk score. Learn if an IP has active abuse reports or malicious associations.
+            Our <strong>free IP lookup tool</strong> helps you check IP addresses for geolocation, reputation, and threat intelligence instantly. Whether you&apos;re investigating suspicious IPs, verifying email senders, or analyzing network traffic, this <strong>IP geolocation checker</strong> provides comprehensive data including location, ISP, blacklist status, and reputation scores. No registration required—simply enter any IPv4 or IPv6 address to get detailed IP information.
           </p>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -250,6 +244,71 @@ export default function IpScannerPage() {
                 <p className="text-gray-400 text-xs leading-relaxed font-sans">
                   From a forensic standpoint, IP address reputation acts as a transient state of infrastructure health. Since IPv4 resources are limited and constantly recycled, a reputation check must combine real-time blacklist queries with structural routing analysis (ASN registry, BGP updates, and subnet history) to prevent false positives during security log correlation.
                 </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Highlights Section */}
+      <section className="py-16 bg-[#0a0d14] border-b border-white/5" aria-label="Why Choose ReconShield">
+        <div className="max-w-[1000px] mx-auto px-6">
+          <h2 className="text-2xl font-display font-bold text-white mb-8 text-center">Why Use ReconShield&apos;s IP Lookup Tool?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 not-prose">
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all flex flex-col justify-between">
+              <div>
+                <Check className="w-6 h-6 text-[#00ff88] mb-3" />
+                <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">100% Free</h3>
+                <p className="text-gray-400 text-[11px] leading-relaxed">Unlimited IP lookups with no cost</p>
+              </div>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all flex flex-col justify-between">
+              <div>
+                <MapPin className="w-6 h-6 text-[#00ff88] mb-3" />
+                <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Geolocation Data</h3>
+                <p className="text-gray-400 text-[11px] leading-relaxed">Country, city, coordinates, and timezone</p>
+              </div>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all flex flex-col justify-between">
+              <div>
+                <AlertTriangle className="w-6 h-6 text-[#00ff88] mb-3" />
+                <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Blacklist Checking</h3>
+                <p className="text-gray-400 text-[11px] leading-relaxed">Verify against multiple spam and threat databases</p>
+              </div>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all flex flex-col justify-between">
+              <div>
+                <Shield className="w-6 h-6 text-[#00ff88] mb-3" />
+                <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Reputation Scoring</h3>
+                <p className="text-gray-400 text-[11px] leading-relaxed">Real-time threat intelligence and risk assessment</p>
+              </div>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all flex flex-col justify-between">
+              <div>
+                <Zap className="w-6 h-6 text-[#00ff88] mb-3" />
+                <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">IPv4 &amp; IPv6 Support</h3>
+                <p className="text-gray-400 text-[11px] leading-relaxed">Check both legacy and modern IP addresses</p>
+              </div>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all flex flex-col justify-between">
+              <div>
+                <Database className="w-6 h-6 text-[#00ff88] mb-3" />
+                <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">ISP &amp; ASN Information</h3>
+                <p className="text-gray-400 text-[11px] leading-relaxed">Network ownership and routing data</p>
+              </div>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all flex flex-col justify-between">
+              <div>
+                <Terminal className="w-6 h-6 text-[#00ff88] mb-3" />
+                <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">No Registration</h3>
+                <p className="text-gray-400 text-[11px] leading-relaxed">Start checking IPs instantly</p>
+              </div>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all flex flex-col justify-between">
+              <div>
+                <Lock className="w-6 h-6 text-[#00ff88] mb-3" />
+                <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Privacy-Focused</h3>
+                <p className="text-gray-400 text-[11px] leading-relaxed">We don&apos;t store or log your queries</p>
               </div>
             </div>
           </div>
@@ -590,39 +649,135 @@ export default function IpScannerPage() {
           </div>
         </section>
 
-        {/* Related Tools Navigation (Internal Link Building) */}
-        <section className="py-20 bg-[#05080f]" aria-label="Related Security Tools">
-          <div className="max-w-[1000px] mx-auto px-6">
-            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center">Complete Your Infrastructure Audit</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">WHOIS Lookup</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze domain registration data, ownership timelines, and registrar security locks.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Run WHOIS check <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-              
-              <Link href="/tools/dns-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all group">
-                <Database className="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">DNS Records Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Resolve authoritative A, MX, TXT, and CNAME records to map routing configurations.</p>
-                <span className="text-purple-400 text-xs font-mono flex items-center gap-1">Check DNS records <ChevronRight className="w-3 h-3"/></span>
-              </Link>
+        {/* IP Lookup Use Cases */}
+        <section id="ip-use-cases" className="py-20 bg-[#05080f] border-b border-white/5">
+          <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none">
+            <h2 className="text-3xl font-display font-bold text-white mb-6 text-center">IP Lookup Use Cases</h2>
+            <p className="text-gray-400 text-sm text-center max-w-2xl mx-auto mb-12 leading-relaxed font-sans">
+              Explore how security teams, email administrators, network engineers, and fraud prevention teams leverage IP location and threat data.
+            </p>
 
-              <Link href="/tools/ssl-checker" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group">
-                <Shield className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">SSL/TLS Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit cryptographic security, verify SSL chains, and check certificate expiry timelines.</p>
-                <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1">Audit TLS certs <ChevronRight className="w-3 h-3"/></span>
-              </Link>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 not-prose">
+              <div className="p-8 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/20 transition-all">
+                <h3 className="text-white font-bold text-lg mb-3 flex items-center gap-2 font-display">
+                  <Shield className="w-5 h-5 text-[#00ff88]" />
+                  1. For Security Teams &amp; SOC Analysts
+                </h3>
+                <p className="text-gray-400 text-xs leading-relaxed font-sans">
+                  Security operations teams use IP lookup tools to investigate suspicious connections, analyze attack sources, and perform threat intelligence. Check IP reputation scores to identify malicious actors, verify blacklist status to detect compromised systems, and use geolocation data to flag unusual access patterns. Essential for incident response, security monitoring, log analysis, and identifying potential security breaches before they escalate.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/20 transition-all">
+                <h3 className="text-white font-bold text-lg mb-3 flex items-center gap-2 font-display">
+                  <Send className="w-5 h-5 text-[#00ff88]" />
+                  2. For Email Administrators &amp; Anti-Spam Teams
+                </h3>
+                <p className="text-gray-400 text-xs leading-relaxed font-sans">
+                  Email administrators rely on IP lookup to troubleshoot email deliverability issues and prevent spam. Check if your mail server IP is blacklisted, verify sender IP reputation before accepting emails, and monitor your IP address reputation to maintain good email deliverability. Critical for preventing false positives in spam filters, maintaining sender reputation, and ensuring emails reach their intended recipients.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/20 transition-all">
+                <h3 className="text-white font-bold text-lg mb-3 flex items-center gap-2 font-display">
+                  <Network className="w-5 h-5 text-[#00ff88]" />
+                  3. For Network Engineers &amp; System Administrators
+                </h3>
+                <p className="text-gray-400 text-xs leading-relaxed font-sans">
+                  Network engineers use IP lookup to troubleshoot connectivity issues, identify network abuse, and verify IP ownership. Check ISP information to route traffic efficiently, verify ASN data for BGP routing, and use geolocation for CDN optimization. Essential for network troubleshooting, capacity planning, traffic analysis, and identifying unauthorized network access or proxy usage.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/20 transition-all">
+                <h3 className="text-white font-bold text-lg mb-3 flex items-center gap-2 font-display">
+                  <Users className="w-5 h-5 text-[#00ff88]" />
+                  4. For Fraud Prevention &amp; E-commerce Security
+                </h3>
+                <p className="text-gray-400 text-xs leading-relaxed font-sans">
+                  Fraud prevention teams use IP lookup to detect suspicious transactions, prevent account takeovers, and verify user locations. Check IP reputation to flag high-risk transactions, compare IP geolocation with billing addresses to detect fraud, and identify VPN/proxy usage that may indicate fraudulent activity. Critical for reducing chargebacks, preventing payment fraud, and protecting customer accounts from unauthorized access.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose ReconShield IP Lookup */}
+        <section id="why-choose-reconshield" className="py-20 bg-[#0a0d14] border-b border-white/5">
+          <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none">
+            <h2 className="text-3xl font-display font-bold text-white mb-6 text-center">Why Choose ReconShield IP Lookup?</h2>
+            <p className="text-gray-400 text-sm text-center max-w-2xl mx-auto mb-12 leading-relaxed font-sans">
+              Compare ReconShield's IP Geolocation &amp; Reputation Checker against industry alternatives to see why it is preferred for incident response.
+            </p>
+
+            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0d1117] not-prose my-8">
+              <table className="w-full text-left text-sm text-gray-400 border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/[0.02] text-white font-mono uppercase text-xs">
+                    <th className="p-4">Feature</th>
+                    <th className="p-4 border-l border-white/10 text-[#00ff88]">ReconShield</th>
+                    <th className="p-4 border-l border-white/10">IPinfo.io</th>
+                    <th className="p-4 border-l border-white/10">WhatIsMyIPAddress</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 font-mono text-xs">
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Free to Use</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes (100% Free)</td>
+                    <td className="p-4 border-l border-white/10">Limited (Paid tiers)</td>
+                    <td className="p-4 border-l border-white/10">Yes (Ad-supported)</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">No Registration Required</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">No (Token required)</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Geolocation Data</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes (Detailed)</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Blacklist Checking</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes (50+ Feeds)</td>
+                    <td className="p-4 border-l border-white/10">No</td>
+                    <td className="p-4 border-l border-white/10">Limited</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Reputation Scoring</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">No</td>
+                    <td className="p-4 border-l border-white/10">No</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Threat Intelligence</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes (Real-time)</td>
+                    <td className="p-4 border-l border-white/10">Paid only</td>
+                    <td className="p-4 border-l border-white/10">No</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">IPv6 Support</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">No Ads</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                    <td className="p-4 border-l border-white/10">No (Heavy Ads)</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
 
         {/* Frequently Asked Questions */}
-        <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
+        <section className="py-20 border-b border-white/5 bg-[#05080f]" aria-labelledby="faq-title">
           <div className="max-w-[900px] mx-auto px-6">
-            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
+            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions About IP Lookup</h2>
             <div className="grid grid-cols-1 gap-6">
               {faqs.map((faq, index) => (
                 <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-[#00ff88]/20 transition-all">
@@ -630,6 +785,55 @@ export default function IpScannerPage() {
                   <p className="text-gray-400 text-sm leading-relaxed font-sans">{faq.a}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Semantic Internal Links (Section 8 - Internal Linking) */}
+        <section className="py-20 bg-[#0a0d14]" aria-label="Related Security Tools">
+          <div className="max-w-[1000px] mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center">Related Security &amp; Network Tools</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              
+              {/* WHOIS Lookup Link */}
+              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Globe className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-white font-bold text-lg mb-2">WHOIS Lookup</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze domain registration records, registrar details, ownership, and administrative locks using our WHOIS Lookup tool.</p>
+                </div>
+                <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1 mt-auto">Run WHOIS Check <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
+
+              {/* DNS Lookup Link */}
+              <Link href="/tools/dns-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Database className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-white font-bold text-lg mb-2">DNS Lookup</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Resolve DNS configurations in real-time. Verify A, AAAA, MX, TXT, CNAME, and NS records instantly.</p>
+                </div>
+                <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1 mt-auto">Run DNS Check <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
+
+              {/* Subdomain Finder Link */}
+              <Link href="/tools/subdomain-finder" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Globe className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-white font-bold text-lg mb-2">Subdomain Finder</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Discover public host records and expose shadow subdomains with our Subdomain Finder.</p>
+                </div>
+                <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1 mt-auto">Find Subdomains <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
+
+              {/* SSL Checker Link */}
+              <Link href="/tools/ssl-checker" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Shield className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-white font-bold text-lg mb-2">SSL/TLS Checker</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit cryptographic validity, certificate expiry, and handshake errors using our SSL/TLS Checker.</p>
+                </div>
+                <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1 mt-auto">Validate SSL <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
             </div>
           </div>
         </section>

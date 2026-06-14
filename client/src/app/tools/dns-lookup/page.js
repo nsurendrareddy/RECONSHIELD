@@ -13,25 +13,57 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
 });
 
-export const metadata = generateBaseMetadata({
-  title: "Free DNS Lookup Tool - Check DNS Records Online | ReconShield",
-  description: "Perform a free online DNS lookup to check A, AAAA, MX, TXT, CNAME, NS, and CAA records. Verify DNSSEC configurations and email security alignments instantly.",
-  path: "/tools/dns-lookup"
-});
+export const metadata = {
+  ...generateBaseMetadata({
+    title: "Free DNS Lookup - Check DNS Records Online | ReconShield",
+    description: "Free DNS lookup tool to check A, AAAA, MX, TXT, CNAME, NS, and SOA records. Instant DNS query results for any domain. No registration required.",
+    path: "/tools/dns-lookup",
+    image: "https://reconshield.in/og-image-dns.png"
+  }),
+  keywords: [
+    "dns lookup", "free dns checker", "dns records lookup", "check dns records", "dns query tool",
+    "mx record lookup", "a record checker", "dns propagation checker", "nameserver lookup", "dns troubleshooting tool",
+    "free dns lookup tool online", "check dns records for domain", "dns mx record checker free", "verify dns propagation", "troubleshoot dns issues"
+  ],
+  appleWebApp: {
+    capable: true,
+    title: "ReconShield",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent"
+  }
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0d14",
+};
 
 export default function DnsLookupPage() {
   const faqs = [
     {
       q: "What is a DNS lookup?",
-      a: "A DNS lookup is a public query process that queries domain name system servers to resolve and retrieve configured zone files, such as A, MX, or TXT records. It maps human-readable domain hostnames into machine-readable IP addresses to establish network connectivity."
+      a: "A DNS lookup is the query and resolution process of retrieving resource records from authoritative nameservers for a specified domain name. This process translates human-readable hostnames into computer-readable IP addresses, mail exchange priority vectors, security authentication keys, and certification policies."
     },
     {
       q: "How do I check DNS records?",
-      a: "You can check DNS records using the ReconShield DNS Lookup tool. Simply enter the target domain, select the specific record type (such as A, CNAME, or MX) or select 'ANY' for a full query, and initiate the lookup to retrieve real-time registration data."
+      a: "To check DNS records, enter a domain name into the ReconShield DNS Lookup tool, select the specific record type (such as A, CNAME, MX, or TXT) or select 'ANY' for a full zone query, and initiate the lookup to retrieve real-time DNS information."
     },
     {
       q: "What is DNS propagation?",
-      a: "DNS propagation is the process of updating DNS record modifications across recursive resolvers worldwide. It is controlled by the Time-to-Live (TTL) configuration in zone files and can take anywhere from a few minutes up to 48 hours to complete globally."
+      a: "DNS propagation is the latency period during which new or modified DNS records are distributed and cached across public recursive DNS resolvers globally. The duration is controlled by the record's Time-To-Live (TTL) header setting, taking from 5 minutes to 48 hours."
+    },
+    {
+      q: "What is an A record?",
+      a: "An A (Address) record maps a domain name directly to a 32-bit IPv4 address, directing client web browsers to the target web server hosting the website."
+    },
+    {
+      q: "What is a CNAME record?",
+      a: "A CNAME (Canonical Name) record is an alias record that points one domain name to another (e.g., www.example.com to example.com). The DNS resolver executes a secondary query to resolve the destination domain's IP."
     },
     {
       q: "What is an MX record?",
@@ -44,42 +76,6 @@ export default function DnsLookupPage() {
     {
       q: "What is DNSSEC?",
       a: "DNSSEC (Domain Name System Security Extensions) adds cryptographic signatures to DNS records. Resolvers use these signatures to verify that the returned DNS data is authentic and has not been tampered with or redirected by an attacker in transit."
-    },
-    {
-      q: "What causes NXDOMAIN errors?",
-      a: "An NXDOMAIN (Non-Existent Domain) error indicates that the domain queried does not exist in the authoritative registry. This is caused by spelling mistakes, expired domain registrations, missing nameserver delegations, or incomplete DNS zone files."
-    },
-    {
-      q: "What is an A record?",
-      a: "An A (Address) record maps a domain name directly to an IPv4 address (such as 192.0.2.1), directing client web browsers to the target web server hosting the website."
-    },
-    {
-      q: "What is a CNAME record?",
-      a: "A CNAME (Canonical Name) record is an alias record that points one domain name to another (e.g., www.example.com to example.com). The DNS resolver executes a secondary query to resolve the destination domain's IP."
-    },
-    {
-      q: "What is a CAA record?",
-      a: "A CAA (Certification Authority Authorization) record is a DNS security record that specifies which certificate authorities are permitted to issue SSL/TLS certificates for a domain, preventing unauthorized certificate generation."
-    },
-    {
-      q: "What is an SOA record?",
-      a: "An SOA (Start of Authority) record marks the start of a DNS zone. It contains essential administrative details, including the primary nameserver, admin email address, serial number, and zone refresh timers."
-    },
-    {
-      q: "What is an AAAA record?",
-      a: "An AAAA record maps a domain name to an IPv6 address (Internet Protocol version 6), allowing modern clients to resolve and connect to hosting servers using 128-bit network addresses."
-    },
-    {
-      q: "How does DMARC protect against email spoofing?",
-      a: "DMARC (Domain-based Message Authentication, Reporting, and Conformance) matches SPF and DKIM signatures. It enables domain owners to set policies (none, quarantine, reject) blocking unauthorized emails using the domain name."
-    },
-    {
-      q: "Why is SPF alignment important?",
-      a: "SPF alignment checks if the sender domain in the message header matches the domain authorized in the SPF DNS record, ensuring unauthorized servers cannot spoof mail origins."
-    },
-    {
-      q: "What is a recursive resolver?",
-      a: "A recursive resolver is a DNS server that queries authoritative servers on behalf of a client browser, tracking down root, TLD, and nameservers to resolve and return the final IP address."
     }
   ];
 
@@ -114,7 +110,7 @@ export default function DnsLookupPage() {
           "@type": "WebPage",
           "@id": "https://reconshield.in/tools/dns-lookup#webpage",
           "url": "https://reconshield.in/tools/dns-lookup",
-          "name": "DNS Lookup Tool (Free) | Check DNS Records Online",
+          "name": "Free DNS Lookup - Check DNS Records Online | ReconShield",
           "isPartOf": { "@id": "https://reconshield.in/#website" }
         },
         {
@@ -126,7 +122,17 @@ export default function DnsLookupPage() {
           "applicationCategory": "SecurityApplication",
           "operatingSystem": "All",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
+          "publisher": { "@id": "https://reconshield.in/#organization" },
+          "featureList": [
+            "100% Free - Unlimited DNS queries with no cost",
+            "All Record Types - A, AAAA, MX, TXT, CNAME, NS, SOA, PTR, and more",
+            "No Registration - Start checking DNS records instantly",
+            "Fast Resolution - Query results in milliseconds",
+            "Global DNS Queries - Check from multiple DNS servers",
+            "Clean Interface - No clutter, no ads, just results",
+            "Export Results - Download DNS data for your records",
+            "Privacy-Focused - We don't store or log your queries"
+          ]
         },
         {
           "@type": "WebApplication",
@@ -215,11 +221,11 @@ export default function DnsLookupPage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            DNS Lookup Tool
+            Free DNS Lookup Tool - Check DNS Records Online
           </h1>
           
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-6 leading-relaxed font-sans">
-            Resolve DNS configurations in real-time. Verify A, AAAA, MX, TXT, CNAME, NS, and CAA records. Audit SPF, DKIM, and DMARC alignments, and detect DNSSEC signatures instantly.
+            Our <strong>free DNS lookup tool</strong> helps you check DNS records and troubleshoot domain configurations instantly. Whether you're verifying A records, checking MX records for email setup, or diagnosing nameserver issues, this <strong>DNS checker</strong> provides comprehensive DNS query results in seconds. No registration required—simply enter a domain name to query all DNS record types including A, AAAA, MX, TXT, CNAME, NS, and SOA records.
           </p>
 
           <div className="flex items-center justify-center gap-4 text-xs font-mono text-gray-500 mb-10 border-y border-white/5 py-2 max-w-xl mx-auto">
@@ -342,6 +348,56 @@ export default function DnsLookupPage() {
         </div>
       </section>
 
+
+      {/* Feature Highlights Section */}
+      <section className="py-16 bg-[#0a0d14] border-b border-white/5" aria-label="Why Choose ReconShield">
+        <div className="max-w-[1000px] mx-auto px-6">
+          <h2 className="text-2xl font-display font-bold text-white mb-8 text-center">Why Use ReconShield&apos;s DNS Lookup Tool?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 not-prose">
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all">
+              <Check className="w-6 h-6 text-[#00ff88] mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">100% Free</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Unlimited DNS queries with no cost</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all">
+              <Database className="w-6 h-6 text-[#00ff88] mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">All Record Types</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">A, AAAA, MX, TXT, CNAME, NS, SOA, PTR, and more</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all">
+              <Terminal className="w-6 h-6 text-[#00ff88] mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">No Registration</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Start checking DNS records instantly</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all">
+              <Activity className="w-6 h-6 text-[#00ff88] mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Fast Resolution</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Query results in milliseconds</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all">
+              <Globe className="w-6 h-6 text-[#00ff88] mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Global DNS Queries</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Check from multiple DNS servers</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all">
+              <Shield className="w-6 h-6 text-[#00ff88] mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Clean Interface</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">No clutter, no ads, just results</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all">
+              <FileText className="w-6 h-6 text-[#00ff88] mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Export Results</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Download DNS data for your records</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/20 transition-all">
+              <Lock className="w-6 h-6 text-[#00ff88] mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Privacy-Focused</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">We don&apos;t store or log your queries</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Main Educational Guide */}
       <div className="bg-[#05080f]">
         
@@ -367,6 +423,8 @@ export default function DnsLookupPage() {
                     <a href="#dns-propagation" className="block text-gray-400 hover:text-[#00ff88] transition-colors leading-relaxed">7. Propagation Latency</a>
                     <a href="#cli-troubleshooting" className="block text-gray-400 hover:text-[#00ff88] transition-colors leading-relaxed">8. CLI Query Reference</a>
                     <a href="#dns-security-best-practices" className="block text-gray-400 hover:text-[#00ff88] transition-colors leading-relaxed">9. Security Best Practices</a>
+                    <a href="#dns-use-cases" className="block text-gray-400 hover:text-[#00ff88] transition-colors leading-relaxed">10. DNS Lookup Use Cases</a>
+                    <a href="#why-choose-reconshield" className="block text-gray-400 hover:text-[#00ff88] transition-colors leading-relaxed">11. Why Choose ReconShield</a>
                   </nav>
                 </div>
               </aside>
@@ -712,47 +770,47 @@ export default function DnsLookupPage() {
         {/* Semantic Internal Links (Phase 7 - Internal Linking) */}
         <section className="py-20 bg-[#05080f]" aria-label="Related Security Tools">
           <div className="max-w-[1000px] mx-auto px-6">
-            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center">Complete Your Network Asset Audit</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center">Related DNS &amp; Network Tools</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               
               {/* WHOIS Lookup Link */}
-              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-bold text-lg mb-2">WHOIS Lookup</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze domain registration records, registrar details, ownership, and administrative locks using our WHOIS Lookup tool.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Run WHOIS Check <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-              
-              {/* IP Lookup Link */}
-              <Link href="/tools/ip-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all group">
-                <Network className="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-bold text-lg mb-2">IP Reputation Checker</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze host reputation, threat tags, and ISP subnet details using our IP reputation checker.</p>
-                <span className="text-purple-400 text-xs font-mono flex items-center gap-1">Run IP Scan <ChevronRight className="w-3 h-3"/></span>
+              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Globe className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-white font-bold text-lg mb-2">WHOIS Lookup</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze domain registration records, registrar details, ownership, and administrative locks using our WHOIS Lookup tool.</p>
+                </div>
+                <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1 mt-auto">Run WHOIS Check <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
               </Link>
 
               {/* Subdomain Finder Link */}
-              <Link href="/tools/subdomain-finder" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group">
-                <Globe className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-bold text-lg mb-2">Subdomain Finder</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Discover public host records and expose shadow subdomains with our Subdomain Finder.</p>
-                <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1">Find Subdomains <ChevronRight className="w-3 h-3"/></span>
+              <Link href="/tools/subdomain-finder" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Globe className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-white font-bold text-lg mb-2">Subdomain Finder</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Discover public host records and expose shadow subdomains with our Subdomain Finder.</p>
+                </div>
+                <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1 mt-auto">Find Subdomains <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
               </Link>
 
               {/* SSL Checker Link */}
-              <Link href="/tools/ssl-checker" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group">
-                <Shield className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-bold text-lg mb-2">SSL/TLS Checker</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit cryptographic validity, certificate expiry, and handshake errors using our SSL/TLS Checker.</p>
-                <span className="text-orange-400 text-xs font-mono flex items-center gap-1">Validate SSL <ChevronRight className="w-3 h-3"/></span>
+              <Link href="/tools/ssl-checker" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Shield className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-white font-bold text-lg mb-2">SSL/TLS Checker</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit cryptographic validity, certificate expiry, and handshake errors using our SSL/TLS Checker.</p>
+                </div>
+                <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1 mt-auto">Validate SSL <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
               </Link>
 
-              {/* Port Scanner Link */}
-              <Link href="/tools/port-scanner" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-red-500/30 transition-all group">
-                <Terminal className="w-8 h-8 text-red-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h3 className="text-white font-bold text-lg mb-2">Exposed Port Scanner</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Identify open port states, service tags, and firewall leaks with our Exposed Port Scanner.</p>
-                <span className="text-red-500 text-xs font-mono flex items-center gap-1">Scan Ports <ChevronRight className="w-3 h-3"/></span>
+              {/* IP Lookup Link */}
+              <Link href="/tools/ip-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Network className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-transform" />
+                  <h3 className="text-white font-bold text-lg mb-2">Reverse IP Lookup</h3>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze host reputation, threat tags, ISP subnet details, and execute reverse IP lookups.</p>
+                </div>
+                <span className="text-[#00ff88] text-xs font-mono flex items-center gap-1 mt-auto">Run IP Scan <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
               </Link>
             </div>
           </div>
@@ -761,7 +819,7 @@ export default function DnsLookupPage() {
         {/* Related DNS Guides Section */}
         <section className="py-20 bg-[#0a0d14] border-t border-b border-white/5" aria-label="Related DNS Guides">
           <div className="max-w-[1000px] mx-auto px-6">
-            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">Related DNS & Security Guides</h2>
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">Related DNS &amp; Security Guides</h2>
             <p className="text-gray-400 text-sm text-center mb-10 max-w-xl mx-auto font-sans leading-relaxed">
               Expand your knowledge on domain security, email authentication, and DNS reconnaissance with our deep-dive technical tutorials.
             </p>
@@ -808,10 +866,135 @@ export default function DnsLookupPage() {
           </div>
         </section>
 
+        {/* DNS Lookup Use Cases */}
+        <section id="dns-use-cases" className="py-20 bg-[#05080f] border-b border-white/5 scroll-mt-24">
+          <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none">
+            <h2 className="text-3xl font-display font-bold text-white mb-6 text-center">DNS Lookup Use Cases</h2>
+            <p className="text-gray-400 text-sm text-center max-w-2xl mx-auto mb-12 leading-relaxed">
+              Explore how network administrators, developers, and security analysts leverage DNS queries to maintain domain health and security.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 not-prose">
+              <div className="p-8 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/20 transition-all">
+                <h3 className="text-white font-bold text-lg mb-3 flex items-center gap-2">
+                  <Server className="w-5 h-5 text-[#00ff88]" />
+                  1. For IT &amp; Network Administrators
+                </h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Network administrators use DNS lookups to verify hostname resolutions, check authoritative nameserver delegation, troubleshoot propagation delay, and map out IP addresses for internal and public resources.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/20 transition-all">
+                <h3 className="text-white font-bold text-lg mb-3 flex items-center gap-2">
+                  <Database className="w-5 h-5 text-[#00ff88]" />
+                  2. For Email &amp; DevOps Teams
+                </h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  DevOps and email engineers audit MX, SPF, DKIM, and DMARC TXT records to prevent spoofing, verify mail servers, configure routing, and ensure proper security handshakes.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/20 transition-all">
+                <h3 className="text-white font-bold text-lg mb-3 flex items-center gap-2">
+                  <Network className="w-5 h-5 text-[#00ff88]" />
+                  3. For Web Developers &amp; Site Owners
+                </h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Developers use DNS checks to confirm CNAME aliases, verify SSL certificate CAA authorization, check A/AAAA record routing, and ensure site accessibility.
+                </p>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/20 transition-all">
+                <h3 className="text-white font-bold text-lg mb-3 flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-[#00ff88]" />
+                  4. For Security Researchers &amp; Analysts
+                </h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Cybersecurity researchers audit DNS records to identify exposed services, inspect passive DNS changes, verify DNSSEC signatures, and detect misconfigured zones vulnerable to subdomain takeovers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose ReconShield DNS Lookup */}
+        <section id="why-choose-reconshield" className="py-20 bg-[#0a0d14] border-b border-white/5 scroll-mt-24">
+          <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none">
+            <h2 className="text-3xl font-display font-bold text-white mb-6 text-center">Why Choose ReconShield DNS Lookup?</h2>
+            <p className="text-gray-400 text-sm text-center max-w-2xl mx-auto mb-12 leading-relaxed">
+              Compare ReconShield's DNS checker against industry alternatives to see why our clean, fast, and feature-rich interface is preferred by security teams.
+            </p>
+
+            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0d1117] not-prose my-8">
+              <table className="w-full text-left text-sm text-gray-400 border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/[0.02] text-white font-mono uppercase text-xs">
+                    <th className="p-4">Feature</th>
+                    <th className="p-4 border-l border-white/10 text-[#00ff88]">ReconShield</th>
+                    <th className="p-4 border-l border-white/10">MXToolbox</th>
+                    <th className="p-4 border-l border-white/10">DNSChecker.org</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 font-mono text-xs">
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Free to Use</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes (100% Free)</td>
+                    <td className="p-4 border-l border-white/10">Yes (Basic)</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">No Registration Required</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">No (Required for details)</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">All Record Types</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Multiple DNS Servers</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">Limited</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Clean Interface</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">No</td>
+                    <td className="p-4 border-l border-white/10">No</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">No Ads</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">No (Heavy Ads)</td>
+                    <td className="p-4 border-l border-white/10">No (Heavy Ads)</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Export Results</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes (PDF, CSV, JSON)</td>
+                    <td className="p-4 border-l border-white/10">Paid only</td>
+                    <td className="p-4 border-l border-white/10">No</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Fast Results</td>
+                    <td className="p-4 border-l border-white/10 text-[#00ff88] font-bold">Yes (Instant)</td>
+                    <td className="p-4 border-l border-white/10">Moderate</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section */}
-        <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
+        <section className="py-20 border-b border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
           <div className="max-w-[900px] mx-auto px-6">
-            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
+            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions About DNS Lookup</h2>
             <div className="grid grid-cols-1 gap-6">
               {faqs.map((faq, index) => (
                 <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-[#00ff88]/20 transition-all">

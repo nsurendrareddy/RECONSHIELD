@@ -14,8 +14,8 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 });
 
 export const metadata = generateBaseMetadata({
-  title: "WHOIS Lookup Tool | Free Domain Owner & IP Registry Checker | ReconShield",
-  description: "Perform a free WHOIS database query to check domain ownership information, registrar records, domain age, EPP status codes, and RDAP registration details.",
+  title: "Free WHOIS Lookup - Check Domain Owner & IP | ReconShield",
+  description: "Free WHOIS lookup tool to check domain ownership, registration dates, IP details & nameservers. Instant results. No registration required.",
   path: "/tools/whois"
 });
 
@@ -150,6 +150,7 @@ export default function WhoisPage() {
           "@id": "https://reconshield.in/tools/whois#software",
           "name": "ReconShield WHOIS Checker",
           "url": "https://reconshield.in/tools/whois",
+          "image": "https://reconshield.in/icon.png",
           "description": "Enterprise-grade WHOIS domain registry lookup tool to search registrar data, ownership, EPP status flags, and registry databases.",
           "applicationCategory": "UtilitiesApplication",
           "operatingSystem": "Web-based",
@@ -161,6 +162,7 @@ export default function WhoisPage() {
           "@id": "https://reconshield.in/tools/whois#webapp",
           "name": "ReconShield RDAP Checker",
           "url": "https://reconshield.in/tools/whois",
+          "image": "https://reconshield.in/icon.png",
           "description": "Perform real-time WHOIS queries and RDAP JSON evaluations to audit domain registration lifecycle stages.",
           "applicationCategory": "SecurityApplication",
           "operatingSystem": "All",
@@ -243,7 +245,7 @@ export default function WhoisPage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            WHOIS Lookup Tool
+            Free WHOIS Lookup Tool - Check Domain Owner & IP Information
           </h1>
           
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-6 leading-relaxed font-sans">
@@ -403,6 +405,25 @@ export default function WhoisPage() {
               <p className="text-gray-400 text-[11px] leading-relaxed">Extracts abuse contact emails and registrar contact URLs, allowing security teams to submit immediate takedowns.</p>
             </div>
           </div>
+
+          {/* Core Feature Highlights */}
+          <div className="mt-8 flex flex-wrap justify-center gap-4 text-xs font-mono text-gray-400">
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5">
+              <Check className="w-3.5 h-3.5 text-[#00ff88]" /> Free WHOIS Searches
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5">
+              <Check className="w-3.5 h-3.5 text-[#00ff88]" /> No Registration Required
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5">
+              <Check className="w-3.5 h-3.5 text-[#00ff88]" /> Bulk Lookup Support
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5">
+              <Check className="w-3.5 h-3.5 text-[#00ff88]" /> Fast Results
+            </span>
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5">
+              <Check className="w-3.5 h-3.5 text-[#00ff88]" /> Privacy Focused
+            </span>
+          </div>
         </div>
       </section>
 
@@ -435,6 +456,7 @@ export default function WhoisPage() {
                   <a href="#benefits" className="block text-gray-400 hover:text-[#00ff88] transition-colors py-0.5">Benefits of WHOIS Lookup</a>
                   <a href="#limitations" className="block text-gray-400 hover:text-[#00ff88] transition-colors py-0.5">Limitations of WHOIS Data</a>
                   <a href="#investigation-examples" className="block text-gray-400 hover:text-[#00ff88] transition-colors py-0.5">Real-World Investigations</a>
+                  <a href="#use-cases" className="block text-gray-400 hover:text-[#00ff88] transition-colors py-0.5">WHOIS Key Use Cases</a>
                   <a href="#related-tools" className="block text-gray-400 hover:text-[#00ff88] transition-colors py-0.5">Related ReconShield Tools</a>
                   <a href="#faq" className="block text-gray-400 hover:text-[#00ff88] transition-colors py-0.5">Frequently Asked Questions</a>
                 </nav>
@@ -448,6 +470,9 @@ export default function WhoisPage() {
                   <Search className="w-8 h-8 text-[#00ff88]" />
                   What Is WHOIS Lookup?
                 </h2>
+                <p>
+                  A comprehensive WHOIS Lookup is the first step in understanding any online target. It acts as an open directory, providing critical visibility into <strong>Domain Ownership</strong>, <strong>Registration Details</strong>, <strong>IP Information</strong>, and forming a baseline for <strong>Cybersecurity Research</strong> and network investigations.
+                </p>
                 <p>
                   A <strong>whois lookup</strong> is a foundational database query and response protocol used to retrieve registration information and technical parameters associated with internet resources. These resources principally include domain names, IP address blocks, and Autonomous System Numbers (ASNs). Historically established at the inception of the public internet, a WHOIS query acts as a standardized directory system, enabling network engineers, security practitioners, and general users to locate the administrative, billing, and technical points of contact responsible for specific online infrastructures.
                 </p>
@@ -943,6 +968,52 @@ export default function WhoisPage() {
                   This helps the competitor&apos;s security team identify and secure these exposed assets before they are exploited.
                 </p>
 
+                {/* WHOIS Lookup Key Use Cases */}
+                <h2 id="use-cases" className="text-3xl font-display font-bold mt-16 mb-6 flex items-center gap-3">
+                  <Target className="w-8 h-8 text-[#00ff88]" />
+                  WHOIS Lookup Key Use Cases
+                </h2>
+                <p>
+                  The WHOIS protocol serves as a crucial data point across various fields in network operations and security. Here are the core use cases for WHOIS lookups:
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8 not-prose">
+                  <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
+                    <Shield className="w-5 h-5 text-[#00ff88] mb-2" />
+                    <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Cybersecurity</h4>
+                    <p className="text-gray-400 text-[11px] leading-relaxed">
+                      Analyze target configurations and identify domain anomalies to block malicious domains before attacks occur.
+                    </p>
+                  </div>
+                  <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
+                    <Terminal className="w-5 h-5 text-[#00ff88] mb-2" />
+                    <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Threat Intelligence</h4>
+                    <p className="text-gray-400 text-[11px] leading-relaxed">
+                      Map command-and-control (C2) servers, track threat actor registration footprints, and gather forensic evidence.
+                    </p>
+                  </div>
+                  <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
+                    <Database className="w-5 h-5 text-[#00ff88] mb-2" />
+                    <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Domain Acquisition</h4>
+                    <p className="text-gray-400 text-[11px] leading-relaxed">
+                      Monitor registry expiration dates, check ownership history, and identify contacts to purchase domains safely.
+                    </p>
+                  </div>
+                  <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
+                    <Globe className="w-5 h-5 text-[#00ff88] mb-2" />
+                    <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Brand Protection</h4>
+                    <p className="text-gray-400 text-[11px] leading-relaxed">
+                      Scan WHOIS records to identify copycat domains, typosquatting campaigns, and brand abuse for immediate takedowns.
+                    </p>
+                  </div>
+                  <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl md:col-span-2">
+                    <Network className="w-5 h-5 text-[#00ff88] mb-2" />
+                    <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Network Administration</h4>
+                    <p className="text-gray-400 text-[11px] leading-relaxed">
+                      Verify DNS zone authority, trace IP block allocations, and troubleshoot routing failures with upstream providers.
+                    </p>
+                  </div>
+                </div>
+
                 {/* 16. Related ReconShield Tools */}
                 <h2 id="related-tools" className="text-3xl font-display font-bold mt-16 mb-6 flex items-center gap-3">
                   <Network className="w-8 h-8 text-[#00ff88]" />
@@ -956,19 +1027,13 @@ export default function WhoisPage() {
                     <Link href="/tools/subdomain-finder"><strong>Subdomain Finder:</strong></Link> Discover all subdomains and map your external attack surface.
                   </li>
                   <li>
-                    <Link href="/tools/dns-lookup"><strong>DNS Lookup:</strong></Link> Resolve authoritative DNS zone records (A, MX, TXT, NS).
+                    <Link href="/tools/dns-lookup"><strong>DNS Lookup:</strong></Link> Resolve authoritative DNS zone records (A, MX, TXT, NS) and perform reverse DNS queries.
                   </li>
                   <li>
-                    <Link href="/tools/reverse-dns"><strong>Reverse DNS:</strong></Link> Resolve IP addresses back to domain names to check allocations.
-                  </li>
-                  <li>
-                    <Link href="/tools/ip-lookup"><strong>IP Lookup:</strong></Link> Check IP reputation, geographical location, and ISP details.
+                    <Link href="/tools/ip-lookup"><strong>IP Lookup:</strong></Link> Check IP reputation, geographical location, ISP details, and map Autonomous System Numbers (ASNs).
                   </li>
                   <li>
                     <Link href="/tools/ssl-checker"><strong>SSL Checker:</strong></Link> Verify TLS certificate validity, expiration dates, and configurations.
-                  </li>
-                  <li>
-                    <Link href="/tools/asn-lookup"><strong>ASN Lookup:</strong></Link> Map IP ranges back to Autonomous System Numbers and hosting providers.
                   </li>
                 </ul>
 

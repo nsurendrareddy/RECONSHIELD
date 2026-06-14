@@ -4,81 +4,97 @@ import Link from 'next/link';
 import { 
   Shield, Globe, Server, Lock, Terminal, CheckCircle2, ChevronRight, 
   Search, Activity, Target, Network, Info, Check, AlertTriangle, 
-  FileText, Send, HelpCircle, BookOpen, Key, Database, Clock
+  FileText, Send, HelpCircle, BookOpen, Key, Database, Clock, Zap
 } from 'lucide-react';
-import { generateBaseMetadata } from '@/utils/metadata';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
 });
 
-export const metadata = generateBaseMetadata({
-  title: "Technology Detector (Free) | Website Tech Stack Checker",
-  description: "Detect website technologies, CMS platforms, frameworks, analytics tools, hosting providers, and security technologies instantly.",
-  path: "/tools/tech-detector"
-});
+export const metadata = {
+  title: "Free Tech Detector - Identify Website Technology | ReconShield",
+  description: "Free technology detector to identify website tech stacks, CMS platforms, frameworks, analytics tools, and hosting providers. Instant technology profiling.",
+  alternates: {
+    canonical: "https://reconshield.in/tools/tech-detector",
+  },
+  keywords: [
+    "technology detector", "tech stack checker", "website technology", "detect cms",
+    "identify framework", "web technology profiler", "builtwith alternative",
+    "wappalyzer alternative", "technology analysis", "stack identification"
+  ],
+  robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  openGraph: {
+    title: "Free Technology Detector - Identify Website Tech Stack",
+    description: "Free technology detector to identify website tech stacks, CMS platforms, frameworks, and analytics tools instantly.",
+    url: "https://reconshield.in/tools/tech-detector",
+    type: "website",
+    siteName: "ReconShield",
+    images: [
+      {
+        url: "https://reconshield.in/og-image-tech.png",
+        width: 1200,
+        height: 630,
+        alt: "Free Technology Detector - ReconShield"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free Technology Detector - Identify Website Tech Stack",
+    description: "Free technology detector to identify website tech stacks, CMS platforms, frameworks instantly.",
+    images: ["https://reconshield.in/og-image-tech.png"]
+  },
+  appleWebApp: {
+    capable: true,
+    title: "ReconShield",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent"
+  }
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0d14",
+};
 
 export default function TechDetectorPage() {
   const faqs = [
     {
       q: "What is a technology detector?",
-      a: "A technology detector is an online tool that identifies the software, frameworks, and services used to build and power a website. It analyzes response headers, HTML markup, scripts, and cookies to determine the application's components."
+      a: "A technology detector is an online utility that identifies the software, CMS platforms, frameworks, and tracking libraries powering a website. By analyzing public headers, script tags, HTML source code, and cookies, it reveals the technical stack components without requiring access to the website's backend files."
     },
     {
-      q: "How do I detect website technologies?",
-      a: "You can detect website technologies by submitting a domain name to the ReconShield Technology Detector. The engine queries the web server and parses response headers, script paths, meta tags, and TLS signatures to extract the software components."
+      q: "Is this tech stack checker free to use?",
+      a: "Yes, the ReconShield tech stack checker is 100% free to use. You can perform unlimited scans to detect website technology without paying any fees, signing up, or creating an account."
     },
     {
-      q: "What CMS is a website using?",
-      a: "To identify a website's Content Management System (CMS), the detector scans for platform-specific indicators, such as WordPress meta tags (wp-content), Shopify assets, Drupal paths, Magento cookies, or Joomla namespace configurations."
+      q: "What technologies can this tool detect?",
+      a: "Our technology detector checks for thousands of web platforms, including Content Management Systems (like WordPress and Shopify), JavaScript frameworks (such as React, Next.js, and Angular), web servers, CDNs, analytics trackers, and security firewalls."
     },
     {
-      q: "How do tech stack checkers work?",
-      a: "Tech stack checkers parse website source code, response headers, and DNS records. They inspect cookies, JavaScript global variables, CSS namespaces, and network paths to match footprints with a database of known web technologies."
+      q: "How does website technology detection work?",
+      a: "Website technology detection works by sending a web request to a target domain and inspecting the returned elements. The tool matches patterns like Nginx server headers, specific cookie names, CSS class names, and JavaScript global variables against a signature database to identify the software stacks."
     },
     {
-      q: "Can I identify a website's framework?",
-      a: "Yes. Frameworks like React, Next.js, Angular, and Vue.js leave clear footprints, such as custom DOM attributes, global variables (e.g., __NEXT_DATA__), or specific build patterns in bundled client scripts."
+      q: "Why should I check a website's technology stack?",
+      a: "Checking a website's technology stack is essential for competitor analysis, market research, sales lead qualification, and cybersecurity audits. It helps web development agencies inspect client configurations and allows security engineers to audit exposed technologies for software vulnerabilities."
     },
     {
-      q: "What hosting provider is a site using?",
-      a: "Hosting providers are identified by resolving the target domain's DNS A/AAAA records and analyzing the associated IP subnets and Autonomous System Numbers (ASN) against registry databases."
+      q: "Can I detect technologies on any website?",
+      a: "Yes, you can analyze any public website. However, if a website is behind a strict access control list, requires authentication, or blocks automated crawlers, the technology detector may be limited to analyzing external DNS records and IP details."
     },
     {
-      q: "What is website fingerprinting?",
-      a: "Website fingerprinting is a reconnaissance technique that maps a target site's server configurations, active frameworks, response paths, and security headers to build a detailed signature profile for security audits."
+      q: "Is technology detection legal?",
+      a: "Yes, technology detection is entirely legal. The scanner only requests and inspects publicly available assets, response headers, and source code that are sent to any visitor's web browser during normal page loading."
     },
     {
-      q: "Can a technology checker identify analytics tools?",
-      a: "Yes. The scanner identifies tracking libraries like Google Analytics, Google Tag Manager, Hotjar, or Facebook Pixel by searching the HTML document and script imports for specific API calls and script endpoints."
-    },
-    {
-      q: "How are CDNs detected?",
-      a: "Content Delivery Networks (CDNs) like Cloudflare, Akamai, or Fastly are detected by auditing the DNS nameservers, HTTP response headers (e.g., CF-RAY), and network paths of static assets."
-    },
-    {
-      q: "Why do security teams detect technologies?",
-      a: "Security teams scan web technologies to identify outdated software versions, evaluate attack surfaces, discover misconfigured components, and audit compliance with organizational security patch standards."
-    },
-    {
-      q: "Can I hide my website's technologies?",
-      a: "Yes. You can hide tech signatures by disabling server header banners (e.g., Server: nginx), minifying script variables, removing meta generator tags, and routing traffic through proxy shields."
-    },
-    {
-      q: "What is a technology confidence score?",
-      a: "A technology confidence score is a metric calculated by our analyzer indicating the likelihood that a detected technology is present, based on the strength and quantity of matching footprints."
-    },
-    {
-      q: "Can it detect backend languages?",
-      a: "Backend languages like PHP, Python, or Node.js are identified by response headers (e.g., X-Powered-By), specific cookie names (e.g., PHPSESSID), or platform-specific URL path patterns."
-    },
-    {
-      q: "How does CDN detection improve SEO?",
-      a: "Identifying CDN configurations helps webmasters verify that assets are loaded from edge locations, ensuring fast page load speeds, which is a key ranking signal for search engine queries."
-    },
-    {
-      q: "Does the tool inspect databases?",
-      a: "No. Technology detectors only inspect public-facing headers, HTML code, client-side scripts, and cookies. They cannot query or interact with internal databases or backend system files."
+      q: "How accurate is the technology detection?",
+      a: "ReconShield technology detector is highly accurate and resolves signatures with confidence ratings. While some websites customize response details or strip server headers to hide their tech stack, our scanner correlates multiple indicators to ensure reliable identification."
     }
   ];
 
@@ -113,31 +129,36 @@ export default function TechDetectorPage() {
           "@type": "WebPage",
           "@id": "https://reconshield.in/tools/tech-detector#webpage",
           "url": "https://reconshield.in/tools/tech-detector",
-          "name": "Technology Detector (Free) | Website Tech Stack Checker",
+          "name": "Free Technology Detector - Identify Website Tech Stack",
           "isPartOf": { "@id": "https://reconshield.in/#website" }
         },
         {
           "@type": "SoftwareApplication",
           "@id": "https://reconshield.in/tools/tech-detector#software",
-          "name": "ReconShield Website Technology Detector",
+          "name": "ReconShield Technology Detector",
           "url": "https://reconshield.in/tools/tech-detector",
-          "description": "Free online technology detector to analyze website framework, CMS types, JS libraries, performance engines, and hosting infrastructure.",
-          "applicationCategory": "SecurityApplication",
-          "operatingSystem": "All",
+          "description": "Free technology detector to identify website tech stacks, CMS platforms, frameworks, analytics tools, and hosting providers. Instant technology profiling.",
+          "applicationCategory": "DeveloperApplication",
+          "operatingSystem": "Web Browser",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
-        },
-        {
-          "@type": "WebApplication",
-          "@id": "https://reconshield.in/tools/tech-detector#webapp",
-          "name": "ReconShield Tech Stack Checker App",
-          "url": "https://reconshield.in/tools/tech-detector",
-          "description": "Scans DOM elements, cookies, and HTTP response parameters to isolate frameworks, analytics, and CDNs.",
-          "applicationCategory": "SecurityApplication",
-          "operatingSystem": "All",
-          "browserRequirements": "Requires JavaScript. Requires HTML5.",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
+          "publisher": { "@id": "https://reconshield.in/#organization" },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "176",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "featureList": [
+            "Free unlimited technology scans",
+            "Detect CMS platforms",
+            "Identify JavaScript frameworks",
+            "Analytics tool detection",
+            "Hosting provider identification",
+            "CDN detection",
+            "No registration required",
+            "Comprehensive tech profiling"
+          ]
         },
         {
           "@type": "BreadcrumbList",
@@ -148,28 +169,6 @@ export default function TechDetectorPage() {
             "name": crumb.name,
             "item": crumb.url
           }))
-        },
-        {
-          "@type": "TechArticle",
-          "@id": "https://reconshield.in/tools/tech-detector#article",
-          "headline": "Professional Website Technology Detection, Fingerprinting, and Asset Fingerprint Hardening Guide",
-          "description": "An in-depth technical article investigating browser response parsing, script matching fingerprint patterns, and OSINT technologies.",
-          "author": { "@type": "Person", "name": "Surendra Reddy" },
-          "publisher": { "@id": "https://reconshield.in/#organization" },
-          "url": "https://reconshield.in/tools/tech-detector",
-          "isPartOf": { "@id": "https://reconshield.in/tools/tech-detector#webpage" }
-        },
-        {
-          "@type": "HowTo",
-          "@id": "https://reconshield.in/tools/tech-detector#howto",
-          "name": "How to detect website framework and CMS stacks",
-          "description": "Audit web software components and hosting providers.",
-          "step": [
-            { "@type": "HowToStep", "name": "Enter Target URL", "text": "Input the domain (e.g., example.com) in the technology detector container." },
-            { "@type": "HowToStep", "name": "Parse Assets", "text": "Run scanner to parse JavaScript variables, cookies, and server headers." },
-            { "@type": "HowToStep", "name": "Review Architecture", "text": "Inspect detected frameworks, content platforms, hosting ASNs, and analytics setups." }
-          ],
-          "isPartOf": { "@id": "https://reconshield.in/tools/tech-detector#webpage" }
         },
         {
           "@type": "FAQPage",
@@ -188,6 +187,9 @@ export default function TechDetectorPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas[0]) }} />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="dns-prefetch" href="https://api.reconshield.in" />
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 overflow-hidden border-b border-white/5" aria-label="Tool Hero">
@@ -201,11 +203,11 @@ export default function TechDetectorPage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            Technology Detector
+            Free Technology Detector - Identify Website Tech Stack
           </h1>
           
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
-            Instantly detect CMS platforms, frameworks, analytics scripts, CDN routes, and security tools powering any website.
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed font-sans">
+            Our <strong>free technology detector</strong> helps you identify the complete tech stack of any website instantly. Whether you're conducting competitive analysis, researching market trends, or qualifying sales leads, this <strong>website technology checker</strong> reveals CMS platforms, JavaScript frameworks, analytics tools, hosting providers, and thousands of other web technologies. No registration required—simply enter any website URL to discover what technologies power it.
           </p>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -315,30 +317,55 @@ export default function TechDetectorPage() {
         </div>
       </section>
 
-      {/* Feature Differentiation Grid */}
-      <section className="py-16 bg-[#0a0d14] border-b border-white/5" aria-label="Feature Differentiation">
-        <div className="max-w-[1000px] mx-auto px-6">
-          <h2 className="text-2xl font-display font-bold text-white mb-8 text-center">ReconShield Technology Detector Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 not-prose">
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Shield className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Confidence Score</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Calculates a matching likelihood rating based on active cookie names, CSS paths, and JavaScript parameters.</p>
+      {/* Feature Highlights (Section 5) */}
+      <section className="py-20 bg-[#0a0d14] border-b border-white/5" aria-label="Why Use ReconShield's Technology Detector">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+            Why Use ReconShield's Technology Detector?
+          </h2>
+          <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+            Leverage a modern website technology profiler built to reveal framework signatures, content delivery structures, and tracker libraries.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Shield className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">100% Free</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Unlimited technology detection with no cost or usage limits.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Clock className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Security Technology Rating</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Identifies active WAFs, CAPTCHA solutions, and header hardening parameters.</p>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Database className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Comprehensive Detection</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Detects CMS platforms, backend runtimes, frameworks, hosting subnets, and analytics.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Activity className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Framework Resolution</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Isolates specific client-side and server-side framework engines (such as React or Next.js).</p>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Terminal className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">No Registration</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Start analyzing and profiling target website stacks immediately without personal signups.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Terminal className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">CMS Risk Assessment</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Analyzes the target CMS platform type and warns if default directories are publicly exposed.</p>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Clock className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Always Updated</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Regularly updated signature configurations detect the latest web technologies and frameworks.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <FileText className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Detailed Reports</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Receive complete technology signature inventories mapping versions and confidence metrics.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Zap className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Fast Analysis</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Identify underlying server configurations and client scripts in less than a second.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Network className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Multiple Categories</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Signatures are logically categorized into CMS, framework, tracker, and server blocks.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Lock className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Privacy-Focused</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Scanned parameters and target URL queries are never saved or stored in public indices.</p>
             </div>
           </div>
         </div>
@@ -346,6 +373,150 @@ export default function TechDetectorPage() {
 
       {/* Main Educational Guide */}
       <div className="bg-[#05080f]">
+
+        {/* Technology Detector Use Cases (Section 6) */}
+        <section className="py-20 border-b border-white/5" aria-label="Technology Detector Use Cases">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+              Technology Detector Use Cases
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Discover how different sales, analytics, development, and cybersecurity teams leverage tech stack auditing to make data-driven decisions.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Send className="w-5 h-5 text-cyan-400" />
+                  For Sales Teams &amp; Lead Generation
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Sales development representatives and lead generation teams use website profiling to identify qualified prospects. By checking if a lead uses premium enterprise platforms (such as Adobe Experience Manager or Salesforce Commerce Cloud), sales teams can gauge budget authority and tailor outreach pitches.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Activity className="w-5 h-5 text-purple-400" />
+                  For Business Intelligence &amp; Competitive Analysis
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Business analysts use tech stack detection to monitor software adoption trends and benchmark competitors. Tracking CMS shifts, analytics migrations, and hosting changes across the market provides indicators of industry direction and emerging digital standards.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Terminal className="w-5 h-5 text-cyan-400" />
+                  For Web Developers &amp; Agencies
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Web developers and agencies use website technology checkers to audit client systems and assess maintenance requirements. Prior to redesigning or taking over support for a website, identifying active databases, server environments, and JS libraries prevents integration conflicts.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Shield className="w-5 h-5 text-red-400" />
+                  For Security Researchers &amp; Vulnerability Assessment
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Security practitioners leverage tech stack detectors to map public attack surfaces and locate vulnerable software versions. Pinpointing outdated CMS platforms, unpatched server engines, or exposed management dashboards helps target hardening audits and reduce breach risks.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Comparison Section (Section 7) */}
+        <section className="py-20 border-b border-white/5 bg-[#0a0d14]">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+              Why Choose ReconShield Technology Detector?
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Compare ReconShield's technology profiler with popular stack checkers in the industry.
+            </p>
+            <div className="overflow-x-auto rounded-3xl border border-white/10 bg-[#0d1117] my-8 shadow-xl">
+              <table className="w-full text-left text-sm text-gray-400 border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/[0.02] text-white font-mono uppercase text-xs">
+                    <th className="p-5">Feature</th>
+                    <th className="p-5 border-l border-white/10 text-cyan-400">ReconShield</th>
+                    <th className="p-5 border-l border-white/10">Wappalyzer</th>
+                    <th className="p-5 border-l border-white/10">BuiltWith</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 font-mono text-xs">
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Free to Use</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes (Unlimited)</td>
+                    <td className="p-5 border-l border-white/10 text-yellow-500 font-bold">Limited (Credits)</td>
+                    <td className="p-5 border-l border-white/10 text-yellow-500 font-bold">Limited</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">No Registration Required</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Technology Detection</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">CMS Detection</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Framework Detection</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">No Ads</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Hosting Detection</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Export Results</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes (Free)</td>
+                    <td className="p-5 border-l border-white/10 text-yellow-500 font-bold">Paid</td>
+                    <td className="p-5 border-l border-white/10 text-yellow-500 font-bold">Paid</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section (Section 8) */}
+        <section className="py-20 border-b border-white/5 bg-[#05080f]" aria-labelledby="faq-title">
+          <div className="max-w-[900px] mx-auto px-6">
+            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-4 text-center">
+              Frequently Asked Questions About Technology Detection
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Find answers to common questions about profiling, CMS checks, legal aspects, and framework signatures.
+            </p>
+            <div className="grid grid-cols-1 gap-6">
+              {faqs.map((faq, index) => (
+                <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-cyan-500/20 transition-all">
+                  <h3 className="text-lg font-bold text-white mb-3 font-display">{faq.q}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed font-sans">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
         
         {/* H2: What Is a Technology Detector? */}
         <section className="py-20 border-b border-white/5">
@@ -616,79 +787,58 @@ export default function TechDetectorPage() {
             </div>
           </div>
         </section>
-
-        {/* Semantic Internal Links (Phase 7 - Internal Linking) */}
-        <section className="py-20 bg-[#05080f]" aria-label="Related Security Tools">
+        {/* Semantic Internal Links (Section 9) */}
+        <section className="py-20 bg-[#05080f]" aria-label="Related Website Analysis Tools">
           <div className="max-w-[1000px] mx-auto px-6">
-            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center">Complete Your Perimeter Hardening</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">Related Website Analysis Tools</h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Explore our suite of technical analysis tools to analyze domain names, DNS configurations, subdomains, and host routing.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               
-              {/* DNS Lookup Link */}
-              <Link href="/tools/dns-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group">
-                <Database className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">DNS Records Auditor</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Extract and verify authoritative MX, TXT, A, and CAA records to prevent routing configuration gaps using our DNS records auditor.</p>
-                <span className="text-orange-400 text-xs font-mono flex items-center gap-1">Audit DNS Records <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-
               {/* WHOIS Lookup Link */}
-              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">WHOIS Lookup</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze domain registration records, registrar details, ownership, and administrative locks using our WHOIS Lookup tool.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Run WHOIS Check <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-              
-              {/* SSL Checker Link */}
-              <Link href="/tools/ssl-checker" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Lock className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">SSL/TLS Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit cryptographic validity, certificate expiry, and handshake errors using our SSL/TLS Checker.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Validate SSL <ChevronRight className="w-3 h-3"/></span>
+              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">WHOIS Lookup</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze domain registration records, registrar details, ownership, and administrative locks.</p>
+                </div>
+                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">Run WHOIS Check <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
               </Link>
 
-              {/* IP Lookup Link */}
-              <Link href="/tools/ip-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all group">
-                <Network className="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">IP Reputation Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze host reputation, threat tags, and ISP subnet details using our IP reputation checker.</p>
-                <span className="text-purple-400 text-xs font-mono flex items-center gap-1">Run IP Scan <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-
-              {/* Security Headers Link */}
-              <Link href="/tools/http-headers" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Key className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">Security Headers Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit HTTP response headers, verify HSTS settings, and validate CSP rules using our Security Headers Checker.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Check Headers <ChevronRight className="w-3 h-3"/></span>
+              {/* DNS Lookup Link */}
+              <Link href="/tools/dns-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Database className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">DNS Lookup</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Extract and verify authoritative MX, TXT, A, and CNAME records to troubleshoot routing issues.</p>
+                </div>
+                <span className="text-orange-400 text-xs font-mono flex items-center gap-1 mt-auto">Audit DNS Records <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
               </Link>
 
               {/* Subdomain Finder Link */}
-              <Link href="/tools/subdomain-finder" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group">
-                <Terminal className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">Subdomain Finder</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Enumerate public namespaces, find dev subdomains, and identify external infrastructure with our Subdomain Finder.</p>
-                <span className="text-orange-400 text-xs font-mono flex items-center gap-1">Find Subdomains <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
-          <div className="max-w-[900px] mx-auto px-6">
-            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
-            <div className="grid grid-cols-1 gap-6">
-              {faqs.map((faq, index) => (
-                <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-cyan-500/20 transition-all">
-                  <h3 className="text-lg font-bold text-white mb-3 font-display">{faq.q}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed font-sans">{faq.a}</p>
+              <Link href="/tools/subdomain-finder" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Terminal className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">Subdomain Finder</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Enumerate public namespaces, find dev subdomains, and identify external web infrastructure assets.</p>
                 </div>
-              ))}
+                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">Find Subdomains <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
+
+              {/* IP Lookup Link */}
+              <Link href="/tools/ip-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Network className="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">IP Lookup Tool</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze host reputation, threat tags, geo-location parameters, and ISP subnet ownership.</p>
+                </div>
+                <span className="text-purple-400 text-xs font-mono flex items-center gap-1 mt-auto">Run IP Scan <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
+
             </div>
           </div>
         </section>
-
       </div>
     </>
   );

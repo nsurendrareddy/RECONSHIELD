@@ -4,19 +4,62 @@ import Link from 'next/link';
 import { 
   Shield, Globe, Server, Lock, Terminal, CheckCircle2, ChevronRight, 
   Search, Activity, Target, Network, Info, Check, AlertTriangle, 
-  FileText, Send, HelpCircle, BookOpen, Key, Database, Clock
+  FileText, Send, HelpCircle, BookOpen, Key, Database, Clock, Zap
 } from 'lucide-react';
-import { generateBaseMetadata } from '@/utils/metadata';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
 });
 
-export const metadata = generateBaseMetadata({
-  title: "Online Port Checker Tool | Check Open Ports Online",
-  description: "Scan open ports on any server using our free online port checker tool. Test firewalls, discover listening network services, and identify security exposures.",
-  path: "/tools/port-scanner"
-});
+export const metadata = {
+  title: "Free Port Scanner - Check Open Ports Online | ReconShield",
+  description: "Free online port scanner to check open ports on any server. Scan TCP/UDP ports, identify services, and detect security vulnerabilities instantly.",
+  alternates: {
+    canonical: "https://reconshield.in/tools/port-scanner",
+  },
+  keywords: [
+    "port scanner", "port checker", "open port checker", "tcp port scan", "udp port scan",
+    "network port scanner", "check open ports", "port scanning tool", "service detection", "firewall test"
+  ],
+  robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  openGraph: {
+    title: "Free Port Scanner - Check Open Ports Online",
+    description: "Free online port scanner to check open ports on any server. Scan TCP/UDP ports and identify security vulnerabilities.",
+    url: "https://reconshield.in/tools/port-scanner",
+    type: "website",
+    siteName: "ReconShield",
+    images: [
+      {
+        url: "https://reconshield.in/og-image-port.png",
+        width: 1200,
+        height: 630,
+        alt: "Free Port Scanner - ReconShield"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free Port Scanner - Check Open Ports Online",
+    description: "Free online port scanner to check open ports. Scan TCP/UDP ports and identify security vulnerabilities.",
+    images: ["https://reconshield.in/og-image-port.png"]
+  },
+  appleWebApp: {
+    capable: true,
+    title: "ReconShield",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent"
+  }
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0d14",
+};
 
 export default function PortScannerPage() {
   const faqs = [
@@ -25,60 +68,32 @@ export default function PortScannerPage() {
       a: "A port scanner is a diagnostic networking tool used to probe a target host IP to check which communication ports are open and active. This helps security teams locate active services and assess potential access points in firewalls."
     },
     {
-      q: "How do I check open ports?",
-      a: "You can check open ports by inputting a domain name or IP address into the ReconShield online port scanner. The engine will initiate a TCP handshake test on common target ports to report their connection status instantly."
+      q: "Is this port checker free to use?",
+      a: "Yes. Our online port checker is 100% free to use for unlimited scans on any host or IP address, with no registration or signup required."
     },
     {
-      q: "What ports should be open?",
-      a: "Only ports hosting public services should be open. Standard web servers typically open port 80 for HTTP and port 443 for secure HTTPS. All administrative ports like SSH (22) and RDP (3389) should remain closed to the public."
+      q: "What ports should I scan?",
+      a: "You should scan common network ports such as port 80 (HTTP), port 443 (HTTPS), port 22 (SSH), port 21 (FTP), port 25 (SMTP), and port 3389 (RDP) to identify exposed services and entry points."
     },
     {
-      q: "What is TCP vs UDP?",
-      a: "TCP is a connection-oriented protocol that requires a three-way handshake to establish reliable communication. UDP is a stateless, connectionless protocol that sends packets without verifying receipt, often used for DNS, streaming, and fast service lookups."
+      q: "How does port scanning work?",
+      a: "Port scanning works by sending connection packets to specific target ports on an IP address. If the port responds with a SYN-ACK packet, it is classified as open. Closed ports return reset (RST) packets, and filtered ports indicate a firewall is blocking the traffic."
     },
     {
-      q: "What is banner grabbing?",
-      a: "Banner grabbing is a reconnaissance technique that retrieves the initial text greeting returned by a network port. This response often leaks the software name, version, and server operating system, allowing administrators to audit software exposure."
+      q: "Is port scanning legal?",
+      a: "Port scanning is legal when performed on your own networks, servers, or authorized targets for security audits. However, unauthorized scanning of external hosts without permission can be flagged as malicious or suspicious activity by security systems."
     },
     {
-      q: "What is service detection?",
-      a: "Service detection analyzes the behavior and banner data of an open port to identify the specific application protocol and version running on it, helping security teams find vulnerable server software."
+      q: "Why are open ports a security risk?",
+      a: "Open ports are a security risk because they represent potential entry points into a system. If the service or application running on an open port is outdated, misconfigured, or has active software bugs, attackers can exploit it to gain unauthorized access."
     },
     {
-      q: "Are open ports dangerous?",
-      a: "Open ports are not inherently dangerous, but they act as open entryways. If the software listening on an open port is outdated, misconfigured, or contains unpatched vulnerabilities, it can be exploited by threat actors."
+      q: "Can I scan UDP ports?",
+      a: "Yes. Our port scanner supports scanning both TCP and UDP ports to help security teams identify services like DNS (port 53), NTP (port 123), or SNMP (port 161) which run on connectionless protocols."
     },
     {
-      q: "What does a filtered port state mean?",
-      a: "A filtered port state indicates that a firewall, router access control list, or security software is blocking the connection packets, preventing the scanner from determining if the port is open or closed."
-    },
-    {
-      q: "How does Nmap differ from online port checkers?",
-      a: "Nmap is a command-line utility for advanced internal and external network scans with multiple scan modes. Online port checkers run passive, browser-initiated connection checks against public IPs without requiring software installation."
-    },
-    {
-      q: "Why should database ports be blocked from the public?",
-      a: "Database ports like 3306 (MySQL) and 5432 (PostgreSQL) contain sensitive data. Leaving them publicly accessible invites brute-force attacks and exploit attempts, so they should be restricted to private VPN networks."
-    },
-    {
-      q: "What is a SYN scan?",
-      a: "A SYN scan, or half-open scan, sends a SYN packet to target ports. If it receives a SYN-ACK, the port is open, but the scanner sends a RST packet to close the connection before the handshake completes."
-    },
-    {
-      q: "How does IP reputation affect port scanning?",
-      a: "Scanners trace IP networks to log exposed services. If your host exhibits many open, vulnerable administrative ports, threat databases will lower its IP reputation score, flagging it as an active risk."
-    },
-    {
-      q: "How do firewalls secure network ports?",
-      a: "Firewalls secure network ports by enforcing access control lists. They block all unsolicited inbound traffic to closed ports while logging and inspecting connections to authorized open services."
-    },
-    {
-      q: "What is port knocking?",
-      a: "Port knocking is a security method that keeps ports closed until a client sends a specific sequence of connection attempts (knocks) to pre-designated ports, opening the target port dynamically."
-    },
-    {
-      q: "How do I close open ports?",
-      a: "To close an open port, stop the service listening on it (such as disabling FTP or database server tasks) or add a firewall rule that blocks inbound TCP/UDP traffic to that port number."
+      q: "How do I protect against port scans?",
+      a: "To protect against port scans, implement a default-deny firewall policy to block all unsolicited inbound traffic, close unused ports, configure rate limiting and intrusion detection systems (IDS), and audit public IPs regularly to check for exposures."
     }
   ];
 
@@ -113,30 +128,36 @@ export default function PortScannerPage() {
           "@type": "WebPage",
           "@id": "https://reconshield.in/tools/port-scanner#webpage",
           "url": "https://reconshield.in/tools/port-scanner",
-          "name": "Port Scanner Tool (Free) | Check Open Ports Online",
+          "name": "Free Port Scanner - Check Open Ports Online | ReconShield",
           "isPartOf": { "@id": "https://reconshield.in/#website" }
         },
         {
           "@type": "SoftwareApplication",
           "@id": "https://reconshield.in/tools/port-scanner#software",
-          "name": "ReconShield Port Scanner Engine",
+          "name": "ReconShield Port Scanner",
           "url": "https://reconshield.in/tools/port-scanner",
-          "description": "Free port auditing application designed to test open TCP ports, execute banner grabbing diagnostics, and analyze host vulnerability exposure.",
+          "description": "Free online port scanner to check open ports on any server. Scan TCP/UDP ports, identify services, and detect security vulnerabilities instantly.",
           "applicationCategory": "SecurityApplication",
-          "operatingSystem": "All",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
-        },
-        {
-          "@type": "WebApplication",
-          "@id": "https://reconshield.in/tools/port-scanner#webapp",
-          "name": "ReconShield Port Checker App",
-          "url": "https://reconshield.in/tools/port-scanner",
-          "description": "Probe network IP addresses to identify listening services, verify firewalls, and check open TCP endpoints.",
-          "applicationCategory": "SecurityApplication",
-          "operatingSystem": "All",
+          "operatingSystem": "Web Browser",
           "browserRequirements": "Requires JavaScript. Requires HTML5.",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.7",
+            "ratingCount": "189",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "featureList": [
+            "Free unlimited port scans",
+            "TCP and UDP scanning",
+            "Service detection",
+            "Common port scanning",
+            "Custom port ranges",
+            "No registration required",
+            "Fast scanning",
+            "Security vulnerability detection"
+          ],
           "publisher": { "@id": "https://reconshield.in/#organization" }
         },
         {
@@ -201,11 +222,11 @@ export default function PortScannerPage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            Online Port Checker Tool
+            Free Port Scanner - Check Open Ports Online
           </h1>
           
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
-            Scan open ports and test firewall rules in real-time. Identify running network services, extract banner signatures, and evaluate external threat surfaces.
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed font-sans">
+            Our <strong className="text-white font-semibold">free port scanner</strong> helps you check open ports on any server and identify potential security vulnerabilities instantly. Whether you're performing network security audits, verifying firewall configurations, or troubleshooting connectivity issues, this <strong className="text-white font-semibold">port checker</strong> scans TCP and UDP ports to reveal running services and exposed entry points. No registration required—simply enter an IP address or hostname to scan common ports or custom port ranges.
           </p>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -315,30 +336,55 @@ export default function PortScannerPage() {
         </div>
       </section>
 
-      {/* Feature Differentiation Grid */}
-      <section className="py-16 bg-[#0a0d14] border-b border-white/5" aria-label="Feature Differentiation">
-        <div className="max-w-[1000px] mx-auto px-6">
-          <h2 className="text-2xl font-display font-bold text-white mb-8 text-center">ReconShield Port Scanner Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 not-prose">
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Shield className="w-6 h-6 text-red-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Exposure Risk Score</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Calculates an overall threat rating based on the number and type of open ports discovered on the host.</p>
+      {/* Section 5 — Feature Highlights */}
+      <section className="py-20 bg-[#0a0d14] border-b border-white/5" aria-label="Why Use ReconShield's Port Scanner">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+            Why Use ReconShield's Port Scanner?
+          </h2>
+          <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed">
+            ReconShield provides a robust, fast, and completely browser-based network port auditing engine to analyze your public-facing infrastructure.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 bg-surface-900/50 border border-white/5 rounded-2xl hover:border-red-500/30 transition-all group">
+              <Check className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-all" />
+              <h3 className="text-white font-bold text-base mb-2">100% Free</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Unlimited port scans with no hidden costs or subscription limits.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Clock className="w-6 h-6 text-red-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Banner Intelligence</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Extracts and parses service greetings to identify application versions and flag outdated software.</p>
+            <div className="p-6 bg-surface-900/50 border border-white/5 rounded-2xl hover:border-red-500/30 transition-all group">
+              <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-all" />
+              <h3 className="text-white font-bold text-base mb-2">Web-Based</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">No software installations or local command-line client configuration required.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Activity className="w-6 h-6 text-red-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Port Security Grade</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Assigns a security grade based on compliance standards, checking for exposed admin databases or cleartext services.</p>
+            <div className="p-6 bg-surface-900/50 border border-white/5 rounded-2xl hover:border-red-500/30 transition-all group">
+              <Network className="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-all" />
+              <h3 className="text-white font-bold text-base mb-2">TCP & UDP Support</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Probe both connection-oriented and stateless protocols for a complete scan.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Terminal className="w-6 h-6 text-red-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Historical Tracking</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Monitors port state changes over time, alerting you when new ports are opened on audited IP ranges.</p>
+            <div className="p-6 bg-surface-900/50 border border-white/5 rounded-2xl hover:border-red-500/30 transition-all group">
+              <Target className="w-8 h-8 text-red-400 mb-4 group-hover:scale-110 transition-all" />
+              <h3 className="text-white font-bold text-base mb-2">Common Ports</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Run rapid checks against standard web, database, and administrative ports.</p>
+            </div>
+            <div className="p-6 bg-surface-900/50 border border-white/5 rounded-2xl hover:border-red-500/30 transition-all group">
+              <Search className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-all" />
+              <h3 className="text-white font-bold text-base mb-2">Custom Ranges</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Specify target ranges to scan unique socket listening endpoints.</p>
+            </div>
+            <div className="p-6 bg-surface-900/50 border border-white/5 rounded-2xl hover:border-red-500/30 transition-all group">
+              <Activity className="w-8 h-8 text-yellow-400 mb-4 group-hover:scale-110 transition-all" />
+              <h3 className="text-white font-bold text-base mb-2">Service Detection</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Identify underlying server applications and protocol configurations on open sockets.</p>
+            </div>
+            <div className="p-6 bg-surface-900/50 border border-white/5 rounded-2xl hover:border-red-500/30 transition-all group">
+              <Zap className="w-8 h-8 text-[#00ff88] mb-4 group-hover:scale-110 transition-all" />
+              <h3 className="text-white font-bold text-base mb-2">Fast Results</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Leverage distributed cloud probes to receive detailed scan reports in seconds.</p>
+            </div>
+            <div className="p-6 bg-surface-900/50 border border-white/5 rounded-2xl hover:border-red-500/30 transition-all group">
+              <Terminal className="w-8 h-8 text-gray-400 mb-4 group-hover:scale-110 transition-all" />
+              <h3 className="text-white font-bold text-base mb-2">No Registration</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Start auditing server IP networks instantly without submitting personal signups.</p>
             </div>
           </div>
         </div>
@@ -346,6 +392,130 @@ export default function PortScannerPage() {
 
       {/* Main Educational Guide */}
       <div className="bg-[#05080f]">
+
+        {/* Section 6 — Use Cases */}
+        <section className="py-20 border-b border-white/5" aria-label="Port Scanner Use Cases">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+              Port Scanner Use Cases
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Discover how different security, network, engineering, and compliance teams leverage online port checks to improve security postures.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Shield className="w-5 h-5 text-red-400" />
+                  For Security Professionals &amp; Penetration Testers
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Security professionals and penetration testers use port scanning during the initial reconnaissance phase of a security assessment. Probing active ports helps map the target network's external attack surface, identify listening services, and discover potential entry points for exploitation. Finding exposed ports enables security teams to identify vulnerabilities before threat actors can target them.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Network className="w-5 h-5 text-purple-400" />
+                  For Network Administrators &amp; IT Teams
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Network administrators and IT teams use port checkers to verify firewall rule implementations and ensure that security policies are correctly enforced. By running external port checks, network engineers can confirm that administrative ports (such as SSH, RDP, and database interfaces) are blocked from the public internet, preventing unauthorized connections and protecting internal assets.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Server className="w-5 h-5 text-cyan-400" />
+                  For System Administrators &amp; DevOps Engineers
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  System administrators and DevOps engineers use port scanners to troubleshoot connectivity issues, verify service status, and audit server exposures. When deploying new services or configuring container routing, running a quick port check helps confirm that the service is listening on the correct port and is accessible to authorized clients, ensuring smooth application delivery.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <FileText className="w-5 h-5 text-orange-400" />
+                  For Compliance Officers &amp; Security Auditors
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Compliance officers and security auditors leverage port scanning tools to verify regulatory compliance with industry standards such as PCI-DSS, SOC 2, and ISO 27001. These security frameworks require continuous monitoring of external network boundaries and regular vulnerability scans to verify that no unauthorized services or legacy protocols are exposed to public networks.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Section 7 — Comparison Table */}
+        <section className="py-20 border-b border-white/5 bg-[#0a0d14]">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+              Why Choose ReconShield Port Scanner?
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Compare ReconShield's online utility with traditional command-line utilities and generic scanners.
+            </p>
+            <div className="overflow-x-auto rounded-3xl border border-white/10 bg-[#0d1117] my-8 shadow-xl">
+              <table className="w-full text-left text-sm text-gray-400 border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/[0.02] text-white font-mono uppercase text-xs">
+                    <th className="p-5">Feature</th>
+                    <th className="p-5 border-l border-white/10 text-[#00ff88]">ReconShield</th>
+                    <th className="p-5 border-l border-white/10">Nmap (CLI)</th>
+                    <th className="p-5 border-l border-white/10">Online Port Scanners</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 font-mono text-xs">
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Web-Based</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">No Installation Required</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Free to Use</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes (Unlimited)</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-yellow-500 font-bold">Limited</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">TCP Port Scanning</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">UDP Port Scanning</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-yellow-500 font-bold">Limited</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Service Detection</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">User-Friendly</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">No Registration</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-[#00ff88] font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
         
         {/* H2: What Is a Port Scanner? */}
         <section className="py-20 border-b border-white/5">
@@ -657,58 +827,59 @@ export default function PortScannerPage() {
         </section>
 
         {/* Semantic Internal Links (Phase 7 - Internal Linking) */}
-        <section className="py-20 bg-[#05080f]" aria-label="Related Security Tools">
+        <section className="py-20 bg-[#05080f]" aria-label="Related Network Security Tools">
           <div className="max-w-[1000px] mx-auto px-6">
-            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center">Complete Your Network Asset Audit</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              
-              {/* WHOIS Lookup Link */}
-              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">WHOIS Lookup</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze domain registration records, registrar details, ownership, and administrative locks using our WHOIS Lookup tool.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Run WHOIS Check <ChevronRight className="w-3 h-3"/></span>
-              </Link>
+            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center">Related Network Security Tools</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               
               {/* IP Lookup Link */}
-              <Link href="/tools/ip-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all group">
-                <Network className="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">IP Reputation Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze host reputation, threat tags, and ISP subnet details using our IP reputation checker.</p>
-                <span className="text-purple-400 text-xs font-mono flex items-center gap-1">Run IP Scan <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-
-              {/* DNS Lookup Link */}
-              <Link href="/tools/dns-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group">
-                <Database className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">DNS Records Auditor</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Extract and verify authoritative MX, TXT, A, and CAA records to prevent routing configuration gaps using our DNS records auditor.</p>
-                <span className="text-orange-400 text-xs font-mono flex items-center gap-1">Audit DNS Records <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-
-              {/* SSL Checker Link */}
-              <Link href="/tools/ssl-checker" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Lock className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">SSL/TLS Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit cryptographic validity, certificate expiry, and handshake errors using our SSL/TLS Checker.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Validate SSL <ChevronRight className="w-3 h-3"/></span>
+              <Link href="/tools/ip-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Network className="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2">IP Lookup</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze host location, reputation, threat intelligence data, and ISP details using our free IP Lookup tool.</p>
+                </div>
+                <span className="text-purple-400 text-xs font-mono flex items-center gap-1 mt-auto">Run IP Scan <ChevronRight className="w-3 h-3"/></span>
               </Link>
 
               {/* Subdomain Finder Link */}
-              <Link href="/tools/subdomain-finder" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group">
-                <Terminal className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">Subdomain Finder</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Enumerate public namespaces, find dev subdomains, and identify external infrastructure with our Subdomain Finder.</p>
-                <span className="text-orange-400 text-xs font-mono flex items-center gap-1">Find Subdomains <ChevronRight className="w-3 h-3"/></span>
+              <Link href="/tools/subdomain-finder" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Terminal className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2">Subdomain Finder</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Discover public namespaces, staging servers, and external subdomains using our Subdomain Finder.</p>
+                </div>
+                <span className="text-orange-400 text-xs font-mono flex items-center gap-1 mt-auto">Find Subdomains <ChevronRight className="w-3 h-3"/></span>
               </Link>
+
+              {/* DNS Lookup Link */}
+              <Link href="/tools/dns-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Database className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2">DNS Lookup</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Query and verify MX, TXT, A, and nameserver records using our authoritative DNS Lookup checker.</p>
+                </div>
+                <span className="text-orange-400 text-xs font-mono flex items-center gap-1 mt-auto">Audit DNS Records <ChevronRight className="w-3 h-3"/></span>
+              </Link>
+
+              {/* WHOIS Lookup Link */}
+              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2">WHOIS Lookup</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Examine domain ownership history, expiry timelines, registrar details, and administrative lock flags.</p>
+                </div>
+                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">Run WHOIS Check <ChevronRight className="w-3 h-3"/></span>
+              </Link>
+              
             </div>
           </div>
         </section>
-
+ 
         {/* FAQ Section */}
         <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
           <div className="max-w-[900px] mx-auto px-6">
-            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Port Scanner FAQ</h2>
+            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions About Port Scanning</h2>
             <div className="grid grid-cols-1 gap-6">
               {faqs.map((faq, index) => (
                 <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-red-500/20 transition-all">

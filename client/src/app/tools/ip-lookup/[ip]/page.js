@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { 
   Server, Search, Globe, ChevronRight, Clock, AlertTriangle, Shield, 
   Database, Network, MapPin, Zap, Info, Check, Terminal, FileText, 
-  ArrowRight, Key, Layers, Lock, Cpu, Activity
+  ArrowRight, Key, Layers, Lock, Cpu, Activity, CheckCircle2
 } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
@@ -183,11 +183,10 @@ export default async function IpIntelligencePage({ params }) {
 
   const data = getIpIntelligence(ip);
 
-  // Generate Breadcrumbs
   const breadcrumbs = [
     { name: "Home", url: "https://reconshield.in" },
     { name: "Tools", url: "https://reconshield.in/tools" },
-    { name: "IP Reputation Checker", url: "https://reconshield.in/tools/ip-lookup" },
+    { name: "IP Lookup", url: "https://reconshield.in/tools/ip-lookup" },
     { name: ip, url: `https://reconshield.in/tools/ip-lookup/${ip}` }
   ];
 
@@ -337,7 +336,7 @@ export default async function IpIntelligencePage({ params }) {
               <li><ChevronRight className="w-3 h-3" /></li>
               <li><Link href="/tools" className="hover:text-[#00ff88] transition-colors">Tools</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
-              <li><Link href="/tools/ip-lookup" className="hover:text-[#00ff88] transition-colors">IP Reputation</Link></li>
+              <li><Link href="/tools/ip-lookup" className="hover:text-[#00ff88] transition-colors">IP Lookup</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
               <li className="text-[#00ff88] font-semibold">{ip}</li>
             </ol>

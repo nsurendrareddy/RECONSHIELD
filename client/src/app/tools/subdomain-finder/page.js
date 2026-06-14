@@ -12,11 +12,39 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
 });
 
-export const metadata = generateBaseMetadata({
-  title: "Free Subdomain Finder & Scanner - Attack Surface Discovery | ReconShield",
-  description: "Discover hidden assets using ReconShield's free subdomain finder & lookup tool. Perform passive subdomain enumeration and scanning using Certificate Transparency logs.",
-  path: "/tools/subdomain-finder"
-});
+export const metadata = {
+  ...generateBaseMetadata({
+    title: "Free Subdomain Finder - Discover Hidden Subdomains | ReconShield",
+    description: "Free subdomain finder tool to discover hidden subdomains, map attack surfaces, and identify DNS records. Instant scanning for security research.",
+    path: "/tools/subdomain-finder",
+    image: "https://reconshield.in/og-image-subdomain.png"
+  }),
+  keywords: [
+    "subdomain finder", "free subdomain scanner", "subdomain enumeration tool",
+    "subdomain discovery", "find subdomains", "DNS enumeration",
+    "certificate transparency lookup", "attack surface mapping",
+    "subdomain brute force", "security reconnaissance tool",
+    "free subdomain finder online", "subdomain scanner for penetration testing",
+    "discover hidden subdomains free", "subdomain enumeration techniques",
+    "certificate transparency subdomain finder"
+  ],
+  appleWebApp: {
+    capable: true,
+    title: "ReconShield",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent"
+  }
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0d14",
+};
 
 export default function SubdomainFinderPage() {
   const faqs = [
@@ -51,74 +79,6 @@ export default function SubdomainFinderPage() {
     {
       q: "How does passive DNS lookup help in finding subdomains?",
       a: "Passive DNS databases record historical DNS resolution logs collected from recursive resolvers and ISP sensors. Analyzing these logs reveals previously active subdomains, IP changes, and sub-infrastructure allocations."
-    },
-    {
-      q: "What is the role of wildcard DNS records in subdomain scanning?",
-      a: "Wildcard DNS resolution maps any non-existent subdomain query to a single default IP address. This can complicate dictionary-based active enumeration, making passive CT log parsing more reliable."
-    },
-    {
-      q: "Why are forgotten or orphaned staging subdomains dangerous?",
-      a: "Development and staging subdomains often run pre-release code, debug features, or unpatched databases. Because they are rarely monitored as strictly as production sites, they serve as easy access points for threat actors."
-    },
-    {
-      q: "What is active subdomain brute-forcing?",
-      a: "Active brute-forcing involves sending massive amounts of DNS resolution queries using wordlists (e.g., admin, dev, api) to detect active subdomains. While thorough, it can be filtered by rate limits and nameserver firewalls."
-    },
-    {
-      q: "What are the best tools for subdomain discovery?",
-      a: "Popular tools include ProjectDiscovery's Subfinder, Amass, Gobuster, and DNSDumpster. The ReconShield Subdomain Finder simplifies this process by integrating passive datasets and CT logs into a single, web-based scanner."
-    },
-    {
-      q: "How do dangling CNAME records create security risks?",
-      a: "Dangling CNAMEs point to third-party services that are no longer hosted. Attackers claiming the third-party account can execute script injections, session hijacking, or spoofing attacks directly on the dangling subdomain."
-    },
-    {
-      q: "What are DNS zone transfers (AXFR) and how are they exploited?",
-      a: "DNS zone transfer (AXFR) is a protocol mechanism used to replicate DNS databases across servers. If a nameserver is misconfigured to allow public zone transfers, an attacker can download the entire DNS zone layout in seconds."
-    },
-    {
-      q: "How does ASN (Autonomous System Number) mapping assist in asset discovery?",
-      a: "Autonomous System Number (ASN) correlation matches resolved subdomain IPs to the hosting provider's network block. This allows security teams to map the global cloud footprint of an organization."
-    },
-    {
-      q: "How does technology fingerprinting work on subdomains?",
-      a: "Technology fingerprinting analyzes HTTP response headers, SSL metadata, and HTML source files of discovered subdomains to identify the web server, CMS, or framework in use, highlighting outdated versions."
-    },
-    {
-      q: "Can I find subdomains that are not listed in public CT logs?",
-      a: "Yes. Internal subdomains or hosts that have never requested a public SSL/TLS certificate won't appear in CT logs. These can only be discovered via active DNS brute-forcing or analyzing internal DNS zone records."
-    },
-    {
-      q: "What is the difference between external asset discovery and vulnerability scanning?",
-      a: "External asset discovery maps the perimeter and lists what exists (domains, subdomains, IPs). Vulnerability scanning runs active checks against those identified assets to find security exploits."
-    },
-    {
-      q: "How do security teams manage the external attack surface?",
-      a: "Security teams use Attack Surface Management (ASM) platforms to continuously scan and index public assets, verify DNS records, audit SSL grades, and alert developers of exposed staging servers."
-    },
-    {
-      q: "What are the best practices for preventing subdomain takeovers?",
-      a: "The most effective practice is to remove DNS records immediately upon decommissioning the associated cloud host or third-party SaaS service, ensuring DNS changes are part of your resource lifecycle."
-    },
-    {
-      q: "What is the impact of HTTP security headers on subdomain security?",
-      a: "Security headers like HSTS (Strict-Transport-Security) and CSP (Content-Security-Policy) on subdomains prevent session hijacking and cross-site scripting, particularly when configured with the 'includeSubDomains' directive."
-    },
-    {
-      q: "How do bug bounty hunters use subdomain maps?",
-      a: "Bug bounty hunters use subdomain maps to bypass heavily defended primary sites and find legacy portals, developer API endpoints, or staging environments where security controls are weaker."
-    },
-    {
-      q: "What is DNSSEC and does it prevent subdomain discovery?",
-      a: "DNSSEC signs DNS responses cryptographically to prevent spoofing. It does not prevent subdomain discovery, although older NSEC configurations can be walked to extract the entire subdomain list."
-    },
-    {
-      q: "How often should an organization perform subdomain scans?",
-      a: "Organizations should perform subdomain scans continuously or at least weekly. Because cloud resources are spun up and down constantly, stale records and new staging sites can appear overnight."
-    },
-    {
-      q: "Does ReconShield's Subdomain Finder send packets to the target domain?",
-      a: "No. The ReconShield Subdomain Finder queries public Certificate Transparency ledgers and cached DNS databases, meaning the scan is entirely passive and leaves zero network footprint on the target."
     }
   ];
 
@@ -153,25 +113,37 @@ export default function SubdomainFinderPage() {
           "@type": "WebPage",
           "@id": "https://reconshield.in/tools/subdomain-finder#webpage",
           "url": "https://reconshield.in/tools/subdomain-finder",
-          "name": "Free Subdomain Finder & Scanner - Attack Surface Discovery | ReconShield",
+          "name": "Free Subdomain Finder - Discover Hidden Subdomains | ReconShield",
           "isPartOf": { "@id": "https://reconshield.in/#website" }
         },
         {
           "@type": "SoftwareApplication",
           "@id": "https://reconshield.in/tools/subdomain-finder#software",
-          "name": "ReconShield Subdomain Enumerator",
+          "name": "ReconShield Subdomain Finder",
           "url": "https://reconshield.in/tools/subdomain-finder",
-          "description": "Free subdomain discovery application to query public transparency logs, resolve active subdomains, and identify external security exposure.",
+          "image": "https://reconshield.in/icon.png",
+          "description": "Free subdomain finder tool to discover hidden subdomains, map attack surfaces, and identify DNS records. Instant scanning for security research.",
           "applicationCategory": "SecurityApplication",
           "operatingSystem": "All",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
+          "publisher": { "@id": "https://reconshield.in/#organization" },
+          "featureList": [
+            "100% Free - Unlimited subdomain scanning with no cost",
+            "No Installation - Web-based tool, works instantly in your browser",
+            "Multiple Techniques - DNS enumeration, certificate logs, brute force",
+            "Fast Scanning - Discover subdomains in seconds",
+            "Certificate Transparency - Query CT logs for historical subdomains",
+            "Export Results - Download results in multiple formats",
+            "Privacy-Focused - We don't store or log your scans",
+            "Active & Historical - Find both current and past subdomains"
+          ]
         },
         {
           "@type": "WebApplication",
           "@id": "https://reconshield.in/tools/subdomain-finder#webapp",
           "name": "ReconShield Subdomain Finder App",
           "url": "https://reconshield.in/tools/subdomain-finder",
+          "image": "https://reconshield.in/icon.png",
           "description": "Scan databases and certificate logs passively to list and inspect subdomains.",
           "applicationCategory": "SecurityApplication",
           "operatingSystem": "All",
@@ -254,11 +226,11 @@ export default function SubdomainFinderPage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            Subdomain Finder
+            Free Subdomain Finder &amp; Scanner - Discover Hidden Subdomains
           </h1>
           
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-6 leading-relaxed font-sans">
-            Map external attack surfaces and discover hidden subdomains. Query Certificate Transparency (CT) logs and passive DNS tables to enumerate host configurations instantly.
+            Our <strong>free subdomain finder</strong> helps you discover hidden subdomains and map complete attack surfaces instantly. Whether you&apos;re conducting security assessments, penetration testing, or bug bounty research, this <strong>subdomain scanner</strong> uses advanced enumeration techniques to find active and historical subdomains. No registration required—simply enter a domain name to start discovering subdomains.
           </p>
 
           <div className="flex items-center justify-center gap-4 text-xs font-mono text-gray-500 mb-10 border-y border-white/5 py-2 max-w-xl mx-auto">
@@ -388,30 +360,50 @@ export default function SubdomainFinderPage() {
         </div>
       </section>
 
-      {/* Feature Differentiation Grid */}
-      <section className="py-16 bg-[#0a0d14] border-b border-white/5" aria-label="Feature Differentiation">
+      {/* Feature Highlights Section */}
+      <section className="py-16 bg-[#0a0d14] border-b border-white/5" aria-label="Why Choose ReconShield">
         <div className="max-w-[1000px] mx-auto px-6">
-          <h2 className="text-2xl font-display font-bold text-white mb-8 text-center">ReconShield Subdomain Finder Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 not-prose">
+          <h2 className="text-2xl font-display font-bold text-white mb-8 text-center">Why Use ReconShield&apos;s Subdomain Finder?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 not-prose">
             <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Shield className="w-6 h-6 text-orange-400 mb-3" />
-              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Attack Surface Score</h3>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Evaluates your external perimeter risk based on host counts, active SSL configurations, and hosting diversity.</p>
-            </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Clock className="w-6 h-6 text-orange-400 mb-3" />
-              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Takeover Detection</h3>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Scans CNAME targets for inactive cloud workspaces, flagging subdomains vulnerable to takeover attacks.</p>
-            </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Activity className="w-6 h-6 text-orange-400 mb-3" />
-              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Live Host Detection</h3>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Verifies DNS resolution for discovered hostnames in real-time, filtering out dead or inactive entries.</p>
+              <Check className="w-6 h-6 text-orange-400 mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">100% Free</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Unlimited subdomain scanning with no cost.</p>
             </div>
             <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
               <Terminal className="w-6 h-6 text-orange-400 mb-3" />
-              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">ASN Correlation</h3>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Maps resolved subdomain IPs to hosting provider network blocks, revealing your global cloud footprint.</p>
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">No Installation</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Web-based tool, works instantly in your browser.</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
+              <Network className="w-6 h-6 text-orange-400 mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Multiple Techniques</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">DNS enumeration, certificate logs, brute force.</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
+              <Activity className="w-6 h-6 text-orange-400 mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Fast Scanning</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Discover subdomains in seconds.</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
+              <Lock className="w-6 h-6 text-orange-400 mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Certificate Transparency</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Query CT logs for historical subdomains.</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
+              <FileText className="w-6 h-6 text-orange-400 mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Export Results</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Download results in multiple formats.</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
+              <Shield className="w-6 h-6 text-orange-400 mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Privacy-Focused</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">We don&apos;t store or log your scans.</p>
+            </div>
+            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
+              <Clock className="w-6 h-6 text-orange-400 mb-3" />
+              <h3 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Active &amp; Historical</h3>
+              <p className="text-gray-400 text-[11px] leading-relaxed">Find both current and past subdomains.</p>
             </div>
           </div>
         </div>
@@ -437,11 +429,11 @@ export default function SubdomainFinderPage() {
                   <a href="#passive-vs-active-enumeration" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Passive vs Active Enumeration</a>
                   <a href="#certificate-transparency-logs" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Certificate Transparency Logs</a>
                   <a href="#dns-based-discovery" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">DNS-Based Discovery Methods</a>
-                  <a href="#common-use-cases" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Common Use Cases</a>
+                  <a href="#common-use-cases" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Subdomain Finder Use Cases</a>
                   <a href="#security-risks" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Security Risks of Forgotten Subdomains</a>
                   <a href="#subdomain-takeover-detection" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Subdomain Takeover Detection</a>
                   <a href="#enterprise-best-practices" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Enterprise Best Practices</a>
-                  <a href="#competitor-comparison" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Competitor Comparison Matrix</a>
+                  <a href="#competitor-comparison" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Why Choose ReconShield</a>
                   <a href="#expert-methodology" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Research & Methodology</a>
                   <a href="#faq" className="block text-gray-400 hover:text-orange-400 transition-colors py-0.5">Frequently Asked Questions</a>
                 </nav>
@@ -509,21 +501,30 @@ export default function SubdomainFinderPage() {
                   </li>
                 </ul>
 
-                <h2 id="common-use-cases" className="text-3xl font-display font-bold mt-16 mb-6">Common Use Cases: Bug Bounty, Attack Surface, and Staging Risks</h2>
+                <h2 id="common-use-cases" className="text-3xl font-display font-bold mt-16 mb-6">Subdomain Finder Use Cases</h2>
                 <p>
-                  Subdomain discovery is critical across several cybersecurity workflows:
+                  Subdomain discovery is critical across several cybersecurity workflows. Here are the primary use cases for using a subdomain finder:
                 </p>
-                <ul>
-                  <li>
-                    <strong>Bug Bounty Reconnaissance:</strong> Ethical hackers use subdomain mapping to expand their target scope. While a company's main website (<code>www.example.com</code>) is heavily defended, secondary sites like <code>support.example.com</code> or <code>jobs.example.com</code> often run older software versions, making them easier to exploit.
-                  </li>
-                  <li>
-                    <strong>Attack Surface Management (ASM):</strong> Organizations use continuous discovery to map their public perimeters. This helps security teams identify unauthorized server deployments (shadow IT) and verify that all internet-facing assets comply with corporate security standards.
-                  </li>
-                  <li>
-                    <strong>Staging and Development Exposures:</strong> Developers frequently deploy pre-release code on subdomains like <code>staging.example.com</code> or <code>dev-api.example.com</code>. These servers often have debug logging enabled, lack multi-factor authentication, or connect to test databases with weak credentials, creating significant entry points for attackers.
-                  </li>
-                </ul>
+                
+                <h3 className="text-xl font-bold mt-8 mb-4">1. For Security Researchers &amp; Penetration Testers</h3>
+                <p>
+                  During the initial reconnaissance phase of an authorized engagement, penetration testers and security researchers must map the target&apos;s external boundaries. Discovering all active host configurations helps map internal and external infrastructures, pinpoint network topologies, and locate target endpoints that may be susceptible to legacy exploits.
+                </p>
+
+                <h3 className="text-xl font-bold mt-8 mb-4">2. For Bug Bounty Hunters</h3>
+                <p>
+                  Ethical hackers and bug bounty hunters rely on subdomain discovery to find forgotten or unmonitored assets. Since primary domains are usually heavily secured and audited, staging subdomains, development environments, and retired campaign sites frequently host critical vulnerabilities, exposed credentials, and logic flaws.
+                </p>
+
+                <h3 className="text-xl font-bold mt-8 mb-4">3. For DevOps &amp; IT Asset Management</h3>
+                <p>
+                  Modern development teams utilize cloud resources that scale rapidly. A subdomain finder helps DevOps and IT managers audit corporate namespaces, identify forgotten staging servers, and discover shadow IT assets that have been launched without official security reviews.
+                </p>
+
+                <h3 className="text-xl font-bold mt-8 mb-4">4. For Brand Monitoring &amp; Protection</h3>
+                <p>
+                  Brand protection and security intelligence teams monitor subdomains to detect typosquatting, phishing sites, and trademark violations. By identifying rogue subdomains registered under variant names, companies can mitigate impersonation scams and execute timely takedowns.
+                </p>
 
                 <h2 id="security-risks" className="text-3xl font-display font-bold mt-16 mb-6">Security Risks of Forgotten Subdomains</h2>
                 <p>
@@ -576,87 +577,69 @@ export default function SubdomainFinderPage() {
         {/* Competitor Gap Analysis & Comparison Matrix */}
         <section id="competitor-comparison" className="py-20 bg-[#0a0d14] border-b border-white/5">
           <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none">
-            <h2 className="text-3xl font-display font-bold text-white mb-6">Subdomain Finder Competitor Comparison</h2>
+            <h2 className="text-3xl font-display font-bold text-white mb-6">Why Choose ReconShield Subdomain Finder?</h2>
             <p className="text-gray-400 mb-8">
-              Analyze how ReconShield's passive subdomain finder compares to other leading tools. While CLI tools like Subfinder offer deep customization, ReconShield provides web-based convenience with built-in takeover checks and ASN mapping.
+              Analyze how ReconShield&apos;s passive subdomain finder compares to other leading tools. While CLI tools like Amass offer deep network graph capabilities, ReconShield provides web-based convenience with built-in export features and real-time CT log queries.
             </p>
 
             <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0d1117] not-prose my-8">
               <table className="w-full text-left text-sm text-gray-400 border-collapse">
                 <thead>
                   <tr className="border-b border-white/10 bg-white/[0.02] text-white font-mono uppercase text-xs">
-                    <th className="p-4">Utility Platform</th>
-                    <th className="p-4 border-l border-white/10">Passive OSINT Depth</th>
-                    <th className="p-4 border-l border-white/10">Active Scan</th>
-                    <th className="p-4 border-l border-white/10">Takeover Check</th>
-                    <th className="p-4 border-l border-white/10">ASN Correlation</th>
-                    <th className="p-4 border-l border-white/10">Execution Mode</th>
+                    <th className="p-4">Feature</th>
+                    <th className="p-4 border-l border-white/10 text-orange-400">ReconShield</th>
+                    <th className="p-4 border-l border-white/10">Sublist3r</th>
+                    <th className="p-4 border-l border-white/10">Amass</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5 font-mono text-xs">
                   <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">ReconShield</td>
-                    <td className="p-4 border-l border-white/10 text-orange-400 font-bold">Deep (Real-time logs)</td>
-                    <td className="p-4 border-l border-white/10">No (Stealth focus)</td>
-                    <td className="p-4 border-l border-white/10 text-orange-400 font-bold">Automated</td>
+                    <td className="p-4 font-semibold text-white">Free to Use</td>
+                    <td className="p-4 border-l border-white/10 text-orange-400 font-bold">Yes (100% Free)</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">Web-Based (No Installation)</td>
                     <td className="p-4 border-l border-white/10 text-orange-400 font-bold">Yes</td>
-                    <td className="p-4 border-l border-white/10">Web App (Instant)</td>
+                    <td className="p-4 border-l border-white/10">No</td>
+                    <td className="p-4 border-l border-white/10">No</td>
                   </tr>
                   <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">Pentest-Tools</td>
-                    <td className="p-4 border-l border-white/10">Moderate</td>
+                    <td className="p-4 font-semibold text-white">No Registration Required</td>
+                    <td className="p-4 border-l border-white/10 text-orange-400 font-bold">Yes</td>
                     <td className="p-4 border-l border-white/10">Yes</td>
-                    <td className="p-4 border-l border-white/10">Manual check</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">Web App (Credits)</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">SecurityTrails</td>
-                    <td className="p-4 border-l border-white/10">Deep (API archives)</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">No</td>
                     <td className="p-4 border-l border-white/10">Yes</td>
-                    <td className="p-4 border-l border-white/10">Web/API (Paid)</td>
                   </tr>
                   <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">WhoisXML API</td>
-                    <td className="p-4 border-l border-white/10">Moderate</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">API Only (Paid)</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">DNSDumpster</td>
-                    <td className="p-4 border-l border-white/10">Moderate</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">No</td>
+                    <td className="p-4 font-semibold text-white">Certificate Transparency</td>
+                    <td className="p-4 border-l border-white/10 text-orange-400 font-bold">Yes (Real-time logs)</td>
+                    <td className="p-4 border-l border-white/10">Limited</td>
                     <td className="p-4 border-l border-white/10">Yes</td>
-                    <td className="p-4 border-l border-white/10">Web App (Free)</td>
                   </tr>
                   <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">ProjectDiscovery Subfinder</td>
-                    <td className="p-4 border-l border-white/10">Deep (Multi-source)</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">CLI Tool (Free)</td>
+                    <td className="p-4 font-semibold text-white">Multiple Techniques</td>
+                    <td className="p-4 border-l border-white/10 text-orange-400 font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
+                    <td className="p-4 border-l border-white/10">Yes</td>
                   </tr>
                   <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">Sitechecker</td>
-                    <td className="p-4 border-l border-white/10">Basic</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">Web App (Trial)</td>
+                    <td className="p-4 font-semibold text-white">Export Results</td>
+                    <td className="p-4 border-l border-white/10 text-orange-400 font-bold">Yes (PDF, CSV, JSON)</td>
+                    <td className="p-4 border-l border-white/10">Yes (Text only)</td>
+                    <td className="p-4 border-l border-white/10">Yes (Text/JSON)</td>
                   </tr>
                   <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">SE Ranking</td>
-                    <td className="p-4 border-l border-white/10">Basic (SEO Focus)</td>
+                    <td className="p-4 font-semibold text-white">Real-Time Results</td>
+                    <td className="p-4 border-l border-white/10 text-orange-400 font-bold">Yes</td>
                     <td className="p-4 border-l border-white/10">No</td>
                     <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">No</td>
-                    <td className="p-4 border-l border-white/10">Web App (Paid)</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-4 font-semibold text-white">User-Friendly Interface</td>
+                    <td className="p-4 border-l border-white/10 text-orange-400 font-bold">Yes</td>
+                    <td className="p-4 border-l border-white/10">No (CLI)</td>
+                    <td className="p-4 border-l border-white/10">No (CLI)</td>
                   </tr>
                 </tbody>
               </table>
@@ -786,45 +769,56 @@ export default function SubdomainFinderPage() {
                 </Link>
               </div>
 
-              {/* Tool: DNS Lookup */}
-              <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/20 transition-all group">
-                <Database className="w-6 h-6 text-orange-400 mb-3" />
-                <h3 className="text-white font-bold text-base mb-2 group-hover:text-orange-400 transition-colors">DNS Lookup Auditor</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Extract DNS records (A, AAAA, MX, TXT, NS, CAA) to inspect configuration health.</p>
-                <Link href="/tools/dns-lookup" className="text-orange-400 text-xs font-mono inline-flex items-center gap-1 group-hover:underline">
-                  Open Tool <ChevronRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
+            </div>
+          </div>
+        </section>
 
+        {/* Related Reconnaissance Tools */}
+        <section className="py-16 bg-[#05080f] border-t border-white/5" aria-label="Related Tools">
+          <div className="max-w-[1000px] mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-8 text-center">Related Reconnaissance Tools</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              
               {/* Tool: WHOIS Lookup */}
               <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/20 transition-all group">
-                <Globe className="w-6 h-6 text-orange-400 mb-3" />
-                <h3 className="text-white font-bold text-base mb-2 group-hover:text-orange-400 transition-colors">WHOIS Lookup</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Query registrar data, creation dates, ownership blocks, and domain security locks.</p>
+                <Globe className="w-8 h-8 text-orange-400 mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 group-hover:text-orange-400 transition-colors">WHOIS Lookup Tool</h3>
+                <p className="text-xs text-gray-400 leading-relaxed mb-4">Query registrar data, ownership, and creation dates for root domains.</p>
                 <Link href="/tools/whois" className="text-orange-400 text-xs font-mono inline-flex items-center gap-1 group-hover:underline">
                   Open Tool <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
 
-              {/* Tool: IP Lookup */}
+              {/* Tool: DNS Lookup */}
               <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/20 transition-all group">
-                <Network className="w-6 h-6 text-orange-400 mb-3" />
-                <h3 className="text-white font-bold text-base mb-2 group-hover:text-orange-400 transition-colors">IP Lookup & Reputation</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Inspect server IP addresses for geolocation data, ASN registration, and blacklist status.</p>
-                <Link href="/tools/ip-lookup" className="text-orange-400 text-xs font-mono inline-flex items-center gap-1 group-hover:underline">
+                <Database className="w-8 h-8 text-orange-400 mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 group-hover:text-orange-400 transition-colors">DNS Lookup Tool</h3>
+                <p className="text-xs text-gray-400 leading-relaxed mb-4">Resolve authoritative A, MX, TXT, and CNAME records instantly.</p>
+                <Link href="/tools/dns-lookup" className="text-orange-400 text-xs font-mono inline-flex items-center gap-1 group-hover:underline">
+                  Open Tool <ChevronRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+
+              {/* Tool: SSL Checker */}
+              <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/20 transition-all group">
+                <Lock className="w-8 h-8 text-orange-400 mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 group-hover:text-orange-400 transition-colors">SSL Certificate Checker</h3>
+                <p className="text-xs text-gray-400 leading-relaxed mb-4">Verify SSL/TLS certificate chains, validity dates, and configurations.</p>
+                <Link href="/tools/ssl-checker" className="text-orange-400 text-xs font-mono inline-flex items-center gap-1 group-hover:underline">
                   Open Tool <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
 
               {/* Tool: Port Scanner */}
               <div className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/20 transition-all group">
-                <Server className="w-6 h-6 text-orange-400 mb-3" />
-                <h3 className="text-white font-bold text-base mb-2 group-hover:text-orange-400 transition-colors">Exposed Port Scanner</h3>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit active host ports for open states, running services, and firewall exposures.</p>
+                <Server className="w-8 h-8 text-orange-400 mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 group-hover:text-orange-400 transition-colors">Port Scanner</h3>
+                <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit active target ports and discover exposed services.</p>
                 <Link href="/tools/port-scanner" className="text-orange-400 text-xs font-mono inline-flex items-center gap-1 group-hover:underline">
                   Open Tool <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
+
             </div>
           </div>
         </section>
@@ -832,7 +826,7 @@ export default function SubdomainFinderPage() {
         {/* FAQ Accordion Section */}
         <section id="faq" className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
           <div className="max-w-[900px] mx-auto px-6">
-            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
+            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions About Subdomain Enumeration</h2>
             <div className="grid grid-cols-1 gap-6">
               {faqs.map((faq, index) => (
                 <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-orange-500/20 transition-all">
