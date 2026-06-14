@@ -1,6 +1,7 @@
 import BlogPostClient from '@/components/BlogPostClient';
 import { ShieldAlert, ArrowLeft, WifiOff } from 'lucide-react';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { client, blogDetailQuery, urlFor, recentPostsQuery, categoriesWithCountQuery, relatedPostsQuery } from '@/utils/sanity';
 export const revalidate = 60;
 
@@ -41,7 +42,9 @@ async function getPost(slug) {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const post = await getPost(slug);
-  if (!post || post._error) return { title: 'Intelligence Briefing Missing' };
+  if (!post || post._error) {
+    notFound();
+  }
 
   const description = post.excerpt;
   const imageUrl = post.mainImageUrl || '/og-image.png';
@@ -77,22 +80,7 @@ export default async function Page({ params }) {
   const post = await getPost(slug);
 
   if (!post || post._error) {
-    return (
-      <div className="animate-fade-in max-w-4xl mx-auto text-center py-20 px-4">
-        <ShieldAlert className="w-12 h-12 text-red-500 mx-auto mb-4" />
-        <h1 className="text-3xl font-display font-bold text-white tracking-wider uppercase">
-          Intelligence Briefing Missing
-        </h1>
-        <p className="text-gray-500 font-mono mt-2 mb-8">
-          The requested intelligence briefing does not exist or has been classified.
-        </p>
-        <div className="block">
-          <Link href="/blog" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-surface-800 text-sm font-mono text-matrix-400 hover:bg-surface-700 transition-all border border-matrix-400/20">
-            <ArrowLeft className="w-4 h-4" /> Return to Archives
-          </Link>
-        </div>
-      </div>
-    );
+    notFound();
   }
 
   // Fetch sidebar and related data with individual catch handlers to prevent 500 crashes
