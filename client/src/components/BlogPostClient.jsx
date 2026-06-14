@@ -6,7 +6,6 @@ import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
 import AdBlock from '@/components/ads/AdBlock'
-import useMonetagOnClick from '@/hooks/useMonetagOnClick'
 
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
@@ -93,8 +92,6 @@ const ptComponents = {
 }
 
 export default function BlogPostClient({ post, recentPosts, categories, relatedPosts }) {
-  useMonetagOnClick();
-
   // Filter out any block containing the unpublished/dead BitUnlocker link
   const cleanBody = post.body?.filter(block => {
     if (block.markDefs) {

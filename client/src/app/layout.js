@@ -83,43 +83,6 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
-
-        {/* Monetag Vignette Banner */}
-        <Script
-          id="monetag-vignette"
-          strategy="afterInteractive"
-          src="https://n6wxm.com/vignette.min.js"
-          data-zone="11124393"
-        />
-
-        {/* Monetag In-Page Push */}
-        <Script
-          id="monetag-inpage-push"
-          strategy="afterInteractive"
-          src="https://nap5k.com/tag.min.js"
-          data-zone="11124391"
-        />
-
-        {/* Clean up old Monetag Service Worker */}
-        <Script
-          id="unregister-sw"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                  for (var i = 0; i < registrations.length; i++) {
-                    if (registrations[i].active && registrations[i].active.scriptURL.includes('/sw.js')) {
-                      registrations[i].unregister().then(function(success) {
-                        if (success) console.log('Monetag ServiceWorker unregistered.');
-                      });
-                    }
-                  }
-                });
-              }
-            `
-          }}
-        />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
         <Layout>

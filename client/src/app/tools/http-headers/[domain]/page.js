@@ -103,7 +103,7 @@ export default async function SecurityHeadersIntelligencePage({ params }) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
-          { '@type': 'ListItem', position: 2, name: 'Security Headers', item: 'https://reconshield.in/tools/http-headers' },
+          { '@type': 'ListItem', position: 2, name: 'HTTP Headers Checker', item: 'https://reconshield.in/tools/http-headers' },
           { '@type': 'ListItem', position: 3, name: domain, item: `https://reconshield.in/tools/http-headers/${domain}` },
         ],
       },
@@ -144,7 +144,7 @@ export default async function SecurityHeadersIntelligencePage({ params }) {
             <ol className="flex items-center gap-2 text-xs font-mono text-gray-500">
               <li><Link href="/" className="hover:text-[#00ff88] transition-colors">Home</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
-              <li><Link href="/tools/http-headers" className="hover:text-[#00ff88] transition-colors">Security Headers</Link></li>
+              <li><Link href="/tools/http-headers" className="hover:text-[#00ff88] transition-colors">HTTP Headers Checker</Link></li>
               <li><ChevronRight className="w-3 h-3" /></li>
               <li className="text-[#00ff88]">{domain}</li>
             </ol>

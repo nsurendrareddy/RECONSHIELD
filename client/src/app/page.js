@@ -1,15 +1,14 @@
+import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import ResponsiveImage from '@/components/ResponsiveImage';
-import { client, homepageBlogQuery, urlFor } from '@/utils/sanity';
+import { client, homepageBlogQuery } from '@/utils/sanity';
 import { 
-  Shield, Target, Activity, Cpu, MapPin, Network, 
-  Search, Terminal, Lock, Layers, Mail, CheckCircle2, 
-  Globe, Database, ArrowRight, Clock, User, Award, 
-  BookOpen, Star, AlertTriangle, ChevronRight, MessageSquare 
+  Shield, Target, Activity, Cpu, Network, Search, Terminal, Lock, 
+  Layers, Mail, CheckCircle2, Globe, Database, ArrowRight, Clock, 
+  Award, ChevronRight, Check, Send, Zap, ListTodo, ShieldAlert,
+  Server, ArrowUpRight
 } from 'lucide-react';
+import ResponsiveImage from '@/components/ResponsiveImage';
 
-import { generateBaseMetadata } from '@/utils/metadata';
 import {
   DynamicNewsletterForm,
   DynamicTopActiveThreats,
@@ -17,11 +16,55 @@ import {
 } from '@/components/DynamicWidgets';
 import AdBlock from '@/components/ads/AdBlock';
 
-export const metadata = generateBaseMetadata({
-  title: "ReconShield | Cybersecurity Research & Threat Intelligence Publication",
-  description: "ReconShield is a professional cybersecurity educational platform. Read peer-reviewed OSINT threat analysis, CVE vulnerability writeups, and use passive diagnostics to secure internet-facing assets.",
-  path: '/'
-});
+export const metadata = {
+  title: "ReconShield - Free Cybersecurity Tools & Threat Intelligence",
+  description: "Free cybersecurity tools and threat intelligence platform. OSINT research, security testing, vulnerability scanning, and domain intelligence for professionals.",
+  alternates: {
+    canonical: "https://reconshield.in",
+  },
+  keywords: [
+    "reconshield", "cybersecurity tools", "free security tools", "threat intelligence platform", "osint tools",
+    "security testing platform", "reconnaissance tools", "security research tools", "penetration testing tools", "domain intelligence"
+  ],
+  robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  openGraph: {
+    title: "ReconShield - Free Cybersecurity Tools & Threat Intelligence",
+    description: "Professional-grade security testing and OSINT tools. WHOIS, DNS, SSL, vulnerability scanning, and more. Completely free.",
+    url: "https://reconshield.in",
+    type: "website",
+    siteName: "ReconShield",
+    images: [
+      {
+        url: "https://reconshield.in/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ReconShield - Free Cybersecurity Tools & Threat Intelligence"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ReconShield - Free Cybersecurity Tools & Threat Intelligence",
+    description: "Professional-grade security testing and OSINT tools. Completely free, no registration.",
+    images: ["https://reconshield.in/og-image.png"]
+  },
+  appleWebApp: {
+    capable: true,
+    title: "ReconShield",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent"
+  }
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0d14",
+};
 
 // Fallback high-quality editorial articles in case Sanity fetch returns empty
 const MOCK_POSTS = [
@@ -95,12 +138,10 @@ export default async function Page() {
     console.error('Error fetching blog posts for homepage:', error);
   }
 
-  // Use mock posts if Sanity query fails or yields empty results (mitigates "thin-content" penalties)
   if (!posts || posts.length === 0) {
     posts = MOCK_POSTS;
   }
 
-  // Organize articles for publication layout
   const featuredPost = posts[0] || MOCK_POSTS[0];
   const secondaryArticles = posts.slice(1, 4).length > 0 ? posts.slice(1, 4) : MOCK_POSTS.slice(1, 4);
 
@@ -120,92 +161,115 @@ export default async function Page() {
     return 6;
   };
 
+  const schemas = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://reconshield.in/#website",
+        "url": "https://reconshield.in",
+        "name": "ReconShield",
+        "description": "Free cybersecurity tools and threat intelligence platform",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://reconshield.in/search?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://reconshield.in/#organization",
+        "name": "ReconShield",
+        "url": "https://reconshield.in",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://reconshield.in/logo.png"
+        },
+        "description": "Free cybersecurity tools and threat intelligence platform for security professionals."
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://reconshield.in/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://reconshield.in"
+          }
+        ]
+      }
+    ]
+  };
+
   return (
     <>
-      {/* Structured Schema Markup (WebSite and Organization) */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "WebSite",
-                "@id": "https://reconshield.in/#website",
-                "url": "https://reconshield.in",
-                "name": "ReconShield Cybersecurity Research & Threat Intelligence",
-                "description": "Educational platform providing peer-reviewed threat intelligence briefings, OSINT methodologies, and passive security assessment guides.",
-                "publisher": {
-                  "@id": "https://reconshield.in/#organization"
-                }
-              },
-              {
-                "@type": "Organization",
-                "@id": "https://reconshield.in/#organization",
-                "name": "ReconShield",
-                "url": "https://reconshield.in",
-                "logo": {
-                  "@type": "ImageObject",
-                  "url": "https://reconshield.in/og-image.png"
-                },
-                "sameAs": [
-                  "https://linkedin.com/in/surendrareddy3",
-                  "https://github.com/nsurendrareddy"
-                ]
-              },
-              {
-                "@type": "BreadcrumbList",
-                "@id": "https://reconshield.in/#breadcrumb",
-                "itemListElement": [
-                  {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "https://reconshield.in"
-                  }
-                ]
-              }
-            ]
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="dns-prefetch" href="https://api.reconshield.in" />
 
-      <div className="bg-[#05080f] min-h-screen">
-        {/* ================= 1. HERO SECTION ================= */}
-        <section className="relative pt-28 pb-20 overflow-hidden border-b border-white/5 bg-[#070b12]">
-          <div className="absolute inset-0 bg-[url('/matrix-bg.svg')] bg-repeat opacity-[0.01] pointer-events-none" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full bg-[#00ff88]/5 blur-[120px] rounded-full pointer-events-none" />
-          
+      <div className="bg-[#05080f] min-h-screen text-white">
+        
+        {/* ================= SECTION 3: HERO SECTION ================= */}
+        <section className="relative pt-32 pb-24 overflow-hidden border-b border-white/5 bg-[#070b12]">
+          <div className="absolute inset-0 bg-grid opacity-[0.2] pointer-events-none -z-10" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full bg-[#00ff88]/5 blur-[120px] rounded-full pointer-events-none -z-10" />
+          <div className="absolute top-1/4 left-1/4 w-[350px] h-[350px] bg-cyber-500/5 blur-[100px] rounded-full pointer-events-none -z-10" />
+
           <div className="max-w-[1200px] mx-auto px-6 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               
-              {/* Left Column: Heading and Value Proposition */}
               <div className="lg:col-span-7 space-y-6 text-left">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00ff88]/10 border border-[#00ff88]/20 text-[#00ff88] text-[10px] font-mono uppercase tracking-widest">
-                  <Activity className="w-3.5 h-3.5" />
-                  <span>Defensive Threat Research Center</span>
+                  <Activity className="w-3.5 h-3.5 animate-pulse" />
+                  <span>Free Security &amp; OSINT Audits</span>
                 </div>
                 
+                {/* Homepage H1 */}
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white tracking-tight leading-[1.1] uppercase">
-                  ENTERPRISE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#38bdf8]">THREAT INTELLIGENCE</span> & AUDITING
+                  ReconShield - <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00ff88] to-[#38bdf8]">Free Cybersecurity Tools</span> &amp; Threat Intelligence Platform
                 </h1>
                 
                 <p className="text-gray-400 text-sm sm:text-base font-sans leading-relaxed max-w-xl">
-                  ReconShield is a premium intelligence publication dedicated to documenting threat actor activities, verifying DNS security protocols, auditing cryptographic layers, and preventing network exposures.
+                  Professional-grade security testing and OSINT reconnaissance tools for security researchers, penetration testers, and IT professionals. Completely free, no registration required.
                 </p>
                 
-                <div className="flex flex-wrap items-center gap-4 pt-2">
-                  <Link href="/blog" className="px-5 py-3 bg-[#00ff88] hover:bg-[#00e077] text-surface-950 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(0,255,136,0.2)]">
-                    Explore Publications
+                {/* Feature Highlights */}
+                <div className="grid grid-cols-2 gap-3 pt-2">
+                  <div className="flex items-center gap-2 text-xs text-gray-300 font-mono">
+                    <Check className="w-4 h-4 text-[#00ff88] shrink-0" />
+                    <span>10+ Free Security Tools</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-300 font-mono">
+                    <Check className="w-4 h-4 text-[#00ff88] shrink-0" />
+                    <span>Comprehensive Testing</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-300 font-mono">
+                    <Check className="w-4 h-4 text-[#00ff88] shrink-0" />
+                    <span>No Registration Required</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-300 font-mono">
+                    <Check className="w-4 h-4 text-[#00ff88] shrink-0" />
+                    <span>Trusted by Professionals</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4 pt-4">
+                  <Link href="/tools" className="px-6 py-3.5 bg-[#00ff88] hover:bg-[#00e077] text-surface-950 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(0,255,136,0.15)] flex items-center gap-1.5 cursor-pointer">
+                    <span>Explore Tools</span>
+                    <ArrowRight className="w-4 h-4 text-surface-950" />
                   </Link>
-                  <Link href="/scanner" className="px-5 py-3 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 hover:border-white/20 text-xs font-mono uppercase tracking-widest rounded-xl transition-all">
-                    Launch Scanner Suite
+                  <Link href="/scanner" className="px-6 py-3.5 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 hover:border-white/20 text-xs font-mono uppercase tracking-widest rounded-xl transition-all cursor-pointer">
+                    Run Security Scan
                   </Link>
                 </div>
               </div>
 
-              {/* Right Column: Animated SOC Telemetry Box */}
-              <div className="lg:col-span-5 min-h-[352px] flex items-center">
+              <div className="lg:col-span-5 min-h-[352px] flex items-center justify-center">
                 <DynamicHeroSocVisual />
               </div>
 
@@ -213,435 +277,615 @@ export default async function Page() {
           </div>
         </section>
 
-
-
-        {/* ================= 2. FEATURED EDITORIAL RESEARCH ================= */}
-        <section className="py-24 bg-[#05080f] border-b border-white/5">
+        {/* ================= SECTION 7: FEATURED SECURITY TOOLS ================= */}
+        <section className="py-24 bg-[#05080f] border-b border-white/5" aria-label="Featured Tools">
           <div className="max-w-[1200px] mx-auto px-6">
-            <div className="flex items-center gap-4 mb-10">
-              <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold">// FEATURED RESEARCH</h2>
-              <div className="h-[1px] flex-1 bg-white/5" />
+            <div className="text-center mb-16 space-y-2">
+              <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// ESSENTIAL UTILITIES</span>
+              <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">Featured Security Tools</h2>
+              <p className="text-gray-400 text-sm max-w-xl mx-auto leading-relaxed">
+                Run targeted diagnostic checks on specific network protocols, registrar data, or configurations.
+              </p>
             </div>
 
-            <div className="group">
-              <Link href={`/blog/${featuredPost.slug?.current || featuredPost.slug}`} className="block bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 rounded-3xl overflow-hidden transition-all duration-300 shadow-xl">
-                <div className="grid grid-cols-1 lg:grid-cols-12">
-                  {/* Image Grid Column */}
-                  <div className="lg:col-span-7 relative aspect-[16/10] lg:aspect-auto min-h-[300px] bg-surface-950 overflow-hidden">
-                    {featuredPost.mainImage ? (
-                      <ResponsiveImage
-                        image={featuredPost.mainImage}
-                        alt={featuredPost.title}
-                        fill={true}
-                        priority={true}
-                        sizes="(max-width: 1024px) 100vw, 680px"
-                        className="group-hover:scale-[1.02] transition-transform duration-700"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-surface-900 to-surface-950 flex items-center justify-center">
-                        <Shield className="w-20 h-20 text-[#00ff88]/10" />
-                      </div>
-                    )}
-                    <div className="absolute top-6 left-6">
-                      <span className="px-3.5 py-1.5 bg-[#00ff88]/90 text-surface-950 text-[10px] font-mono font-bold uppercase tracking-wider rounded">
-                        {featuredPost.categories?.[0]?.title || 'OSINT'}
-                      </span>
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <Link href="/tools/whois" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
+                    <Search className="w-5 h-5" />
                   </div>
+                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">WHOIS Lookup</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">Domain ownership and registration intelligence.</p>
+                </div>
+                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
+                  <span>Open Tool</span>
+                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </div>
+              </Link>
 
-                  {/* Text Grid Column */}
-                  <div className="lg:col-span-5 p-8 md:p-12 flex flex-col justify-between">
-                    <div>
-                      <span className="block font-mono text-[9px] text-[#00ff88] uppercase tracking-[3px] mb-3">// PRIMARY BRIEFING</span>
-                      <h3 className="text-xl md:text-2xl font-display font-bold text-white mb-4 group-hover:text-[#00ff88] transition-colors leading-tight">
-                        {featuredPost.title}
-                      </h3>
-                      <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-6 font-sans">
-                        {featuredPost.excerpt}
-                      </p>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-6 border-t border-white/5 text-[9px] font-mono text-gray-400 uppercase tracking-wider">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-[#1a2332] flex items-center justify-center text-[#00ff88] text-[8px] font-bold">
-                          {getInitials(featuredPost.author?.name)}
-                        </div>
-                        <span className="text-gray-300 font-sans font-bold">{featuredPost.author?.name || 'Surendra Reddy'}</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {calculateReadTime(featuredPost)} MIN</span>
-                        <span>{formatDate(featuredPost.publishedAt || featuredPost._createdAt)}</span>
-                      </div>
-                    </div>
+              <Link href="/tools/vulnerability-scanner" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
+                    <ShieldAlert className="w-5 h-5" />
                   </div>
+                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">Vulnerability Scanner</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">Identify vulnerabilities and weaknesses.</p>
+                </div>
+                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
+                  <span>Open Tool</span>
+                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </div>
+              </Link>
+
+              <Link href="/tools/ssl-checker" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
+                    <Lock className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">SSL Certificate Checker</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">Validate SSL/TLS certificates.</p>
+                </div>
+                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
+                  <span>Open Tool</span>
+                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </div>
+              </Link>
+
+              <Link href="/tools/email-security" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
+                    <Mail className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">Email Security Checker</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">SPF, DKIM and DMARC validation.</p>
+                </div>
+                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
+                  <span>Open Tool</span>
+                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </div>
+              </Link>
+
+              <Link href="/tools/dns-lookup" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
+                    <Globe className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">DNS Lookup</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">Analyze DNS records.</p>
+                </div>
+                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
+                  <span>Open Tool</span>
+                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </div>
+              </Link>
+
+              <Link href="/tools/port-scanner" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
+                    <Terminal className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">Port Scanner</h3>
+                  <p className="text-gray-400 text-xs leading-relaxed">Detect open ports and exposed services.</p>
+                </div>
+                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
+                  <span>Open Tool</span>
+                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </Link>
             </div>
           </div>
         </section>
 
-        {/* ================= HOMEPAGE BILLBOARD SPONSOR AD ================= */}
-        <section className="py-6 bg-[#05080f] border-b border-white/5">
+        {/* ================= SECTION 8: WHY CHOOSE RECONSHIELD ================= */}
+        <section className="py-24 bg-[#0a0d14] border-b border-white/5" aria-label="Why Choose ReconShield">
           <div className="max-w-[1200px] mx-auto px-6">
-            <AdBlock type="banner-home" slot="9988776655" />
+            <div className="text-center mb-16 space-y-2">
+              <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// VALUE STATEMENT</span>
+              <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">Why Choose ReconShield?</h2>
+              <p className="text-gray-400 text-sm max-w-xl mx-auto leading-relaxed">
+                Discover the engineering values and operational criteria that define our diagnostic platform.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 font-sans">
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Check className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-lg mb-2 font-display">100% Free &amp; No Registration</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Access our entire cybersecurity toolkit instantly. No credit card, no sign-up, and no usage limits.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Check className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Comprehensive Tool Suite</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Audits SSL/TLS configs, DNS zone records, security headers, active ports, email authentication, and website vulnerabilities.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Check className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Privacy Focused</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  We respect your privacy. No domain queries, IP addresses, or scan outputs are logged or stored.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Check className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Professional Grade Results</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Enterprise-grade analysis reports aligned with industry frameworks including OWASP, NIST, and CVSS guidelines.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Check className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Built by Security Professionals</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Designed and verified by active cybersecurity engineers to provide actionable security telemetry.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Check className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Always Up-To-Date</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Scanning engines and signature databases are continuously updated to check for new security disclosures.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Check className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Fast &amp; Reliable</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  High-performance diagnostics with real-time checks returning initial results in seconds.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Check className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Educational Resources</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  In-depth threat research briefings, CVE writeups, and security policies help you remediate issues.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* ================= 3. THREAT INTELLIGENCE HIGHLIGHTS ================= */}
-        <section className="bg-[#05080f] py-12 border-b border-white/5">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <DynamicTopActiveThreats />
+        {/* ================= SECTION 9: TRUST SECTION ================= */}
+        <section className="py-24 bg-[#05080f] border-b border-white/5" aria-label="Trusted Audiences">
+          <div className="max-w-[1000px] mx-auto px-6 font-sans">
+            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center uppercase tracking-wide">
+              Trusted by Security Professionals Worldwide
+            </h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+              <div className="bg-surface-900 border border-white/5 p-8 rounded-3xl">
+                <h3 className="text-lg font-bold text-[#00ff88] font-display mb-4 uppercase tracking-wider">Used by</h3>
+                <ul className="grid grid-cols-2 gap-4 text-xs font-mono text-gray-300">
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88]" /> Security Researchers
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88]" /> Ethical Hackers
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88]" /> Penetration Testers
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88]" /> IT Administrators
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88]" /> DevOps Teams
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88]" /> Compliance Professionals
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-surface-900 border border-white/5 p-8 rounded-3xl">
+                <h3 className="text-lg font-bold text-[#38bdf8] font-display mb-4 uppercase tracking-wider">Supported Industries</h3>
+                <ul className="grid grid-cols-2 gap-4 text-xs font-mono text-gray-300">
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" /> Finance
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" /> Healthcare
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" /> Technology
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" /> Education
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" /> Government
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#38bdf8]" /> E-commerce
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
 
+        {/* ================= SECTION 10: USE CASES ================= */}
+        <section className="py-24 bg-[#0a0d14] border-b border-white/5" aria-label="Use cases">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="text-center mb-16 space-y-2">
+              <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// DEPLOYMENT CAPABILITIES</span>
+              <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">What You Can Do With ReconShield</h2>
+              <p className="text-gray-400 text-sm max-w-xl mx-auto leading-relaxed">
+                Utilize our framework across a variety of infrastructure audit workflows.
+              </p>
+            </div>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 font-sans">
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Search className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 font-display">Security Reconnaissance &amp; OSINT</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Gather public details about nameservers, subdomains, registration history, and IP spaces passively.
+                </p>
+              </div>
 
-        {/* ================= 4. LATEST CYBERSECURITY ARTICLES ================= */}
-        <section className="py-24 bg-[#05080f] border-b border-white/5">
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <ShieldAlert className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 font-display">Vulnerability Assessment</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Identify security weaknesses, deprecated TLS protocols, and exposed administrative interfaces.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Lock className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 font-display">SSL/TLS Testing</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Audit certificate expiration, chain configurations, key lengths, and negotiated cryptographic ciphers.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Send className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 font-display">Email Deliverability Testing</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Validate anti-spoofing policies (SPF/DKIM/DMARC) to prevent domain spoofing and verify delivery profiles.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Globe className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 font-display">DNS Management</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Trace nameserver authority, zone configurations, and DNSSEC cryptographic signature validity.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Terminal className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 font-display">Network Security Assessment</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Passively scan network ports to catalog exposed administrative interfaces.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Award className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 font-display">Compliance Validation</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Check that web servers meet regulatory compliance rules including GDPR, HIPAA, and PCI-DSS.
+                </p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <Activity className="w-8 h-8 text-[#00ff88] mb-4" />
+                <h3 className="text-white font-bold text-base mb-2 font-display">Continuous Security Monitoring</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Audit configurations weekly to prevent security regressions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ================= SECTION 11: HOW IT WORKS ================= */}
+        <section className="py-24 bg-[#05080f] border-b border-white/5" aria-label="How it works">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="text-center mb-16 space-y-2">
+              <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// PROCESS PIPELINE</span>
+              <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">How ReconShield Works</h2>
+              <p className="text-gray-400 text-sm max-w-xl mx-auto leading-relaxed">
+                Step-by-step security validation workflow engineered for modern systems.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 font-sans mb-12">
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <span className="text-xs font-mono text-[#00ff88] block mb-2 font-bold uppercase tracking-wider">Step 1</span>
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Choose Your Tool</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">Select a specialized scanner or run an all-in-one check from our directory.</p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <span className="text-xs font-mono text-[#00ff88] block mb-2 font-bold uppercase tracking-wider">Step 2</span>
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Enter Target</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">Enter target Domain, IP, or URL in the diagnostic console.</p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <span className="text-xs font-mono text-[#00ff88] block mb-2 font-bold uppercase tracking-wider">Step 3</span>
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Receive Results</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">Get a detailed security assessment report within seconds.</p>
+              </div>
+
+              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
+                <span className="text-xs font-mono text-[#00ff88] block mb-2 font-bold uppercase tracking-wider">Step 4</span>
+                <h3 className="text-white font-bold text-lg mb-2 font-display">Apply Security</h3>
+                <p className="text-gray-400 text-xs leading-relaxed">Remediate configuration drift and patch exposures with clear guidance.</p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/tools" className="px-6 py-3.5 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 text-xs font-mono uppercase tracking-widest rounded-xl transition-all cursor-pointer">
+                View Scanners Directory
+              </Link>
+              <Link href="/scanner" className="px-6 py-3.5 bg-[#00ff88] hover:bg-[#00e077] text-surface-950 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer">
+                Start Website Audit
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ================= SECTION 12: COMPLETE SECURITY TOOLKIT ================= */}
+        <section className="py-24 bg-[#0a0d14] border-b border-white/5" aria-label="Ecosystem Index">
+          <div className="max-w-[1200px] mx-auto px-6 font-sans">
+            <div className="text-center mb-16 space-y-2">
+              <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// COMPLETE RESOURCE LIBRARY</span>
+              <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">Complete Security Toolkit</h2>
+              <p className="text-gray-400 text-sm max-w-xl mx-auto leading-relaxed">
+                Seamlessly pivot between target intelligence modules for deeper investigation.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">Domain Intelligence</h3>
+                <ul className="space-y-2 text-xs font-mono">
+                  <li><Link href="/tools/whois" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>WHOIS Lookup</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/tools/dns-lookup" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>DNS Lookup</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/tools/subdomain-finder" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Subdomain Finder</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/tools/tech-detector" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Technology Detector</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                </ul>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">Security Assessment</h3>
+                <ul className="space-y-2 text-xs font-mono">
+                  <li><Link href="/tools/vulnerability-scanner" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Vulnerability Scanner</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/tools/port-scanner" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Port Scanner</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/tools/ssl-checker" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>SSL Checker</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/tools/http-headers" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>HTTP Headers Checker</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                </ul>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">Email Security</h3>
+                <ul className="space-y-2 text-xs font-mono">
+                  <li><Link href="/tools/email-security" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Email Security Checker</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/tools/dns-lookup" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>MX Record Lookup</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                </ul>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">Network Analysis</h3>
+                <ul className="space-y-2 text-xs font-mono">
+                  <li><Link href="/tools/ip-lookup" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP Lookup</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                  <li><Link href="/tools/ip-lookup" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Reverse IP</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                </ul>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">All-in-One</h3>
+                <ul className="space-y-2 text-xs font-mono">
+                  <li><Link href="/scanner" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Website Security Scanner</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ================= SECTION 13: CTA SECTION ================= */}
+        <section className="py-24 bg-[#05080f] relative overflow-hidden border-b border-white/5">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyber-500/[0.03] blur-[120px] rounded-full pointer-events-none -z-10" />
+
+          <div className="max-w-[800px] mx-auto px-6 text-center space-y-6">
+            <h2 className="text-3xl md:text-5xl font-display font-bold text-white uppercase tracking-wider">
+              Start Testing Your Security Today
+            </h2>
+            
+            <p className="text-gray-400 text-sm sm:text-base font-mono uppercase tracking-widest font-bold text-[#00ff88]">
+              Free. Fast. Professional.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-x-8 gap-y-2 text-xs text-gray-500 font-mono uppercase tracking-wider">
+              <span>✓ No registration</span>
+              <span>✓ No credit card</span>
+              <span>✓ No hidden fees</span>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4 pt-4">
+              <Link href="/scanner" className="px-6 py-3.5 bg-[#00ff88] hover:bg-[#00e077] text-surface-950 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(0,255,136,0.15)] flex items-center gap-1.5 cursor-pointer">
+                <span>Run Complete Security Scan</span>
+                <ArrowRight className="w-4 h-4 text-surface-950" />
+              </Link>
+              <Link href="/tools" className="px-6 py-3.5 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 text-xs font-mono uppercase tracking-widest rounded-xl transition-all cursor-pointer">
+                Browse All Tools
+              </Link>
+              <Link href="/about" className="px-6 py-3.5 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 text-xs font-mono uppercase tracking-widest rounded-xl transition-all cursor-pointer">
+                Learn More
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ================= LATEST CYBERSECURITY ARTICLES BRIEFINGS ================= */}
+        <section className="py-24 bg-[#0a0d14]/30 border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
             <div className="flex items-center justify-between mb-12">
               <div>
-                <span className="font-mono text-xs text-gray-400 uppercase tracking-widest">// RECENT DISCLOSURES</span>
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Latest Intelligence Briefings</h2>
+                <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// THREAT RESEARCH NEWS</span>
+                <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mt-2 uppercase">Threat Intel &amp; Vulnerability Briefings</h2>
+                <p className="text-gray-400 text-sm mt-1">Peer-reviewed OSINT methodology updates, CVE analysis logs, and infrastructure guides.</p>
               </div>
-              <Link href="/blog" className="inline-flex items-center gap-1.5 font-mono text-[11px] text-[#00ff88] hover:text-white uppercase tracking-widest transition-colors">
-                View All Articles <ArrowRight className="w-3.5 h-3.5" />
+              
+              <Link 
+                href="/blog" 
+                className="mt-4 md:mt-0 inline-flex items-center gap-1 text-xs font-mono text-[#00ff88] hover:text-white uppercase tracking-widest font-bold group"
+              >
+                <span>View All Briefings</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {secondaryArticles.map((post) => (
-                <Link href={`/blog/${post.slug?.current || post.slug}`} key={post._id} className="group flex flex-col bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all duration-300 rounded-2xl overflow-hidden shadow-lg">
-                  <div className="relative aspect-video w-full bg-surface-950 overflow-hidden border-b border-white/5">
-                    {post.mainImage ? (
-                      <ResponsiveImage
-                        image={post.mainImage}
-                        alt={post.title}
-                        width={360}
-                        height={202}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 33vw, 360px"
-                        className="group-hover:scale-[1.03] transition-transform duration-700"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-surface-950 to-surface-900 flex items-center justify-center">
-                        <BookOpen className="w-10 h-10 text-[#00ff88]/10" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6 flex flex-col flex-1">
-                    <span className="font-mono text-[9px] tracking-[2px] uppercase text-[#00ff88] mb-3">
-                      {post.categories?.[0]?.title || 'INTELLIGENCE'}
-                    </span>
-                    <h3 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-[#00ff88] transition-colors line-clamp-2">
-                      {post.title}
-                    </h3>
-                    <p className="text-gray-400 text-xs leading-relaxed line-clamp-2 mb-6">
-                      {post.excerpt}
-                    </p>
-                    <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5 font-mono text-[9px] text-gray-400 uppercase">
-                      <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {calculateReadTime(post)} MIN READ</span>
-                      <span>{formatDate(post.publishedAt || post._createdAt)}</span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+              {secondaryArticles.map((post) => {
+                const date = post.publishedAt || post._createdAt;
+                const formattedDate = date ? new Date(date).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                }).toUpperCase() : '';
+                
+                const readTime = post.estimatedWordCount 
+                  ? Math.max(1, Math.ceil(post.estimatedWordCount / 5 / 200))
+                  : 6;
 
-        {/* ================= 5. RESEARCH CATEGORIES ================= */}
-        <section className="py-24 bg-[#0a0d14] border-b border-white/5">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="flex items-center justify-between mb-12">
-              <div>
-                <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// CATEGORY SILOS</span>
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-white mt-2 uppercase">Topical Intelligence Hubs</h2>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {[
-                { name: "Threat Intelligence", icon: Target, slug: "threat-intelligence", color: "text-red-400" },
-                { name: "OSINT & Analysis", icon: Search, slug: "osint", color: "text-[#00ff88]" },
-                { name: "Web Security", icon: Shield, slug: "web-security", color: "text-blue-400" },
-                { name: "Email Security", icon: Mail, slug: "email-security", color: "text-purple-400" },
-                { name: "Network Security", icon: Network, slug: "network-security", color: "text-cyan-400" },
-                { name: "Cloud Security", icon: Cpu, slug: "cloud-security", color: "text-orange-400" }
-              ].map((cat, idx) => {
-                const Icon = cat.icon;
                 return (
-                  <Link href={`/category/${cat.slug}`} key={idx} className="p-5 rounded-2xl bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all duration-300 group flex flex-col items-center text-center">
-                    <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform border border-white/5">
-                      <Icon className={`w-5 h-5 ${cat.color}`} />
+                  <div 
+                    key={post._id}
+                    className="group flex flex-col bg-surface-900 border border-white/5 hover:border-[#00ff88]/30 transition-all duration-300 rounded-2xl overflow-hidden shadow-lg"
+                  >
+                    <Link href={`/blog/${post.slug?.current || post.slug}`} className="block relative aspect-video w-full bg-surface-950 overflow-hidden border-b border-white/5">
+                      {post.mainImage ? (
+                        <ResponsiveImage
+                          image={post.mainImage}
+                          alt={post.title}
+                          width={360}
+                          height={202}
+                          sizes="(max-width: 768px) 100vw, 360px"
+                          className="object-cover w-full h-full group-hover:scale-[1.03] transition-transform duration-700"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-surface-950 to-surface-900 flex items-center justify-center">
+                          <Activity className="w-10 h-10 text-[#00ff88]/20" />
+                        </div>
+                      )}
+                    </Link>
+                    
+                    <div className="p-6 flex flex-col flex-1">
+                      <span className="font-mono text-[9px] tracking-[2px] uppercase text-[#00ff88] mb-3">
+                        {post.categories?.[0]?.title || 'Threat Intel'}
+                      </span>
+                      
+                      <Link href={`/blog/${post.slug?.current || post.slug}`}>
+                        <h3 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-[#00ff88] transition-colors line-clamp-2 uppercase font-display tracking-wide">
+                          {post.title}
+                        </h3>
+                      </Link>
+                      
+                      <p className="text-gray-400 text-xs leading-relaxed line-clamp-2 mb-6 font-sans">
+                        {post.excerpt}
+                      </p>
+                      
+                      <div className="mt-auto flex items-center justify-between pt-4 border-t border-white/5 font-mono text-[9px] text-gray-500 uppercase">
+                        <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" /> {readTime} MIN READ</span>
+                        <span>{formattedDate}</span>
+                      </div>
                     </div>
-                    <span className="text-[10px] font-mono font-bold text-white group-hover:text-[#00ff88] transition-colors leading-tight">{cat.name.toUpperCase()}</span>
-                  </Link>
+                  </div>
                 );
               })}
             </div>
           </div>
         </section>
 
-        {/* ================= SEO INTERNAL LINK INDEX ================= */}
-        <section className="py-20 bg-[#070b12] border-b border-white/5">
+        {/* ================= EEAT BRAND DETAILS SECTION ================= */}
+        <section className="py-24 bg-[#05080f] border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
-            <div className="flex items-center gap-4 mb-10">
-              <h2 className="font-mono text-xs tracking-[4px] uppercase text-[#00ff88] font-bold">// PLATFORM RESOURCE INDEX</h2>
-              <div className="h-[1px] flex-1 bg-white/5" />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
-              {/* Column 1: Popular Threat Intelligence */}
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold text-gray-300 uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500" /> Popular Threat Intelligence
-                </h3>
-                <ul className="space-y-2 text-xs font-mono">
-                  <li><Link href="/ip/8.8.8.8" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP: 8.8.8.8</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/ip/1.1.1.1" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP: 1.1.1.1</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/ip/8.8.4.4" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP: 8.8.4.4</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/ip/1.0.0.1" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP: 1.0.0.1</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/ip/208.67.222.222" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP: 208.67.222.222</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/asn/AS15169" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>AS15169 (Google)</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/asn/AS13335" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>AS13335 (Cloudflare)</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/asn/AS714" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>AS714 (Apple)</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                </ul>
+            <div className="flex flex-col lg:flex-row items-center gap-10 p-8 md:p-12 bg-gradient-to-r from-[#0d1117] to-surface-900 border border-white/10 rounded-3xl shadow-xl mb-16 font-sans">
+              <div className="w-24 h-24 rounded-full bg-[#1a2332] border-2 border-cyan-500/30 flex items-center justify-center shrink-0 overflow-hidden">
+                <Shield className="w-10 h-10 text-cyan-400" />
               </div>
-
-              {/* Column 2: Security Header Research */}
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold text-gray-300 uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500" /> Security Header Research
-                </h3>
-                <ul className="space-y-2 text-xs font-mono">
-                  <li><Link href="/headers/server" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Server Response</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/headers/content-security-policy" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Content Security Policy</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/headers/x-frame-options" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>X-Frame-Options</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/headers/strict-transport-security" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>HSTS Policy</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/headers/x-content-type-options" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>X-Content-Type-Options</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                </ul>
-              </div>
-
-              {/* Column 3: DNS Intelligence Resources */}
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold text-gray-300 uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-purple-500" /> DNS Intelligence Resources
-                </h3>
-                <ul className="space-y-2 text-xs font-mono">
-                  <li><Link href="/dns-records/google.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>google.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/dns-records/reconshield.in" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>reconshield.in DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/dns-records/github.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>github.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/dns-records/cloudflare.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>cloudflare.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/dns-records/microsoft.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>microsoft.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/dns-records/yahoo.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>yahoo.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/dns-records/apple.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>apple.com DNS</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                </ul>
-              </div>
-
-              {/* Column 4: Featured Cybersecurity Analysis */}
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold text-gray-300 uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-pink-500" /> Featured Cybersecurity Analysis
-                </h3>
-                <ul className="space-y-2 text-xs font-mono">
-                  <li><Link href="/ssl/google.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>google.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/ssl/reconshield.in" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>reconshield.in SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/ssl/github.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>github.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/ssl/cloudflare.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>cloudflare.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/ssl/microsoft.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>microsoft.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/ssl/yahoo.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>yahoo.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/ssl/apple.com" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>apple.com SSL</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                </ul>
-              </div>
-
-              {/* Column 5: Latest Research */}
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold text-gray-300 uppercase tracking-wider border-b border-white/10 pb-2 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00ff88]" /> Latest Research
-                </h3>
-                <ul className="space-y-2 text-xs font-mono">
-                  <li><Link href="/blog/anatomy-of-passive-osint" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Passive OSINT mapping</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/blog/securing-bgp-route-leaks" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>BGP Route Leaks Analysis</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/blog/spf-dkim-dmarc-blueprint" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>SPF/DKIM Blueprint</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/blog/owasp-http-headers-hardening" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>HTTP Headers Hardening</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/blog/ssl-tls-regulatory-compliance" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>SSL Compliance</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/blog/shadow-it-exposed-ports" className="text-[#8a9bb0] hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Shadow IT Port Discovery</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ================= 6. COMPACT SCANNER CTA BANNER ================= */}
-        <section className="py-20 bg-[#05080f] relative border-b border-white/5 overflow-hidden">
-          {/* Accent glow lights */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-cyber-500/[0.02] blur-[100px] rounded-full pointer-events-none -z-10" />
-          <div className="absolute top-0 right-10 w-[200px] h-[200px] bg-[#00ff88]/[0.01] blur-[80px] rounded-full pointer-events-none -z-10" />
-
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-              
-              {/* Left Column: CTA Title and Details */}
-              <div className="lg:col-span-7 space-y-6 text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-cyber-500/10 text-cyber-400 text-[10px] font-mono uppercase tracking-widest rounded">
-                  <Terminal className="w-3.5 h-3.5" /> Passive Auditing Suite
+              <div>
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#00ff88]/10 text-[#00ff88] text-[10px] font-mono uppercase tracking-widest mb-3">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Certified Verification
                 </div>
-                
-                <h2 className="text-3xl md:text-4xl font-display font-bold text-white uppercase tracking-tight leading-tight">
-                  Launch Passive Diagnostics Suite
-                </h2>
-                
-                <p className="text-gray-400 text-sm leading-relaxed max-w-xl">
-                  Run non-intrusive scans on target domains. Verify email security profiles, audit SSL/TLS cipher suites, and inspect response headers safely without direct packets targeting the server.
+                <h3 className="text-white font-bold text-2xl mb-1 font-display uppercase tracking-wide">Surendra Reddy</h3>
+                <p className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-4">Founder &amp; Principal Security Engineer, ReconShield</p>
+                <p className="text-gray-400 text-sm leading-relaxed mb-6">
+                  Surendra Reddy is a veteran cybersecurity researcher, systems analyst, and information security practitioner. He established ReconShield to make enterprise-grade OSINT reconnaissance and passive diagnostic tools freely accessible to developers and administrators worldwide.
                 </p>
-
-                <div className="flex flex-wrap items-center gap-4 pt-2">
-                  <Link 
-                    href="/scanner" 
-                    className="px-6 py-3.5 bg-[#00ff88] hover:bg-[#00e077] text-surface-950 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(0,255,136,0.15)] flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <span>Launch Scanner</span>
-                    <ArrowRight className="w-4 h-4 text-surface-950" />
-                  </Link>
-                  <div className="flex items-center gap-1.5 text-xs font-mono text-gray-400">
-                    <CheckCircle2 className="w-4 h-4 text-[#00ff88] shrink-0" />
-                    <span>Authorized Research Policy Compliant</span>
-                  </div>
+                <div className="flex gap-6 text-xs font-mono">
+                  <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 flex items-center gap-1">LinkedIn <ChevronRight className="w-3.5 h-3.5" /></a>
+                  <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white flex items-center gap-1">GitHub <ChevronRight className="w-3.5 h-3.5" /></a>
                 </div>
               </div>
+            </div>
 
-              {/* Right Column: Subtle Scanner Console Preview */}
-              <div className="lg:col-span-5 relative">
-                <div className="w-full rounded-2xl border border-white/10 bg-surface-900/50 backdrop-blur-xl p-5 shadow-xl relative overflow-hidden">
-                  <div className="absolute inset-0 bg-grid opacity-[0.1] pointer-events-none" />
-                  
-                  {/* Mock Window Header */}
-                  <div className="flex items-center justify-between pb-3 mb-4 border-b border-white/5">
-                    <div className="flex gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-red-500/30" />
-                      <span className="w-2 h-2 rounded-full bg-yellow-500/30" />
-                      <span className="w-2 h-2 rounded-full bg-green-500/30" />
-                    </div>
-                    <span className="font-mono text-[8px] text-gray-400 uppercase tracking-widest">passive_preview.sh</span>
-                  </div>
-
-                  {/* Mock Input Bar */}
-                  <div className="bg-surface-950 border border-white/5 rounded-xl px-4 py-2.5 mb-4 flex items-center justify-between">
-                    <span className="font-mono text-xs text-gray-400">target: <span className="text-[#00ff88]">example.com</span></span>
-                    <span className="font-mono text-[9px] text-[#00ff88] bg-[#00ff88]/10 px-2 py-0.5 rounded tracking-widest animate-pulse uppercase">active</span>
-                  </div>
-
-                  {/* Mock Output Rows */}
-                  <div className="space-y-2.5 font-mono text-[10px] text-gray-400">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-400 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> Email Auth (SPF/DMARC)</span>
-                      <span className="text-[#00ff88]">[VALID]</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-400 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> SSL/TLS Cipher Suites</span>
-                      <span className="text-cyber-400">[SECURE]</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-400 flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> HTTP Security Headers</span>
-                      <span className="text-purple-400">[AUDITED]</span>
-                    </div>
-                  </div>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-xs text-gray-400 leading-relaxed font-sans border-t border-white/5 pt-12">
+              <div>
+                <h4 className="text-white font-bold mb-3 uppercase tracking-wider font-mono">Editorial Policy</h4>
+                <p>
+                  ReconShield is committed to publishing accurate, technical, and objective cybersecurity analysis. Our documentation is created by credentialed security practitioners and undergoes strict reviews before publication.
+                </p>
               </div>
+              <div>
+                <h4 className="text-white font-bold mb-3 uppercase tracking-wider font-mono">Research Methodology</h4>
+                <p>
+                  Our findings are derived from RFC protocol documentation, CA/Browser Forum standards, and verified cybersecurity databases. We avoid speculative telemetry, prioritizing primary sources and verifiable network actions.
+                </p>
+              </div>
+              <div>
+                <h4 className="text-white font-bold mb-3 uppercase tracking-wider font-mono">Fact Checking Process</h4>
+                <p>
+                  Information is verified against active TLS servers, registrar configurations, and IETF specifications. Each section is tested for technical accuracy under modern browser routing environments.
+                </p>
+              </div>
+            </div>
 
+            <div className="text-center text-[10px] font-mono text-gray-600 uppercase tracking-widest mt-12">
+              Last Updated: June 2026 | Reviewed by ReconShield Editorial Board
             </div>
           </div>
         </section>
 
-        {/* ================= 7. ANALYST/AUTHOR SECTION ================= */}
-        <section className="py-24 bg-[#0a0d14] border-b border-white/5">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-              
-              {/* Author Highlight Card */}
-              <div className="bg-surface-900 border border-white/5 rounded-3xl p-8 md:p-10 flex flex-col justify-between shadow-xl">
-                <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00ff88]/10 text-[#00ff88] text-[10px] font-mono uppercase tracking-widest rounded mb-6">
-                    <Award className="w-3.5 h-3.5" /> Lead Researcher & Founder
-                  </div>
-                  <h2 className="text-2xl font-display font-bold text-white mb-4">Surendra Reddy</h2>
-                  <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-6 font-mono">
-                    Surendra Reddy is a cybersecurity engineer, OSINT developer, and lead publisher of ReconShield. Specializing in defensive threat analysis and internet-facing assets mapping, Surendra oversees editorial validation, fact-checking technical guides, and securing programmatic resources.
-                  </p>
-                  <div className="space-y-2 mb-8">
-                    <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
-                      <CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> Certified Threat Intelligence Analyst (CTIA)
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
-                      <CheckCircle2 className="w-4 h-4 text-[#00ff88]" /> Passive Reconnaissance and Threat Hunting Specialist
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between border-t border-white/5 pt-6 mt-6">
-                  <div className="flex gap-4">
-                    <a href="https://linkedin.com/in/surendrareddy3" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-gray-400 hover:text-[#00ff88] transition-colors flex items-center gap-1">LinkedIn <ChevronRight className="w-3 h-3" /></a>
-                    <a href="https://github.com/nsurendrareddy" target="_blank" rel="noopener noreferrer" className="text-xs font-mono text-gray-400 hover:text-white transition-colors flex items-center gap-1">GitHub <ChevronRight className="w-3 h-3" /></a>
-                  </div>
-                  <Link href="/author/surendra-reddy" className="text-xs font-mono text-[#00ff88] hover:underline uppercase tracking-widest">
-                    Author Profile →
-                  </Link>
-                </div>
-              </div>
-
-              {/* Editorial Standards Card */}
-              <div className="bg-surface-900 border border-white/5 rounded-3xl p-8 md:p-10 flex flex-col justify-between shadow-xl">
-                <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 text-blue-400 text-[10px] font-mono uppercase tracking-widest rounded mb-6">
-                    <Shield className="w-3.5 h-3.5" /> Integrity Assurance
-                  </div>
-                  <h2 className="text-2xl font-display font-bold text-white mb-4">Editorial Integrity & Ethics</h2>
-                  <p className="text-gray-400 text-xs md:text-sm leading-relaxed mb-6">
-                    ReconShield is dedicated to lawful and authorized cybersecurity auditing. We believe that public threat intelligence must serve as defensive assets, not offensive instruction. Our editorial staff enforces strict constraints:
-                  </p>
-                  <ul className="space-y-4 text-xs text-gray-400">
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#00ff88] font-mono font-bold shrink-0">1.</span>
-                      <span><strong>Technical Validation:</strong> Vulnerabilities are tested in lab parameters and cross-referenced with vendor security disclosures.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#00ff88] font-mono font-bold shrink-0">2.</span>
-                      <span><strong>Zero Abuse Payload:</strong> We never distribute active exploit scripts. Our focus is configuration mitigation.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#00ff88] font-mono font-bold shrink-0">3.</span>
-                      <span><strong>Responsible Disclosures:</strong> Unpatched vulnerabilities are escalated to registry administrators privately first.</span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="border-t border-white/5 pt-6 mt-6 flex justify-between items-center">
-                  <Link href="/editorial-policy" className="text-xs font-mono text-gray-400 hover:text-white transition-colors flex items-center gap-1">Editorial Policy <ChevronRight className="w-3 h-3" /></Link>
-                  <Link href="/about" className="text-xs font-mono text-gray-400 hover:text-white transition-colors flex items-center gap-1">About Our Mission <ChevronRight className="w-3 h-3" /></Link>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
-
-        {/* ================= 8. NEWSLETTER SECTION ================= */}
-        <section className="py-24 bg-[#05080f] relative overflow-hidden">
+        {/* ================= SECTION 8: NEWSLETTER SUBSCRIPTION ================= */}
+        <section className="py-24 bg-[#0a0d14] relative overflow-hidden">
           <div className="absolute inset-0 bg-[#00ff88]/5 -z-10 pointer-events-none" />
-          <div className="max-w-3xl mx-auto px-6 text-center">
-            <Mail className="w-12 h-12 text-[#00ff88] mx-auto mb-6" />
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4 uppercase tracking-wider">Stay Ahead of Emerging Threat Vectors</h2>
-            <p className="text-gray-400 text-sm mb-8 leading-relaxed">
+          <div className="max-w-3xl mx-auto px-6 text-center space-y-6">
+            <Mail className="w-12 h-12 text-[#00ff88] mx-auto" />
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-white uppercase tracking-wider">Stay Ahead of Emerging Threat Vectors</h2>
+            <p className="text-gray-400 text-sm leading-relaxed max-w-xl mx-auto">
               Join thousands of cybersecurity analysts, developers, and compliance auditors who receive our weekly threat briefings, zero-day CVE alerts, and defensive tutorials.
             </p>
             
-            <DynamicNewsletterForm 
-              accentColor="bg-[#00ff88] hover:bg-[#00e077]"
-              buttonTextColor="text-surface-950"
-              inputClass="px-6 py-4 w-full sm:w-96 text-sm"
-              buttonClass="px-8 py-4 text-xs font-mono tracking-widest font-bold"
-            />
-            <p className="text-[10px] text-gray-400 mt-4 font-mono uppercase tracking-wider">Fact checked intelligence. 100% spam-free. Unsubscribe anytime.</p>
+            <div className="flex justify-center pt-2">
+              <DynamicNewsletterForm 
+                accentColor="bg-[#00ff88] hover:bg-[#00e077]"
+                buttonTextColor="text-surface-950"
+                inputClass="px-6 py-4 w-full sm:w-96 text-sm"
+                buttonClass="px-8 py-4 text-xs font-mono tracking-widest font-bold"
+              />
+            </div>
+            <p className="text-[10px] text-gray-500 font-mono uppercase tracking-wider">Fact checked intelligence. 100% spam-free. Unsubscribe anytime.</p>
           </div>
         </section>
+
       </div>
     </>
   );

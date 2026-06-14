@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 /**
- * AdBlock component for rendering responsive Google AdSense and Monetag units.
+ * AdBlock component for rendering responsive Google AdSense units.
  * Prevents Layout Shift (CLS) by reserving container spaces.
  * Loads ads lazily using Intersection Observer.
  */

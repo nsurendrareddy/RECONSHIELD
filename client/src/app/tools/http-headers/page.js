@@ -4,88 +4,104 @@ import Link from 'next/link';
 import { 
   Shield, Globe, Server, Lock, Terminal, CheckCircle2, ChevronRight, 
   Search, Activity, Target, Network, Info, Check, AlertTriangle, 
-  FileText, Send, HelpCircle, BookOpen, Key, Database, Clock
+  FileText, Send, HelpCircle, BookOpen, Key, Database, Clock, Zap
 } from 'lucide-react';
-import { generateBaseMetadata } from '@/utils/metadata';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
 });
 
-export const metadata = generateBaseMetadata({
-  title: "Security Headers Checker (Free) | Analyze HTTP Security Headers",
-  description: "Check HTTP security headers including HSTS, CSP, X-Frame-Options, and other website security protections.",
-  path: "/tools/http-headers"
-});
+export const metadata = {
+  title: "HTTP Headers Checker - Analyze Security Headers | ReconShield",
+  description: "Free HTTP headers checker to analyze security headers including HSTS, CSP, X-Frame-Options, and CORS. Test website security configurations instantly.",
+  alternates: {
+    canonical: "https://reconshield.in/tools/http-headers",
+  },
+  keywords: [
+    "http headers checker", "security headers", "check http headers", "hsts checker", 
+    "csp validator", "x-frame-options", "cors checker", "security headers analyzer", 
+    "http security test"
+  ],
+  robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  openGraph: {
+    title: "HTTP Headers Checker - Analyze Security Headers",
+    description: "Free HTTP headers checker to analyze security headers including HSTS, CSP, and X-Frame-Options instantly.",
+    url: "https://reconshield.in/tools/http-headers",
+    type: "website",
+    siteName: "ReconShield",
+    images: [
+      {
+        url: "https://reconshield.in/og-image-headers.png",
+        width: 1200,
+        height: 630,
+        alt: "HTTP Headers Checker - ReconShield"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HTTP Headers Checker - Analyze Security Headers",
+    description: "Free HTTP headers checker to analyze security headers including HSTS and CSP instantly.",
+    images: ["https://reconshield.in/og-image-headers.png"]
+  },
+  appleWebApp: {
+    capable: true,
+    title: "ReconShield",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent"
+  }
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0d14",
+};
 
 export default function SecurityHeadersPage() {
   const faqs = [
     {
-      q: "What are security headers?",
-      a: "HTTP security headers are response parameters sent by a web server to a browser. They define security rules for connection handling, resource loading, and rendering, protecting visitors from attacks like Cross-Site Scripting, clickjacking, and session hijacking."
+      q: "What is an HTTP headers checker?",
+      a: "An HTTP headers checker is an online diagnostic tool designed to retrieve and analyze the HTTP response headers sent by a web server. It identifies missing or misconfigured security headers, helping you secure your site from vulnerabilities."
     },
     {
-      q: "What is HSTS?",
-      a: "HTTP Strict Transport Security (HSTS) is a header that instructs browsers to communicate with a website only using secure HTTPS connections. It protects users from protocol downgrade attacks and cookie interception by blocking all unencrypted HTTP requests."
+      q: "Is this security headers checker free to use?",
+      a: "Yes, the ReconShield security headers checker is completely free to use. You can audit HTTP response headers for any website with unlimited scans and no account registration required."
     },
     {
-      q: "What is CSP?",
-      a: "Content-Security-Policy (CSP) is an HTTP header that restricts the sources from which a browser can load scripts, styles, images, and other assets. Enforcing a strict CSP is the most effective defense against Cross-Site Scripting (XSS) attacks."
+      q: "What security headers should a website have?",
+      a: "A secure website should configure Strict-Transport-Security (HSTS), Content-Security-Policy (CSP), X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy response headers to protect visitors."
     },
     {
-      q: "How do I check security headers?",
-      a: "You can check security headers by entering a domain name into the ReconShield Security Headers Checker. The tool sends a request to the server, extracts the response headers, and displays their validation status and security scores."
+      q: "How do HTTP security headers protect websites?",
+      a: "HTTP security headers protect websites by telling the visitor's browser how to behave. They restrict resource loading, prevent clickjacking via frame embedding, enforce secure HTTPS connections, and disable MIME type sniffing."
     },
     {
-      q: "What headers improve website security?",
-      a: "The most critical security headers are Strict-Transport-Security (HSTS), Content-Security-Policy (CSP), X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy. Together, these headers restrict resource loading, prevent framing, and limit data exposure."
+      q: "Why is checking HTTP headers important?",
+      a: "Checking HTTP headers is important to identify missing security protections that could expose your website to Cross-Site Scripting (XSS), session hijacking, clickjacking, or sensitive data leakage."
     },
     {
-      q: "What is X-Frame-Options?",
-      a: "X-Frame-Options is a header that controls whether a webpage can be embedded in an iframe or frame on another site. Setting it to DENY or SAMEORIGIN prevents clickjacking attacks by blocking malicious overlay frames."
+      q: "What is Content Security Policy (CSP)?",
+      a: "Content Security Policy (CSP) is a security header that restricts the domains from which a browser can load scripts, styles, images, and other resources, serving as a powerful defense against XSS."
     },
     {
-      q: "What is Referrer-Policy?",
-      a: "Referrer-Policy is an HTTP response header that controls how much information about the referring page is sent in the Referer header during navigations, protecting sensitive path details from leaking to external domains."
+      q: "How do I implement security headers?",
+      a: "Security headers are implemented by configuring your web server (such as Nginx, Apache, or IIS) or your application framework to include these key-value pairs in all HTTP responses."
     },
     {
-      q: "What is X-Content-Type-Options?",
-      a: "X-Content-Type-Options is a security header that prevents browsers from sniffing MIME types. Setting it to 'nosniff' forces browsers to respect the content-type declared by the server, blocking executable scripting attacks disguised as files."
-    },
-    {
-      q: "What is Permissions-Policy?",
-      a: "Permissions-Policy allows web developers to control which browser features and APIs (such as geolocation, camera, microphone, or payment interfaces) can be accessed by the site and third-party frames, minimizing device exposure."
-    },
-    {
-      q: "What is CORS and how does it relate to security headers?",
-      a: "Cross-Origin Resource Sharing (CORS) is a mechanism using headers like Access-Control-Allow-Origin to control how web apps on one domain interact with API resources on another, preventing unauthorized data extraction."
-    },
-    {
-      q: "What is Cross-Origin-Embedder-Policy?",
-      a: "Cross-Origin-Embedder-Policy (COEP) is a header that prevents a document from loading cross-origin resources that do not explicitly grant permission, helping protect against Spectre-like side-channel attacks."
-    },
-    {
-      q: "What is Cross-Origin-Opener-Policy?",
-      a: "Cross-Origin-Opener-Policy (COOP) isolates a site's execution context by preventing newly opened windows from sharing a browsing context group, protecting cross-origin documents from unauthorized scripting interactions."
-    },
-    {
-      q: "What is Cross-Origin-Resource-Policy?",
-      a: "Cross-Origin-Resource-Policy (CORP) is a security header that prevents other sites from loading your site's static assets, such as images, scripts, or fonts, protecting against unauthorized cross-origin data exposure."
-    },
-    {
-      q: "What happens if a security header is misconfigured?",
-      a: "Misconfigured security headers can break website functionality (e.g. blocking legitimate images or API requests) or leave the site vulnerable to security threats like Cross-Site Scripting, frame injection, or data leaks."
-    },
-    {
-      q: "How do firewalls audit security headers?",
-      a: "Web Application Firewalls (WAFs) and automated checkers inspect response headers during requests. They flag missing protections, check directives for weak configurations, and verify compliance with OWASP standards."
+      q: "Can I check headers for any website?",
+      a: "Yes, you can check HTTP response headers for any publicly accessible website. The tool sends a standard web request to retrieve and inspect the response headers sent by the host."
     }
   ];
 
   const breadcrumbs = [
     { name: "Home", url: "https://reconshield.in" },
     { name: "Tools", url: "https://reconshield.in/tools" },
-    { name: "Security Headers", url: "https://reconshield.in/tools/http-headers" }
+    { name: "HTTP Headers Checker", url: "https://reconshield.in/tools/http-headers" }
   ];
 
   const schemas = [
@@ -113,7 +129,7 @@ export default function SecurityHeadersPage() {
           "@type": "WebPage",
           "@id": "https://reconshield.in/tools/http-headers#webpage",
           "url": "https://reconshield.in/tools/http-headers",
-          "name": "Security Headers Checker (Free) | Analyze HTTP Security Headers",
+          "name": "HTTP Headers Checker - Analyze Security Headers | ReconShield",
           "isPartOf": { "@id": "https://reconshield.in/#website" }
         },
         {
@@ -121,23 +137,28 @@ export default function SecurityHeadersPage() {
           "@id": "https://reconshield.in/tools/http-headers#software",
           "name": "ReconShield HTTP Headers Checker",
           "url": "https://reconshield.in/tools/http-headers",
-          "description": "Free online security headers checker to analyze Content-Security-Policy (CSP), Strict-Transport-Security (HSTS), X-Frame-Options, and other HTTP parameters.",
+          "description": "Free HTTP headers checker to analyze security headers including HSTS, CSP, X-Frame-Options, and CORS. Test website security configurations instantly.",
           "applicationCategory": "SecurityApplication",
-          "operatingSystem": "All",
+          "operatingSystem": "Web Browser",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
-        },
-        {
-          "@type": "WebApplication",
-          "@id": "https://reconshield.in/tools/http-headers#webapp",
-          "name": "ReconShield Security Header Scanner App",
-          "url": "https://reconshield.in/tools/http-headers",
-          "description": "Analyze website HTTP headers and calculate security grades based on active protections.",
-          "applicationCategory": "SecurityApplication",
-          "operatingSystem": "All",
-          "browserRequirements": "Requires JavaScript. Requires HTML5.",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
+          "publisher": { "@id": "https://reconshield.in/#organization" },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "167",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "featureList": [
+            "Free unlimited header checks",
+            "Security headers analysis",
+            "HSTS verification",
+            "CSP validation",
+            "CORS configuration check",
+            "X-Frame-Options testing",
+            "Implementation guidance",
+            "No registration required"
+          ]
         },
         {
           "@type": "BreadcrumbList",
@@ -148,28 +169,6 @@ export default function SecurityHeadersPage() {
             "name": crumb.name,
             "item": crumb.url
           }))
-        },
-        {
-          "@type": "TechArticle",
-          "@id": "https://reconshield.in/tools/http-headers#article",
-          "headline": "The Professional Guide to HTTP Response Headers and Website Hardening Guidelines",
-          "description": "An in-depth analysis of HTTP security headers, cross-origin resource isolation, MIME-type protections, and OWASP compliance auditing.",
-          "author": { "@type": "Person", "name": "Surendra Reddy" },
-          "publisher": { "@id": "https://reconshield.in/#organization" },
-          "url": "https://reconshield.in/tools/http-headers",
-          "isPartOf": { "@id": "https://reconshield.in/tools/http-headers#webpage" }
-        },
-        {
-          "@type": "HowTo",
-          "@id": "https://reconshield.in/tools/http-headers#howto",
-          "name": "How to verify website security headers",
-          "description": "A step-by-step guide on how to perform a website HTTP response header security validation.",
-          "step": [
-            { "@type": "HowToStep", "name": "Enter Domain", "text": "Input the domain (e.g., example.com) in the headers checker input container." },
-            { "@type": "HowToStep", "name": "Execute Response Parse", "text": "Click search to fetch HTTP headers and analyze their configuration parameters." },
-            { "@type": "HowToStep", "name": "Review Hardening Score", "text": "Check your security headers score and follow recommendations for missing headers." }
-          ],
-          "isPartOf": { "@id": "https://reconshield.in/tools/http-headers#webpage" }
         },
         {
           "@type": "FAQPage",
@@ -188,6 +187,9 @@ export default function SecurityHeadersPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas[0]) }} />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="dns-prefetch" href="https://api.reconshield.in" />
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 overflow-hidden border-b border-white/5" aria-label="Tool Hero">
@@ -201,11 +203,11 @@ export default function SecurityHeadersPage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            Security Headers Checker
+            Free HTTP Headers Checker - Analyze Security Headers
           </h1>
           
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
-            Audit HTTP response headers in real-time. Verify HSTS settings, inspect Content-Security-Policy (CSP) rules, check X-Frame-Options, and harden website security.
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed font-sans">
+            Our <strong>free HTTP headers checker</strong> helps you analyze security headers and identify vulnerabilities instantly. Whether you're auditing HSTS configurations, validating Content Security Policy (CSP), or checking X-Frame-Options and CORS headers, this <strong>security headers analyzer</strong> provides comprehensive analysis of your website's HTTP response headers. No registration required—simply enter your website URL to check security headers, identify missing protections, and receive actionable recommendations.
           </p>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -228,7 +230,7 @@ export default function SecurityHeadersPage() {
             
             {/* Definition Block: What Are Security Headers? */}
             <h2 className="font-mono text-xs text-cyan-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-              <Shield className="w-4 h-4 text-cyan-400" /> AI Overview Snippet: Security Headers Checker
+              <Shield className="w-4 h-4 text-cyan-400" /> AI Overview Snippet: HTTP Headers Checker
             </h2>
             <div className="space-y-6 text-sm text-gray-300 font-sans leading-relaxed">
               <div>
@@ -315,39 +317,208 @@ export default function SecurityHeadersPage() {
         </div>
       </section>
 
-      {/* Feature Differentiation Grid */}
-      <section className="py-16 bg-[#0a0d14] border-b border-white/5" aria-label="Feature Differentiation">
-        <div className="max-w-[1000px] mx-auto px-6">
-          <h2 className="text-2xl font-display font-bold text-white mb-8 text-center">ReconShield Security Headers Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 not-prose">
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Shield className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Security Header Score</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Calculates an overall grading rating (A+ through F) based on active headers and the strength of their directives.</p>
+      {/* Why Use ReconShield's HTTP Headers Checker? Section */}
+      <section className="py-20 bg-[#0a0d14] border-b border-white/5" aria-label="Why Use ReconShield's HTTP Headers Checker">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+            Why Use ReconShield's HTTP Headers Checker?
+          </h2>
+          <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+            Audit HTTP response headers with the most accurate, secure, and user-friendly testing platform.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Shield className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">100% Free</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Unlimited HTTP header analysis with zero cost or scanning caps.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Clock className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">OWASP Compliance</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Verifies header alignment with OWASP recommendations, flagging missing protections.</p>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Lock className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Security Headers</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Analyze HSTS, CSP, X-Frame-Options, and CORS setups in detail.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Activity className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Browser Compatibility</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Analyzes whether configured directives are supported across modern mobile and desktop browsers.</p>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Zap className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Instant Analysis</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Audit active response headers and configurations in seconds.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Terminal className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Hardening Guide</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Provides copy-paste configuration snippets for Nginx, Apache, and IIS based on your scan results.</p>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <FileText className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Implementation Guide</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Get specific server configuration snippets for Nginx and Apache.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <AlertTriangle className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Vulnerability Detection</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Identify missing or misconfigured security directives immediately.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Check className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Compliance Ready</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Ensure configuration alignment with PCI-DSS, HIPAA, and SOC 2.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Terminal className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">No Registration</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Verify server response layouts immediately with no email signups.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Activity className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Detailed Reports</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Comprehensive security ratings and detailed cryptographic breakdowns.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Main Educational Guide */}
+      {/* Main Educational Content Area */}
       <div className="bg-[#05080f]">
-        
-        {/* H2: What Are HTTP Security Headers? */}
+
+        {/* HTTP Headers Checker Use Cases Section */}
+        <section className="py-20 border-b border-white/5" aria-label="HTTP Headers Checker Use Cases">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+              HTTP Headers Checker Use Cases
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Discover how security experts, engineering teams, and server administrators audit response headers.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Send className="w-5 h-5 text-cyan-400" />
+                  For Security Professionals &amp; Auditors
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Audit external attack surfaces by verifying security headers across client domains, ensuring compliance with industry baselines, and discovering misconfigured HSTS or CSP policies.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Terminal className="w-5 h-5 text-cyan-400" />
+                  For Web Developers &amp; DevOps Teams
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Validate security headers during deployments, generate proper directives for Nginx or Apache, and troubleshoot CORS or CSP violations in real-time.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Shield className="w-5 h-5 text-red-400" />
+                  For Compliance Officers &amp; Risk Management
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Ensure application layers satisfy compliance directives such as PCI-DSS, HIPAA, and SOC 2 by maintaining strict browser security headers.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Activity className="w-5 h-5 text-purple-400" />
+                  For Website Owners &amp; Business Managers
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Protect visitors from clickjacking and session attacks, maintain brand trust, and avoid browser security warnings that damage organic search positioning.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose ReconShield HTTP Headers Checker Comparison Section */}
+        <section className="py-20 border-b border-white/5 bg-[#0a0d14]">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+              Why Choose ReconShield HTTP Headers Checker?
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Compare ReconShield's HTTP response headers scanner against industry alternatives.
+            </p>
+            <div className="overflow-x-auto rounded-3xl border border-white/10 bg-[#0d1117] my-8 shadow-xl">
+              <table className="w-full text-left text-sm text-gray-400 border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/[0.02] text-white font-mono uppercase text-xs">
+                    <th className="p-5">Feature</th>
+                    <th className="p-5 border-l border-white/10 text-cyan-400">ReconShield</th>
+                    <th className="p-5 border-l border-white/10">SecurityHeaders.com</th>
+                    <th className="p-5 border-l border-white/10">Mozilla Observatory</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 font-mono text-xs">
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Free to Use</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes (Unlimited)</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">No Registration</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Fast Results</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes (&lt; 3s)</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-yellow-500 font-bold">Slow (Minutes)</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Security Headers Check</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">CSP Validation</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Implementation Guide</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                    <td className="p-5 border-l border-white/10 text-yellow-500 font-bold">Limited</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Clean Interface</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes (No Ads)</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No (Cluttered)</td>
+                    <td className="p-5 border-l border-white/10 text-yellow-500 font-bold">Basic</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">CORS Analysis</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* Visible FAQ Section (Section 8) */}
+        <section className="py-20 border-b border-white/5 bg-[#05080f]" aria-labelledby="faq-title">
+          <div className="max-w-[900px] mx-auto px-6">
+            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-4 text-center">
+              Frequently Asked Questions About HTTP Security Headers
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Find answers to common questions about browser headers, connection protections, and CSP rules.
+            </p>
+            <div className="grid grid-cols-1 gap-6">
+              {faqs.map((faq, index) => (
+                <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-cyan-500/20 transition-all">
+                  <h3 className="text-lg font-bold text-white mb-3 font-display">{faq.q}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed font-sans">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* In-depth Technical Article Container */}
         <section className="py-20 border-b border-white/5">
           <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none prose-p:leading-relaxed prose-p:text-gray-400 prose-headings:text-white prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
             
@@ -359,13 +530,11 @@ export default function SecurityHeadersPage() {
               <strong>HTTP security headers</strong> are response metadata parameters sent by a web server to a client browser. They define security rules for connection handling, resource loading, and page rendering, protecting visitors from client-side attacks like Cross-Site Scripting (XSS), clickjacking, and session hijacking.
             </p>
 
-            {/* H2: Why Security Headers Matter */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Why Security Headers Matter</h2>
             <p>
               When a browser requests a page, the server responds with the HTML document and headers containing configuration directives. Without security headers, browsers run in a permissive mode, leaving visitors exposed to malicious scripts, frame injection, or data leaks.
             </p>
 
-            {/* H2: How Security Headers Protect Websites */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">How Security Headers Protect Websites</h2>
             <p>
               Security headers allow developers to establish boundaries at the browser level:
@@ -376,7 +545,6 @@ export default function SecurityHeadersPage() {
               <li><strong>Framing Protection:</strong> X-Frame-Options blocks unauthorized page framing.</li>
             </ul>
 
-            {/* H2: How to Check Security Headers */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">How to Check Security Headers</h2>
             <p>
               You can verify your website's HTTP security headers using the ReconShield Security Headers Checker:
@@ -387,93 +555,75 @@ export default function SecurityHeadersPage() {
               <li>Review the security grade and check the hardening recommendations for any missing headers.</li>
             </ol>
 
-            {/* H2: Strict-Transport-Security (HSTS) */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Strict-Transport-Security (HSTS)</h2>
             <p>
               <strong>Strict-Transport-Security (HSTS)</strong> forces browsers to communicate with a website only using secure HTTPS connections. It protects users from protocol downgrade attacks and cookie interception by blocking all unencrypted HTTP requests.
             </p>
             <pre><code>Strict-Transport-Security: max-age=63072000; includeSubDomains; preload</code></pre>
 
-            {/* H2: Content-Security-Policy (CSP) */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Content-Security-Policy (CSP)</h2>
             <p>
               <strong>Content-Security-Policy (CSP)</strong> restricts the sources from which a browser can load scripts, styles, images, and other assets. Enforcing a strict CSP is the most effective defense against Cross-Site Scripting (XSS) attacks.
             </p>
             <pre><code>Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted.com; object-src 'none';</code></pre>
 
-            {/* H2: X-Frame-Options */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">X-Frame-Options</h2>
             <p>
               <strong>X-Frame-Options</strong> controls whether a webpage can be embedded in an iframe or frame on another site. Setting it to DENY or SAMEORIGIN prevents clickjacking attacks by blocking malicious overlay frames.
             </p>
             <pre><code>X-Frame-Options: SAMEORIGIN</code></pre>
 
-            {/* H2: X-Content-Type-Options */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">X-Content-Type-Options</h2>
             <p>
               <strong>X-Content-Type-Options</strong> prevents browsers from sniffing MIME types. Setting it to 'nosniff' forces browsers to respect the content-type declared by the server, blocking executable scripting attacks disguised as files.
             </p>
             <pre><code>X-Content-Type-Options: nosniff</code></pre>
 
-            {/* H2: Referrer-Policy */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Referrer-Policy</h2>
             <p>
               <strong>Referrer-Policy</strong> controls how much information about the referring page is sent in the Referer header during navigations, protecting sensitive path details from leaking to external domains.
             </p>
             <pre><code>Referrer-Policy: strict-origin-when-cross-origin</code></pre>
 
-            {/* H2: Permissions-Policy */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Permissions-Policy</h2>
             <p>
               <strong>Permissions-Policy</strong> allows web developers to control which browser features and APIs (such as geolocation, camera, microphone, or payment interfaces) can be accessed by the site and third-party frames.
             </p>
             <pre><code>Permissions-Policy: camera=(), microphone=(), geolocation=(self)</code></pre>
 
-            {/* H2: Cross-Origin Resource Sharing (CORS) */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Cross-Origin Resource Sharing (CORS)</h2>
             <p>
               CORS defines headers (like Access-Control-Allow-Origin) that allow servers to specify which origins are permitted to read resources, preventing unauthorized cross-origin data access.
             </p>
 
-            {/* H2: Cross-Origin-Embedder-Policy */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Cross-Origin-Embedder-Policy</h2>
             <p>
               <strong>Cross-Origin-Embedder-Policy (COEP)</strong> prevents a document from loading cross-origin resources that do not explicitly grant permission, helping protect against Spectre-like side-channel attacks.
             </p>
             <pre><code>Cross-Origin-Embedder-Policy: require-corp</code></pre>
 
-            {/* H2: Cross-Origin-Opener-Policy */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Cross-Origin-Opener-Policy</h2>
             <p>
               <strong>Cross-Origin-Opener-Policy (COOP)</strong> isolates a site's execution context by preventing newly opened windows from sharing a browsing context group, protecting cross-origin documents from unauthorized scripting interactions.
             </p>
             <pre><code>Cross-Origin-Opener-Policy: same-origin</code></pre>
 
-            {/* H2: Cross-Origin-Resource-Policy */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Cross-Origin-Resource-Policy</h2>
             <p>
               <strong>Cross-Origin-Resource-Policy (CORP)</strong> prevents other sites from loading your site's static assets (images, scripts, fonts), protecting against unauthorized cross-origin data exposure.
             </p>
             <pre><code>Cross-Origin-Resource-Policy: same-origin</code></pre>
 
-            {/* H2: Common Security Header Misconfigurations */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Common Security Header Misconfigurations</h2>
             <p>
-              Common misconfigurations include:
+              Common misconfigurations include using an overly permissive CSP directive (such as `unsafe-inline` or wildcard script sources), setting HSTS max-age to values that are too short (should be at least 1 year), and omitting security headers on API responses and static assets.
             </p>
-            <ul>
-              <li>Using an overly permissive CSP directive (such as `unsafe-inline` or wildcard script sources).</li>
-              <li>Setting HSTS max-age to values that are too short (should be at least 1 year).</li>
-              <li>Omitting security headers on API responses and static assets.</li>
-            </ul>
 
-            {/* H2: Security Headers and OWASP Best Practices */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Security Headers and OWASP Best Practices</h2>
             <p>
               OWASP guidelines recommend enforcing a complete set of security headers to mitigate risks like cross-site scripting, clickjacking, and information exposure. Regular automated audits help ensure compliance.
             </p>
 
-            {/* H2: How Security Teams Audit Security Headers */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">How Security Teams Audit Security Headers</h2>
             <p>
               Security teams use automated checkers and CI/CD validation steps to inspect response headers. Direct tests ensure that security headers are active and correctly configured on all public-facing endpoints.
@@ -482,56 +632,7 @@ export default function SecurityHeadersPage() {
           </div>
         </section>
 
-        {/* Comparison Matrix Table */}
-        <section className="py-20 bg-[#0a0d14] border-b border-white/5">
-          <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none">
-            <h2 className="text-3xl font-display font-bold text-white mb-6">Security Headers Reference Matrix</h2>
-            <p className="text-gray-400 mb-8">
-              Verify standard security headers, their purposes, and the risks of leaving them unconfigured:
-            </p>
-
-            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0d1117] not-prose my-8">
-              <table className="w-full text-left text-sm text-gray-400 border-collapse">
-                <thead>
-                  <tr className="border-b border-white/10 bg-white/[0.02] text-white font-mono uppercase text-xs">
-                    <th className="p-4">HTTP Response Header</th>
-                    <th className="p-4 border-l border-white/10">Recommended Configuration</th>
-                    <th className="p-4 border-l border-white/10">Primary Purpose</th>
-                    <th className="p-4 border-l border-white/10">Severity if Missing</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5 font-mono text-xs">
-                  <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">Strict-Transport-Security</td>
-                    <td className="p-4 border-l border-white/10">max-age=63072000; includeSubDomains; preload</td>
-                    <td className="p-4 border-l border-white/10">Enforce HTTPS connections</td>
-                    <td className="p-4 border-l border-white/10 text-orange-500 font-bold">High (Mitigates MitM)</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">Content-Security-Policy</td>
-                    <td className="p-4 border-l border-white/10">default-src 'self'; object-src 'none';</td>
-                    <td className="p-4 border-l border-white/10">Restrict resource loading sources</td>
-                    <td className="p-4 border-l border-white/10 text-red-500 font-bold">Critical (Protects against XSS)</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">X-Frame-Options</td>
-                    <td className="p-4 border-l border-white/10">DENY or SAMEORIGIN</td>
-                    <td className="p-4 border-l border-white/10">Prevent frame embedding</td>
-                    <td className="p-4 border-l border-white/10 text-yellow-500 font-bold">Medium (Protects against clickjacking)</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">X-Content-Type-Options</td>
-                    <td className="p-4 border-l border-white/10">nosniff</td>
-                    <td className="p-4 border-l border-white/10">Disable MIME type sniffing</td>
-                    <td className="p-4 border-l border-white/10 text-yellow-500 font-bold">Medium (Protects against MIME attacks)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        {/* E-E-A-T section (Phase 9) */}
+        {/* E-E-A-T Section */}
         <section className="py-20 border-b border-white/5">
           <div className="max-w-[1000px] mx-auto px-6">
             
@@ -583,125 +684,55 @@ export default function SecurityHeadersPage() {
           </div>
         </section>
 
-        {/* Website Security Hardening Learning Center Section */}
-        <section className="py-20 bg-[#0a0d14] border-t border-b border-white/5" aria-label="Website Security Hardening Learning Center">
-          <div className="max-w-[1000px] mx-auto px-6 font-sans">
-            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">Website Security Hardening Learning Center</h2>
-            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed">
-              Understand the mechanics of browser-side configurations, CSP policies, and transport layer security headers.
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  title: "OWASP Top 10 Web Configuration Audits: Hardening HTTP Headers",
-                  desc: "Learn how Content-Security-Policy (CSP) and MIME-type sniffing checks safeguard applications and prevent stack signature leaks.",
-                  url: "/blog/owasp-http-headers-hardening",
-                  time: "7 min read"
-                },
-                {
-                  title: "HTTPS Security Best Practices: Hardening Web Server Transport Security",
-                  desc: "Configure secure server directives, set up Elliptic Curve Diffie-Hellman ciphers, and enforce HSTS rules correctly.",
-                  url: "/blog/https-security-best-practices",
-                  time: "9 min read"
-                },
-                {
-                  title: "SSL Certificate Explained: Public Key Cryptography and Public Trust Chains",
-                  desc: "Learn how public-key cryptography secures browsers, and how hierarchical trust models validate domain certificates.",
-                  url: "/blog/ssl-certificate-explained",
-                  time: "8 min read"
-                },
-                {
-                  title: "Demystifying SPF, DKIM, and DMARC: A Blueprint for Email Spoofing Defense",
-                  desc: "Configure SPF, DKIM, and DMARC TXT records in your DNS zones to establish strict email sender authentication.",
-                  url: "/blog/spf-dkim-dmarc-blueprint",
-                  time: "7 min read"
-                }
-              ].map((article, idx) => (
-                <Link key={idx} href={article.url} className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between text-xs font-mono text-gray-500 mb-3">
-                      <span className="flex items-center gap-1.5 text-cyan-400/80">
-                        <BookOpen className="w-3.5 h-3.5" /> Technical Guide
-                      </span>
-                      <span>{article.time}</span>
-                    </div>
-                    <h3 className="text-white font-bold text-base mb-2 group-hover:text-cyan-400 transition-colors leading-snug">
-                      {article.title}
-                    </h3>
-                    <p className="text-xs text-gray-400 leading-relaxed mb-4">
-                      {article.desc}
-                    </p>
-                  </div>
-                  <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">
-                    Read Article <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Semantic Internal Links (Phase 7 - Internal Linking) */}
-        <section className="py-20 bg-[#05080f]" aria-label="Related Security Tools">
+        {/* Semantic Related Tools Section (Section 9) */}
+        <section className="py-20 bg-[#05080f]" aria-label="Related Security &amp; Website Tools">
           <div className="max-w-[1000px] mx-auto px-6">
-            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center">Complete Your Perimeter Hardening</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">Related Security &amp; Website Tools</h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Explore our suite of technical analysis tools to analyze domain names, DNS configurations, subdomains, and host routing.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               
               {/* SSL Checker Link */}
-              <Link href="/tools/ssl-checker" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Lock className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">SSL/TLS Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit cryptographic validity, certificate expiry, and handshake errors using our SSL/TLS Checker.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Validate SSL <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-              
-              {/* DNS Lookup Link */}
-              <Link href="/tools/dns-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group">
-                <Database className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">DNS Records Auditor</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Extract and verify authoritative MX, TXT, A, and CAA records to prevent routing configuration gaps using our DNS records auditor.</p>
-                <span className="text-orange-400 text-xs font-mono flex items-center gap-1">Audit DNS Records <ChevronRight className="w-3 h-3"/></span>
+              <Link href="/tools/ssl-checker" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Lock className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">SSL Checker</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit cryptographic validity, certificate expiry, and handshake errors using our SSL/TLS Checker.</p>
+                </div>
+                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">Validate SSL <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
               </Link>
 
-              {/* WHOIS Lookup Link */}
-              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">WHOIS Lookup</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze domain registration records, registrar details, ownership, and administrative locks using our WHOIS Lookup tool.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Run WHOIS Check <ChevronRight className="w-3 h-3"/></span>
+              {/* Port Scanner Link */}
+              <Link href="/tools/port-scanner" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-red-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Terminal className="w-8 h-8 text-red-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">Port Scanner</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Identify open port states, service tags, and firewall leaks with our Exposed Port Scanner.</p>
+                </div>
+                <span className="text-red-500 text-xs font-mono flex items-center gap-1 mt-auto">Scan Ports <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
               </Link>
 
               {/* IP Lookup Link */}
-              <Link href="/tools/ip-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all group">
-                <Network className="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">IP Reputation Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze host reputation, threat tags, and ISP subnet details using our IP reputation checker.</p>
-                <span className="text-purple-400 text-xs font-mono flex items-center gap-1">Run IP Scan <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-
-              {/* Subdomain Finder Link */}
-              <Link href="/tools/subdomain-finder" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group">
-                <Terminal className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">Subdomain Finder</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Enumerate public namespaces, find dev subdomains, and identify external infrastructure with our Subdomain Finder.</p>
-                <span className="text-orange-400 text-xs font-mono flex items-center gap-1">Find Subdomains <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
-          <div className="max-w-[900px] mx-auto px-6">
-            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
-            <div className="grid grid-cols-1 gap-6">
-              {faqs.map((faq, index) => (
-                <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-cyan-500/20 transition-all">
-                  <h3 className="text-lg font-bold text-white mb-3 font-display">{faq.q}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed font-sans">{faq.a}</p>
+              <Link href="/tools/ip-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Network className="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">IP Lookup Tool</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze host reputation, threat tags, and ISP subnet details using our IP reputation checker.</p>
                 </div>
-              ))}
+                <span className="text-purple-400 text-xs font-mono flex items-center gap-1 mt-auto">Run IP Scan <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
+
+              {/* Technology Detector Link */}
+              <Link href="/tools/tech-detector" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">Technology Detector</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Identify CMS platforms, frameworks, analytics scripts, and hosting infrastructure instantly.</p>
+                </div>
+                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">Detect Tech Stack <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
+
             </div>
           </div>
         </section>

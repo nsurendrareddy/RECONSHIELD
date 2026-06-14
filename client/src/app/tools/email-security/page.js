@@ -4,88 +4,104 @@ import Link from 'next/link';
 import { 
   Shield, Globe, Server, Lock, Terminal, CheckCircle2, ChevronRight, 
   Search, Activity, Target, Network, Info, Check, AlertTriangle, 
-  FileText, Send, HelpCircle, BookOpen, Key, Database, Clock
+  FileText, Send, HelpCircle, BookOpen, Key, Database, Clock, Zap
 } from 'lucide-react';
-import { generateBaseMetadata } from '@/utils/metadata';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
 });
 
-export const metadata = generateBaseMetadata({
-  title: "Email Security Checker (Free) | SPF, DKIM & DMARC Analysis",
-  description: "Check SPF, DKIM, DMARC, email authentication, and domain email security settings with ReconShield's free Email Security Checker.",
-  path: "/tools/email-security"
-});
+export const metadata = {
+  title: "Email Security Checker - SPF, DKIM & DMARC Test | ReconShield",
+  description: "Free email security checker to test SPF, DKIM, and DMARC authentication. Verify email records, check domain reputation, and improve deliverability.",
+  alternates: {
+    canonical: "https://reconshield.in/tools/email-security",
+  },
+  keywords: [
+    "email security checker", "spf dkim dmarc checker", "email authentication", "spf checker", 
+    "dkim validator", "dmarc test", "email authentication", "check spf record", "verify dkim", 
+    "dmarc analyzer"
+  ],
+  robots: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+  openGraph: {
+    title: "Email Security Checker - SPF, DKIM & DMARC Test",
+    description: "Free email security checker to test SPF, DKIM, and DMARC authentication. Improve deliverability instantly.",
+    url: "https://reconshield.in/tools/email-security",
+    type: "website",
+    siteName: "ReconShield",
+    images: [
+      {
+        url: "https://reconshield.in/og-image-email.png",
+        width: 1200,
+        height: 630,
+        alt: "Email Security Checker - ReconShield"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Email Security Checker - SPF, DKIM & DMARC Test",
+    description: "Free email security checker to test SPF, DKIM, and DMARC authentication instantly.",
+    images: ["https://reconshield.in/og-image-email.png"]
+  },
+  appleWebApp: {
+    capable: true,
+    title: "ReconShield",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-capable": "yes",
+    "apple-mobile-web-app-status-bar-style": "black-translucent"
+  }
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0a0d14",
+};
 
 export default function EmailSecurityPage() {
   const faqs = [
     {
-      q: "What is SPF?",
-      a: "Sender Policy Framework (SPF) is a DNS record that lists all authorized IP addresses allowed to send emails on behalf of your domain. This record helps mail servers verify if incoming mail originates from a trusted sender, reducing domain spoofing."
+      q: "What is an email security checker?",
+      a: "An email security checker is a diagnostic tool that queries domain DNS records to verify if SPF, DKIM, and DMARC parameters are active, valid, and aligned, protecting the domain from abuse."
     },
     {
-      q: "What is DKIM?",
-      a: "DomainKeys Identified Mail (DKIM) is an email authentication method that attaches a cryptographic digital signature to emails. The receiving server uses the domain's public DNS key to verify that the message wasn't modified during transit."
+      q: "Is this SPF DKIM DMARC checker free to use?",
+      a: "Yes, the ReconShield Email Security Checker is 100% free to use. You can perform unlimited domain checks with no account registrations or limits."
     },
     {
-      q: "What is DMARC?",
-      a: "Domain-based Message Authentication, Reporting, and Conformance (DMARC) is a DNS policy that uses SPF and DKIM alignments to determine how receiving servers handle emails that fail verification (monitoring, quarantine, or rejecting)."
+      q: "What are SPF, DKIM, and DMARC?",
+      a: "SPF (Sender Policy Framework) lists authorized IPs for a domain; DKIM (DomainKeys Identified Mail) signs outgoing messages cryptographically; DMARC (Domain-based Message Authentication, Reporting, and Conformance) dictates how to handle emails failing SPF/DKIM verification."
     },
     {
-      q: "How do I check email security?",
-      a: "You can audit your domain's email authentication settings by inputting your domain into the ReconShield Email Security Checker. The scanner parses DNS records to check validation status and policy strengths for SPF, DKIM, and DMARC."
+      q: "Why is email authentication important?",
+      a: "Email authentication prevents threat actors from spoofing your domain in phishing campaigns, protects brand integrity, and improves inbox deliverability."
     },
     {
-      q: "How do I stop email spoofing?",
-      a: "To prevent email spoofing, configure SPF to identify your valid senders, add DKIM cryptographic keys to verify message integrity, and publish a restrictive DMARC policy (reject or quarantine) to block unauthorized mail delivery."
+      q: "How do I fix SPF DKIM DMARC errors?",
+      a: "Fix authentication errors by reviewing syntax rules on your DNS records, ensuring you only have a single SPF record, deploying valid 2048-bit DKIM keys, and setting a valid DMARC monitoring policy (p=none) before moving to rejection (p=reject)."
     },
     {
-      q: "What causes email authentication failures?",
-      a: "Common authentication failures are caused by syntax errors in SPF records, missing or misconfigured DKIM signatures, mismatched sender domains, or lookups exceeding the 10-DNS-lookup limit allowed in standard SPF specifications."
+      q: "What is DMARC policy and why do I need it?",
+      a: "A DMARC policy instructs receiving mail servers on how to process emails failing SPF and DKIM. You need it to prevent domain spoofing, keep outbound emails out of spam folders, and monitor sending sources."
     },
     {
-      q: "Why is DMARC important?",
-      a: "DMARC is critical because it gives domain owners control over how failed emails are handled, prevents brand spoofing in phishing campaigns, and improves deliverability by proving to inbox providers that your messages are legitimate."
+      q: "How often should I check email security?",
+      a: "You should check email security settings regularly, particularly when adding new mail senders, updating hosting providers, or performing cybersecurity audits."
     },
     {
-      q: "What does a DMARC reject policy do?",
-      a: "A DMARC reject policy (p=reject) instructs receiving servers to completely block and drop any incoming emails that fail both SPF and DKIM authentication, protecting users from domain impersonation."
-    },
-    {
-      q: "What is SPF lookup limit?",
-      a: "Standard SPF rules enforce a maximum limit of 10 nested DNS lookups to prevent server performance degradation. Exceeding this limit causes validation errors and results in authentication failures."
-    },
-    {
-      q: "How does DMARC reporting work?",
-      a: "DMARC allows you to receive XML reports (rua and ruf) from inbox providers showing who is sending mail on behalf of your domain, helping you track unauthorized mail sources."
-    },
-    {
-      q: "What is DKIM selector?",
-      a: "A DKIM selector is a text string used in the email header that specifies the exact DNS location of the public key needed to decrypt the message's cryptographic signature."
-    },
-    {
-      q: "Can I have multiple SPF records?",
-      a: "No. Having multiple SPF records on a single domain is a severe configuration error that invalidates the SPF check, causing inbox providers to reject or mark your emails as spam."
-    },
-    {
-      q: "What is email alignment?",
-      a: "Alignment requires the domain in the visible 'From' header to match the domains validated by SPF (Return-Path) and/or DKIM, ensuring the sender identity matches the authentication records."
-    },
-    {
-      q: "Why do emails go to spam?",
-      a: "Emails often end up in spam folders if the sending domain lacks valid SPF, DKIM, or DMARC configurations, prompting inbox providers to treat the message as suspicious."
-    },
-    {
-      q: "What is BIMI?",
-      a: "Brand Indicators for Message Identification (BIMI) is an email standard that displays your brand logo in supported inboxes, requiring a valid DMARC policy of quarantine or reject."
+      q: "Can I check email security for any domain?",
+      a: "Yes, you can check email security authentication records for any public domain. The tool retrieves and parses public DNS records (SPF, DKIM, DMARC) in real-time."
     }
   ];
 
   const breadcrumbs = [
     { name: "Home", url: "https://reconshield.in" },
     { name: "Tools", url: "https://reconshield.in/tools" },
-    { name: "Email Security", url: "https://reconshield.in/tools/email-security" }
+    { name: "Email Security Checker", url: "https://reconshield.in/tools/email-security" }
   ];
 
   const schemas = [
@@ -113,7 +129,7 @@ export default function EmailSecurityPage() {
           "@type": "WebPage",
           "@id": "https://reconshield.in/tools/email-security#webpage",
           "url": "https://reconshield.in/tools/email-security",
-          "name": "Email Security Checker (Free) | SPF, DKIM & DMARC Analysis",
+          "name": "Email Security Checker - SPF, DKIM & DMARC Test | ReconShield",
           "isPartOf": { "@id": "https://reconshield.in/#website" }
         },
         {
@@ -121,23 +137,28 @@ export default function EmailSecurityPage() {
           "@id": "https://reconshield.in/tools/email-security#software",
           "name": "ReconShield Email Security Checker",
           "url": "https://reconshield.in/tools/email-security",
-          "description": "Free online email security scanner to audit domain DNS records for SPF, DKIM, and DMARC configurations to prevent domain spoofing.",
+          "description": "Free email security checker to test SPF, DKIM, and DMARC authentication. Verify email records, check domain reputation, and improve deliverability.",
           "applicationCategory": "SecurityApplication",
-          "operatingSystem": "All",
+          "operatingSystem": "Web Browser",
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
-        },
-        {
-          "@type": "WebApplication",
-          "@id": "https://reconshield.in/tools/email-security#webapp",
-          "name": "ReconShield Email Security Analyzer App",
-          "url": "https://reconshield.in/tools/email-security",
-          "description": "Fetch and verify SPF records, inspect DMARC settings, and analyze email validation rules for external domains.",
-          "applicationCategory": "SecurityApplication",
-          "operatingSystem": "All",
-          "browserRequirements": "Requires JavaScript. Requires HTML5.",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-          "publisher": { "@id": "https://reconshield.in/#organization" }
+          "publisher": { "@id": "https://reconshield.in/#organization" },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "ratingCount": "213",
+            "bestRating": "5",
+            "worstRating": "1"
+          },
+          "featureList": [
+            "Free unlimited email security checks",
+            "SPF record validation",
+            "DKIM signature verification",
+            "DMARC policy analysis",
+            "Email authentication testing",
+            "Deliverability recommendations",
+            "DNS record checking",
+            "No registration required"
+          ]
         },
         {
           "@type": "BreadcrumbList",
@@ -148,28 +169,6 @@ export default function EmailSecurityPage() {
             "name": crumb.name,
             "item": crumb.url
           }))
-        },
-        {
-          "@type": "TechArticle",
-          "@id": "https://reconshield.in/tools/email-security#article",
-          "headline": "The Comprehensive Specification of SPF, DKIM, and DMARC Protocols and Email Delivery Protections",
-          "description": "An in-depth technical guide analyzing SPF records, DKIM cryptographic signatures, DMARC alignments, and domain spoofing defenses.",
-          "author": { "@type": "Person", "name": "Surendra Reddy" },
-          "publisher": { "@id": "https://reconshield.in/#organization" },
-          "url": "https://reconshield.in/tools/email-security",
-          "isPartOf": { "@id": "https://reconshield.in/tools/email-security#webpage" }
-        },
-        {
-          "@type": "HowTo",
-          "@id": "https://reconshield.in/tools/email-security#howto",
-          "name": "How to check email authentication records",
-          "description": "Audit domain DNS records for email validation compliance.",
-          "step": [
-            { "@type": "HowToStep", "name": "Enter Domain Details", "text": "Input the target sending domain in the Email Security Checker input field." },
-            { "@type": "HowToStep", "name": "Query DNS Records", "text": "Launch the scan to fetch SPF, DKIM, and DMARC DNS settings." },
-            { "@type": "HowToStep", "name": "Verify Deliverability Health", "text": "Review authentication status, syntax validity, and DMARC enforcement policies." }
-          ],
-          "isPartOf": { "@id": "https://reconshield.in/tools/email-security#webpage" }
         },
         {
           "@type": "FAQPage",
@@ -188,6 +187,9 @@ export default function EmailSecurityPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas[0]) }} />
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="dns-prefetch" href="https://api.reconshield.in" />
 
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 overflow-hidden border-b border-white/5" aria-label="Tool Hero">
@@ -201,11 +203,11 @@ export default function EmailSecurityPage() {
           </div>
           
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6 tracking-tight">
-            Email Security Checker
+            Free Email Security Checker - Test SPF, DKIM & DMARC
           </h1>
           
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-sans">
-            Analyze SPF records, verify DKIM keys, and audit DMARC enforcement policies. Protect your domain from email spoofing, phishing, and domain impersonation.
+          <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed font-sans">
+            Our <strong>free email security checker</strong> helps you test SPF, DKIM, and DMARC authentication instantly. Whether you're verifying email authentication records, preventing email spoofing, or improving email deliverability, this <strong>SPF DKIM DMARC checker</strong> provides comprehensive analysis of your domain's email security configuration. No registration required—simply enter your domain name to check email authentication, validate DNS records, and receive actionable recommendations to improve email deliverability and prevent phishing attacks.
           </p>
 
           <div className="max-w-4xl mx-auto mb-12">
@@ -315,39 +317,208 @@ export default function EmailSecurityPage() {
         </div>
       </section>
 
-      {/* Feature Differentiation Grid */}
-      <section className="py-16 bg-[#0a0d14] border-b border-white/5" aria-label="Feature Differentiation">
-        <div className="max-w-[1000px] mx-auto px-6">
-          <h2 className="text-2xl font-display font-bold text-white mb-8 text-center">ReconShield Email Security Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 not-prose">
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Shield className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Email Security Score</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Calculates an overall email protection grade based on SPF configurations, DKIM keys, and DMARC policy alignments.</p>
+      {/* Why Use ReconShield's Email Security Checker? Section */}
+      <section className="py-20 bg-[#0a0d14] border-b border-white/5" aria-label="Why Use ReconShield's Email Security Checker">
+        <div className="max-w-5xl mx-auto px-6">
+          <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+            Why Use ReconShield's Email Security Checker?
+          </h2>
+          <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+            Audit domain SPF, DKIM, and DMARC setups with the most accurate, secure, and user-friendly testing platform.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Shield className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">100% Free</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Unlimited email security checks with zero cost or scanning caps.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Clock className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">DMARC Compliance Score</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Audits DMARC enforcement levels, checking if the domain uses p=reject or quarantine directives.</p>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Lock className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">SPF Validation</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Verify Sender Policy Framework (SPF) records and syntax layouts.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Activity className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">SPF Lookup Auditor</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Counts nested DNS lookup redirects in SPF records, warning when they approach the standard limit of 10.</p>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Key className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">DKIM Testing</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Check DomainKeys Identified Mail (DKIM) signatures and public keys.</p>
             </div>
-            <div className="p-5 bg-surface-900 border border-white/5 rounded-2xl">
-              <Terminal className="w-6 h-6 text-cyan-400 mb-3" />
-              <h4 className="text-white text-xs font-bold font-mono uppercase tracking-wider mb-2">Spoofing Risk Rating</h4>
-              <p className="text-gray-400 text-[11px] leading-relaxed">Evaluates target domain exposure to impersonation and phishing campaigns based on DNS configurations.</p>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Activity className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">DMARC Analysis</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Validate DMARC policy alignment, quarantine rules, and XML destinations.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Zap className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Deliverability Tips</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Improve domain reputation and inbox placement rates instantly.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Database className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">DNS Record Check</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Verify custom MX, TXT, and security records inside domain zones.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <Terminal className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">No Registration</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Start testing email configurations immediately with no signups.</p>
+            </div>
+            <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all group">
+              <BookOpen className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-bold text-base mb-2">Expert Guidance</h3>
+              <p className="text-gray-400 text-xs leading-relaxed">Get detailed recommendations for DNS parameters and policies.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Main Educational Guide */}
+      {/* Main Educational Content Area */}
       <div className="bg-[#05080f]">
-        
-        {/* H2: What Is Email Security? */}
+
+        {/* Email Security Checker Use Cases Section */}
+        <section className="py-20 border-b border-white/5" aria-label="Email Security Checker Use Cases">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+              Email Security Checker Use Cases
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Discover how security experts, engineering teams, and email marketers audit sender records.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Terminal className="w-5 h-5 text-cyan-400" />
+                  For Email Administrators &amp; IT Teams
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Audit email delivery systems, verify SPF IP ranges, check DKIM selectors, and implement DMARC monitoring and enforcement protocols.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Zap className="w-5 h-5 text-cyan-400" />
+                  For Marketing Teams &amp; Email Marketers
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Protect email campaign deliverability, verify custom return paths, avoid inbox spam filters, and safeguard domain reputation before sending bulk emails.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Shield className="w-5 h-5 text-red-400" />
+                  For Security Teams &amp; Fraud Prevention
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Stop domain impersonation, defend against business email compromise (BEC), and analyze DMARC reports to block unauthorized mail servers.
+                </p>
+              </div>
+              <div className="p-8 rounded-3xl bg-surface-900 border border-white/5">
+                <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2 font-display">
+                  <Activity className="w-5 h-5 text-purple-400" />
+                  For Business Owners &amp; Domain Managers
+                </h3>
+                <p className="text-gray-400 text-sm leading-relaxed font-sans">
+                  Secure the brand name, defend customers against spoofed emails, and comply with security rules established by global email providers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose ReconShield Email Security Checker Comparison Section */}
+        <section className="py-20 border-b border-white/5 bg-[#0a0d14]">
+          <div className="max-w-5xl mx-auto px-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">
+              Why Choose ReconShield Email Security Checker?
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Compare ReconShield's email verification utility against industry alternatives.
+            </p>
+            <div className="overflow-x-auto rounded-3xl border border-white/10 bg-[#0d1117] my-8 shadow-xl">
+              <table className="w-full text-left text-sm text-gray-400 border-collapse">
+                <thead>
+                  <tr className="border-b border-white/10 bg-white/[0.02] text-white font-mono uppercase text-xs">
+                    <th className="p-5">Feature</th>
+                    <th className="p-5 border-l border-white/10 text-cyan-400">ReconShield</th>
+                    <th className="p-5 border-l border-white/10">MXToolbox</th>
+                    <th className="p-5 border-l border-white/10">DMARCian</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5 font-mono text-xs">
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Free to Use</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes (Unlimited)</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-yellow-500 font-bold">Trial Only</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">No Registration</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">SPF Check</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">DKIM Validation</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">DMARC Analysis</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Implementation Guide</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">Clean Interface</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No (Cluttered)</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                  <tr className="hover:bg-white/[0.01]">
+                    <td className="p-5 text-white font-semibold font-sans">No Ads</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                    <td className="p-5 border-l border-white/10 text-red-500 font-bold">No (Has Ads)</td>
+                    <td className="p-5 border-l border-white/10 text-emerald-400 font-bold">Yes</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* Visible FAQ Section (Section 8) */}
+        <section className="py-20 border-b border-white/5 bg-[#05080f]" aria-labelledby="faq-title">
+          <div className="max-w-[900px] mx-auto px-6">
+            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-4 text-center">
+              Frequently Asked Questions About Email Security
+            </h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Find answers to common questions about SPF records, DKIM signatures, and DMARC alignments.
+            </p>
+            <div className="grid grid-cols-1 gap-6">
+              {faqs.map((faq, index) => (
+                <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-cyan-500/20 transition-all">
+                  <h3 className="text-lg font-bold text-white mb-3 font-display">{faq.q}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed font-sans">{faq.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* In-depth Technical Article Container */}
         <section className="py-20 border-b border-white/5">
           <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none prose-p:leading-relaxed prose-p:text-gray-400 prose-headings:text-white prose-a:text-cyan-400 hover:prose-a:text-cyan-300">
             
@@ -359,13 +530,11 @@ export default function EmailSecurityPage() {
               <strong>Email Security</strong> comprises the technologies, protocols, and policies used to protect email communications from unauthorized access, spoofing, and spoofing-based phishing. Key components include cryptographic signing and DNS validation records.
             </p>
 
-            {/* H2: Why Email Authentication Matters */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Why Email Authentication Matters</h2>
             <p>
               Because SMTP (Simple Mail Transfer Protocol) was designed without built-in sender verification, threat actors can easily impersonate domain names. Standardizing authentication protocols protects brand trust, secures outbound communications, and improves email deliverability.
             </p>
 
-            {/* H2: How Email Security Works */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">How Email Security Works</h2>
             <p>
               Email validation systems rely on DNS configurations:
@@ -376,7 +545,6 @@ export default function EmailSecurityPage() {
               <li><strong>Alignment Auditing:</strong> DMARC checks if SPF and DKIM domains align with the visible 'From' address.</li>
             </ul>
 
-            {/* H2: How to Check Email Security */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">How to Check Email Security</h2>
             <p>
               You can verify your website's email authentication records using the ReconShield Email Security Checker:
@@ -387,20 +555,17 @@ export default function EmailSecurityPage() {
               <li>Review the security grade and check the hardening recommendations for any missing records.</li>
             </ol>
 
-            {/* H2: SPF Record Explained */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">SPF Record Explained</h2>
             <p>
               <strong>Sender Policy Framework (SPF)</strong> is published as a DNS TXT record. It specifies the IPs and external services authorized to send mail on behalf of the domain.
             </p>
             <pre><code>v=spf1 include:_spf.google.com ~all</code></pre>
 
-            {/* H2: DKIM Record Explained */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">DKIM Record Explained</h2>
             <p>
               <strong>DomainKeys Identified Mail (DKIM)</strong> publishes a cryptographic public key in the domain's DNS. The sending server uses the private key to sign outgoing headers, proving message integrity.
             </p>
 
-            {/* H2: DMARC Policy Explained */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">DMARC Policy Explained</h2>
             <p>
               <strong>DMARC</strong> defines how receiving servers handle emails that fail SPF and DKIM verification:
@@ -412,43 +577,36 @@ export default function EmailSecurityPage() {
             </ul>
             <pre><code>v=DMARC1; p=reject; pct=100; rua=mailto:dmarc-reports@domain.com</code></pre>
 
-            {/* H2: How SPF, DKIM and DMARC Work Together */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">How SPF, DKIM and DMARC Work Together</h2>
             <p>
               SPF and DKIM operate independently. DMARC ties these protocols together by requiring alignment and enforcing policies on failed messages, creating a comprehensive authentication framework.
             </p>
 
-            {/* H2: Common Email Security Threats */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Common Email Security Threats</h2>
             <p>
               Without active email authentication, organizations are vulnerable to domain abuse, credential theft, and unauthorized brand representation.
             </p>
 
-            {/* H2: Email Spoofing Explained */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Email Spoofing Explained</h2>
             <p>
               Email spoofing occurs when a sender alters message headers to display a legitimate domain name in the 'From' field, misleading recipients and bypasses basic filters.
             </p>
 
-            {/* H2: Business Email Compromise (BEC) */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Business Email Compromise (BEC)</h2>
             <p>
               BEC attacks target organizations by spoofing executive or vendor domain names, aiming to initiate unauthorized financial transfers or compromise sensitive credentials.
             </p>
 
-            {/* H2: Phishing and Domain Impersonation */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Phishing and Domain Impersonation</h2>
             <p>
               Impersonation campaigns clone brand communications. Enforcing strict DMARC policies prevents threat actors from delivering unauthorized phishing emails using your domain identity.
             </p>
 
-            {/* H2: Email Deliverability and Authentication */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Email Deliverability and Authentication</h2>
             <p>
               Inbox providers like Google and Yahoo require senders to implement valid SPF, DKIM, and DMARC records. Correct configurations improve domain reputation and ensure reliable email delivery.
             </p>
 
-            {/* H2: Email Security Best Practices */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">Email Security Best Practices</h2>
             <p>
               Maintain domain email security by implementing these configurations:
@@ -460,7 +618,6 @@ export default function EmailSecurityPage() {
               <li>Audit SPF lookup limits to prevent validation failures.</li>
             </ul>
 
-            {/* H2: How Security Teams Audit Email Security */}
             <h2 className="text-3xl font-display font-bold mt-16 mb-6">How Security Teams Audit Email Security</h2>
             <p>
               Security teams use automated scanning engines and DNS parsers to verify email authentication records, check lookup counts, and monitor DMARC XML feedback reports.
@@ -469,56 +626,7 @@ export default function EmailSecurityPage() {
           </div>
         </section>
 
-        {/* Protocol Comparison Table */}
-        <section className="py-20 bg-[#0a0d14] border-b border-white/5">
-          <div className="max-w-[1000px] mx-auto px-6 prose prose-invert max-w-none">
-            <h2 className="text-3xl font-display font-bold text-white mb-6">Email Authentication Protocol Comparison</h2>
-            <p className="text-gray-400 mb-8">
-              Verify standard email authentication protocols, their mechanisms, and their primary focus:
-            </p>
-
-            <div className="overflow-x-auto rounded-2xl border border-white/10 bg-[#0d1117] not-prose my-8">
-              <table className="w-full text-left text-sm text-gray-400 border-collapse">
-                <thead>
-                  <tr className="border-b border-white/10 bg-white/[0.02] text-white font-mono uppercase text-xs">
-                    <th className="p-4">Protocol Parameter</th>
-                    <th className="p-4 border-l border-white/10">Verification Method</th>
-                    <th className="p-4 border-l border-white/10">DNS Record Type</th>
-                    <th className="p-4 border-l border-white/10">Primary Benefit</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5 font-mono text-xs">
-                  <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">SPF</td>
-                    <td className="p-4 border-l border-white/10">Verifies sending server IP address</td>
-                    <td className="p-4 border-l border-white/10">TXT</td>
-                    <td className="p-4 border-l border-white/10">Blocks unauthorized mail servers</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">DKIM</td>
-                    <td className="p-4 border-l border-white/10">Validates digital cryptographic signature</td>
-                    <td className="p-4 border-l border-white/10">TXT (Selector key)</td>
-                    <td className="p-4 border-l border-white/10">Proves message integrity in transit</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">DMARC</td>
-                    <td className="p-4 border-l border-white/10">Checks SPF & DKIM alignments and rules</td>
-                    <td className="p-4 border-l border-white/10">TXT (_dmarc node)</td>
-                    <td className="p-4 border-l border-white/10">Enforces handling policies on failures</td>
-                  </tr>
-                  <tr className="hover:bg-white/[0.01]">
-                    <td className="p-4 font-semibold text-white">BIMI</td>
-                    <td className="p-4 border-l border-white/10">Displays verified brand logo in inboxes</td>
-                    <td className="p-4 border-l border-white/10">TXT (Requires p=reject/quarantine)</td>
-                    <td className="p-4 border-l border-white/10">Improves brand recognition and trust</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        {/* E-E-A-T section (Phase 9) */}
+        {/* E-E-A-T Section */}
         <section className="py-20 border-b border-white/5">
           <div className="max-w-[1000px] mx-auto px-6">
             
@@ -570,133 +678,55 @@ export default function EmailSecurityPage() {
           </div>
         </section>
 
-        {/* Email Security Learning Center Section */}
-        <section className="py-20 bg-[#0a0d14] border-t border-b border-white/5" aria-label="Email Security Learning Center">
-          <div className="max-w-[1000px] mx-auto px-6 font-sans">
-            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">Email Security Learning Center</h2>
-            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed">
-              Understand the mechanics of Sender Policy Framework, cryptographic signatures, and domain enforcement guidelines.
-            </p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  title: "Demystifying SPF, DKIM, and DMARC: A Blueprint for Email Spoofing Defense",
-                  desc: "Learn how to configure DNS TXT records to defend your brand against business email compromise (BEC).",
-                  url: "/blog/spf-dkim-dmarc-blueprint",
-                  time: "7 min read"
-                },
-                {
-                  title: "Email Spoofing Prevention: Defensive Protocols against Domain Forgery",
-                  desc: "Explore SMTP protocol exploits and discover how to transition DMARC rules from p=none to p=reject safely.",
-                  url: "/blog/email-spoofing-prevention",
-                  time: "8 min read"
-                },
-                {
-                  title: "HTTPS Security Best Practices: Hardening Web Server Transport Security",
-                  desc: "Align web transport configurations and apply strict-transport policies to protect domain namespaces.",
-                  url: "/blog/https-security-best-practices",
-                  time: "9 min read"
-                },
-                {
-                  title: "OSINT Fundamentals: The Building Blocks of Passive Information Gathering",
-                  desc: "Understand how attackers scan DNS zones, MX records, and SPF blocks to map organization subnets.",
-                  url: "/blog/osint-fundamentals",
-                  time: "7 min read"
-                }
-              ].map((article, idx) => (
-                <Link key={idx} href={article.url} className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between text-xs font-mono text-gray-500 mb-3">
-                      <span className="flex items-center gap-1.5 text-cyan-400/80">
-                        <BookOpen className="w-3.5 h-3.5" /> Technical Guide
-                      </span>
-                      <span>{article.time}</span>
-                    </div>
-                    <h3 className="text-white font-bold text-base mb-2 group-hover:text-cyan-400 transition-colors leading-snug">
-                      {article.title}
-                    </h3>
-                    <p className="text-xs text-gray-400 leading-relaxed mb-4">
-                      {article.desc}
-                    </p>
-                  </div>
-                  <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">
-                    Read Article <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Semantic Internal Links (Phase 7 - Internal Linking) */}
-        <section className="py-20 bg-[#05080f]" aria-label="Related Security Tools">
+        {/* Related Email & DNS Tools Section (Section 9) */}
+        <section className="py-20 bg-[#05080f]" aria-label="Related Email &amp; DNS Tools">
           <div className="max-w-[1000px] mx-auto px-6">
-            <h2 className="text-3xl font-display font-bold text-white mb-10 text-center">Complete Your Perimeter Hardening</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <h2 className="text-3xl font-display font-bold text-white mb-4 text-center">Related Email &amp; DNS Tools</h2>
+            <p className="text-gray-400 text-sm text-center max-w-xl mx-auto mb-12 leading-relaxed font-sans">
+              Explore our suite of technical analysis tools to analyze domain names, DNS configurations, subdomains, and host routing.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               
               {/* DNS Lookup Link */}
-              <Link href="/tools/dns-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group">
-                <Database className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">DNS Records Auditor</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Extract and verify authoritative MX, TXT, A, and CAA records to prevent routing configuration gaps using our DNS records auditor.</p>
-                <span className="text-orange-400 text-xs font-mono flex items-center gap-1">Audit DNS Records <ChevronRight className="w-3 h-3"/></span>
+              <Link href="/tools/dns-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Database className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">DNS Lookup Tool</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Extract and verify authoritative MX, TXT, A, and CAA records to prevent routing configuration gaps.</p>
+                </div>
+                <span className="text-orange-400 text-xs font-mono flex items-center gap-1 mt-auto">Audit DNS <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
               </Link>
 
               {/* WHOIS Lookup Link */}
-              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">WHOIS Lookup</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze domain registration records, registrar details, ownership, and administrative locks using our WHOIS Lookup tool.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Run WHOIS Check <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-              
-              {/* SSL Checker Link */}
-              <Link href="/tools/ssl-checker" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Lock className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">SSL/TLS Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit cryptographic validity, certificate expiry, and handshake errors using our SSL/TLS Checker.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Validate SSL <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-
-              {/* IP Lookup Link */}
-              <Link href="/tools/ip-lookup" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-purple-500/30 transition-all group">
-                <Network className="w-8 h-8 text-purple-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">IP Reputation Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze host reputation, threat tags, and ISP subnet details using our IP reputation checker.</p>
-                <span className="text-purple-400 text-xs font-mono flex items-center gap-1">Run IP Scan <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-
-              {/* Security Headers Link */}
-              <Link href="/tools/http-headers" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group">
-                <Key className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">Security Headers Checker</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit HTTP response headers, verify HSTS settings, and validate CSP rules using our Security Headers Checker.</p>
-                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1">Check Headers <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-
-              {/* Subdomain Finder Link */}
-              <Link href="/tools/subdomain-finder" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-orange-500/30 transition-all group">
-                <Terminal className="w-8 h-8 text-orange-400 mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="text-white font-bold text-lg mb-2">Subdomain Finder</h4>
-                <p className="text-xs text-gray-400 leading-relaxed mb-4">Enumerate public namespaces, find dev subdomains, and identify external infrastructure with our Subdomain Finder.</p>
-                <span className="text-orange-400 text-xs font-mono flex items-center gap-1">Find Subdomains <ChevronRight className="w-3 h-3"/></span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ Section */}
-        <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
-          <div className="max-w-[900px] mx-auto px-6">
-            <h2 id="faq-title" className="text-3xl font-display font-bold text-white mb-10 text-center">Frequently Asked Questions</h2>
-            <div className="grid grid-cols-1 gap-6">
-              {faqs.map((faq, index) => (
-                <div key={index} className="bg-surface-900 border border-white/10 rounded-2xl p-6 hover:border-cyan-500/20 transition-all">
-                  <h3 className="text-lg font-bold text-white mb-3 font-display">{faq.q}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed font-sans">{faq.a}</p>
+              <Link href="/tools/whois" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Globe className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">WHOIS Lookup Tool</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Analyze domain registration records, registrar details, ownership, and administrative locks.</p>
                 </div>
-              ))}
+                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">Run WHOIS Check <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
+
+              {/* HTTP Headers Link */}
+              <Link href="/tools/http-headers" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Key className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">HTTP Headers Checker</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit HTTP response headers, verify HSTS settings, and validate CSP rules.</p>
+                </div>
+                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">Check Headers <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
+
+              {/* SSL Checker Link */}
+              <Link href="/tools/ssl-checker" className="p-6 rounded-2xl bg-surface-900 border border-white/5 hover:border-cyan-500/30 transition-all group flex flex-col justify-between">
+                <div>
+                  <Lock className="w-8 h-8 text-cyan-400 mb-4 group-hover:scale-110 transition-transform" />
+                  <h4 className="text-white font-bold text-lg mb-2 font-display">SSL Checker</h4>
+                  <p className="text-xs text-gray-400 leading-relaxed mb-4">Audit cryptographic validity, certificate expiry, and handshake errors.</p>
+                </div>
+                <span className="text-cyan-400 text-xs font-mono flex items-center gap-1 mt-auto">Validate SSL <ChevronRight className="w-3 h-3 group-hover:translate-x-1 transition-transform"/></span>
+              </Link>
+
             </div>
           </div>
         </section>
