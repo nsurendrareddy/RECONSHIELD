@@ -13,7 +13,14 @@ export default function LazyAdSense() {
   const hasInteracted = useUserInteraction();
 
   useEffect(() => {
-    if (!hasInteracted || typeof window === 'undefined') return;
+    if (typeof window === 'undefined') return;
+
+    // Check if the user agent is a crawler or the Google AdSense validation bot
+    const ua = window.navigator.userAgent || '';
+    const isBot = /bot|google|crawler|spider|lighthouse|mediapartners|adsense/i.test(ua);
+
+    // If it's a real user and they haven't interacted yet, defer loading the script
+    if (!hasInteracted && !isBot) return;
 
     // Prevent duplicate injection
     if (document.querySelector('script[src*="pagead2.googlesyndication.com"]')) {
