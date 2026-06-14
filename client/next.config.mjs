@@ -32,7 +32,10 @@ const adDomains = [
   'https://*.094kk.com',
   // rtmark tracking/ads
   'https://my.rtmark.net',
-  'https://*.rtmark.net'
+  'https://*.rtmark.net',
+  // MultiTag Ad Script Domains
+  'https://quge5.com',
+  'https://*.quge5.com'
 ];
 
 const isDev = process.env.NODE_ENV !== 'production';
