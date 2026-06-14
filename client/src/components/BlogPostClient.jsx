@@ -5,10 +5,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
+import SponsoredRecommendation from '@/components/SponsoredRecommendation'
 
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
   types: {
+    sponsoredRecommendation: () => <SponsoredRecommendation />,
     image: ({ value }) => {
       if (!value?.asset) return null;
       return (
@@ -103,7 +105,84 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
   });
 
   const enrichedBody = useMemo(() => {
-    return cleanBody || [];
+    if (!cleanBody || cleanBody.length === 0) return [];
+    
+    // Identify candidate paragraph blocks for insertion.
+    // We only insert after paragraph blocks, and we ensure the next block is not a list item
+    // to prevent splitting lists.
+    const candidateIndices = [];
+    for (let i = 0; i < cleanBody.length; i++) {
+      const block = cleanBody[i];
+      if (
+        block._type === 'block' &&
+        block.style === 'normal' &&
+        !block.listItem
+      ) {
+        const nextBlock = cleanBody[i + 1];
+        if (!nextBlock || !nextBlock.listItem) {
+          candidateIndices.push(i);
+        }
+      }
+    }
+
+    if (candidateIndices.length === 0) {
+      return cleanBody;
+    }
+
+    const insertedIndices = new Set();
+    
+    // Placement 1: After approximately 40% of content
+    const fortyPercentIndex = Math.floor(candidateIndices.length * 0.4);
+    const firstAdIndex = candidateIndices[fortyPercentIndex];
+    insertedIndices.add(firstAdIndex);
+
+    // Placement 2: Before the conclusion section (defined by the last H2/H3 header)
+    let lastHeaderIndex = -1;
+    for (let i = cleanBody.length - 1; i >= 0; i--) {
+      const block = cleanBody[i];
+      if (block._type === 'block' && (block.style === 'h2' || block.style === 'h3')) {
+        lastHeaderIndex = i;
+        break;
+      }
+    }
+
+    let secondAdIndex = -1;
+    if (lastHeaderIndex !== -1) {
+      // Find the last candidate paragraph before the last header
+      for (let j = candidateIndices.length - 1; j >= 0; j--) {
+        const idx = candidateIndices[j];
+        if (idx < lastHeaderIndex) {
+          secondAdIndex = idx;
+          break;
+        }
+      }
+    }
+
+    // Fallback: if we didn't find a valid conclusion header position or if it overlaps,
+    // and we have enough candidates (at least 4), use the last candidate.
+    if (secondAdIndex === -1 || secondAdIndex === firstAdIndex) {
+      if (candidateIndices.length >= 4) {
+        secondAdIndex = candidateIndices[candidateIndices.length - 1];
+      }
+    }
+
+    if (secondAdIndex !== -1 && secondAdIndex !== firstAdIndex) {
+      insertedIndices.add(secondAdIndex);
+    }
+
+    // Construct the final body with injected sponsored blocks
+    const result = [];
+    for (let i = 0; i < cleanBody.length; i++) {
+      result.push(cleanBody[i]);
+      if (insertedIndices.has(i)) {
+        result.push({
+          _type: 'sponsoredRecommendation',
+          _key: `sponsored-rec-block-${i}`
+        });
+      }
+    }
+
+    return result;
   }, [cleanBody]);
 
   // Extract headings for Table of Contents
