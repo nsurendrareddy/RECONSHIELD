@@ -5,6 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
+import AdBlock from '@/components/ads/AdBlock'
+import useMonetagOnClick from '@/hooks/useMonetagOnClick'
 
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
@@ -91,6 +93,8 @@ const ptComponents = {
 }
 
 export default function BlogPostClient({ post, recentPosts, categories, relatedPosts }) {
+  useMonetagOnClick();
+
   // Filter out any block containing the unpublished/dead BitUnlocker link
   const cleanBody = post.body?.filter(block => {
     if (block.markDefs) {
@@ -105,6 +109,105 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
   const enrichedBody = useMemo(() => {
     return cleanBody || [];
   }, [cleanBody]);
+
+  const chunks = useMemo(() => {
+    if (!enrichedBody || enrichedBody.length === 0) return { body: [], insertAfterP2: -1, insertAfterMid: -1, insertBeforeConclusion: -1 };
+    
+    const paragraphIndices = [];
+    enrichedBody.forEach((block, idx) => {
+      if (block._type === 'block' && (!block.style || block.style === 'normal') && !block.listItem) {
+        paragraphIndices.push(idx);
+      }
+    });
+
+    const totalParagraphs = paragraphIndices.length;
+    let insertAfterP2 = -1;
+    let insertAfterMid = -1;
+    let insertBeforeConclusion = -1;
+
+    if (totalParagraphs >= 3) {
+      insertAfterP2 = paragraphIndices[1];
+    }
+
+    if (totalParagraphs >= 5) {
+      const midIdx = Math.floor(totalParagraphs * 0.45);
+      if (paragraphIndices[midIdx] !== insertAfterP2) {
+        insertAfterMid = paragraphIndices[midIdx];
+      }
+    }
+
+    let conclusionIdx = -1;
+    for (let i = enrichedBody.length - 1; i >= 0; i--) {
+      const block = enrichedBody[i];
+      if (block._type === 'block' && block.style === 'h2') {
+        const text = block.children?.map(c => c.text).join('').toLowerCase() || '';
+        if (
+          text.includes('conclusion') || 
+          text.includes('summary') || 
+          text.includes('hardening') || 
+          text.includes('mitigation') || 
+          text.includes('defense')
+        ) {
+          conclusionIdx = i;
+          break;
+        }
+      }
+    }
+
+    if (conclusionIdx !== -1) {
+      insertBeforeConclusion = conclusionIdx - 1;
+    } else if (totalParagraphs >= 4) {
+      insertBeforeConclusion = paragraphIndices[totalParagraphs - 2];
+    }
+
+    return {
+      body: enrichedBody,
+      insertAfterP2,
+      insertAfterMid,
+      insertBeforeConclusion
+    };
+  }, [enrichedBody]);
+
+  const renderBodyWithAds = () => {
+    const { body, insertAfterP2, insertAfterMid, insertBeforeConclusion } = chunks;
+    if (!body || body.length === 0) return null;
+
+    const renderedElements = [];
+    let currentChunk = [];
+
+    const flushChunk = (key) => {
+      if (currentChunk.length > 0) {
+        renderedElements.push(
+          <PortableText key={key} value={currentChunk} components={ptComponents} />
+        );
+        currentChunk = [];
+      }
+    };
+
+    body.forEach((block, idx) => {
+      currentChunk.push(block);
+
+      if (idx === insertAfterP2) {
+        flushChunk(`chunk-p2-${idx}`);
+        renderedElements.push(
+          <AdBlock key={`ad-p2`} type="in-article" slot="8827461902" className="my-8" />
+        );
+      } else if (idx === insertAfterMid) {
+        flushChunk(`chunk-mid-${idx}`);
+        renderedElements.push(
+          <AdBlock key={`ad-mid`} type="in-article" slot="9938472019" className="my-8" />
+        );
+      } else if (idx === insertBeforeConclusion) {
+        flushChunk(`chunk-conc-${idx}`);
+        renderedElements.push(
+          <AdBlock key={`ad-conc`} type="in-article" slot="1122334455" className="my-8" />
+        );
+      }
+    });
+
+    flushChunk('chunk-final');
+    return renderedElements;
+  };
 
   // Extract headings for Table of Contents
   const headings = useMemo(() => {
@@ -324,7 +427,7 @@ FileETag None`,
           {/* Article Body */}
           <div className="flex-1 min-w-0">
             <div className="prose prose-invert max-w-none">
-              <PortableText value={enrichedBody || []} components={ptComponents} />
+              {renderBodyWithAds()}
             </div>
 
             {/* Analyst Commentary & Configuration Blueprint Section */}
@@ -412,6 +515,61 @@ FileETag None`,
                   #{(tag.title || tag).toUpperCase()}
                 </span>
               ))}
+            </div>
+
+            {/* Pre-comments Ad Block */}
+            <div className="mt-12">
+              <AdBlock type="comments" slot="6677889900" />
+            </div>
+
+            {/* Mock Comments Section */}
+            <div className="mt-12 pt-10 border-t border-[#1a2332] space-y-8">
+              <h3 className="text-[14px] font-mono font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <MessageSquare className="w-4 h-4 text-[#00ff88]" /> // AUDIT BRIEFING DISCUSSION (2 COMMENTS)
+              </h3>
+              
+              <div className="space-y-6">
+                {/* Comment 1 */}
+                <div className="p-5 rounded-xl bg-surface-900/40 border border-white/5 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] text-[#00ff88] font-bold">agent_x9 // Verified Analyst</span>
+                    <span className="font-mono text-[9px] text-gray-500">2 HOURS AGO</span>
+                  </div>
+                  <p className="text-xs text-gray-400 leading-relaxed font-sans">
+                    Great breakdown of the passive infrastructure vectors. We recently audited our external DNS zones and found multiple dangling staging environments. Implementing wildcard certificates reduced our CT log leaks significantly.
+                  </p>
+                </div>
+
+                {/* Comment 2 */}
+                <div className="p-5 rounded-xl bg-surface-900/40 border border-white/5 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] text-cyan-400 font-bold">sec_analyst_01</span>
+                    <span className="font-mono text-[9px] text-gray-500">5 HOURS AGO</span>
+                  </div>
+                  <p className="text-xs text-gray-400 leading-relaxed font-sans">
+                    Is there any automated tooling you recommend for daily crt.sh scraping? Manually checking CT logs is becoming unsustainable for our domain portfolio.
+                  </p>
+                </div>
+              </div>
+
+              {/* Comment Input Box */}
+              <div className="bg-[#0d1117] border border-[#1a2332] p-5 rounded-xl space-y-4">
+                <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">// POST RESPONSE BRIEFING</div>
+                <textarea
+                  placeholder="Enter secure message..."
+                  className="w-full h-24 bg-surface-950 border border-white/10 rounded-lg p-3 text-xs font-mono text-white focus:outline-none focus:border-[#00ff88]/50 placeholder:text-gray-600 resize-none"
+                  readOnly
+                />
+                <div className="flex justify-between items-center">
+                  <span className="text-[8px] font-mono text-gray-600 uppercase tracking-wider">* Encrypted transmission via Secure Socket Layer</span>
+                  <button 
+                    onClick={() => alert("Comments are locked for guest users. Please authenticate via security portal.")}
+                    className="px-4 py-2 bg-surface-900 hover:bg-[#00ff8811] border border-white/10 hover:border-[#00ff88]/30 rounded text-[10px] font-mono text-gray-400 hover:text-[#00ff88] uppercase tracking-wider transition-all"
+                  >
+                    SUBMIT BRIEFING
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -516,6 +674,11 @@ FileETag None`,
                   </div>
                 </Link>
               </div>
+
+              {/* Desktop Sticky Sidebar Ad */}
+              <div className="hidden lg:block pt-4">
+                <AdBlock type="sidebar" slot="3344556677" />
+              </div>
             </div>
           </aside>
         </div>
@@ -527,7 +690,54 @@ FileETag None`,
             <div className="h-[1px] flex-1 bg-[#1a2332]" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {relatedPosts.map((p) => (
+            {relatedPosts.slice(0, 2).map((p) => (
+              <Link href={`/blog/${p.slug}`} key={p._id} className="group flex flex-col bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8833] transition-all duration-300">
+                <div className="relative aspect-square w-full overflow-hidden">
+                  {p.mainImage && (
+                    <Image 
+                      src={urlFor(p.mainImage).width(361).height(361).fit('crop').auto('format').url()} 
+                      alt={p.title}
+                      width={361}
+                      height={361}
+                      sizes="(max-width: 768px) 100vw, 361px"
+                      quality={70}
+                      className="object-cover w-full h-auto group-hover:scale-105 transition-transform duration-700"
+                    />
+                  )}
+                </div>
+                <div className="p-6 flex flex-col flex-1">
+                  <span className="font-mono text-[9px] tracking-[2px] uppercase text-[#00ff88] mb-3">
+                    {p.categories?.[0]?.title || 'OSINT'}
+                  </span>
+                  <h3 className="text-[13px] font-semibold mb-3 leading-tight group-hover:text-[#00ff88] transition-colors">
+                    {p.title}
+                  </h3>
+                  <p className="text-[#94a3b8] text-[11px] leading-relaxed line-clamp-2 mb-6">
+                    {p.excerpt}
+                  </p>
+                  <div className="mt-auto flex items-center justify-between pt-4 border-t border-[#1a2332]">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[#1a2332] flex items-center justify-center font-mono text-[10px] text-[#00ff88]">
+                        {getInitials(p.author?.name)}
+                      </div>
+                      <span className="font-mono text-[9px] tracking-[2px] uppercase text-gray-300">
+                        {p.author?.name || 'analysis'}
+                      </span>
+                    </div>
+                    <span className="font-mono text-[9px] tracking-[2px] uppercase text-gray-500">
+                      {formatDate(p.publishedAt)}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+
+            {/* Native Ad Card between Related Posts */}
+            <div className="group flex flex-col bg-[#0d1117]/40 border border-dashed border-[#1a2332] p-6 justify-center items-center rounded-2xl min-h-[350px]">
+              <AdBlock type="related-articles" slot="7736482910" className="h-full w-full border-0 bg-transparent" />
+            </div>
+
+            {relatedPosts.slice(2).map((p) => (
               <Link href={`/blog/${p.slug}`} key={p._id} className="group flex flex-col bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8833] transition-all duration-300">
                 <div className="relative aspect-square w-full overflow-hidden">
                   {p.mainImage && (

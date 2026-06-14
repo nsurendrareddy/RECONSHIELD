@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
 const LazyAdSense = dynamic(() => import("@/components/ads/LazyAdSense"), { ssr: false });
+const MobileStickyAd = dynamic(() => import("@/components/ads/MobileStickyAd"), { ssr: false });
 
 export default function Layout({ children }) {
   const pathname = usePathname()
@@ -307,6 +308,7 @@ export default function Layout({ children }) {
       </footer>
       <CookieBanner />
       <LazyAdSense />
+      <MobileStickyAd />
     </div>
   )
 }

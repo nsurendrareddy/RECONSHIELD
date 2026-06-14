@@ -15,6 +15,7 @@ import {
   DynamicTopActiveThreats,
   DynamicHeroSocVisual
 } from '@/components/DynamicWidgets';
+import AdBlock from '@/components/ads/AdBlock';
 
 export const metadata = generateBaseMetadata({
   title: "ReconShield | Cybersecurity Research & Threat Intelligence Publication",
@@ -276,6 +277,13 @@ export default async function Page() {
                 </div>
               </Link>
             </div>
+          </div>
+        </section>
+
+        {/* ================= HOMEPAGE BILLBOARD SPONSOR AD ================= */}
+        <section className="py-6 bg-[#05080f] border-b border-white/5">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <AdBlock type="banner-home" slot="9988776655" />
           </div>
         </section>
 
