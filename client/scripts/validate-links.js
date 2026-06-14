@@ -112,7 +112,7 @@ async function run() {
 
     // 2. Fetch all URLs from sub-sitemaps
     for (const subSitemapUrl of subSitemaps) {
-      const localSubSitemapUrl = subSitemapUrl.replace('https://rreconshield.in', BASE_URL).replace('https://reconshield.in', BASE_URL);
+      const localSubSitemapUrl = subSitemapUrl.replace('https://reconshield.in', BASE_URL);
       console.log(`Processing sub-sitemap: ${localSubSitemapUrl}`);
       try {
         const subSitemapRes = await fetchUrl(localSubSitemapUrl);
@@ -135,7 +135,7 @@ async function run() {
     const sitemapUrlList = Array.from(sitemapUrls);
     for (let i = 0; i < sitemapUrlList.length; i++) {
       const externalUrl = sitemapUrlList[i];
-      const localUrl = externalUrl.replace('https://rreconshield.in', BASE_URL).replace('https://reconshield.in', BASE_URL);
+      const localUrl = externalUrl.replace('https://reconshield.in', BASE_URL);
       const pathname = new URL(localUrl).pathname;
       
       if (IGNORED_PATHS.some(ignored => pathname.startsWith(ignored))) {
