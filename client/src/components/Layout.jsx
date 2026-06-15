@@ -1,15 +1,21 @@
 'use client'
+
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Shield, History, Terminal, Sun, Moon, Activity, AlertTriangle, Lock, Globe, Menu, X, ExternalLink } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { 
+  Shield, Terminal, Activity, AlertTriangle, Lock, Globe, Menu, X, 
+  ExternalLink, ChevronDown, BookOpen, FileText, Code, Users, Award, 
+  ShieldAlert, Cpu, Database, Network, Server, ArrowRight, ArrowUpRight 
+} from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
+import { motion, AnimatePresence } from 'framer-motion'
 import useMultiTagAds from '@/hooks/useMultiTagAds'
 
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
-const LazyAdSense = dynamic(() => import("@/components/ads/LazyAdSense"), { ssr: false });
-const MobileStickyAd = dynamic(() => import("@/components/ads/MobileStickyAd"), { ssr: false });
+const LazyAdSense = dynamic(() => import("@/components/ads/LazyAdSense"), { ssr: false })
+const MobileStickyAd = dynamic(() => import("@/components/ads/MobileStickyAd"), { ssr: false })
 
 export default function Layout({ children }) {
   const pathname = usePathname()
@@ -20,6 +26,9 @@ export default function Layout({ children }) {
   const [theme, setTheme] = useState('dark')
   const [showBanner, setShowBanner] = useState(true)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [activeMenu, setActiveMenu] = useState(null)
+  
+  const timeoutRef = useRef(null)
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -36,29 +45,139 @@ export default function Layout({ children }) {
     localStorage.setItem('reconshield-theme', 'dark')
   }, [])
 
-  const navItems = [
-    { path: '/', label: 'Home' },
-    { path: '/scanner', label: 'Scanner', isNew: true },
-    { path: '/blog', label: 'Intel Feed' },
-    { path: '/tools', label: 'Security Tools' },
-    { path: '/about', label: 'About' },
-    { path: '/contact', label: 'Contact' },
-  ]
+  const handleMouseEnter = (menuName) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    setActiveMenu(menuName)
+  }
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setActiveMenu(null)
+    }, 200)
+  }
 
   const isBlogPage = pathname?.startsWith('/blog')
 
+  // Dropdown categories and structures
+  const scannersCategories = [
+    {
+      title: 'Domain Security',
+      items: [
+        { label: 'SSL Checker', path: '/tools/ssl-checker' },
+        { label: 'WHOIS Lookup', path: '/tools/whois' },
+        { label: 'DNS Lookup', path: '/tools/dns-lookup' },
+        { label: 'Header Analyzer', path: '/tools/http-headers' }
+      ]
+    },
+    {
+      title: 'Network Intelligence',
+      items: [
+        { label: 'Port Scanner', path: '/tools/port-scanner' },
+        { label: 'IP Lookup', path: '/tools/ip-lookup' },
+        { label: 'ASN Lookup', path: '/asn' }
+      ]
+    },
+    {
+      title: 'Web Security',
+      items: [
+        { label: 'Technology Detector', path: '/tools/tech-detector' },
+        { label: 'Security Headers', path: '/tools/http-headers' },
+        { label: 'Website Fingerprinting', path: '/tools/tech-detector' }
+      ]
+    },
+    {
+      title: 'Vulnerability Intel',
+      items: [
+        { label: 'CVE Search', path: '/vulnerability' },
+        { label: 'Vulnerability DB', path: '/vulnerability' },
+        { label: 'Threat Intelligence', path: '/blog' }
+      ]
+    }
+  ]
+
+  const toolsCategories = [
+    {
+      category: 'Reconnaissance',
+      items: [
+        { label: 'Subdomain Finder', path: '/tools/subdomain-finder', desc: 'Find active subdomains list', count: '12.4K', icon: Globe },
+        { label: 'WHOIS Lookup', path: '/tools/whois', desc: 'Domain owner registration info', count: '9.8K', icon: FileText },
+        { label: 'DNS Lookup', path: '/tools/dns-lookup', desc: 'Resolve full target name records', count: '15.1K', icon: Server }
+      ]
+    },
+    {
+      category: 'Intelligence',
+      items: [
+        { label: 'IP Lookup', path: '/tools/ip-lookup', desc: 'Assess IP reputation & location', count: '22.3K', icon: Activity },
+        { label: 'ASN Directory', path: '/asn', desc: 'Map autonomous routes & routing', count: '7.6K', icon: Network }
+      ]
+    },
+    {
+      category: 'Network Analysis',
+      items: [
+        { label: 'Port Scanner', path: '/tools/port-scanner', desc: 'List exposed system server ports', count: '34.2K', icon: Terminal }
+      ]
+    },
+    {
+      category: 'Web Security',
+      items: [
+        { label: 'Technology Detector', path: '/tools/tech-detector', desc: 'Web stack and component audit', count: '18.5K', icon: Cpu },
+        { label: 'Header Analyzer', path: '/tools/http-headers', desc: 'Check CSP and security headers', count: '11.2K', icon: Shield },
+        { label: 'SSL Checker', path: '/tools/ssl-checker', desc: 'Validate TLS handshake strength', count: '20.4K', icon: Lock }
+      ]
+    },
+    {
+      category: 'AI Security',
+      items: [
+        { label: 'Vulnerability Database', path: '/vulnerability', desc: 'Search CVE intelligence directory', count: '14.7K', icon: ShieldAlert }
+      ]
+    },
+    {
+      category: 'Utilities',
+      items: [
+        { label: 'Email Security', path: '/tools/email-security', desc: 'Audit SPF, DKIM, DMARC config', count: '8.9K', icon: ExternalLink }
+      ]
+    }
+  ]
+
+  const platformItems = [
+    { label: 'Academic Labs', path: '/academic', desc: 'Cybersecurity learning resources', icon: BookOpen },
+    { label: 'Resources Library', path: '/resources', desc: 'Guides, checklists, reports', icon: FileText },
+    { label: 'Open Source Projects', path: '/opensource', desc: 'GitHub repositories', icon: Code },
+    { label: 'Cybersecurity Glossary', path: '/glossary', desc: 'Terms definitions resource', icon: FileText },
+    { label: 'Threat Reports', path: '/reports', desc: 'Quarterly OSINT threat reviews', icon: ShieldAlert },
+    { label: 'API Access (Future)', path: '/developers', desc: 'Developers threat intelligence endpoints', icon: Terminal },
+    { label: 'Community Resources', path: '/contact', desc: 'Security community forums', icon: Users },
+    { label: 'Research Papers', path: '/research', desc: 'Technical security research briefs', icon: Award },
+    { label: 'Security Learning Center', path: '/academic', desc: 'Vulnerability remediation tutorials', icon: BookOpen }
+  ]
+
+  const entityIntelItems = [
+    { label: 'Ports Directory', path: '/ports', desc: 'Index of standard service ports configuration' },
+    { label: 'ASN Directory', path: '/asn', desc: 'Catalog of registered network routing spaces' },
+    { label: 'IP Intelligence Hub', path: '/ip-intelligence', desc: 'Active IP ranges vulnerability telemetry' },
+    { label: 'SSL Analysis Hub', path: '/ssl', desc: 'TLS certifications index & vulnerability analysis' },
+    { label: 'DNS Records Hub', path: '/dns-analysis', desc: 'Central lookup trace records history' },
+    { label: 'Technology Detection Hub', path: '/technology', desc: 'Indexed list of detected frameworks online' },
+    { label: 'Vulnerability Database', path: '/vulnerability', desc: 'Active list of zero-day vulnerabilities & CVEs' },
+    { label: 'Subdomains Intelligence Hub', path: '/subdomains', desc: 'Public DNS subdomain record mappings' },
+    { label: 'Threat Actors (Future)', path: '/threat-actor', desc: 'Profiles of threat actor groups & TTPs' },
+    { label: 'Malware Families (Future)', path: '/threat-actor', desc: 'Analysis reports on emerging malware strains' },
+    { label: 'Exploit Intelligence (Future)', path: '/vulnerability', desc: 'Correlated exploit indices with remediation paths' }
+  ]
+
   return (
     <div className={`min-h-screen transition-colors duration-300 ${theme === 'dark' ? 'bg-surface-950 text-white' : 'bg-gray-50 text-gray-900'} ${!isBlogPage ? 'bg-grid' : ''}`}>
+      
       {/* Ethical Disclaimer Banner */}
       {showBanner && !isBlogPage && (
-        <div className="bg-amber-500/10 border-b border-amber-500/20 py-2 relative overflow-hidden group">
+        <div className="bg-amber-500/10 border-b border-amber-500/20 py-2 relative overflow-hidden group z-50">
           <div className="max-w-[1440px] mx-auto px-4 flex items-center justify-center gap-4 text-[11px] md:text-xs font-mono text-amber-500 font-medium">
             <div className="flex items-center gap-1.5 shrink-0">
               <AlertTriangle className="w-3.5 h-3.5 animate-pulse" />
               <span className="uppercase tracking-wider">Legal Disclaimer:</span>
             </div>
             <p className="opacity-80">This platform is for authorized security research and educational purposes ONLY. Scanning assets without explicit permission is illegal.</p>
-            <button onClick={() => setShowBanner(false)} aria-label="Dismiss notification" className="ml-auto p-1 hover:bg-amber-500/10 rounded transition-colors">
+            <button onClick={() => setShowBanner(false)} aria-label="Dismiss notification" className="ml-auto p-1 hover:bg-amber-500/10 rounded transition-colors cursor-pointer">
               <X className="w-3.5 h-3.5" />
             </button>
           </div>
@@ -84,7 +203,7 @@ export default function Layout({ children }) {
           <div className="flex items-center justify-between h-16">
 
             {/* Logo */}
-            <Link href="/" aria-label="ReconShield home" className="flex items-center gap-3 group">
+            <Link href="/" aria-label="ReconShield home" className="flex items-center gap-3 group shrink-0">
               <div className="relative">
                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${theme === 'dark'
                     ? 'bg-matrix-400/10 border border-matrix-400/20 group-hover:border-matrix-400/40'
@@ -96,114 +215,355 @@ export default function Layout({ children }) {
               </div>
               <div className="hidden xs:block">
                 <span className="font-display text-lg font-bold tracking-wider">
-                  <span className={`${theme === 'dark' ? 'text-glow-green text-matrix-400' : 'text-matrix-600'}`}>analysis</span>
-                  <span className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>SHIELD</span>
+                  <span className={`${theme === 'dark' ? 'text-glow-green text-matrix-400' : 'text-matrix-600'}`}>Recon</span>
+                  <span className={theme === 'dark' ? 'text-white' : 'text-gray-900'}>Shield</span>
                 </span>
                 <div className="flex items-center gap-1.5 -mt-0.5">
                   <Activity className={`w-2.5 h-2.5 ${theme === 'dark' ? 'text-matrix-400/60' : 'text-matrix-600/60'}`} />
-                  <p className={`text-[9px] tracking-[0.25em] uppercase font-mono ${theme === 'dark' ? 'text-matrix-400/60' : 'text-matrix-600/60'}`}>Cyber Intelligence</p>
+                  <p className={`text-[9px] tracking-[0.25em] uppercase font-mono ${theme === 'dark' ? 'text-matrix-400/60' : 'text-matrix-600/60'}`}>Threat Intelligence</p>
                 </div>
               </div>
             </Link>
 
-            {/* Nav - Desktop + Controls */}
-            <div className="flex items-center gap-2 sm:gap-6">
-              <nav className="hidden md:flex items-center gap-1">
-                {navItems.map(({ path, label, icon: Icon, isNew }) => (
-                  <Link
-                    key={path}
-                    href={path}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative ${pathname === path
-                        ? 'bg-matrix-400/10 text-matrix-400 border border-matrix-400/20'
-                        : 'text-gray-400 hover:text-matrix-400 hover:bg-white/[0.02]'
-                      }`}
-                  >
-                    {Icon && <Icon className="w-4 h-4" />}
-                    <span>{label}</span>
-                    {isNew && (
-                      <span className="ml-1 text-[9px] font-mono font-bold text-cyber-400 bg-cyber-500/10 border border-cyber-400/30 px-1.5 py-0.5 rounded leading-none animate-pulse shadow-[0_0_10px_rgba(0,229,255,0.2)]">
-                        NEW
-                      </span>
-                    )}
-                  </Link>
-                ))}
-              </nav>
-
-              {/* Mobile Menu Button */}
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden p-2 rounded-lg transition-all bg-matrix-400/10 text-matrix-400"
-                aria-label="Toggle Menu"
+            {/* Nav - Desktop Mega Menu Navigation */}
+            <div className="hidden md:flex items-center gap-1 xl:gap-2">
+              
+              {/* Menu 1: Scanners */}
+              <div 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('scanners')}
+                onMouseLeave={handleMouseLeave}
               >
-                {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-              </button>
+                <button className={`flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer ${activeMenu === 'scanners' ? 'bg-matrix-400/10 text-matrix-400' : 'text-gray-300 hover:text-matrix-400 hover:bg-white/[0.02]'}`}>
+                  Scanners <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'scanners' ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {activeMenu === 'scanners' && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      className="absolute left-1/2 -translate-x-[40%] mt-2 w-[720px] bg-surface-950/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden p-6 z-50 grid grid-cols-4 gap-6"
+                    >
+                      {scannersCategories.map((cat, i) => (
+                        <div key={i} className="space-y-3">
+                          <h4 className="font-mono text-[10px] text-gray-500 font-bold uppercase tracking-widest border-b border-white/5 pb-2">{cat.title}</h4>
+                          <ul className="space-y-1.5">
+                            {cat.items.map((item, idx) => (
+                              <li key={idx}>
+                                <Link href={item.path} className="text-[11px] text-gray-300 hover:text-matrix-400 block transition-colors py-0.5">
+                                  {item.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                      <div className="col-span-4 mt-2 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] font-mono">
+                        <span className="text-gray-500 uppercase">PASSIVE REAL-TIME DISCOVERY ENGINE</span>
+                        <Link href="/tools" className="text-matrix-400 hover:text-white transition-colors flex items-center gap-1 font-bold">
+                          Explore All Security Scanners <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Menu 2: Blog */}
+              <div 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('blog')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <button className={`flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer ${activeMenu === 'blog' ? 'bg-matrix-400/10 text-matrix-400' : 'text-gray-300 hover:text-matrix-400 hover:bg-white/[0.02]'}`}>
+                  Blog <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'blog' ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {activeMenu === 'blog' && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      className="absolute left-1/2 -translate-x-[30%] mt-2 w-[600px] bg-surface-950/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden p-6 z-50 grid grid-cols-12 gap-6"
+                    >
+                      <div className="col-span-6 space-y-3">
+                        <h4 className="font-mono text-[10px] text-gray-500 font-bold uppercase tracking-widest border-b border-white/5 pb-2">Content Categories</h4>
+                        <div className="grid grid-cols-2 gap-2 text-[11px] text-gray-300">
+                          <Link href="/blog" className="hover:text-matrix-400 transition-colors py-1 block">Latest Threats</Link>
+                          <Link href="/blog" className="hover:text-matrix-400 transition-colors py-1 block">Cybersecurity News</Link>
+                          <Link href="/blog" className="hover:text-matrix-400 transition-colors py-1 block">Vulnerability Research</Link>
+                          <Link href="/blog" className="hover:text-matrix-400 transition-colors py-1 block">AI Security</Link>
+                          <Link href="/blog" className="hover:text-matrix-400 transition-colors py-1 block">Threat Intelligence</Link>
+                          <Link href="/blog" className="hover:text-matrix-400 transition-colors py-1 block">Incident Response</Link>
+                          <Link href="/blog" className="hover:text-matrix-400 transition-colors py-1 block col-span-2">Bug Bounty Writeups</Link>
+                        </div>
+                      </div>
+                      
+                      <div className="col-span-6 bg-surface-900 border border-white/5 p-4 rounded-xl flex flex-col justify-between">
+                        <div>
+                          <span className="font-mono text-[8px] text-matrix-400 font-bold uppercase tracking-widest block mb-1">FEATURED ARTICLE</span>
+                          <h5 className="text-xs font-bold text-white uppercase font-display leading-snug">The Anatomy of Passive OSINT: Mapping Infrastructure Without Noise</h5>
+                          <p className="text-[10px] text-gray-400 leading-normal mt-1.5 font-sans">Learn how threat hunters map enterprise footprints using DNS and global RIR data.</p>
+                        </div>
+                        <Link href="/blog/anatomy-of-passive-osint" className="text-[9px] font-mono text-matrix-400 hover:text-white transition-colors uppercase tracking-wider font-bold mt-4 block">
+                          Read Briefing →
+                        </Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Menu 3: Tools */}
+              <div 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('tools')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <button className={`flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer ${activeMenu === 'tools' ? 'bg-matrix-400/10 text-matrix-400' : 'text-gray-300 hover:text-matrix-400 hover:bg-white/[0.02]'}`}>
+                  Tools <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'tools' ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {activeMenu === 'tools' && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      className="absolute left-1/2 -translate-x-[50%] mt-2 w-[880px] bg-surface-950/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden p-6 z-50 grid grid-cols-3 gap-6"
+                    >
+                      {toolsCategories.map((group, i) => (
+                        <div key={i} className="space-y-3">
+                          <h4 className="font-mono text-[10px] text-gray-500 font-bold uppercase tracking-widest border-b border-white/5 pb-2">{group.category}</h4>
+                          <div className="space-y-3">
+                            {group.items.map((tool, idx) => {
+                              const ToolIcon = tool.icon;
+                              return (
+                                <Link key={idx} href={tool.path} className="flex gap-3 hover:bg-white/[0.02] p-1.5 rounded-lg transition-colors group">
+                                  <div className="w-7 h-7 rounded bg-surface-900 border border-white/10 flex items-center justify-center shrink-0">
+                                    <ToolIcon className="w-3.5 h-3.5 text-matrix-400 group-hover:scale-105 transition-transform" />
+                                  </div>
+                                  <div>
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="text-[11px] font-bold text-white font-display group-hover:text-matrix-400 transition-colors uppercase leading-none">{tool.label}</span>
+                                      <span className="text-[8px] font-mono text-gray-500 font-bold shrink-0">{tool.count} SCANS</span>
+                                    </div>
+                                    <p className="text-[9px] text-gray-400 leading-tight mt-0.5 font-sans">{tool.desc}</p>
+                                  </div>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Menu 4: Platform */}
+              <div 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('platform')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <button className={`flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer ${activeMenu === 'platform' ? 'bg-matrix-400/10 text-matrix-400' : 'text-gray-300 hover:text-matrix-400 hover:bg-white/[0.02]'}`}>
+                  Platform <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'platform' ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {activeMenu === 'platform' && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      className="absolute left-1/2 -translate-x-[50%] mt-2 w-[760px] bg-surface-950/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden p-6 z-50"
+                    >
+                      <div className="grid grid-cols-3 gap-4">
+                        {platformItems.map((item, i) => {
+                          const ItemIcon = item.icon;
+                          return (
+                            <Link key={i} href={item.path} className="flex gap-3 hover:bg-white/[0.02] p-2.5 rounded-xl transition-colors group">
+                              <div className="w-8 h-8 rounded-lg bg-surface-900 border border-white/10 flex items-center justify-center shrink-0">
+                                <ItemIcon className="w-4 h-4 text-matrix-400 group-hover:scale-105 transition-transform" />
+                              </div>
+                              <div>
+                                <span className="text-xs font-bold text-white font-display uppercase tracking-wide group-hover:text-matrix-400 transition-colors block">{item.label}</span>
+                                <p className="text-[10px] text-gray-400 leading-tight mt-0.5 font-sans">{item.desc}</p>
+                              </div>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Menu 5: Entity Intel */}
+              <div 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('entityIntel')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <button className={`flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer ${activeMenu === 'entityIntel' ? 'bg-matrix-400/10 text-matrix-400' : 'text-gray-300 hover:text-matrix-400 hover:bg-white/[0.02]'}`}>
+                  Entity Intel <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'entityIntel' ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {activeMenu === 'entityIntel' && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      className="absolute left-1/2 -translate-x-[60%] mt-2 w-[720px] bg-surface-950/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden p-6 z-50"
+                    >
+                      <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                        {entityIntelItems.map((item, i) => (
+                          <Link key={i} href={item.path} className="p-2 hover:bg-white/[0.02] rounded-xl transition-all group flex flex-col">
+                            <span className="text-[11px] font-bold text-white font-mono uppercase tracking-wide group-hover:text-matrix-400 transition-colors flex items-center justify-between">
+                              {item.label}
+                              <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-matrix-400" />
+                            </span>
+                            <p className="text-[9px] text-gray-400 mt-0.5 leading-tight font-sans">{item.desc}</p>
+                          </Link>
+                        ))}
+                      </div>
+                      <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] font-mono">
+                        <span className="text-gray-500 uppercase">SEARCH ENGINE OPTIMIZED DIRECTORY STRUCTURE</span>
+                        <span className="text-matrix-400 font-bold">MONITORED SECURELY</span>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Menu 6: About */}
+              <div 
+                className="relative"
+                onMouseEnter={() => handleMouseEnter('about')}
+                onMouseLeave={handleMouseLeave}
+              >
+                <button className={`flex items-center gap-1 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer ${activeMenu === 'about' ? 'bg-matrix-400/10 text-matrix-400' : 'text-gray-300 hover:text-matrix-400 hover:bg-white/[0.02]'}`}>
+                  About <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'about' ? 'rotate-180' : ''}`} />
+                </button>
+                <AnimatePresence>
+                  {activeMenu === 'about' && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.98 }}
+                      transition={{ duration: 0.2, ease: 'easeOut' }}
+                      className="absolute right-0 mt-2 w-[240px] bg-surface-950/95 backdrop-blur-2xl border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden p-4 z-50 flex flex-col gap-2"
+                    >
+                      <Link href="/about-reconshield" className="p-2 hover:bg-white/[0.02] rounded-lg transition-colors font-display text-xs font-bold text-white uppercase tracking-wider block">About ReconShield</Link>
+                      <Link href="/about-reconshield" className="p-2 hover:bg-white/[0.02] rounded-lg transition-colors font-display text-xs font-bold text-white uppercase tracking-wider block">Mission Statement</Link>
+                      <Link href="/about-reconshield" className="p-2 hover:bg-white/[0.02] rounded-lg transition-colors font-display text-xs font-bold text-white uppercase tracking-wider block">Product Roadmap</Link>
+                      <Link href="/contact" className="p-2 hover:bg-white/[0.02] rounded-lg transition-colors font-display text-xs font-bold text-white uppercase tracking-wider block">Contact Support</Link>
+                      <Link href="/privacy" className="p-2 hover:bg-white/[0.02] rounded-lg transition-colors font-display text-xs font-bold text-white uppercase tracking-wider block border-t border-white/5 pt-3">Privacy Policy</Link>
+                      <Link href="/terms" className="p-2 hover:bg-white/[0.02] rounded-lg transition-colors font-display text-xs font-bold text-white uppercase tracking-wider block">Terms of Service</Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
             </div>
-            {/* END: flex items-center gap-2 sm:gap-6 */}
+
+            {/* Desktop Actions */}
+            <div className="hidden md:flex items-center gap-4">
+              <Link href="/scanner" className="px-4 py-2 bg-matrix-400 hover:bg-matrix-500 text-surface-950 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(0,255,156,0.15)] cursor-pointer">
+                Start Scanning
+              </Link>
+              <Link href="/ip-intelligence" className="px-4 py-2 border border-white/10 hover:border-white/20 text-white hover:bg-white/[0.02] text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer">
+                Explore Intelligence
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 rounded-lg transition-all bg-matrix-400/10 text-matrix-400 cursor-pointer"
+              aria-label="Toggle Menu"
+            >
+              {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
 
           </div>
-          {/* END: flex items-center justify-between h-16 */}
         </div>
-        {/* END: max-w-[1440px] */}
       </header>
 
       {/* Mobile Navigation Drawer */}
-      {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-[100] bg-surface-950/95 backdrop-blur-2xl transition-transform duration-300 ease-in-out">
-          <div className="flex flex-col h-[100dvh] w-full">
-            {/* Top Section */}
-            <div className="flex items-center justify-between px-6 h-16 border-b border-white/10 shrink-0">
-              <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 group">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-matrix-400/10 border border-matrix-400/20">
-                  <Shield className="w-5 h-5 text-matrix-400" />
-                </div>
-                <div>
-                  <span className="font-display text-lg font-bold tracking-wider">
-                    <span className="text-matrix-400">analysis</span><span className="text-white">SHIELD</span>
-                  </span>
-                </div>
-              </Link>
-              <button onClick={() => setIsMenuOpen(false)} className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-400 hover:text-white transition-colors" aria-label="Close menu">
-                <X className="w-6 h-6" />
-              </button>
-            </div>
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, x: '100%' }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+            className="md:hidden fixed inset-0 z-[100] bg-surface-950/98 backdrop-blur-2xl"
+          >
+            <div className="flex flex-col h-[100dvh] w-full">
+              {/* Top Section */}
+              <div className="flex items-center justify-between px-6 h-16 border-b border-white/10 shrink-0">
+                <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center gap-3 group">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-matrix-400/10 border border-matrix-400/20">
+                    <Shield className="w-5 h-5 text-matrix-400" />
+                  </div>
+                  <div>
+                    <span className="font-display text-lg font-bold tracking-wider">
+                      <span className="text-matrix-400">Recon</span><span className="text-white">Shield</span>
+                    </span>
+                  </div>
+                </Link>
+                <button onClick={() => setIsMenuOpen(false)} className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-gray-400 hover:text-white transition-colors cursor-pointer" aria-label="Close menu">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
 
-            {/* Main Navigation */}
-            <div className="flex-1 overflow-y-auto py-8 px-6">
-              <nav className="flex flex-col gap-6">
-                {navItems.map(({ path, label, icon: Icon, isNew }) => (
-                  <Link
-                    key={path}
-                    href={path}
-                    onClick={() => setIsMenuOpen(false)}
-                    className={`flex items-center gap-4 py-2 text-xl font-medium transition-colors min-h-[44px] ${pathname === path ? 'text-matrix-400' : 'text-gray-300 hover:text-white'}`}
-                  >
-                    {Icon ? <Icon className="w-6 h-6" /> : <div className="w-6 h-6" />}
-                    <span>{label}</span>
-                    {isNew && (
-                      <span className="ml-1 text-xs font-mono font-bold text-cyber-400 bg-cyber-500/10 border border-cyber-400/30 px-2 py-0.5 rounded leading-none animate-pulse shadow-[0_0_10px_rgba(0,229,255,0.2)]">
-                        NEW
-                      </span>
-                    )}
+              {/* Main Navigation */}
+              <div className="flex-1 overflow-y-auto py-8 px-6 space-y-6">
+                <nav className="flex flex-col gap-4">
+                  <Link href="/scanner" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-between py-2 text-lg font-display font-bold uppercase tracking-wider text-matrix-400">
+                    <span>Run Security Scan</span>
+                    <ArrowRight className="w-4 h-4" />
                   </Link>
-                ))}
-              </nav>
-            </div>
+                  <Link href="/tools" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-between py-2 text-lg font-display font-bold uppercase tracking-wider text-white">
+                    <span>Tools Hub</span>
+                  </Link>
+                  <Link href="/blog" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-between py-2 text-lg font-display font-bold uppercase tracking-wider text-white">
+                    <span>Threat Intel Feed</span>
+                  </Link>
+                  <Link href="/ip-intelligence" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-between py-2 text-lg font-display font-bold uppercase tracking-wider text-white">
+                    <span>IP Intelligence Hub</span>
+                  </Link>
+                  <Link href="/academic" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-between py-2 text-lg font-display font-bold uppercase tracking-wider text-white">
+                    <span>Academic Labs</span>
+                  </Link>
+                  <Link href="/about-reconshield" onClick={() => setIsMenuOpen(false)} className="flex items-center justify-between py-2 text-lg font-display font-bold uppercase tracking-wider text-white">
+                    <span>About Platform</span>
+                  </Link>
+                </nav>
+              </div>
 
-            {/* Bottom Section */}
-            <div className="p-6 border-t border-white/10 bg-surface-900/50 shrink-0">
-              <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm text-gray-400 font-medium">
-                <Link href="/disclaimer" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Disclaimer</Link>
-                <Link href="/privacy" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Privacy Policy</Link>
-                <Link href="/editorial-policy" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Editorial Policy</Link>
-                <Link href="/terms" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Authorized Use</Link>
+              {/* Bottom Section */}
+              <div className="p-6 border-t border-white/10 bg-surface-900/50 shrink-0">
+                <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm text-gray-400 font-medium">
+                  <Link href="/disclaimer" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Disclaimer</Link>
+                  <Link href="/privacy" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Privacy Policy</Link>
+                  <Link href="/editorial-policy" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Editorial Policy</Link>
+                  <Link href="/terms" onClick={() => setIsMenuOpen(false)} className="hover:text-white transition-colors min-h-[44px] flex items-center">Terms of Service</Link>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Main Content */}
-      <main className={`${isBlogPage ? '' : 'max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8'} min-h-[80vh] relative`}>
+      <main className={`${isBlogPage || pathname === '/' ? '' : 'max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8'} min-h-[80vh] relative`}>
         {children}
       </main>
 
