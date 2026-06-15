@@ -371,7 +371,7 @@ export default async function SslReportPage({ params }) {
                 <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">Related Compliance Reports</h3>
                 
                 <div className="space-y-3">
-                  <Link href={`/reports/subdomains/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/reports/subdomains/${domain}`} rel="nofollow" className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:bg-orange-500/20">
                       <Activity className="w-4 h-4" />
                     </div>
@@ -381,7 +381,7 @@ export default async function SslReportPage({ params }) {
                     </div>
                   </Link>
 
-                  <Link href={`/reports/ports/${domain}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/reports/ports/${domain}`} rel="nofollow" className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover:bg-purple-500/20">
                       <Server className="w-4 h-4" />
                     </div>

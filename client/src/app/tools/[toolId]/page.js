@@ -349,7 +349,7 @@ export function ToolPageContent({ toolId }) {
               if (toolId === 'subdomain-finder') reportPath = `/reports/subdomains/${dom}`;
               if (toolId === 'port-scanner') reportPath = `/reports/ports/${dom}`;
               return (
-                <Link key={dom} href={reportPath} className="hover:text-white underline decoration-white/10">
+                <Link key={dom} href={reportPath} rel="nofollow" className="hover:text-white underline decoration-white/10">
                   {dom}
                 </Link>
               );

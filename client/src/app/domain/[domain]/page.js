@@ -311,7 +311,7 @@ export default async function DomainIntelligencePage({ params }) {
 
                 <h3 className="text-xl font-bold mt-8 mb-3">Auditing Nameserver Delegations</h3>
                 <p>
-                  Nameservers designate which DNS hosts control zone records for the domain. Evaluating nameserver fields verifies traffic routing paths and ensures no unauthorized DNS changes have occurred. For complete analysis, map active DNS configurations using our <Link href={`/dns/${intel.domain}`} className="text-[#00ff88] hover:underline">DNS records analyzer</Link>.
+                  Nameservers designate which DNS hosts control zone records for the domain. Evaluating nameserver fields verifies traffic routing paths and ensures no unauthorized DNS changes have occurred. For complete analysis, map active DNS configurations using our <Link href={`/dns-records/${intel.domain}`} className="text-[#00ff88] hover:underline">DNS records analyzer</Link>.
                 </p>
               </section>
 

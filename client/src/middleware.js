@@ -52,6 +52,18 @@ export function middleware(request) {
     const domain = decodeURIComponent(pathname.replace('/dns/', '').split('/')[0]).toLowerCase();
     return NextResponse.redirect(new URL(`/dns-records/${domain}`, request.url), 301);
   }
+
+  // Redirect /tools/whois/[domain] to /domain/[domain]
+  if (pathname.startsWith('/tools/whois/')) {
+    const remaining = pathname.replace('/tools/whois/', '').split('/')[0];
+    if (remaining) {
+      const domain = decodeURIComponent(remaining).toLowerCase();
+      const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
+      if (domainRegex.test(domain)) {
+        return NextResponse.redirect(new URL(`/domain/${domain}`, request.url), 301);
+      }
+    }
+  }
   
   // 1. IP Validation & Crawl Budget Control
   if (pathname.startsWith('/ip/')) {

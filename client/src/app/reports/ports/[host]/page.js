@@ -327,7 +327,7 @@ export default async function PortReportPage({ params }) {
                 <div className="space-y-3">
                   {!/^(\d{1,3}\.){3}\d{1,3}$/.test(host) ? (
                     <>
-                      <Link href={`/reports/ssl/${host}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                      <Link href={`/reports/ssl/${host}`} rel="nofollow" className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                         <div className="w-8 h-8 rounded-md bg-emerald-500/10 flex items-center justify-center text-[#00ff88] group-hover:bg-[#00ff88]/20">
                           <ShieldAlert className="w-4 h-4" />
                         </div>
@@ -337,7 +337,7 @@ export default async function PortReportPage({ params }) {
                         </div>
                       </Link>
 
-                      <Link href={`/reports/subdomains/${host}`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                      <Link href={`/reports/subdomains/${host}`} rel="nofollow" className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                         <div className="w-8 h-8 rounded-md bg-orange-500/10 flex items-center justify-center text-orange-400 group-hover:bg-orange-500/20">
                           <Activity className="w-4 h-4" />
                         </div>

@@ -157,6 +157,10 @@ function isUrlIndexableAndValid(urlStr) {
       const domain = path.replace('/tools/whois/', '');
       return KNOWN_DOMAINS.includes(domain.toLowerCase());
     }
+    if (path.startsWith('/domain/')) {
+      const domain = path.replace('/domain/', '');
+      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+    }
     if (path.startsWith('/technology/')) {
       const slug = path.replace('/technology/', '');
       return ['react', 'nextjs', 'wordpress', 'shopify', 'cloudflare', 'nginx', 'apache'].includes(slug.toLowerCase());
@@ -366,7 +370,7 @@ export async function GET(request, { params }) {
             if (entityType === 'dns') pathPrefix = 'dns-records';
             if (entityType === 'malicious-ips') pathPrefix = 'ip';
             if (entityType === 'cve') pathPrefix = 'cve';
-            if (entityType === 'whois') pathPrefix = 'tools/whois';
+            if (entityType === 'whois') pathPrefix = 'domain';
             if (entityType === 'dns-types') pathPrefix = 'dns-records/types';
             if (entityType === 'ssl-errors') pathPrefix = 'ssl/errors';
             if (entityType === 'email-auths') pathPrefix = 'email-auth';
