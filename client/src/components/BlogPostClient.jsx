@@ -1,7 +1,6 @@
 'use client'
 import React, { useMemo } from 'react'
 import { ArrowLeft, Clock, Calendar, Tag, User, Globe, Shield, CheckCircle2, List, Settings, MessageSquare, ShieldAlert } from 'lucide-react'
-import AdBlock from '@/components/ads/AdBlock'
 import InArticleAd from '@/components/ads/InArticleAd'
 import MultiplexAd from '@/components/ads/MultiplexAd'
 import Link from 'next/link'
