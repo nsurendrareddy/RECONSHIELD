@@ -1,6 +1,9 @@
 'use client'
 import React, { useMemo } from 'react'
 import { ArrowLeft, Clock, Calendar, Tag, User, Globe, Shield, CheckCircle2, List, Settings, MessageSquare, ShieldAlert } from 'lucide-react'
+import AdBlock from '@/components/ads/AdBlock'
+import InArticleAd from '@/components/ads/InArticleAd'
+import MultiplexAd from '@/components/ads/MultiplexAd'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
@@ -165,9 +168,38 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
   }, [enrichedBody]);
 
   const renderBody = () => {
-    const { body } = chunks;
+    const { body, insertAfterP2, insertAfterMid } = chunks;
     if (!body || body.length === 0) return null;
-    return <PortableText value={body} components={ptComponents} />;
+
+    // Split body into up to 3 segments separated by ad insertion points
+    const segments = [];
+    let prev = 0;
+
+    // Collect insertion indices (sorted, deduped)
+    const insertions = [...new Set([insertAfterP2, insertAfterMid].filter(i => i >= 0))].sort((a, b) => a - b);
+
+    insertions.forEach((insertIdx, slotIdx) => {
+      // Slice from prev up to and including insertIdx
+      const chunk = body.slice(prev, insertIdx + 1);
+      if (chunk.length > 0) {
+        segments.push({ type: 'content', key: `seg-${slotIdx}`, blocks: chunk });
+      }
+      // Only inject up to 2 ads (AdSense policy: max 2 in-article ads per page)
+      segments.push({ type: 'ad', key: `ad-${slotIdx}` });
+      prev = insertIdx + 1;
+    });
+
+    // Remaining content after last insertion
+    const tail = body.slice(prev);
+    if (tail.length > 0) {
+      segments.push({ type: 'content', key: 'seg-tail', blocks: tail });
+    }
+
+    return segments.map(seg =>
+      seg.type === 'ad'
+        ? <InArticleAd key={seg.key} />
+        : <PortableText key={seg.key} value={seg.blocks} components={ptComponents} />
+    );
   };
 
   // Extract headings for Table of Contents

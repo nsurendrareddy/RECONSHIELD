@@ -83,6 +83,13 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+        {/* Google AdSense — loaded once globally, deduplicated by Next.js via id */}
+        <Script
+          id="google-adsense"
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
         <Layout>

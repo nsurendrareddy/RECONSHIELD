@@ -14,6 +14,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
+const HeaderAd = dynamic(() => import('@/components/ads/HeaderAd'), { ssr: false })
 
 export default function Layout({ children }) {
   const pathname = usePathname()
@@ -819,6 +820,9 @@ export default function Layout({ children }) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* ─── Header Ad (728×90 leaderboard, desktop only) ──────────────────── */}
+      <HeaderAd />
 
       {/* ─── Main Content ──────────────────────────────────────────────────── */}
       <main className={`${isBlogPage || pathname === '/' ? '' : 'max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8'} min-h-[80vh] relative`}>
