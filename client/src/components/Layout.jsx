@@ -11,18 +11,12 @@ import {
 import { useState, useEffect, useRef, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import { motion, AnimatePresence } from 'framer-motion'
-import useMultiTagAds from '@/hooks/useMultiTagAds'
 
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
-const LazyAdSense = dynamic(() => import("@/components/ads/LazyAdSense"), { ssr: false })
-const MobileStickyAd = dynamic(() => import("@/components/ads/MobileStickyAd"), { ssr: false })
 
 export default function Layout({ children }) {
   const pathname = usePathname()
-  
-  // Integrate MultiTag ad script on allowed routes
-  useMultiTagAds()
 
   const [theme, setTheme] = useState('dark')
   const [showBanner, setShowBanner] = useState(true)
@@ -939,8 +933,6 @@ export default function Layout({ children }) {
         </div>
       </footer>
       <CookieBanner />
-      <LazyAdSense />
-      <MobileStickyAd />
     </div>
   )
 }

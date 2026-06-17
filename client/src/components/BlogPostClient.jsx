@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
-import AdBlock from '@/components/ads/AdBlock'
 
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
@@ -165,45 +164,10 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
     };
   }, [enrichedBody]);
 
-  const renderBodyWithAds = () => {
-    const { body, insertAfterP2, insertAfterMid, insertBeforeConclusion } = chunks;
+  const renderBody = () => {
+    const { body } = chunks;
     if (!body || body.length === 0) return null;
-
-    const renderedElements = [];
-    let currentChunk = [];
-
-    const flushChunk = (key) => {
-      if (currentChunk.length > 0) {
-        renderedElements.push(
-          <PortableText key={key} value={currentChunk} components={ptComponents} />
-        );
-        currentChunk = [];
-      }
-    };
-
-    body.forEach((block, idx) => {
-      currentChunk.push(block);
-
-      if (idx === insertAfterP2) {
-        flushChunk(`chunk-p2-${idx}`);
-        renderedElements.push(
-          <AdBlock key={`ad-p2`} type="in-article" slot="8827461902" className="my-8" />
-        );
-      } else if (idx === insertAfterMid) {
-        flushChunk(`chunk-mid-${idx}`);
-        renderedElements.push(
-          <AdBlock key={`ad-mid`} type="in-article" slot="9938472019" className="my-8" />
-        );
-      } else if (idx === insertBeforeConclusion) {
-        flushChunk(`chunk-conc-${idx}`);
-        renderedElements.push(
-          <AdBlock key={`ad-conc`} type="in-article" slot="1122334455" className="my-8" />
-        );
-      }
-    });
-
-    flushChunk('chunk-final');
-    return renderedElements;
+    return <PortableText value={body} components={ptComponents} />;
   };
 
   // Extract headings for Table of Contents
@@ -424,7 +388,7 @@ FileETag None`,
           {/* Article Body */}
           <div className="flex-1 min-w-0">
             <div className="prose prose-invert max-w-none">
-              {renderBodyWithAds()}
+              {renderBody()}
             </div>
 
             {/* Analyst Commentary & Configuration Blueprint Section */}
@@ -512,11 +476,6 @@ FileETag None`,
                   #{(tag.title || tag).toUpperCase()}
                 </span>
               ))}
-            </div>
-
-            {/* Pre-comments Ad Block */}
-            <div className="mt-12">
-              <AdBlock type="comments" slot="6677889900" />
             </div>
 
             {/* Mock Comments Section */}
@@ -672,10 +631,6 @@ FileETag None`,
                 </Link>
               </div>
 
-              {/* Desktop Sticky Sidebar Ad */}
-              <div className="hidden lg:block pt-4">
-                <AdBlock type="sidebar" slot="3344556677" />
-              </div>
             </div>
           </aside>
         </div>
@@ -728,11 +683,6 @@ FileETag None`,
                 </div>
               </Link>
             ))}
-
-            {/* Native Ad Card between Related Posts */}
-            <div className="group flex flex-col bg-[#0d1117]/40 border border-dashed border-[#1a2332] p-6 justify-center items-center rounded-2xl min-h-[350px]">
-              <AdBlock type="related-articles" slot="7736482910" className="h-full w-full border-0 bg-transparent" />
-            </div>
 
             {relatedPosts.slice(2).map((p) => (
               <Link href={`/blog/${p.slug}`} key={p._id} className="group flex flex-col bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8833] transition-all duration-300">

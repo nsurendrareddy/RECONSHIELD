@@ -14,7 +14,8 @@ import {
   DynamicTopActiveThreats,
   DynamicHeroSocVisual
 } from '@/components/DynamicWidgets';
-import AdBlock from '@/components/ads/AdBlock';
+
+
 
 export const metadata = {
   title: "ReconShield - Free Cybersecurity Tools & Threat Intelligence",
