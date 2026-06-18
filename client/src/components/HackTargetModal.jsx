@@ -17,13 +17,7 @@ export default function HackTargetModal({ isOpen, onClose, target }) {
   const scrollRef = useRef(null)
 
   useEffect(() => {
-    if (!isOpen) {
-      setLines([]);
-      setCurrentStep(0);
-      return;
-    }
-
-    if (currentStep < AUDIT_STEPS.length) {
+    if (isOpen && currentStep < AUDIT_STEPS.length) {
       const step = AUDIT_STEPS[currentStep]
       
       // Type out command

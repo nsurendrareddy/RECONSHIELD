@@ -40,74 +40,57 @@ export const metadata = {
 };
 
 
-const isProduction = process.env.NODE_ENV === 'production';
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`dark h-full antialiased ${inter.variable} ${jetbrains.variable} ${rajdhani.variable}`}>
       <head>
         {/* Fonts are managed by next/font/google */}
 
-        {isProduction && (
-          <>
-            {/* Subscribe with Google (Offloaded to Web Worker) */}
-            <Script strategy="worker" src="https://news.google.com/swg/js/v1/swg-basic.js" />
-            <Script
-              id="google-news-init"
-              strategy="worker"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
-                    basicSubscriptions.init({
-                      type: "NewsArticle",
-                      isPartOfType: ["Product"],
-                      isPartOfProductId: "CAow7aHgCw:openaccess",
-                      clientOptions: { theme: "light", lang: "en" },
-                    });
-                  });
-                `
-              }}
-            />
+        {/* Subscribe with Google (Offloaded to Web Worker) */}
+        <Script strategy="worker" src="https://news.google.com/swg/js/v1/swg-basic.js" />
+        <Script
+          id="google-news-init"
+          strategy="worker"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
+                basicSubscriptions.init({
+                  type: "NewsArticle",
+                  isPartOfType: ["Product"],
+                  isPartOfProductId: "CAow7aHgCw:openaccess",
+                  clientOptions: { theme: "light", lang: "en" },
+                });
+              });
+            `
+          }}
+        />
 
-            {/* Google Analytics (Offloaded to Web Worker) */}
-            <Script
-              strategy="worker"
-              src="https://www.googletagmanager.com/gtag/js?id=G-C1L15RFXXR"
-            />
-            <Script
-              id="google-analytics"
-              strategy="worker"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
+        {/* Google Analytics (Offloaded to Web Worker) */}
+        <Script
+          strategy="worker"
+          src="https://www.googletagmanager.com/gtag/js?id=G-C1L15RFXXR"
+        />
+        <Script
+          id="google-analytics"
+          strategy="worker"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
 
-                  gtag('config', 'G-C1L15RFXXR');
-                `,
-              }}
-            />
-            {/* Google AdSense — loaded once globally, deduplicated by Next.js via id */}
-            <Script
-              id="google-adsense"
-              strategy="afterInteractive"
-              src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
-              crossOrigin="anonymous"
-            />
-          </>
-        )}
+              gtag('config', 'G-C1L15RFXXR');
+            `,
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
         <Layout>
           {children}
         </Layout>
 
-        {isProduction && (
-          <>
-            <Analytics />
-            <SpeedInsights />
-          </>
-        )}
+        <Analytics />
+        <SpeedInsights />
         {/* Site-wide JSON-LD */}
         <script
           type="application/ld+json"

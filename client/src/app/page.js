@@ -13,12 +13,11 @@ import {
   DynamicNewsletterForm,
   DynamicTopActiveThreats,
   DynamicHeroSocVisual,
-  DynamicCommandCenter3D,
+  DynamicCommandCenter,
   DynamicSecurityWorkflow,
   DynamicIntelligenceModules
 } from '@/components/DynamicWidgets';
-
-
+import AdBlock from '@/components/ads/AdBlock';
 
 export const metadata = {
   title: "ReconShield - Free Cybersecurity Tools & Threat Intelligence",
@@ -280,6 +279,8 @@ export default async function Page() {
             </div>
           </div>
         </section>
+
+        <DynamicCommandCenter />
 
         {/* ================= SECTION 7: FEATURED SECURITY TOOLS ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5" aria-label="Featured Tools">
@@ -597,13 +598,10 @@ export default async function Page() {
           </div>
         </section>
 
-        {/* ================= SECTION 11: 3D COMMAND CENTER ================= */}
-        <DynamicCommandCenter3D />
-
-        {/* ================= SECTION 12: SECURITY WORKFLOW ================= */}
+        {/* ================= SECTION 11: HOW IT WORKS ================= */}
         <DynamicSecurityWorkflow />
 
-        {/* ================= SECTION 12B: INTELLIGENCE MODULES ================= */}
+        {/* ================= SECTION 12: COMPLETE SECURITY TOOLKIT ================= */}
         <DynamicIntelligenceModules />
 
         {/* ================= SECTION 13: CTA SECTION ================= */}

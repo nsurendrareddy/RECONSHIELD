@@ -50,10 +50,7 @@ export default function ChatbotPanel({ scanId, data }) {
   const ask = async (question) => {
     if (!question.trim()) return
     const q = question.trim()
-    setMessages(m => {
-      const updated = [...m, { role: 'user', text: q }];
-      return updated.length > 100 ? updated.slice(-100) : updated;
-    })
+    setMessages(m => [...m, { role: 'user', text: q }])
     setInput('')
     setLoading(true)
     try {
@@ -64,15 +61,9 @@ export default function ChatbotPanel({ scanId, data }) {
       } else {
         answer = 'Scan ID not available. Please run a scan first.'
       }
-      setMessages(m => {
-        const updated = [...m, { role: 'bot', text: answer }];
-        return updated.length > 100 ? updated.slice(-100) : updated;
-      })
+      setMessages(m => [...m, { role: 'bot', text: answer }])
     } catch (e) {
-      setMessages(m => {
-        const updated = [...m, { role: 'bot', text: '⚠️ Error fetching answer. Please try again.' }];
-        return updated.length > 100 ? updated.slice(-100) : updated;
-      })
+      setMessages(m => [...m, { role: 'bot', text: '⚠️ Error fetching answer. Please try again.' }])
     }
     setLoading(false)
   }

@@ -25,19 +25,17 @@ export default function HeroSocVisual() {
     ];
 
     const interval = setInterval(() => {
-      // Append a random log (max 5 lines)
+      // Append a random log
       const randomLog = mockLogs[Math.floor(Math.random() * mockLogs.length)];
       const timestamp = new Date().toLocaleTimeString();
-      setLogs((prev) => [`[${timestamp}] ${randomLog}`, ...prev.slice(0, 4)]);
+      setLogs((prev) => [`[${timestamp}] ${randomLog}`, ...prev.slice(0, 5)]);
       
-      // Slightly fluctuate score & uptime for dynamic effect (throttled)
+      // Slightly fluctuate score & uptime for dynamic effect
       setThreatScore((prev) => Math.max(0, Math.min(100, Math.floor(prev + (Math.random() * 4 - 2)))));
       setUptime((prev) => Math.min(100, Number((prev + (Math.random() * 0.02 - 0.01)).toFixed(4))));
     }, 3000);
 
-    return () => {
-      clearInterval(interval);
-    };
+    return () => clearInterval(interval);
   }, []);
 
   return (

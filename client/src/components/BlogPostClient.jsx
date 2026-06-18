@@ -1,12 +1,11 @@
 'use client'
 import React, { useMemo } from 'react'
 import { ArrowLeft, Clock, Calendar, Tag, User, Globe, Shield, CheckCircle2, List, Settings, MessageSquare, ShieldAlert } from 'lucide-react'
-import InArticleAd from '@/components/ads/InArticleAd'
-import MultiplexAd from '@/components/ads/MultiplexAd'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
+import AdBlock from '@/components/ads/AdBlock'
 
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
@@ -166,40 +165,46 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
     };
   }, [enrichedBody]);
 
-  const bodySegments = useMemo(() => {
-    const { body, insertAfterP2, insertAfterMid } = chunks;
+  const renderBodyWithAds = () => {
+    const { body, insertAfterP2, insertAfterMid, insertBeforeConclusion } = chunks;
     if (!body || body.length === 0) return null;
 
-    // Split body into up to 3 segments separated by ad insertion points
-    const segments = [];
-    let prev = 0;
+    const renderedElements = [];
+    let currentChunk = [];
 
-    // Collect insertion indices (sorted, deduped)
-    const insertions = [...new Set([insertAfterP2, insertAfterMid].filter(i => i >= 0))].sort((a, b) => a - b);
-
-    insertions.forEach((insertIdx, slotIdx) => {
-      // Slice from prev up to and including insertIdx
-      const chunk = body.slice(prev, insertIdx + 1);
-      if (chunk.length > 0) {
-        segments.push({ type: 'content', key: `seg-${slotIdx}`, blocks: chunk });
+    const flushChunk = (key) => {
+      if (currentChunk.length > 0) {
+        renderedElements.push(
+          <PortableText key={key} value={currentChunk} components={ptComponents} />
+        );
+        currentChunk = [];
       }
-      // Only inject up to 2 ads (AdSense policy: max 2 in-article ads per page)
-      segments.push({ type: 'ad', key: `ad-${slotIdx}` });
-      prev = insertIdx + 1;
+    };
+
+    body.forEach((block, idx) => {
+      currentChunk.push(block);
+
+      if (idx === insertAfterP2) {
+        flushChunk(`chunk-p2-${idx}`);
+        renderedElements.push(
+          <AdBlock key={`ad-p2`} type="in-article" slot="8827461902" className="my-8" />
+        );
+      } else if (idx === insertAfterMid) {
+        flushChunk(`chunk-mid-${idx}`);
+        renderedElements.push(
+          <AdBlock key={`ad-mid`} type="in-article" slot="9938472019" className="my-8" />
+        );
+      } else if (idx === insertBeforeConclusion) {
+        flushChunk(`chunk-conc-${idx}`);
+        renderedElements.push(
+          <AdBlock key={`ad-conc`} type="in-article" slot="1122334455" className="my-8" />
+        );
+      }
     });
 
-    // Remaining content after last insertion
-    const tail = body.slice(prev);
-    if (tail.length > 0) {
-      segments.push({ type: 'content', key: 'seg-tail', blocks: tail });
-    }
-
-    return segments.map(seg =>
-      seg.type === 'ad'
-        ? <InArticleAd key={seg.key} />
-        : <PortableText key={seg.key} value={seg.blocks} components={ptComponents} />
-    );
-  }, [chunks]);
+    flushChunk('chunk-final');
+    return renderedElements;
+  };
 
   // Extract headings for Table of Contents
   const headings = useMemo(() => {
@@ -419,7 +424,7 @@ FileETag None`,
           {/* Article Body */}
           <div className="flex-1 min-w-0">
             <div className="prose prose-invert max-w-none">
-              {bodySegments}
+              {renderBodyWithAds()}
             </div>
 
             {/* Analyst Commentary & Configuration Blueprint Section */}
@@ -507,6 +512,11 @@ FileETag None`,
                   #{(tag.title || tag).toUpperCase()}
                 </span>
               ))}
+            </div>
+
+            {/* Pre-comments Ad Block */}
+            <div className="mt-12">
+              <AdBlock type="comments" slot="6677889900" />
             </div>
 
             {/* Mock Comments Section */}
@@ -662,6 +672,10 @@ FileETag None`,
                 </Link>
               </div>
 
+              {/* Desktop Sticky Sidebar Ad */}
+              <div className="hidden lg:block pt-4">
+                <AdBlock type="sidebar" slot="3344556677" />
+              </div>
             </div>
           </aside>
         </div>
@@ -714,6 +728,11 @@ FileETag None`,
                 </div>
               </Link>
             ))}
+
+            {/* Native Ad Card between Related Posts */}
+            <div className="group flex flex-col bg-[#0d1117]/40 border border-dashed border-[#1a2332] p-6 justify-center items-center rounded-2xl min-h-[350px]">
+              <AdBlock type="related-articles" slot="7736482910" className="h-full w-full border-0 bg-transparent" />
+            </div>
 
             {relatedPosts.slice(2).map((p) => (
               <Link href={`/blog/${p.slug}`} key={p._id} className="group flex flex-col bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8833] transition-all duration-300">

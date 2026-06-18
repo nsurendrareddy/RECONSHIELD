@@ -15,17 +15,17 @@ export const DynamicTopActiveThreats = dynamic(() => import('@/components/TopAct
 
 export const DynamicNewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false });
 
-export const DynamicCommandCenter3D = dynamic(() => import('@/components/CommandCenter3D'), {
+export const DynamicCommandCenter = dynamic(() => import('@/components/CommandCenter'), {
   ssr: false,
-  loading: () => <div className="w-full min-h-[500px] bg-surface-900/20 border border-white/5 rounded-2xl animate-pulse" />,
+  loading: () => <div className="w-full min-h-[500px] bg-surface-950/20 border border-white/5 rounded-2xl animate-pulse" />
 });
 
 export const DynamicSecurityWorkflow = dynamic(() => import('@/components/SecurityWorkflow'), {
   ssr: false,
-  loading: () => <div className="w-full min-h-[600px] bg-surface-900/20 border border-white/5 rounded-2xl animate-pulse" />,
+  loading: () => <div className="w-full min-h-[600px] bg-surface-950/20 border border-white/5 rounded-2xl animate-pulse" />
 });
 
 export const DynamicIntelligenceModules = dynamic(() => import('@/components/IntelligenceModules'), {
   ssr: false,
-  loading: () => <div className="w-full min-h-[500px] bg-surface-900/20 border border-white/5 rounded-2xl animate-pulse" />,
+  loading: () => <div className="w-full min-h-[500px] bg-surface-950/20 border border-white/5 rounded-2xl animate-pulse" />
 });

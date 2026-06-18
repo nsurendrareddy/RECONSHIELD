@@ -2,6 +2,40 @@
 const adDomains = [
   'https://ep1.adtrafficquality.google',
   'https://ep2.adtrafficquality.google',
+  // Monetag Vignette and Ad Domains (June 2026 Audit)
+  'https://n6wxm.com',
+  'https://*.n6wxm.com',
+  'https://nap5k.com',
+  'https://*.nap5k.com',
+  'https://cdn.show-creative1.com',
+  'https://*.cdn.show-creative1.com',
+  'https://workdeadlinededicate.com',
+  'https://*.workdeadlinededicate.com',
+  'https://ldrws.com',
+  'https://*.ldrws.com',
+  'https://bobapsoabauns.com',
+  'https://*.bobapsoabauns.com',
+  'https://tzegilo.com',
+  'https://*.tzegilo.com',
+  'https://fleraprt.com',
+  'https://*.fleraprt.com',
+  // Monetag Dynamic Script Connections
+  'https://jhnwr.com',
+  'https://*.jhnwr.com',
+  'https://6opo.com',
+  'https://*.6opo.com',
+  'https://auqot.com',
+  'https://*.auqot.com',
+  'https://jmosl.com',
+  'https://*.jmosl.com',
+  'https://094kk.com',
+  'https://*.094kk.com',
+  // rtmark tracking/ads
+  'https://my.rtmark.net',
+  'https://*.rtmark.net',
+  // MultiTag Ad Script Domains
+  'https://quge5.com',
+  'https://*.quge5.com'
 ];
 
 const isDev = process.env.NODE_ENV !== 'production';
@@ -29,6 +63,7 @@ const nextConfig = {
   },
   experimental: {
     optimizePackageImports: ['recharts', 'lucide-react'],
+    nextScriptWorkers: true,
   },
   trailingSlash: false,
   async headers() {

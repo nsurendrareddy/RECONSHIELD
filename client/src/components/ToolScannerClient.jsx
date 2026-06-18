@@ -5,6 +5,7 @@ import SearchBar from '@/components/SearchBar';
 import LoadingState from '@/components/LoadingState';
 import { motion } from 'framer-motion';
 import { Globe, Lock, Layers, Shield, Activity } from 'lucide-react';
+import AdBlock from '@/components/ads/AdBlock';
 // Specialized sections
 import DnsSection from '@/sections/DnsSection';
 import SslSection from '@/sections/SslSection';
@@ -107,6 +108,12 @@ export default function ToolScannerClient({ toolId, title, desc }) {
           </div>
           
           <SectionComponent data={results[tool.dataKey]} />
+
+          {/* Post-scan Ad Block */}
+          <div className="my-8">
+            <AdBlock type="in-article" slot="5566778899" />
+          </div>
+
           {/* Post-scan conversion prompt */}
           <div className="p-6 rounded-2xl bg-gradient-to-r from-cyan-500/5 to-transparent border border-cyan-500/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
             <div className="space-y-1">
