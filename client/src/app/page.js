@@ -12,10 +12,12 @@ import ResponsiveImage from '@/components/ResponsiveImage';
 import {
   DynamicNewsletterForm,
   DynamicTopActiveThreats,
-  DynamicHeroSocVisual
+  DynamicHeroSocVisual,
+  DynamicCommandCenter,
+  DynamicSecurityWorkflow,
+  DynamicIntelligenceModules
 } from '@/components/DynamicWidgets';
-
-
+import AdBlock from '@/components/ads/AdBlock';
 
 export const metadata = {
   title: "ReconShield - Free Cybersecurity Tools & Threat Intelligence",
@@ -277,6 +279,8 @@ export default async function Page() {
             </div>
           </div>
         </section>
+
+        <DynamicCommandCenter />
 
         {/* ================= SECTION 7: FEATURED SECURITY TOOLS ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5" aria-label="Featured Tools">
@@ -595,110 +599,10 @@ export default async function Page() {
         </section>
 
         {/* ================= SECTION 11: HOW IT WORKS ================= */}
-        <section className="py-24 bg-[#05080f] border-b border-white/5" aria-label="How it works">
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="text-center mb-16 space-y-2">
-              <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// PROCESS PIPELINE</span>
-              <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">How ReconShield Works</h2>
-              <p className="text-gray-400 text-sm max-w-xl mx-auto leading-relaxed">
-                Step-by-step security validation workflow engineered for modern systems.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 font-sans mb-12">
-              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
-                <span className="text-xs font-mono text-[#00ff88] block mb-2 font-bold uppercase tracking-wider">Step 1</span>
-                <h3 className="text-white font-bold text-lg mb-2 font-display">Choose Your Tool</h3>
-                <p className="text-gray-400 text-xs leading-relaxed">Select a specialized scanner or run an all-in-one check from our directory.</p>
-              </div>
-
-              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
-                <span className="text-xs font-mono text-[#00ff88] block mb-2 font-bold uppercase tracking-wider">Step 2</span>
-                <h3 className="text-white font-bold text-lg mb-2 font-display">Enter Target</h3>
-                <p className="text-gray-400 text-xs leading-relaxed">Enter target Domain, IP, or URL in the diagnostic console.</p>
-              </div>
-
-              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
-                <span className="text-xs font-mono text-[#00ff88] block mb-2 font-bold uppercase tracking-wider">Step 3</span>
-                <h3 className="text-white font-bold text-lg mb-2 font-display">Receive Results</h3>
-                <p className="text-gray-400 text-xs leading-relaxed">Get a detailed security assessment report within seconds.</p>
-              </div>
-
-              <div className="p-6 bg-surface-900 border border-white/5 rounded-2xl">
-                <span className="text-xs font-mono text-[#00ff88] block mb-2 font-bold uppercase tracking-wider">Step 4</span>
-                <h3 className="text-white font-bold text-lg mb-2 font-display">Apply Security</h3>
-                <p className="text-gray-400 text-xs leading-relaxed">Remediate configuration drift and patch exposures with clear guidance.</p>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/tools" className="px-6 py-3.5 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 text-xs font-mono uppercase tracking-widest rounded-xl transition-all cursor-pointer">
-                View Scanners Directory
-              </Link>
-              <Link href="/scanner" className="px-6 py-3.5 bg-[#00ff88] hover:bg-[#00e077] text-surface-950 text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer">
-                Start Website Audit
-              </Link>
-            </div>
-          </div>
-        </section>
+        <DynamicSecurityWorkflow />
 
         {/* ================= SECTION 12: COMPLETE SECURITY TOOLKIT ================= */}
-        <section className="py-24 bg-[#0a0d14] border-b border-white/5" aria-label="Ecosystem Index">
-          <div className="max-w-[1200px] mx-auto px-6 font-sans">
-            <div className="text-center mb-16 space-y-2">
-              <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// COMPLETE RESOURCE LIBRARY</span>
-              <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">Complete Security Toolkit</h2>
-              <p className="text-gray-400 text-sm max-w-xl mx-auto leading-relaxed">
-                Seamlessly pivot between target intelligence modules for deeper investigation.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">Domain Intelligence</h3>
-                <ul className="space-y-2 text-xs font-mono">
-                  <li><Link href="/tools/whois" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>WHOIS Lookup</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/tools/dns-lookup" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>DNS Lookup</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/tools/subdomain-finder" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Subdomain Finder</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/tools/tech-detector" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Technology Detector</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                </ul>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">Security Assessment</h3>
-                <ul className="space-y-2 text-xs font-mono">
-                  <li><Link href="/tools/vulnerability-scanner" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Vulnerability Scanner</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/tools/port-scanner" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Port Scanner</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/tools/ssl-checker" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>SSL Checker</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/tools/http-headers" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>HTTP Headers Checker</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                </ul>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">Email Security</h3>
-                <ul className="space-y-2 text-xs font-mono">
-                  <li><Link href="/tools/email-security" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Email Security Checker</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/tools/dns-lookup" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>MX Record Lookup</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                </ul>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">Network Analysis</h3>
-                <ul className="space-y-2 text-xs font-mono">
-                  <li><Link href="/tools/ip-lookup" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>IP Lookup</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                  <li><Link href="/tools/ip-lookup" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Reverse IP</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                </ul>
-              </div>
-
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono font-bold text-white uppercase tracking-wider border-b border-white/10 pb-2">All-in-One</h3>
-                <ul className="space-y-2 text-xs font-mono">
-                  <li><Link href="/scanner" className="text-gray-400 hover:text-[#00ff88] transition-colors flex items-center justify-between"><span>Website Security Scanner</span> <ChevronRight className="w-3.5 h-3.5" /></Link></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
+        <DynamicIntelligenceModules />
 
         {/* ================= SECTION 13: CTA SECTION ================= */}
         <section className="py-24 bg-[#05080f] relative overflow-hidden border-b border-white/5">

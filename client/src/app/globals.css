@@ -237,43 +237,5 @@ ins.adsbygoogle {
   min-width: 300px;
 }
 
-/* Custom Cyber Aesthetics */
-.cyber-glow-container {
-  position: relative;
-}
-.cyber-glow-container::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(90deg, #00FF9C, #00E5FF, #8B5CF6);
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0.15;
-  transition: opacity 0.3s ease;
-}
-.cyber-glow-container:hover::before {
-  opacity: 0.35;
-}
-
-@keyframes particle-drift {
-  0% {
-    transform: translateY(0) translateX(0) scale(1);
-    opacity: 0.2;
-  }
-  50% {
-    transform: translateY(-80px) translateX(30px) scale(1.2);
-    opacity: 0.6;
-  }
-  100% {
-    transform: translateY(-160px) translateX(-10px) scale(0.8);
-    opacity: 0;
-  }
-}
-
-.animate-particle {
-  animation: particle-drift var(--particle-duration, 8s) ease-in-out infinite;
-}
-
-
 
 
