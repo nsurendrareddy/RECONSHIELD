@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { startScan, getScan, getScanStatus } from '../utils/api'
 
 export function useScan() {
@@ -11,8 +11,15 @@ export function useScan() {
   const pollRef = useRef(null)
 
   const stopPolling = useCallback(() => {
-    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null }
+    if (pollRef.current) {
+      window.clearTimeout(pollRef.current)
+      pollRef.current = null
+    }
   }, [])
+
+  useEffect(() => {
+    return () => stopPolling()
+  }, [stopPolling])
 
   const scan = useCallback(async (targetDomain) => {
     setStatus('scanning')
@@ -27,8 +34,11 @@ export function useScan() {
       setProgress('Scan queued. Modules starting...')
 
       let attempts = 0
-      pollRef.current = setInterval(async () => {
+
+      const poll = async () => {
+        if (!pollRef.current) return
         attempts++
+
         try {
           const statusRes = await getScanStatus(id)
           setScanProgress(statusRes)
@@ -44,11 +54,21 @@ export function useScan() {
             stopPolling()
             setError('Scan failed. Target may be unreachable.')
             setStatus('error')
+          } else {
+            pollRef.current = window.setTimeout(poll, 1500)
           }
         } catch (e) {
-          if (attempts > 90) { stopPolling(); setError('Scan timed out'); setStatus('error') }
+          if (attempts > 90) {
+            stopPolling()
+            setError('Scan timed out')
+            setStatus('error')
+          } else {
+            pollRef.current = window.setTimeout(poll, 1500)
+          }
         }
-      }, 1500)
+      }
+
+      pollRef.current = window.setTimeout(poll, 1500)
     } catch (e) {
       setError(e.message)
       setStatus('error')
@@ -57,7 +77,12 @@ export function useScan() {
 
   const reset = useCallback(() => {
     stopPolling()
-    setStatus('idle'); setScanData(null); setError(null); setProgress(''); setScanProgress(null); setDomain('')
+    setStatus('idle')
+    setScanData(null)
+    setError(null)
+    setProgress('')
+    setScanProgress(null)
+    setDomain('')
   }, [stopPolling])
 
   return { status, scanData, error, progress, scanProgress, domain, scan, reset }

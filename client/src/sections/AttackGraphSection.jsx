@@ -1,7 +1,9 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import { useReactFlow, ReactFlow, Background, Controls, MiniMap, Handle, Position, ReactFlowProvider } from '@xyflow/react'
 import { Network } from 'lucide-react'
+import '@xyflow/react/dist/style.css'
+import '@/styles/react-flow.css'
 
 const nodeStyles = {
   domain:    { bg: 'bg-cyber-500/20', border: 'border-cyber-400/40', text: 'text-cyber-300', glow: '#0EA5E9' },
@@ -103,15 +105,9 @@ function buildGraphData(data) {
   return { nodes: positionedNodes, edges }
 }
 
-function GraphInner({ data }) {
+function GraphInner({ graphData }) {
   const [detail, setDetail] = useState(null)
-  const { nodes, edges } = buildGraphData(data)
-
-  useEffect(() => {
-    // Load styles dynamically to keep them off the critical path
-    import('@xyflow/react/dist/style.css');
-    import('@/styles/react-flow.css');
-  }, []);
+  const { nodes, edges } = graphData
 
   return (
     <div className="relative h-[420px] bg-surface-950/60 rounded-2xl border border-white/[0.04] overflow-hidden">
@@ -157,6 +153,7 @@ function GraphInner({ data }) {
 }
 
 export default function AttackGraphSection({ data }) {
+  const graphData = useMemo(() => buildGraphData(data), [data])
   if (!data) return null
   return (
     <div className="glass-card animate-slide-up overflow-hidden">
@@ -177,7 +174,7 @@ export default function AttackGraphSection({ data }) {
       </div>
       <div className="p-6">
         <ReactFlowProvider>
-          <GraphInner data={data} />
+          <GraphInner graphData={graphData} />
         </ReactFlowProvider>
       </div>
     </div>
