@@ -44,6 +44,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`dark h-full antialiased ${inter.variable} ${jetbrains.variable} ${rajdhani.variable}`}>
       <head>
+        {/* Google AdSense */}
+        <Script
+          id="google-adsense"
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
+          crossOrigin="anonymous"
+        />
+
         {/* Fonts are managed by next/font/google */}
 
         {/* Subscribe with Google (Offloaded to Web Worker) */}
