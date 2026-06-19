@@ -45,9 +45,9 @@ const isDev = process.env.NODE_ENV !== 'production';
 const cspHeader = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://va.vercel-scripts.com ${allAdDomains}`,
-  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${allAdDomains}`,
   `img-src 'self' blob: data: https://cdn.sanity.io https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${allAdDomains}`,
-  "font-src 'self' data: https://fonts.gstatic.com",
+  `font-src 'self' data: https://fonts.gstatic.com ${allAdDomains}`,
   `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${allAdDomains}`,
   `frame-src 'self' https://news.google.com https://www.google.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com ${allAdDomains}`,
   `child-src 'self' blob: ${allAdDomains}`,
