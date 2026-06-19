@@ -23,7 +23,15 @@ const additionalAdDomains = [
   'https://jhnwr.com',
   'https://*.jhnwr.com',
   'https://ldrws.com',
-  'https://*.ldrws.com'
+  'https://*.ldrws.com',
+  'https://bobapsoabauns.com',
+  'https://*.bobapsoabauns.com',
+  'https://my.rtmark.net',
+  'https://*.my.rtmark.net',
+  'https://preferencenail.com',
+  'https://*.preferencenail.com',
+  'https://protrafficinspector.com',
+  'https://*.protrafficinspector.com'
 ];
 
 const allAdDomains = [...adDomains, ...monetagDomains, ...adsterraDomains, ...additionalAdDomains].join(' ');
