@@ -16,20 +16,38 @@ export default function AdsterraNative({ className = '' }: AdsterraNativeProps) 
     if (containerRef.current.childNodes.length > 0) return;
 
     try {
-      // 1. Create the target div required by Adsterra Native Banner
-      const adContainer = document.createElement('div');
-      adContainer.id = "container-6546c038dbbf040d39d1b8179e7743ca";
-      
-      // 2. Create the invocation script
-      const invokeScript = document.createElement('script');
-      invokeScript.type = 'text/javascript';
-      invokeScript.async = true;
-      invokeScript.setAttribute('data-cfasync', 'false');
-      invokeScript.src = "https://pl29692252.effectivecpmnetwork.com/6546c038dbbf040d39d1b8179e7743ca/invoke.js";
+      // Create iframe for isolation to prevent container ID namespace collisions
+      const iframe = document.createElement('iframe');
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.minHeight = '250px';
+      iframe.style.border = 'none';
+      iframe.style.overflow = 'hidden';
+      iframe.style.background = 'transparent';
+      iframe.setAttribute('scrolling', 'no');
+      iframe.setAttribute('frameborder', '0');
 
-      // Append to the isolated wrapper container
-      containerRef.current.appendChild(adContainer);
-      containerRef.current.appendChild(invokeScript);
+      containerRef.current.appendChild(iframe);
+
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+      if (iframeDoc) {
+        iframeDoc.open();
+        iframeDoc.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <style>
+                body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
+              </style>
+            </head>
+            <body>
+              <div id="container-6546c038dbbf040d39d1b8179e7743ca"></div>
+              <script type="text/javascript" data-cfasync="false" src="https://pl29692252.effectivecpmnetwork.com/6546c038dbbf040d39d1b8179e7743ca/invoke.js"></script>
+            </body>
+          </html>
+        `);
+        iframeDoc.close();
+      }
     } catch (error) {
       console.warn('Adsterra native injection failed:', error);
     }

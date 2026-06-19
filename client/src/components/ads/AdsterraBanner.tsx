@@ -25,27 +25,45 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
     if (!config) return;
 
     try {
-      // 1. Inject the configuration script
-      const confScript = document.createElement('script');
-      confScript.type = 'text/javascript';
-      confScript.innerHTML = `
-        atOptions = {
-          'key' : '${config.key}',
-          'format' : 'iframe',
-          'height' : ${config.height},
-          'width' : ${config.width},
-          'params' : {}
-        };
-      `;
-      
-      // 2. Inject the invocation script
-      const invokeScript = document.createElement('script');
-      invokeScript.type = 'text/javascript';
-      invokeScript.src = `https://www.highperformanceformat.com/${config.key}/invoke.js`;
-      invokeScript.async = true;
+      // Create iframe for isolation to prevent atOptions namespace collisions
+      const iframe = document.createElement('iframe');
+      iframe.width = String(config.width);
+      iframe.height = String(config.height);
+      iframe.style.border = 'none';
+      iframe.style.overflow = 'hidden';
+      iframe.style.background = 'transparent';
+      iframe.setAttribute('scrolling', 'no');
+      iframe.setAttribute('frameborder', '0');
 
-      containerRef.current.appendChild(confScript);
-      containerRef.current.appendChild(invokeScript);
+      containerRef.current.appendChild(iframe);
+
+      const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
+      if (iframeDoc) {
+        iframeDoc.open();
+        iframeDoc.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <style>
+                body { margin: 0; padding: 0; overflow: hidden; background: transparent; }
+              </style>
+            </head>
+            <body>
+              <script type="text/javascript">
+                var atOptions = {
+                  'key' : '${config.key}',
+                  'format' : 'iframe',
+                  'height' : ${config.height},
+                  'width' : ${config.width},
+                  'params' : {}
+                };
+              </script>
+              <script type="text/javascript" src="https://www.highperformanceformat.com/${config.key}/invoke.js"></script>
+            </body>
+          </html>
+        `);
+        iframeDoc.close();
+      }
     } catch (error) {
       console.warn('Adsterra banner injection failed:', error);
     }
