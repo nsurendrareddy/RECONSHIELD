@@ -1,7 +1,16 @@
 /** @type {import('next').NextConfig} */
 const adDomains = [
   'https://ep1.adtrafficquality.google',
-  'https://ep2.adtrafficquality.google'
+  'https://ep2.adtrafficquality.google',
+  // Adsterra
+  'https://www.highperformanceformat.com',
+  'https://highperformanceformat.com',
+  'https://*.highperformanceformat.com',
+  'https://*.profitableratecpm.com',
+  'https://*.profitablecpmrate.com',
+  'https://*.displaycontentnetwork.com',
+  'https://*.adsterra.com',
+  'https://*.adsterranetwork.com'
 ];
 
 const monetagDomains = [
@@ -39,18 +48,22 @@ const additionalAdDomains = [
 ];
 
 const allAdDomains = [...adDomains, ...monetagDomains, ...adsterraDomains, ...additionalAdDomains].join(' ');
+const adDomainSources = adDomains.join(' ');
+const monetagDomainSources = monetagDomains.join(' ');
+const adsterraDomainSources = adsterraDomains.join(' ');
+const additionalAdDomainSources = additionalAdDomains.join(' ');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://va.vercel-scripts.com ${allAdDomains}`,
-  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${allAdDomains}`,
-  `img-src 'self' blob: data: https://cdn.sanity.io https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${allAdDomains}`,
-  `font-src 'self' data: https://fonts.gstatic.com ${allAdDomains}`,
-  `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${allAdDomains}`,
-  `frame-src 'self' https://news.google.com https://www.google.com ${allAdDomains}`,
-  `child-src 'self' blob: ${allAdDomains}`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://va.vercel-scripts.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
+  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
+  `img-src 'self' blob: data: https://cdn.sanity.io https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
+  `font-src 'self' data: https://fonts.gstatic.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
+  `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
+  `frame-src 'self' https://news.google.com https://www.google.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
+  `child-src 'self' blob: ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
   "worker-src 'self' blob:"
 ].join('; ');
 
