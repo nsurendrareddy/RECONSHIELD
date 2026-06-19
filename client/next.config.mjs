@@ -31,7 +31,9 @@ const additionalAdDomains = [
   'https://preferencenail.com',
   'https://*.preferencenail.com',
   'https://protrafficinspector.com',
-  'https://*.protrafficinspector.com'
+  'https://*.protrafficinspector.com',
+  'https://tzegilo.com',
+  'https://*.tzegilo.com'
 ];
 
 const allAdDomains = [...adDomains, ...monetagDomains, ...adsterraDomains, ...additionalAdDomains].join(' ');
