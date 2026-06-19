@@ -19,7 +19,14 @@ const adsterraDomains = [
   'https://*.effectivecpmnetwork.com'
 ];
 
-const allAdDomains = [...adDomains, ...monetagDomains, ...adsterraDomains].join(' ');
+const additionalAdDomains = [
+  'https://jhnwr.com',
+  'https://*.jhnwr.com',
+  'https://ldrws.com',
+  'https://*.ldrws.com'
+];
+
+const allAdDomains = [...adDomains, ...monetagDomains, ...adsterraDomains, ...additionalAdDomains].join(' ');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
