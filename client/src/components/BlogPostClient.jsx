@@ -6,6 +6,8 @@ import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
 import AdBlock from '@/components/ads/AdBlock'
+import AdsterraBanner from '@/components/ads/AdsterraBanner'
+import AdsterraNative from '@/components/ads/AdsterraNative'
 
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
@@ -187,17 +189,17 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
       if (idx === insertAfterP2) {
         flushChunk(`chunk-p2-${idx}`);
         renderedElements.push(
-          <AdBlock key={`ad-p2`} type="in-article" slot="8827461902" className="my-8" />
+          <AdsterraNative key={`ad-p2`} className="my-8" />
         );
       } else if (idx === insertAfterMid) {
         flushChunk(`chunk-mid-${idx}`);
         renderedElements.push(
-          <AdBlock key={`ad-mid`} type="in-article" slot="9938472019" className="my-8" />
+          <AdsterraBanner key={`ad-mid`} type="300x250" className="my-8" />
         );
       } else if (idx === insertBeforeConclusion) {
         flushChunk(`chunk-conc-${idx}`);
         renderedElements.push(
-          <AdBlock key={`ad-conc`} type="in-article" slot="1122334455" className="my-8" />
+          <AdsterraNative key={`ad-conc`} className="my-8" />
         );
       }
     });
@@ -777,6 +779,8 @@ FileETag None`,
             ))}
           </div>
         </div>
+
+        <AdsterraBanner type="728x90" className="mb-20" />
       </div>
 
       {/* Footer */}

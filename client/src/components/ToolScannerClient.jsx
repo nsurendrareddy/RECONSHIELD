@@ -6,6 +6,7 @@ import LoadingState from '@/components/LoadingState';
 import { motion } from 'framer-motion';
 import { Globe, Lock, Layers, Shield, Activity } from 'lucide-react';
 import AdBlock from '@/components/ads/AdBlock';
+import AdsterraBanner from '@/components/ads/AdsterraBanner';
 // Specialized sections
 import DnsSection from '@/sections/DnsSection';
 import SslSection from '@/sections/SslSection';
@@ -71,6 +72,8 @@ export default function ToolScannerClient({ toolId, title, desc }) {
         <SearchBar onScan={scan} isScanning={status === 'scanning'} initialTarget={initialTarget} />
       </div>
 
+      <AdsterraBanner type="728x90" className="mb-10" />
+
       {status === 'scanning' && (
         <LoadingState progress={progress} domain={domain} scanProgress={scanProgress} />
       )}
@@ -111,7 +114,7 @@ export default function ToolScannerClient({ toolId, title, desc }) {
 
           {/* Post-scan Ad Block */}
           <div className="my-8">
-            <AdBlock type="in-article" slot="5566778899" />
+            <AdsterraBanner type="300x250" />
           </div>
 
           {/* Post-scan conversion prompt */}

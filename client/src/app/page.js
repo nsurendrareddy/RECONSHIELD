@@ -18,6 +18,8 @@ import {
   DynamicIntelligenceModules
 } from '@/components/DynamicWidgets';
 import AdBlock from '@/components/ads/AdBlock';
+import AdsterraBanner from '@/components/ads/AdsterraBanner';
+import AdsterraNative from '@/components/ads/AdsterraNative';
 
 export const metadata = {
   title: "ReconShield - Free Cybersecurity Tools & Threat Intelligence",
@@ -280,6 +282,8 @@ export default async function Page() {
           </div>
         </section>
 
+        <AdsterraBanner type="728x90" />
+
         <DynamicCommandCenter />
 
         {/* ================= SECTION 7: FEATURED SECURITY TOOLS ================= */}
@@ -380,6 +384,8 @@ export default async function Page() {
             </div>
           </div>
         </section>
+
+        <AdsterraNative />
 
         {/* ================= SECTION 8: WHY CHOOSE RECONSHIELD ================= */}
         <section className="py-24 bg-[#0a0d14] border-b border-white/5" aria-label="Why Choose ReconShield">
@@ -790,6 +796,8 @@ export default async function Page() {
             <p className="text-[10px] text-gray-500 font-mono uppercase tracking-wider">Fact checked intelligence. 100% spam-free. Unsubscribe anytime.</p>
           </div>
         </section>
+
+        <AdsterraBanner type="300x250" className="mb-12" />
 
       </div>
     </>

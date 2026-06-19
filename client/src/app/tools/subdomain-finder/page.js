@@ -12,6 +12,8 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
 });
 
+import AdsterraNative from '@/components/ads/AdsterraNative';
+
 export const metadata = {
   ...generateBaseMetadata({
     title: "Free Subdomain Finder - Discover Hidden Subdomains | ReconShield",
@@ -829,6 +831,8 @@ export default function SubdomainFinderPage() {
             </div>
           </div>
         </section>
+
+        <AdsterraNative />
 
         {/* FAQ Accordion Section */}
         <section id="faq" className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
