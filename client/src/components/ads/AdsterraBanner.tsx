@@ -7,13 +7,13 @@ type AdsterraBannerProps = {
   className?: string;
 };
 
+const BANNER_CONFIGS = {
+  '728x90': { key: 'ad055ae12ee78ddc0ebf1be2e3a5830f', width: 728, height: 90 },
+  '300x250': { key: 'bff74f8eee55b4a3775d46c9295efe9a', width: 300, height: 250 }
+};
+
 export default function AdsterraBanner({ type, className = '' }: AdsterraBannerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Define configurations for different banner types
-  const adConfig = type === '728x90' 
-    ? { key: 'ad055ae12ee78ddc0ebf1be2e3a5830f', width: 728, height: 90 }
-    : { key: 'bff74f8eee55b4a3775d46c9295efe9a', width: 300, height: 250 };
 
   useEffect(() => {
     if (typeof window === 'undefined' || !containerRef.current) return;
@@ -21,16 +21,19 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
     // Prevent double injection (especially in React Strict Mode)
     if (containerRef.current.childNodes.length > 0) return;
 
+    const config = BANNER_CONFIGS[type];
+    if (!config) return;
+
     try {
       // 1. Inject the configuration script
       const confScript = document.createElement('script');
       confScript.type = 'text/javascript';
       confScript.innerHTML = `
         atOptions = {
-          'key' : '${adConfig.key}',
+          'key' : '${config.key}',
           'format' : 'iframe',
-          'height' : ${adConfig.height},
-          'width' : ${adConfig.width},
+          'height' : ${config.height},
+          'width' : ${config.width},
           'params' : {}
         };
       `;
@@ -38,7 +41,7 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
       // 2. Inject the invocation script
       const invokeScript = document.createElement('script');
       invokeScript.type = 'text/javascript';
-      invokeScript.src = `https://www.highperformanceformat.com/${adConfig.key}/invoke.js`;
+      invokeScript.src = `https://www.highperformanceformat.com/${config.key}/invoke.js`;
       invokeScript.async = true;
 
       containerRef.current.appendChild(confScript);
@@ -46,7 +49,7 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
     } catch (error) {
       console.warn('Adsterra banner injection failed:', error);
     }
-  }, [adConfig]);
+  }, [type]);
 
   // Use tailwind classes to reserve space and prevent Cumulative Layout Shift (CLS)
   const sizeClass = type === '728x90' 

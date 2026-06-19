@@ -47,13 +47,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`dark h-full antialiased ${inter.variable} ${jetbrains.variable} ${rajdhani.variable}`}>
       <head>
-        {/* Google AdSense Conditional Loader */}
-        <AdSenseLoader />
-        
-        {/* Sitewide Global Ads */}
-        <MonetagGlobal />
-        <AdsterraSocialBar />
-
         {/* Fonts are managed by next/font/google */}
 
         {/* Subscribe with Google (Offloaded to Web Worker) */}
@@ -95,6 +88,11 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
+        {/* Sitewide Global Ads & Loader */}
+        <AdSenseLoader />
+        <MonetagGlobal />
+        <AdsterraSocialBar />
+
         <Layout>
           {children}
         </Layout>

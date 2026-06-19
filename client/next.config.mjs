@@ -4,16 +4,35 @@ const adDomains = [
   'https://ep2.adtrafficquality.google'
 ];
 
+const monetagDomains = [
+  'https://n6wxm.com',
+  'https://*.n6wxm.com',
+  'https://nap5k.com',
+  'https://*.nap5k.com'
+];
+
+const adsterraDomains = [
+  'https://www.highperformanceformat.com',
+  'https://*.highperformanceformat.com',
+  'https://pl29692251.effectivecpmnetwork.com',
+  'https://pl29692252.effectivecpmnetwork.com',
+  'https://*.effectivecpmnetwork.com'
+];
+
+const allAdDomains = [...adDomains, ...monetagDomains, ...adsterraDomains].join(' ');
+
 const isDev = process.env.NODE_ENV !== 'production';
 
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://va.vercel-scripts.com ${adDomains.join(' ')}`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://va.vercel-scripts.com ${allAdDomains}`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  `img-src 'self' blob: data: https://cdn.sanity.io https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${adDomains.join(' ')}`,
+  `img-src 'self' blob: data: https://cdn.sanity.io https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${allAdDomains}`,
   "font-src 'self' data: https://fonts.gstatic.com",
-  `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adDomains.join(' ')}`,
-  `frame-src 'self' https://news.google.com https://www.google.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com ${adDomains.join(' ')}`
+  `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${allAdDomains}`,
+  `frame-src 'self' https://news.google.com https://www.google.com https://googleads.g.doubleclick.net https://fundingchoicesmessages.google.com ${allAdDomains}`,
+  `child-src 'self' blob: ${allAdDomains}`,
+  "worker-src 'self' blob:"
 ].join('; ');
 
 const nextConfig = {
@@ -42,7 +61,7 @@ const nextConfig = {
           { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
           { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+          { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
           { key: 'Content-Security-Policy', value: cspHeader }
         ],
       },
