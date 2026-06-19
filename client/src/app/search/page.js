@@ -4,7 +4,6 @@ import { Search, Globe, ArrowRight, Shield, Activity, Lock, Database } from 'luc
 import { TOOLS, COLOR_MAP } from '@/utils/toolsData';
 import { STATS_CATEGORIES } from '@/utils/statsData';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import AdBlock from '@/components/ads/AdBlock';
 
 export const dynamic = 'force-dynamic';
 
@@ -91,11 +90,6 @@ export default async function SearchPage({ searchParams }) {
               QUERY
             </button>
           </form>
-        </div>
-
-        {/* Search Page Ad Block */}
-        <div className="mb-12">
-          <AdBlock type="in-article" slot="2233445566" />
         </div>
 
         {/* Results Section */}

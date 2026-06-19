@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
-import AdBlock from '@/components/ads/AdBlock'
 import AdsterraBanner from '@/components/ads/AdsterraBanner'
 import AdsterraNative from '@/components/ads/AdsterraNative'
 
@@ -516,11 +515,6 @@ FileETag None`,
               ))}
             </div>
 
-            {/* Pre-comments Ad Block */}
-            <div className="mt-12">
-              <AdBlock type="comments" slot="6677889900" />
-            </div>
-
             {/* Mock Comments Section */}
             <div className="mt-12 pt-10 border-t border-[#1a2332] space-y-8">
               <h3 className="text-[14px] font-mono font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -673,11 +667,6 @@ FileETag None`,
                   </div>
                 </Link>
               </div>
-
-              {/* Desktop Sticky Sidebar Ad */}
-              <div className="hidden lg:block pt-4">
-                <AdBlock type="sidebar" slot="3344556677" />
-              </div>
             </div>
           </aside>
         </div>
@@ -730,11 +719,6 @@ FileETag None`,
                 </div>
               </Link>
             ))}
-
-            {/* Native Ad Card between Related Posts */}
-            <div className="group flex flex-col bg-[#0d1117]/40 border border-dashed border-[#1a2332] p-6 justify-center items-center rounded-2xl min-h-[350px]">
-              <AdBlock type="related-articles" slot="7736482910" className="h-full w-full border-0 bg-transparent" />
-            </div>
 
             {relatedPosts.slice(2).map((p) => (
               <Link href={`/blog/${p.slug}`} key={p._id} className="group flex flex-col bg-[#0d1117] border border-[#1a2332] hover:border-[#00ff8833] transition-all duration-300">

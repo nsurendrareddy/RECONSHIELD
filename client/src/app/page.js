@@ -17,7 +17,6 @@ import {
   DynamicSecurityWorkflow,
   DynamicIntelligenceModules
 } from '@/components/DynamicWidgets';
-import AdBlock from '@/components/ads/AdBlock';
 import AdsterraBanner from '@/components/ads/AdsterraBanner';
 import AdsterraNative from '@/components/ads/AdsterraNative';
 

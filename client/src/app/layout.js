@@ -3,7 +3,6 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import { Inter, JetBrains_Mono, Rajdhani } from "next/font/google";
-import AdSenseLoader from "@/components/AdSenseLoader";
 import MonetagGlobal from "@/components/ads/MonetagGlobal";
 import AdsterraSocialBar from "@/components/ads/AdsterraSocialBar";
 import "./globals.css";
@@ -89,7 +88,6 @@ export default function RootLayout({ children }) {
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
         {/* Sitewide Global Ads & Loader */}
-        <AdSenseLoader />
         <MonetagGlobal />
         <AdsterraSocialBar />
 

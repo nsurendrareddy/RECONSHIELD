@@ -7,7 +7,6 @@ import {
   FileText, Send, HelpCircle, BookOpen, Key, Database, Users, Layers, Clock
 } from 'lucide-react';
 import { generateBaseMetadata } from '@/utils/metadata';
-import AdBlock from '@/components/ads/AdBlock';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
@@ -247,11 +246,6 @@ export default function DnsLookupPage() {
           </div>
         </div>
       </section>
-
-      {/* Tool Page Ad Block */}
-      <div className="max-w-4xl mx-auto my-8 px-6">
-        <AdBlock type="in-article" slot="4455667788" />
-      </div>
 
       {/* AI Overview / Featured Snippet Optimization */}
       <section className="py-12 bg-[#05080f] border-b border-white/5" aria-label="AI Search Overview">

@@ -5,7 +5,6 @@ import SearchBar from '@/components/SearchBar';
 import LoadingState from '@/components/LoadingState';
 import { motion } from 'framer-motion';
 import { Globe, Lock, Layers, Shield, Activity } from 'lucide-react';
-import AdBlock from '@/components/ads/AdBlock';
 import AdsterraBanner from '@/components/ads/AdsterraBanner';
 // Specialized sections
 import DnsSection from '@/sections/DnsSection';

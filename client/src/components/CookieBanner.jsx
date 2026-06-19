@@ -21,7 +21,7 @@ export default function CookieBanner() {
         <div>
           <h4 className="font-mono text-[11px] font-bold text-white uppercase tracking-wider mb-1">Cookie Consent Required</h4>
           <p className="text-gray-400 leading-relaxed font-light">
-            We use cookies to analyze web traffic and deliver personalized advertising via Google AdSense. Please select your preference. 
+            We use cookies to analyze web traffic and deliver personalized advertising. Please select your preference. 
             <Link href="/privacy" className="text-[#00ff88] hover:text-[#00ff88]/80 ml-1 font-medium underline">Privacy Policy</Link>
           </p>
         </div>
@@ -39,9 +39,6 @@ export default function CookieBanner() {
         <button 
           onClick={() => {
             localStorage.setItem('cookieConsent', 'true');
-            if (typeof window !== 'undefined' && window.__triggerAdSense) {
-              window.__triggerAdSense();
-            }
             setShow(false);
           }}
           className="px-5 py-2 bg-[#00ff88] text-surface-950 font-bold rounded-lg hover:bg-[#00ff88]/85 transition-all text-[10px] tracking-wider uppercase shadow-lg shadow-[#00ff88]/15 active:scale-95"
