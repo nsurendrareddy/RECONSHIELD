@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import { Inter, JetBrains_Mono, Rajdhani } from "next/font/google";
+import AdSenseLoader from "@/components/AdSenseLoader";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], display: "fallback", variable: "--font-inter" });
@@ -44,13 +45,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`dark h-full antialiased ${inter.variable} ${jetbrains.variable} ${rajdhani.variable}`}>
       <head>
-        {/* Google AdSense */}
-        <Script
-          id="google-adsense"
-          strategy="afterInteractive"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
-          crossOrigin="anonymous"
-        />
+        {/* Google AdSense Conditional Loader */}
+        <AdSenseLoader />
 
         {/* Fonts are managed by next/font/google */}
 

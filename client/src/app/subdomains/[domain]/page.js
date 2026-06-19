@@ -9,6 +9,7 @@ import { generateDatasetSchema } from '@/utils/metadata';
 import { SUBDOMAIN_TOPICS_DATA } from '@/utils/programmaticTopicsData';
 import { renderMarkdown } from '@/utils/markdownRenderer';
 import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
+import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 const SUBDOMAIN_TOPICS = Object.keys(SUBDOMAIN_TOPICS_DATA);
 
@@ -323,7 +324,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/subdomains/${domain}`,
     },
-    robots: { index: true, follow: true },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/subdomains/${domain}`,
       title: `${domain} Internet-Facing Assets Profile | ReconShield`,
@@ -538,8 +539,8 @@ export default async function SubdomainIntelligencePage({ params }) {
       {
         '@type': 'TechArticle',
         '@id': `https://reconshield.in/subdomains/${domain}/#article`,
-        headline: `${domain} Subdomain Internet-Facing Assets Mapping`,
-        description: `Detailed intelligence report outlining the known subdomains, virtual hosts, and cloud infrastructure associated with ${domain}.`,
+        headline: `Sample Subdomain Internet-Facing Assets Mapping (Illustrative Demo)`,
+        description: `Detailed intelligence report (Illustrative Demo) outlining the known subdomains, virtual hosts, and cloud infrastructure associated with ${domain} using simulated data.`,
         publisher: {
           '@type': 'Organization',
           name: 'ReconShield Threat Research'
@@ -610,10 +611,10 @@ export default async function SubdomainIntelligencePage({ params }) {
               <span>Internet-Facing Assets Mapping</span>
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
-              <span className="text-orange-400 font-mono">{domain}</span> Subdomains & External Footprint
+              <span className="text-orange-400 font-mono">{domain}</span> Subdomains & External Footprint (Demo)
             </h1>
             <p className="text-gray-400 text-lg max-w-3xl leading-relaxed">
-              Passive infrastructure intelligence and host audit report for {domain}. Access active subdomains, DNS records, TLS health, and attack surface risk evaluations.
+              Passive infrastructure intelligence and host audit report for {domain} using simulated data. Access active subdomains, DNS records, TLS health, and attack surface risk evaluations.
             </p>
           </div>
 
@@ -622,8 +623,10 @@ export default async function SubdomainIntelligencePage({ params }) {
             {/* Left/Middle Content Dashboard columns */}
             <div className="lg:col-span-2 space-y-8">
               
+              <SimulatedDataNotice />
+
               {/* Telemetry Overview & Attack Surface Score */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                 
                 {/* Score Widget */}
                 <div className="p-6 rounded-2xl bg-[#0d1117] border border-white/5 flex flex-col justify-between relative overflow-hidden">
@@ -679,7 +682,7 @@ export default async function SubdomainIntelligencePage({ params }) {
               <div className="p-6 rounded-2xl bg-[#0d1117] border border-white/5">
                 <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
                   <Activity className="w-5 h-5 text-orange-500" />
-                  Active Subdomain Mapping Table
+                  Sample Subdomain Mapping Table (Demo)
                 </h3>
                 <p className="text-sm text-gray-400 mb-6">
                   Resolved subdomains discovered via passive certificate log parsing. These subdomains route directly to the core assets of {domain}.

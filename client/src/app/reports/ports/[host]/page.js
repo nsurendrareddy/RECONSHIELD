@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Terminal, ShieldAlert, Server, Activity, ChevronRight, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { KNOWN_DOMAINS, KNOWN_IPS } from '@/lib/entityRegistry';
+import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 export const revalidate = 604800; // 7-day cache
 
@@ -139,8 +140,8 @@ export default async function PortReportPage({ params }) {
       {
         '@type': 'TechArticle',
         '@id': `https://reconshield.in/reports/ports/${host}/#report`,
-        headline: `Network Port Exposure Audit for ${host}`,
-        description: `Automated listening service mapping and port security assessment for ${host}. Evaluates exposed services and banner configurations.`,
+        headline: `Sample Network Port Exposure Audit (Demo) for ${host}`,
+        description: `Automated listening service mapping and port security assessment (Illustrative Demo) for ${host}. Evaluates exposed services and banner configurations using simulated data.`,
         publisher: {
           '@type': 'Organization',
           name: 'ReconShield Threat Research'
@@ -209,7 +210,7 @@ export default async function PortReportPage({ params }) {
               <span>Network Exposure Profile</span>
             </div>
             <h1 className="text-3xl md:text-5xl font-bold font-display leading-tight mb-4 break-words">
-              Port Exposure Report for <span className="text-[#00ff88]">{host}</span>
+              Sample Port Exposure Report (Demo) for <span className="text-[#00ff88]">{host}</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-3xl leading-relaxed">
               Mapped public network interfaces, active listening ports, software banner signatures, and associated firewall risks.
@@ -219,10 +220,12 @@ export default async function PortReportPage({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-10">
               
+              <SimulatedDataNotice />
+
               {/* Summary Section */}
               <section className="p-8 rounded-2xl bg-[#0d1117] border border-white/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 blur-[100px] rounded-full pointer-events-none" />
-                <h2 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">// EXECUTIVE SUMMARY</h2>
+                <h2 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">// SAMPLE EXECUTIVE SUMMARY (DEMO)</h2>
                 
                 <div className="flex flex-col md:flex-row items-center gap-8 mb-6">
                   <div className={`w-32 h-32 rounded-full border-4 flex flex-col items-center justify-center ${metrics.border} ${metrics.bg} ${metrics.color} shrink-0`}>

@@ -2,9 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 import { 
   Server, Search, Globe, ChevronRight, Clock, AlertTriangle, 
-  Shield, Database, Lock, Terminal, Activity, Info, CheckCircle2, Check
+  Shield, Database, Lock, Terminal, Activity, Info, CheckCircle2, Check, Network
 } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 const isValidDomain = (domain) => {
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
@@ -35,6 +36,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/tools/http-headers/${domain}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/tools/http-headers/${domain}`,
       title: `${domain} Security Headers Analysis`,
@@ -91,8 +93,8 @@ export default async function SecurityHeadersIntelligencePage({ params }) {
       {
         '@type': 'TechArticle',
         '@id': `https://reconshield.in/tools/http-headers/${domain}/#article`,
-        headline: `${domain} HTTP Response Headers Security Audit`,
-        description: `Detailed analysis documenting active security headers, CSP directives, and connection hardening configurations for ${domain}.`,
+        headline: `Sample HTTP Response Headers Security Audit (Illustrative) for ${domain}`,
+        description: `Demonstration analysis documenting active security headers, CSP directives, and connection hardening configurations for ${domain} using simulated data.`,
         publisher: {
           '@type': 'Organization',
           name: 'ReconShield Security Research'
@@ -166,12 +168,14 @@ export default async function SecurityHeadersIntelligencePage({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-10">
               
+              <SimulatedDataNotice />
+
               {/* Dynamic Telemetry Audit Card */}
               <div className="p-6 rounded-2xl bg-[#0d1117] border border-white/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 blur-[100px] rounded-full pointer-events-none" />
                 <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                   <Server className="w-5 h-5 text-cyan-400" />
-                  Active HTTP Headers Audit
+                  Sample HTTP Headers Audit (Illustrative)
                 </h2>
                 
                 <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 mb-8 p-4 bg-black/40 rounded-xl border border-white/5 font-sans">
@@ -201,7 +205,7 @@ export default async function SecurityHeadersIntelligencePage({ params }) {
                 </dl>
 
                 {/* Present Headers list */}
-                <h3 className="text-sm font-bold font-mono text-emerald-400 uppercase tracking-wider mb-3">// Configured Security Headers ({presentHeaders.length})</h3>
+                <h3 className="text-sm font-bold font-mono text-emerald-400 uppercase tracking-wider mb-3">// Example Configured Security Headers ({presentHeaders.length}) (Demo Data)</h3>
                 <div className="bg-[#05080f] border border-white/5 rounded-xl p-4 font-mono text-xs text-gray-400 mb-6 space-y-3 max-h-60 overflow-y-auto">
                   {presentHeaders.map((hdr, index) => (
                     <div key={index} className="pb-3 border-b border-white/[0.03] last:border-0 last:pb-0">

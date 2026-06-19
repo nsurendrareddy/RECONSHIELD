@@ -2,9 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 import { 
   Server, Search, Globe, ChevronRight, Clock, AlertTriangle, 
-  Shield, Database, Lock, Terminal, Activity, Info, CheckCircle2, Check, Key
+  Shield, Database, Lock, Terminal, Activity, Info, CheckCircle2, Check, Key, Network
 } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 const isValidDomain = (domain) => {
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
@@ -35,6 +36,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/tools/tech-detector/${domain}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/tools/tech-detector/${domain}`,
       title: `${domain} Tech Stack Analysis`,
@@ -81,8 +83,8 @@ export default async function TechDetectorIntelligencePage({ params }) {
       {
         '@type': 'TechArticle',
         '@id': `https://reconshield.in/tools/tech-detector/${domain}/#article`,
-        headline: `${domain} Web Technology and Tech Stack Audit`,
-        description: `Detailed analysis documenting active frameworks, CMS modules, analytics tracking, and network CDNs for ${domain}.`,
+        headline: `Sample Tech Stack Audit (Illustrative) for ${domain}`,
+        description: `Demonstration analysis documenting active frameworks, CMS modules, analytics tracking, and network CDNs for ${domain} using simulated data.`,
         publisher: {
           '@type': 'Organization',
           name: 'ReconShield Security Research'
@@ -156,12 +158,14 @@ export default async function TechDetectorIntelligencePage({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-10">
               
+              <SimulatedDataNotice />
+
               {/* Dynamic Telemetry Audit Card */}
               <div className="p-6 rounded-2xl bg-[#0d1117] border border-white/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/5 blur-[100px] rounded-full pointer-events-none" />
                 <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                   <Server className="w-5 h-5 text-cyan-400" />
-                  Detected Technology Inventory
+                  Sample Technology Inventory (Illustrative)
                 </h2>
                 
                 <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-6 mb-8 p-4 bg-black/40 rounded-xl border border-white/5 font-sans">
@@ -184,7 +188,7 @@ export default async function TechDetectorIntelligencePage({ params }) {
                 </dl>
 
                 {/* Parsed Record Details */}
-                <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider mb-3">// Tech Stack Components</h3>
+                <h3 className="text-sm font-bold font-mono text-cyan-400 uppercase tracking-wider mb-3">// Example Tech Stack Components (Demo Data)</h3>
                 <div className="bg-[#05080f] border border-white/5 rounded-xl p-4 font-mono text-xs text-gray-400 space-y-4 mb-6">
                   <div>
                     <div className="text-gray-500 text-[10px] mb-1">HOSTING & PERFORMANCE INFRASTRUCTURE</div>

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Lock, Shield, Server, Activity, ChevronRight, CheckCircle2, AlertTriangle, HelpCircle } from 'lucide-react';
 import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
+import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 export const revalidate = 604800; // 7-day cache
 
@@ -89,8 +90,8 @@ export default async function SslReportPage({ params }) {
       {
         '@type': 'TechArticle',
         '@id': `https://reconshield.in/reports/ssl/${domain}/#report`,
-        headline: `SSL/TLS Security Compliance Audit Report for ${domain}`,
-        description: `Automated transport layer cryptographic assessment for ${domain}. Evaluates cipher strength, issuing authorities, protocols, and compliance configurations.`,
+        headline: `Sample SSL/TLS Security Compliance Audit Report (Illustrative Demo) for ${domain}`,
+        description: `Automated transport layer cryptographic assessment (Illustrative Demo) for ${domain}. Evaluates cipher strength, issuing authorities, protocols, and compliance configurations using simulated data.`,
         publisher: {
           '@type': 'Organization',
           name: 'ReconShield Threat Research'
@@ -181,7 +182,7 @@ export default async function SslReportPage({ params }) {
               <span>Cryptographic Compliance Audit</span>
             </div>
             <h1 className="text-3xl md:text-5xl font-bold font-display leading-tight mb-4 break-words">
-              SSL/TLS Assessment for <span className="text-[#00ff88]">{domain}</span>
+              Sample SSL/TLS Assessment (Demo) for <span className="text-[#00ff88]">{domain}</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-3xl leading-relaxed">
               Public transport layer configuration audit report. Evaluates cryptographic signatures, trusted roots, protocol capabilities, and server vulnerability vectors.
@@ -191,10 +192,12 @@ export default async function SslReportPage({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-10">
               
+              <SimulatedDataNotice />
+
               {/* Summary Section */}
               <section className="p-8 rounded-2xl bg-[#0d1117] border border-white/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none" />
-                <h2 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">// EXECUTIVE SUMMARY</h2>
+                <h2 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">// SAMPLE EXECUTIVE SUMMARY (DEMO)</h2>
                 
                 <div className="flex flex-col md:flex-row items-center gap-8 mb-6">
                   <div className={`w-32 h-32 rounded-full border-4 flex flex-col items-center justify-center ${scoreInfo.border} ${scoreInfo.bg} ${scoreInfo.color} shrink-0`}>

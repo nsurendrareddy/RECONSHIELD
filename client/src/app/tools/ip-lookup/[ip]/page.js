@@ -6,6 +6,7 @@ import {
   ArrowRight, Key, Layers, Lock, Cpu, Activity, CheckCircle2
 } from 'lucide-react';
 import { notFound } from 'next/navigation';
+import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 // IP Validation Utility
 const isValidIp = (ip) => {
@@ -157,6 +158,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/tools/ip-lookup/${ip}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/tools/ip-lookup/${ip}`,
       title: `IP Reputation Report for ${ip}`,
@@ -289,8 +291,8 @@ export default async function IpIntelligencePage({ params }) {
       {
         '@type': 'TechArticle',
         '@id': `https://reconshield.in/tools/ip-lookup/${ip}#article`,
-        'headline': `${ip} IP Reputation, Geolocation, and Threat Profile`,
-        'description': `Programmatic threat audit detailing ASN routing, ISP connection classification, blacklist flags, and anonymizer markers for IP ${ip}.`,
+        'headline': `Sample IP Reputation, Geolocation, and Threat Profile (Illustrative)`,
+        'description': `Programmatic threat audit (Illustrative Demo) detailing ASN routing, ISP connection classification, blacklist flags, and anonymizer markers for IP ${ip} using simulated data.`,
         'author': { '@type': 'Person', 'name': 'Surendra Reddy' },
         'publisher': { '@id': 'https://reconshield.in/#organization' },
         'url': `https://reconshield.in/tools/ip-lookup/${ip}`,
@@ -362,13 +364,15 @@ export default async function IpIntelligencePage({ params }) {
             {/* Main Content Columns */}
             <div className="lg:col-span-2 space-y-8">
               
+              <SimulatedDataNotice />
+
               {/* Scoring Dashboard */}
-              <div className="p-8 rounded-3xl bg-[#0a0d14] border border-white/5 relative overflow-hidden">
+              <div className="p-8 rounded-3xl bg-[#0a0d14] border border-white/5 relative overflow-hidden mt-8">
                 <div className="absolute top-0 right-0 w-80 h-80 bg-[#00ff88]/5 blur-[120px] rounded-full pointer-events-none" />
                 
                 <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2 font-display">
                   <Cpu className="w-5 h-5 text-[#00ff88]" />
-                  Proprietary Reputation Metrics
+                  Sample Proprietary Reputation Metrics (Demo Data)
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -439,7 +443,7 @@ export default async function IpIntelligencePage({ params }) {
               <div className="p-8 rounded-3xl bg-[#0a0d14] border border-white/5">
                 <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2 font-display">
                   <MapPin className="w-5 h-5 text-purple-400" />
-                  Network & Geolocation Registry
+                  Network & Geolocation Registry (Demo Data)
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 text-sm font-mono text-gray-400">
@@ -574,19 +578,16 @@ export default async function IpIntelligencePage({ params }) {
             {/* Sidebar Columns */}
             <div className="lg:col-span-1 space-y-6">
               
-              {/* Trust Badge */}
+              {/* Educational Demo Badge */}
               <div className="p-6 rounded-3xl bg-gradient-to-b from-[#0a0d14] to-transparent border border-white/5 space-y-4">
-                <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-[#00ff88]/10 text-[#00ff88] text-[9px] font-mono uppercase tracking-widest">
-                  <Check className="w-3 h-3" /> E-E-A-T Verified
+                <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded bg-blue-500/10 text-blue-400 text-[9px] font-mono uppercase tracking-widest">
+                  Educational Demo
                 </div>
                 <div>
-                  <h4 className="text-white font-bold text-sm mb-1 font-display">ReconShield Threat Research</h4>
+                  <h4 className="text-white font-bold text-sm mb-1 font-display">Simulated Environment</h4>
                   <p className="text-xs text-gray-400 leading-relaxed font-sans">
-                    Audited by security researchers. Data is compiled from IANA registries, RBL threat feeds, BGP route listings, and verified abuse databases.
+                    This data is programmatically generated for demonstration purposes. It does not reflect live network conditions or genuine threat feeds.
                   </p>
-                </div>
-                <div className="text-[9px] font-mono text-gray-600 uppercase">
-                  Last Updated: June 2026 | Reviewed by Surendra Reddy
                 </div>
               </div>
 

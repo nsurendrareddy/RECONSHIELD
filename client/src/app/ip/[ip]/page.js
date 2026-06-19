@@ -293,7 +293,7 @@ export async function generateMetadata({ params }) {
     description: intel.aiSummary,
     alternates: { canonical: `https://reconshield.in/ip/${ip}` },
     // noindex until backend supplies real (non-mocked) threat data
-    robots: { index: true, follow: true },
+    robots: { index: false, follow: true },
     openGraph: {
       title: `${ip} - ${intel.riskClassification} (Score: ${intel.threatScore}/100)`,
       description: intel.aiSummary,
@@ -469,32 +469,32 @@ export default async function IpEntityPage({ params }) {
             {/* Main Content Column */}
             <div className="lg:col-span-2 space-y-12">
               
-              {/* Advanced E-E-A-T Credibility Header Panel */}
+              {/* Data Disclaimer Panel */}
               <div className="bg-[#0d1117] border border-[#1a2332] rounded-xl p-6 shadow-md">
                 <h3 className="text-xs font-mono text-[#8a9bb0] uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-[#1a2332] pb-3">
-                  <span>🛡️</span> E-E-A-T Credibility & Fact Verification
+                  <span>ℹ️</span> Automated Data Summary & Disclaimer
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
                   <div className="flex items-center gap-2.5 bg-surface-950 p-3 rounded border border-white/5">
                     <span className={`w-2.5 h-2.5 rounded-full ${intel.threatScore === 0 ? 'bg-[#00ff88]' : 'bg-[#ff3366]'} animate-pulse`} />
                     <span className="text-[#94a3b8]">Verdict:</span>
-                    <span className="text-white font-bold">{intel.threatScore === 0 ? 'Verified Safe Service' : 'Active Scanner Threat'}</span>
+                    <span className="text-white font-bold">{intel.threatScore === 0 ? 'Automated Data Summary' : 'Active Scanner Threat'}</span>
                   </div>
                   <div className="flex items-center gap-2.5 bg-surface-950 p-3 rounded border border-white/5">
-                    <span className="text-[#94a3b8]">Verified By:</span>
-                    <span className="text-white font-bold">ReconShield Threat Research Team</span>
+                    <span className="text-[#94a3b8]">Source:</span>
+                    <span className="text-white font-bold">Public Threat Feeds & Telemetry</span>
                   </div>
                   <div className="flex items-center gap-2.5 bg-surface-950 p-3 rounded border border-white/5">
-                    <span className="text-[#94a3b8]">Methodology:</span>
-                    <span className="text-white font-bold">Multi-Sensor Telemetry Consensus</span>
+                    <span className="text-[#94a3b8]">Processing:</span>
+                    <span className="text-white font-bold">Algorithmic Aggregation</span>
                   </div>
                   <div className="flex items-center gap-2.5 bg-surface-950 p-3 rounded border border-white/5">
-                    <span className="text-[#94a3b8]">Last Scanned:</span>
+                    <span className="text-[#94a3b8]">Last Checked:</span>
                     <span className="text-white font-bold">{new Date(intel.lastSeen).toLocaleDateString()}</span>
                   </div>
                 </div>
                 <p className="text-[11px] text-[#8a9bb0] leading-relaxed mt-4 font-sans border-l-2 border-cyan-500/30 pl-3">
-                  <strong>Editorial Verification Notice:</strong> This node profile was compiled in compliance with ReconShield's defensive research workflow. Threat reputation scoring is derived from multi-sensor telemetry consensus. Verified Anycast resolvers and search engine scrapers are whitelisted to prevent false positive security blocks.
+                  <strong>Data Disclaimer:</strong> This profile is generated automatically from public sources and algorithmic intelligence feeds. The information is not manually reviewed, may contain inaccuracies, and does not constitute an official security assessment or formal audit.
                 </p>
               </div>
 
@@ -564,9 +564,9 @@ export default async function IpEntityPage({ params }) {
                 <div className="prose prose-invert max-w-none">
                   {intel.verifiedFeed ? (
                     <div className="bg-emerald-500/5 border border-emerald-500/20 p-6 rounded-xl mb-6">
-                      <h3 className="text-[#00ff88] text-lg font-bold mt-0 mb-3">Verified Public Infrastructure</h3>
+                      <h3 className="text-[#00ff88] text-lg font-bold mt-0 mb-3">Known Public Infrastructure</h3>
                       <p className="text-[#e2e8f0]">
-                        This node has been vetted by the ReconShield Infrastructure Intelligence Unit. Analysis confirms its role as a core public internet utility rather than a malicious platform. No scanning anomalies have been reported in our telemetry records.
+                        This data is generated automatically from public sources and is not manually reviewed. The information is provided as-is, may be inaccurate, and does not constitute a security assessment or official audit.
                       </p>
                     </div>
                   ) : (

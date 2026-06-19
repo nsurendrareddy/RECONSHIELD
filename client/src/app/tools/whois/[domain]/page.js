@@ -22,6 +22,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/tools/whois/${domain}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/tools/whois/${domain}`,
       title: `${domain} WHOIS Profile`,

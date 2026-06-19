@@ -238,6 +238,13 @@ export default function PortScannerPage() {
             <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-red-400" /> Banner Grabbing</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-red-400" /> Firewall Rule Checks</div>
           </div>
+
+          <div className="mt-8 max-w-2xl mx-auto p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl">
+            <p className="text-orange-400 text-xs font-mono text-center flex flex-col md:flex-row items-center justify-center gap-2">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <span><strong>AUTHORIZED USE ONLY:</strong> This tool is strictly for educational and defensive purposes. Only scan assets you own or have explicit authorization to test.</span>
+            </p>
+          </div>
         </div>
       </section>
 

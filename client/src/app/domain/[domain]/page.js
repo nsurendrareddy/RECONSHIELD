@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation';
 import { Shield, Globe, Server, Activity, ChevronRight, Search, Clock, Lock, Network } from 'lucide-react';
 import { generateDatasetSchema } from '@/utils/metadata';
 import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
+import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 export const revalidate = 3600; // ISR cache invalidation every hour
 
@@ -95,7 +96,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/domain/${intel.domain}`,
     },
-    robots: { index: true, follow: true },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/domain/${intel.domain}`,
       title: `${intel.domain} Domain Profile`,
@@ -233,20 +234,22 @@ export default async function DomainIntelligencePage({ params }) {
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-12">
               
-              {/* E-E-A-T Credibility Header Panel */}
+              <SimulatedDataNotice />
+
+              {/* Educational Demo Header Panel */}
               <div className="bg-[#0d1117] border border-white/10 rounded-xl p-6 shadow-md">
                 <h3 className="text-xs font-mono text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2 border-b border-white/5 pb-3">
-                  <span>🛡️</span> Fact Verification Status
+                  <span>🎓</span> Educational Demo Status
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
                   <div className="flex items-center gap-2.5 bg-black/40 p-3 rounded border border-white/5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#00ff88] animate-pulse" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse" />
                     <span className="text-gray-500">Registry Source:</span>
-                    <span className="text-white font-bold">Authoritative RDAP API</span>
+                    <span className="text-white font-bold">Simulated Fallback</span>
                   </div>
                   <div className="flex items-center gap-2.5 bg-black/40 p-3 rounded border border-white/5">
                     <span className="text-gray-500">Audit Authority:</span>
-                    <span className="text-white font-bold">ReconShield Research Team</span>
+                    <span className="text-white font-bold">Educational Sandbox</span>
                   </div>
                   <div className="flex items-center gap-2.5 bg-black/40 p-3 rounded border border-white/5">
                     <span className="text-gray-500">Last Synced:</span>
@@ -254,7 +257,7 @@ export default async function DomainIntelligencePage({ params }) {
                   </div>
                   <div className="flex items-center gap-2.5 bg-black/40 p-3 rounded border border-white/5">
                     <span className="text-gray-500">Verification state:</span>
-                    <span className="text-[#00ff88] font-bold">Checked & Vetted</span>
+                    <span className="text-blue-400 font-bold">Simulated / Demo Data</span>
                   </div>
                 </div>
               </div>

@@ -15,6 +15,7 @@ import { EMAIL_AUTHS_DATA } from '@/utils/emailAuthsData';
 import { COMPARISONS_DATA } from '@/utils/comparisonsData';
 import { RESEARCH_REPORTS } from '@/utils/researchReportsData';
 import { GLOSSARY_TERMS } from '@/utils/glossaryData';
+import { SSL_TOPICS_DATA, SUBDOMAIN_TOPICS_DATA } from '@/utils/programmaticTopicsData';
 
 export const runtime = 'edge'; 
 
@@ -250,6 +251,16 @@ export async function GET(request, { params }) {
       // Append glossary URLs
       Object.keys(GLOSSARY_TERMS).forEach(slug => {
         staticUrls.push({ url: `${BASE_URL}/glossary/${slug}`, priority: 0.8, freq: 'weekly' });
+      });
+
+      // Append SSL topics URLs
+      Object.keys(SSL_TOPICS_DATA).forEach(slug => {
+        staticUrls.push({ url: `${BASE_URL}/ssl/${slug}`, priority: 0.7, freq: 'weekly' });
+      });
+
+      // Append Subdomain topics URLs
+      Object.keys(SUBDOMAIN_TOPICS_DATA).forEach(slug => {
+        staticUrls.push({ url: `${BASE_URL}/subdomains/${slug}`, priority: 0.7, freq: 'weekly' });
       });
 
       staticUrls.forEach(({ url, priority, freq }) => {

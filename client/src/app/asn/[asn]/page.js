@@ -44,7 +44,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/asn/${formattedAsn}`,
     },
-    robots: { index: true, follow: true },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/asn/${formattedAsn}`,
       title: `${formattedAsn} Network Profile`,

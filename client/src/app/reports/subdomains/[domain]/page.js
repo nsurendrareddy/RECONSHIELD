@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Network, ShieldAlert, Server, Activity, ChevronRight, CheckCircle2, AlertTriangle, AlertCircle } from 'lucide-react';
 import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
+import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 export const revalidate = 604800; // 7-day cache
 
@@ -115,8 +116,8 @@ export default async function SubdomainsReportPage({ params }) {
       {
         '@type': 'TechArticle',
         '@id': `https://reconshield.in/reports/subdomains/${domain}/#report`,
-        headline: `Subdomain Attack Surface & DNS Audit for ${domain}`,
-        description: `Automated subdomain boundary audit for ${domain}. Maps structural hosts, staging assets, and DNS misconfigurations.`,
+        headline: `Sample Subdomain Attack Surface & DNS Audit (Illustrative Demo) for ${domain}`,
+        description: `Automated subdomain boundary audit (Illustrative Demo) for ${domain}. Maps structural hosts, staging assets, and DNS misconfigurations using simulated data.`,
         publisher: {
           '@type': 'Organization',
           name: 'ReconShield Threat Research'
@@ -185,7 +186,7 @@ export default async function SubdomainsReportPage({ params }) {
               <span>Attack Surface Exposure Profile</span>
             </div>
             <h1 className="text-3xl md:text-5xl font-bold font-display leading-tight mb-4 break-words">
-              Attack Surface Audit for <span className="text-[#00ff88]">{domain}</span>
+              Sample Attack Surface Audit (Demo) for <span className="text-[#00ff88]">{domain}</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-3xl leading-relaxed">
               Mapped corporate DNS boundary, active subdomains, staging infrastructure exposure, and shadow IT vulnerabilities.
@@ -195,10 +196,12 @@ export default async function SubdomainsReportPage({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 space-y-10">
               
+              <SimulatedDataNotice />
+
               {/* Summary Section */}
               <section className="p-8 rounded-2xl bg-[#0d1117] border border-white/5 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/5 blur-[100px] rounded-full pointer-events-none" />
-                <h2 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">// EXECUTIVE SUMMARY</h2>
+                <h2 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">// SAMPLE EXECUTIVE SUMMARY (DEMO)</h2>
                 
                 <div className="flex flex-col md:flex-row items-center gap-8 mb-6">
                   <div className={`w-32 h-32 rounded-full border-4 flex flex-col items-center justify-center ${metrics.border} ${metrics.bg} ${metrics.color} shrink-0`}>

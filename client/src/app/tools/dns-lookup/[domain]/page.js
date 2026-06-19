@@ -108,6 +108,7 @@ export async function generateMetadata({ params }) {
       alternates: {
         canonical: `https://reconshield.in/tools/dns-lookup/${domain}`,
       },
+      robots: { index: true, follow: true },
       openGraph: {
         url: `https://reconshield.in/tools/dns-lookup/${domain}`,
         title: seo.title,
@@ -130,6 +131,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/tools/dns-lookup/${domain}`,
     },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/tools/dns-lookup/${domain}`,
       title: `${domain} DNS Record Query & Analysis`,
