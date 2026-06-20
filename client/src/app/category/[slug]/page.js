@@ -1,3 +1,4 @@
+import React from 'react';
 import { client, urlFor } from '@/utils/sanity';
 import { Shield, Target, Search, Network, Cpu, Lock, CheckCircle2, Globe, Clock, ChevronRight, AlertTriangle, BookOpen } from 'lucide-react';
 import Link from 'next/link';
