@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { adQueue } from '@/lib/adQueue';
 
 type AdsterraNativeProps = {
   className?: string;
@@ -8,77 +9,105 @@ type AdsterraNativeProps = {
 
 export default function AdsterraNative({ className = '' }: AdsterraNativeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [adFailed, setAdFailed] = useState(false);
+  const [adState, setAdState] = useState<'loading' | 'filled' | 'failed'>('loading');
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !containerRef.current || adFailed) return;
-    if (containerRef.current.querySelector('script')) return;
+    if (typeof window === 'undefined' || !containerRef.current || adState !== 'loading') return;
 
-    const adContainer = document.createElement('div');
-    adContainer.id = 'container-6546c038dbbf040d39d1b8179e7743ca';
+    let observer: MutationObserver;
+    let timeoutTimer: number;
 
-    const script = document.createElement('script');
-    script.async = true;
-    script.setAttribute('data-cfasync', 'false');
-    script.src = 'https://pl29692252.effectivecpmnetwork.com/6546c038dbbf040d39d1b8179e7743ca/invoke.js';
+    const loadAd = () => new Promise<void>((resolve) => {
+      if (!containerRef.current) {
+        setAdState('failed');
+        resolve();
+        return;
+      }
 
-    const hasRenderedAd = () => {
-      if (!containerRef.current) return false;
-      const hasContainerChildren = adContainer.children.length > 0;
-      const hasAdditionalChildren = Array.from(containerRef.current.children).some((child) => {
-        if (child === adContainer || child === script) return false;
-        if (child.nodeName === 'SCRIPT' || child.nodeName === 'NOSCRIPT') return false;
-        if (child instanceof HTMLElement && child.dataset.adsterraPlaceholder === 'true') return false;
-        return true;
-      });
-      return hasContainerChildren || hasAdditionalChildren;
-    };
+      const TARGET_ID = 'container-6546c038dbbf040d39d1b8179e7743ca';
+      
+      // We create the expected container div for this specific ad load
+      const adContainer = document.createElement('div');
+      adContainer.id = TARGET_ID;
+      containerRef.current.innerHTML = ''; // Clean up any existing children
+      containerRef.current.appendChild(adContainer);
 
-    const cleanupTimer = window.setTimeout(() => {
-      if (!hasRenderedAd()) {
-        setAdFailed(true);
-        if (containerRef.current) {
+      const script = document.createElement('script');
+      script.async = true;
+      script.setAttribute('data-cfasync', 'false');
+      script.src = 'https://pl29692252.effectivecpmnetwork.com/6546c038dbbf040d39d1b8179e7743ca/invoke.js';
+
+      const finishLoading = (status: 'filled' | 'failed') => {
+        if (observer) observer.disconnect();
+        window.clearTimeout(timeoutTimer);
+        setAdState(status);
+        console.log(`[Adsterra] Native Banner - ${status.toUpperCase()}`);
+        
+        if (status === 'filled') {
+          // Dynamic ID rotation: Change the ID so the NEXT Native Ad in the queue can use the TARGET_ID safely
+          const uniqueHash = Math.random().toString(36).substring(2, 9);
+          adContainer.id = `filled-native-${uniqueHash}`;
+        } else if (containerRef.current) {
           containerRef.current.innerHTML = '';
         }
-      }
-    }, 8000);
+        resolve(); // Free the queue
+      };
 
-    script.onload = () => {
-      if (hasRenderedAd()) {
-        window.clearTimeout(cleanupTimer);
-      }
-    };
+      // Watch for actual ad content injection (either iframe or native ad nodes)
+      observer = new MutationObserver((mutations) => {
+        if (!containerRef.current) return;
+        for (const mutation of mutations) {
+          if (mutation.addedNodes.length) {
+            for (const node of Array.from(mutation.addedNodes)) {
+              if (
+                node.nodeName === 'IFRAME' || 
+                (node instanceof HTMLElement && node.classList && node.classList.length > 0 && node.tagName !== 'SCRIPT')
+              ) {
+                finishLoading('filled');
+                return;
+              }
+            }
+          }
+        }
+      });
 
-    script.onerror = () => {
-      window.clearTimeout(cleanupTimer);
-      setAdFailed(true);
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
-      }
-    };
+      // We observe the adContainer specifically
+      observer.observe(adContainer, { childList: true, subtree: true });
 
-    containerRef.current.appendChild(adContainer);
-    containerRef.current.appendChild(script);
+      // 3-second strict timeout for fill diagnostics
+      timeoutTimer = window.setTimeout(() => {
+        finishLoading('failed');
+      }, 3000);
+
+      script.onerror = () => finishLoading('failed');
+
+      // Inject script AFTER appending the container with the correct ID
+      containerRef.current.appendChild(script);
+    });
+
+    adQueue.enqueue(loadAd);
 
     return () => {
-      window.clearTimeout(cleanupTimer);
-      if (script.parentNode) script.parentNode.removeChild(script);
-      if (adContainer.parentNode) adContainer.parentNode.removeChild(adContainer);
+      if (observer) observer.disconnect();
+      window.clearTimeout(timeoutTimer);
     };
-  }, [adFailed]);
+  }, [adState]);
 
-  if (adFailed) return null;
+  if (adState === 'failed') return null;
+
+  const sizeStyles = adState === 'filled' 
+    ? { opacity: 1, minHeight: 250, height: 'auto' }
+    : { height: 0, opacity: 0, overflow: 'hidden' as const };
 
   return (
-    <div className={`flex justify-center items-center my-6 w-full ${className}`}>
+    <div 
+      className={`flex justify-center items-center w-full transition-all duration-500 ease-in-out ${adState === 'filled' ? 'my-6' : 'my-0'} ${className}`}
+      style={sizeStyles}
+    >
       <div
         ref={containerRef}
-        className="w-full min-h-[250px] relative overflow-hidden"
+        className="w-full relative overflow-hidden flex justify-center"
       >
-        <div
-          data-adsterra-placeholder="true"
-          className="absolute inset-0 bg-surface-900/10 border border-white/5 rounded-lg -z-10"
-        />
       </div>
     </div>
   );

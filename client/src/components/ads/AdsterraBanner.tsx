@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { adQueue } from '@/lib/adQueue';
 
 type AdsterraBannerProps = {
   type: '728x90' | '300x250';
@@ -14,93 +15,116 @@ const BANNER_CONFIGS = {
 
 export default function AdsterraBanner({ type, className = '' }: AdsterraBannerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [adFailed, setAdFailed] = useState(false);
+  const [adState, setAdState] = useState<'loading' | 'filled' | 'failed'>('loading');
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !containerRef.current || adFailed) return;
-    if (containerRef.current.querySelector('script')) return;
+    if (typeof window === 'undefined' || !containerRef.current || adState !== 'loading') return;
 
-    const config = BANNER_CONFIGS[type];
-    if (!config) return;
+    let observer: MutationObserver;
+    let timeoutTimer: number;
 
-    const atOptions = {
-      key: config.key,
-      format: 'iframe',
-      height: config.height,
-      width: config.width,
-      params: {}
-    };
+    const loadAd = () => new Promise<void>((resolve) => {
+      const config = BANNER_CONFIGS[type];
+      if (!config || !containerRef.current) {
+        setAdState('failed');
+        console.warn(`[Adsterra] ${type} Banner - Failed: Invalid config or missing container`);
+        resolve();
+        return;
+      }
 
-    ;(window as any).atOptions = atOptions;
+      // Prepare configuration
+      const atOptions = {
+        key: config.key,
+        format: 'iframe',
+        height: config.height,
+        width: config.width,
+        params: {}
+      };
 
-    const inlineScript = document.createElement('script');
-    inlineScript.type = 'text/javascript';
-    inlineScript.text = `window.atOptions = ${JSON.stringify(atOptions)};`;
+      // Set global variable carefully
+      ;(window as any).atOptions = atOptions;
 
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = `https://www.highperformanceformat.com/${config.key}/invoke.js`;
-    script.async = true;
+      // Ensure we clean up any old scripts in this container
+      containerRef.current.innerHTML = '';
 
-    const hasRenderedAd = () => {
-      if (!containerRef.current) return false;
-      return Array.from(containerRef.current.children).some((child) => {
-        if (child === inlineScript || child === script) return false;
-        if (child.nodeName === 'SCRIPT' || child.nodeName === 'NOSCRIPT') return false;
-        if (child instanceof HTMLElement && child.dataset.adsterraPlaceholder === 'true') return false;
-        return true;
-      });
-    };
+      // Inline config script
+      const inlineScript = document.createElement('script');
+      inlineScript.type = 'text/javascript';
+      inlineScript.text = `window.atOptions = ${JSON.stringify(atOptions)};`;
 
-      const cleanupTimer = window.setTimeout(() => {
-      if (!hasRenderedAd()) {
-        setAdFailed(true);
-        if (containerRef.current) {
+      // Main invoke script
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `https://www.highperformanceformat.com/${config.key}/invoke.js`;
+      script.async = true;
+
+      const finishLoading = (status: 'filled' | 'failed') => {
+        if (observer) observer.disconnect();
+        window.clearTimeout(timeoutTimer);
+        setAdState(status);
+        console.log(`[Adsterra] ${type} Banner - ${status.toUpperCase()}`);
+        if (status === 'failed' && containerRef.current) {
           containerRef.current.innerHTML = '';
         }
-      }
-    }, 8000);
+        resolve(); // Free the queue for the next ad
+      };
 
-    script.onload = () => {
-      if (hasRenderedAd()) {
-        window.clearTimeout(cleanupTimer);
-      }
-    };
+      // Watch for iframe injection
+      observer = new MutationObserver((mutations) => {
+        if (!containerRef.current) return;
+        for (const mutation of mutations) {
+          if (mutation.addedNodes.length) {
+            for (const node of Array.from(mutation.addedNodes)) {
+              if (node.nodeName === 'IFRAME') {
+                finishLoading('filled');
+                return;
+              }
+            }
+          }
+        }
+      });
 
-    script.onerror = () => {
-      window.clearTimeout(cleanupTimer);
-      setAdFailed(true);
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
-      }
-    };
+      observer.observe(containerRef.current, { childList: true, subtree: true });
 
-    containerRef.current.appendChild(inlineScript);
-    containerRef.current.appendChild(script);
+      // 3-second strict timeout for fill diagnosis
+      timeoutTimer = window.setTimeout(() => {
+        finishLoading('failed');
+      }, 3000);
+
+      script.onerror = () => finishLoading('failed');
+
+      // Inject scripts
+      containerRef.current.appendChild(inlineScript);
+      containerRef.current.appendChild(script);
+    });
+
+    // Enqueue the loading process
+    adQueue.enqueue(loadAd);
 
     return () => {
-      window.clearTimeout(cleanupTimer);
-      if (script.parentNode) script.parentNode.removeChild(script);
-      if (inlineScript.parentNode) inlineScript.parentNode.removeChild(inlineScript);
+      if (observer) observer.disconnect();
+      window.clearTimeout(timeoutTimer);
     };
-  }, [type, adFailed]);
+  }, [type, adState]);
 
-  if (adFailed) return null;
+  if (adState === 'failed') return null;
 
-  const sizeClass = type === '728x90'
-    ? 'min-h-[90px] w-full max-w-[728px]'
-    : 'min-h-[250px] w-full max-w-[300px]';
+  // Render container with smooth expansion. Avoid CLS by keeping it 0 height until filled.
+  const sizeStyles = adState === 'filled' 
+    ? { minHeight: type === '728x90' ? 90 : 250, opacity: 1, height: 'auto' }
+    : { height: 0, opacity: 0, overflow: 'hidden' as const };
+
+  const baseWidth = type === '728x90' ? 'max-w-[728px]' : 'max-w-[300px]';
 
   return (
-    <div className={`flex justify-center items-center my-6 w-full ${className}`}>
+    <div 
+      className={`flex justify-center items-center w-full transition-all duration-500 ease-in-out ${adState === 'filled' ? 'my-6' : 'my-0'} ${className}`}
+      style={sizeStyles}
+    >
       <div
         ref={containerRef}
-        className={`relative flex justify-center items-center overflow-hidden ${sizeClass}`}
+        className={`relative flex justify-center items-center overflow-hidden w-full ${baseWidth}`}
       >
-        <div
-          data-adsterra-placeholder="true"
-          className="absolute inset-0 bg-surface-900/10 border border-white/5 rounded-lg -z-10"
-        />
       </div>
     </div>
   );
