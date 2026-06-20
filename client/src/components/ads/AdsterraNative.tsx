@@ -13,7 +13,7 @@ export default function AdsterraNative({ className = '' }: AdsterraNativeProps) 
     if (typeof window === 'undefined' || !containerRef.current) return;
     
     // Prevent double injection
-    if (containerRef.current.childNodes.length > 0) return;
+    if (containerRef.current.querySelector('iframe')) return;
 
     try {
       // Create iframe for isolation to prevent container ID namespace collisions

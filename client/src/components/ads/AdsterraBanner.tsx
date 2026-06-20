@@ -19,7 +19,7 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
     if (typeof window === 'undefined' || !containerRef.current) return;
     
     // Prevent double injection (especially in React Strict Mode)
-    if (containerRef.current.childNodes.length > 0) return;
+    if (containerRef.current.querySelector('iframe')) return;
 
     const config = BANNER_CONFIGS[type];
     if (!config) return;
