@@ -86,10 +86,10 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
 
       observer.observe(containerRef.current, { childList: true, subtree: true });
 
-      // 3-second strict timeout for fill diagnosis
+      // 5-second strict timeout for fill diagnosis
       timeoutTimer = window.setTimeout(() => {
         finishLoading('failed');
-      }, 3000);
+      }, 5000);
 
       script.onerror = () => finishLoading('failed');
 
@@ -112,13 +112,13 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
   // Render container with smooth expansion. Avoid CLS by keeping it 0 height until filled.
   const sizeStyles = adState === 'filled' 
     ? { minHeight: type === '728x90' ? 90 : 250, opacity: 1, height: 'auto' }
-    : { height: 0, opacity: 0, overflow: 'hidden' as const };
+    : { height: 0, margin: 0, padding: 0, opacity: 0, overflow: 'hidden' as const };
 
   const baseWidth = type === '728x90' ? 'max-w-[728px]' : 'max-w-[300px]';
 
   return (
     <div 
-      className={`flex justify-center items-center w-full transition-all duration-500 ease-in-out ${adState === 'filled' ? 'my-6' : 'my-0'} ${className}`}
+      className={`not-prose flex justify-center items-center w-full transition-all duration-500 ease-in-out ${adState === 'filled' ? className : ''}`}
       style={sizeStyles}
     >
       <div

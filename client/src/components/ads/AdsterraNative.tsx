@@ -74,10 +74,10 @@ export default function AdsterraNative({ className = '' }: AdsterraNativeProps) 
       // We observe the adContainer specifically
       observer.observe(adContainer, { childList: true, subtree: true });
 
-      // 3-second strict timeout for fill diagnostics
+      // 5-second strict timeout for fill diagnostics
       timeoutTimer = window.setTimeout(() => {
         finishLoading('failed');
-      }, 3000);
+      }, 5000);
 
       script.onerror = () => finishLoading('failed');
 
@@ -97,16 +97,16 @@ export default function AdsterraNative({ className = '' }: AdsterraNativeProps) 
 
   const sizeStyles = adState === 'filled' 
     ? { opacity: 1, minHeight: 250, height: 'auto' }
-    : { height: 0, opacity: 0, overflow: 'hidden' as const };
+    : { height: 0, margin: 0, padding: 0, opacity: 0, overflow: 'hidden' as const };
 
   return (
     <div 
-      className={`flex justify-center items-center w-full transition-all duration-500 ease-in-out ${adState === 'filled' ? 'my-6' : 'my-0'} ${className}`}
+      className={`not-prose w-full transition-all duration-500 ease-in-out ${adState === 'filled' ? className : ''}`}
       style={sizeStyles}
     >
       <div
         ref={containerRef}
-        className="w-full relative overflow-hidden flex justify-center"
+        className="w-full relative overflow-hidden"
       >
       </div>
     </div>
