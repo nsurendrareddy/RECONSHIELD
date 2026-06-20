@@ -2,6 +2,7 @@ import { Shield, Target, Activity, Users, Globe, Lock, Cpu, ExternalLink } from 
 import Link from 'next/link'
 
 import { generateBaseMetadata } from '@/utils/metadata';
+import AdsterraNative from '@/components/ads/AdsterraNative';
 
 export const metadata = generateBaseMetadata({
   title: "About Surendra Reddy — Founder of ReconShield",
@@ -141,6 +142,11 @@ export default function About() {
           </p>
         </div>
       </section>
+
+      {/* Native ad mid-page */}
+      <div className="my-8 flex justify-center">
+        <AdsterraNative className="my-8" />
+      </div>
 
       {/* Methodology Section */}
       <section className="mb-24">
