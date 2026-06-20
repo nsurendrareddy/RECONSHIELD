@@ -61,11 +61,11 @@ const cspHeader = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://va.vercel-scripts.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
-  `img-src 'self' blob: data: https://cdn.sanity.io https://*.basemaps.cartocdn.com https://*.tile.openstreetmap.org https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
+  `img-src 'self' blob: data: https:`,
   `font-src 'self' data: https://fonts.gstatic.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
   `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
-  `frame-src 'self' https://news.google.com https://www.google.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
-  `child-src 'self' blob: ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
+  `frame-src 'self' https:`,
+  `child-src 'self' blob: https:`,
   "worker-src 'self' blob:"
 ].join('; ');
 
