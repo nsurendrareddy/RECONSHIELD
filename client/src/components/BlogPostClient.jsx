@@ -8,6 +8,8 @@ import { urlFor } from '@/utils/sanity'
 import AdsterraBanner from '@/components/ads/AdsterraBanner'
 import AdsterraNative from '@/components/ads/AdsterraNative'
 
+const randomViews = Math.floor(Math.random() * 500) + 100;
+
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
   types: {
@@ -198,7 +200,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
       } else if (idx === insertBeforeConclusion) {
         flushChunk(`chunk-conc-${idx}`);
         renderedElements.push(
-          <AdsterraNative key={`ad-conc`} className="my-8" />
+          <AdsterraBanner key={`ad-conc`} type="728x90" className="my-8" />
         );
       }
     });
@@ -415,7 +417,7 @@ FileETag None`,
             </div>
             <div className="flex items-center gap-1.5">
               <Globe className="w-3 h-3" />
-              <span>{Math.floor(Math.random() * 500) + 100} VIEWS</span>
+              <span>{randomViews} VIEWS</span>
             </div>
           </div>
         </div>
@@ -518,7 +520,8 @@ FileETag None`,
             {/* Mock Comments Section */}
             <div className="mt-12 pt-10 border-t border-[#1a2332] space-y-8">
               <h3 className="text-[14px] font-mono font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-[#00ff88]" /> // AUDIT BRIEFING DISCUSSION (2 COMMENTS)
+                <MessageSquare className="w-4 h-4 text-[#00ff88]" />
+                <span>{'// AUDIT BRIEFING DISCUSSION (2 COMMENTS)'}</span>
               </h3>
               
               <div className="space-y-6">
@@ -547,7 +550,7 @@ FileETag None`,
 
               {/* Comment Input Box */}
               <div className="bg-[#0d1117] border border-[#1a2332] p-5 rounded-xl space-y-4">
-                <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">// POST RESPONSE BRIEFING</div>
+                <div className="text-[10px] font-mono text-gray-500 uppercase tracking-widest">{'// POST RESPONSE BRIEFING'}</div>
                 <textarea
                   placeholder="Enter secure message..."
                   className="w-full h-24 bg-surface-950 border border-white/10 rounded-lg p-3 text-xs font-mono text-white focus:outline-none focus:border-[#00ff88]/50 placeholder:text-gray-600 resize-none"
@@ -674,7 +677,7 @@ FileETag None`,
         {/* More Articles */}
         <div className="mb-20">
           <div className="flex items-center gap-4 mb-8">
-            <h2 className="font-mono text-[12px] tracking-[3px] uppercase text-white font-bold">// MORE ARTICLES</h2>
+            <h2 className="font-mono text-[12px] tracking-[3px] uppercase text-white font-bold">{'// MORE ARTICLES'}</h2>
             <div className="h-[1px] flex-1 bg-[#1a2332]" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

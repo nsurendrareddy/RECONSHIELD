@@ -12,7 +12,8 @@ const adDomains = [
   'https://*.adsterra.com',
   'https://*.adsterranetwork.com',
   'https://portalfluently.com',
-  'https://*.portalfluently.com'
+  'https://*.portalfluently.com',
+  'https://pl29695196.effectivecpmnetwork.com'
 ];
 
 const monetagDomains = [

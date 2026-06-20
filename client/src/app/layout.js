@@ -5,6 +5,7 @@ import Script from "next/script";
 import { Inter, JetBrains_Mono, Rajdhani } from "next/font/google";
 import MonetagGlobal from "@/components/ads/MonetagGlobal";
 import AdsterraSocialBar from "@/components/ads/AdsterraSocialBar";
+import AdsterraPopunder from "@/components/ads/AdsterraPopunder";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], display: "fallback", variable: "--font-inter" });
@@ -90,6 +91,7 @@ export default function RootLayout({ children }) {
         {/* Sitewide Global Ads & Loader */}
         <MonetagGlobal />
         <AdsterraSocialBar />
+        <AdsterraPopunder />
 
         <Layout>
           {children}
