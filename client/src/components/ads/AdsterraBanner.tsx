@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type AdsterraBannerProps = {
   type: '728x90' | '300x250';
@@ -14,9 +14,10 @@ const BANNER_CONFIGS = {
 
 export default function AdsterraBanner({ type, className = '' }: AdsterraBannerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [adFailed, setAdFailed] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !containerRef.current) return;
+    if (typeof window === 'undefined' || !containerRef.current || adFailed) return;
     if (containerRef.current.querySelector('script')) return;
 
     const config = BANNER_CONFIGS[type];
@@ -41,9 +42,50 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
     script.src = `https://www.highperformanceformat.com/${config.key}/invoke.js`;
     script.async = true;
 
+    const hasRenderedAd = () => {
+      if (!containerRef.current) return false;
+      return Array.from(containerRef.current.children).some((child) => {
+        if (child === inlineScript || child === script) return false;
+        if (child.nodeName === 'SCRIPT' || child.nodeName === 'NOSCRIPT') return false;
+        if (child instanceof HTMLElement && child.dataset.adsterraPlaceholder === 'true') return false;
+        return true;
+      });
+    };
+
+      const cleanupTimer = window.setTimeout(() => {
+      if (!hasRenderedAd()) {
+        setAdFailed(true);
+        if (containerRef.current) {
+          containerRef.current.innerHTML = '';
+        }
+      }
+    }, 8000);
+
+    script.onload = () => {
+      if (hasRenderedAd()) {
+        window.clearTimeout(cleanupTimer);
+      }
+    };
+
+    script.onerror = () => {
+      window.clearTimeout(cleanupTimer);
+      setAdFailed(true);
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '';
+      }
+    };
+
     containerRef.current.appendChild(inlineScript);
     containerRef.current.appendChild(script);
-  }, [type]);
+
+    return () => {
+      window.clearTimeout(cleanupTimer);
+      if (script.parentNode) script.parentNode.removeChild(script);
+      if (inlineScript.parentNode) inlineScript.parentNode.removeChild(inlineScript);
+    };
+  }, [type, adFailed]);
+
+  if (adFailed) return null;
 
   const sizeClass = type === '728x90'
     ? 'min-h-[90px] w-full max-w-[728px]'
@@ -55,7 +97,10 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
         ref={containerRef}
         className={`relative flex justify-center items-center overflow-hidden ${sizeClass}`}
       >
-        <div className="absolute inset-0 bg-surface-900/10 border border-white/5 rounded-lg -z-10" />
+        <div
+          data-adsterra-placeholder="true"
+          className="absolute inset-0 bg-surface-900/10 border border-white/5 rounded-lg -z-10"
+        />
       </div>
     </div>
   );
