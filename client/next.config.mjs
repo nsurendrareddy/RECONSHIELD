@@ -10,7 +10,9 @@ const adDomains = [
   'https://*.profitablecpmrate.com',
   'https://*.displaycontentnetwork.com',
   'https://*.adsterra.com',
-  'https://*.adsterranetwork.com'
+  'https://*.adsterranetwork.com',
+  'https://portalfluently.com',
+  'https://*.portalfluently.com'
 ];
 
 const monetagDomains = [
