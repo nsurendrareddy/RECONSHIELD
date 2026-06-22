@@ -20,7 +20,14 @@ const monetagDomains = [
   'https://n6wxm.com',
   'https://*.n6wxm.com',
   'https://nap5k.com',
-  'https://*.nap5k.com'
+  'https://*.nap5k.com',
+  'https://*.onclickperformance.com',
+  'https://*.onclickalgo.com',
+  'https://*.activecpm.com',
+  'https://*.cpmrevenuegate.com',
+  'https://*.propellerads.com',
+  'https://*.propellerclick.com',
+  'https://*.propeller-opt.com'
 ];
 
 const adsterraDomains = [

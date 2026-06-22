@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { adQueue } from '@/lib/adQueue';
 
 type AdsterraNativeProps = {
@@ -10,12 +11,32 @@ type AdsterraNativeProps = {
 export default function AdsterraNative({ className = '' }: AdsterraNativeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [adState, setAdState] = useState<'loading' | 'filled' | 'failed'>('loading');
+  const pathname = usePathname();
+
+  const prevPath = useRef(pathname);
+
+  // Pathname guard: only trigger loading if pathname actually changes
+  useEffect(() => {
+    if (prevPath.current !== pathname) {
+      prevPath.current = pathname;
+      setAdState('loading');
+    }
+  }, [pathname]);
+
+  // Deep teardown on absolute unmount
+  useEffect(() => {
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '';
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !containerRef.current || adState !== 'loading') return;
 
-    let observer: MutationObserver;
-    let timeoutTimer: number;
+    let observer: MutationObserver | null = null;
+    let timeoutTimer: number | null = null;
 
     const loadAd = () => new Promise<void>((resolve) => {
       if (!containerRef.current) {
@@ -38,8 +59,14 @@ export default function AdsterraNative({ className = '' }: AdsterraNativeProps) 
       script.src = 'https://pl29692252.effectivecpmnetwork.com/6546c038dbbf040d39d1b8179e7743ca/invoke.js';
 
       const finishLoading = (status: 'filled' | 'failed') => {
-        if (observer) observer.disconnect();
-        window.clearTimeout(timeoutTimer);
+        if (observer) {
+          observer.disconnect();
+          observer = null;
+        }
+        if (timeoutTimer) {
+          window.clearTimeout(timeoutTimer);
+          timeoutTimer = null;
+        }
         setAdState(status);
         console.log(`[Adsterra] Native Banner - ${status.toUpperCase()}`);
         
@@ -88,8 +115,12 @@ export default function AdsterraNative({ className = '' }: AdsterraNativeProps) 
     adQueue.enqueue(loadAd);
 
     return () => {
-      if (observer) observer.disconnect();
-      window.clearTimeout(timeoutTimer);
+      if (observer) {
+        observer.disconnect();
+      }
+      if (timeoutTimer) {
+        window.clearTimeout(timeoutTimer);
+      }
     };
   }, [adState]);
 

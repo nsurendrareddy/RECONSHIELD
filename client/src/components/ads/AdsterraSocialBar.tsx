@@ -6,12 +6,18 @@ export default function AdsterraSocialBar() {
   const [adState, setAdState] = useState<'loading' | 'filled' | 'failed'>('loading');
 
   useEffect(() => {
-    if (typeof window === 'undefined' || document.getElementById('adsterra-social-bar')) {
+    if (typeof window === 'undefined') return;
+
+    // Check if script already exists to prevent duplicate injections
+    if (document.getElementById('adsterra-social-bar')) {
+      setAdState('filled');
       return;
     }
 
     // Delay slightly to ensure hydration is done and layout is stable
     const timer = window.setTimeout(() => {
+      if (document.getElementById('adsterra-social-bar')) return;
+
       const script = document.createElement('script');
       script.id = 'adsterra-social-bar';
       script.src = 'https://pl29692251.effectivecpmnetwork.com/06/ea/fc/06eafc4004351bf68b0c5aa80b3255c9.js';
@@ -38,3 +44,4 @@ export default function AdsterraSocialBar() {
 
   return null; // Social bar injects its own floating UI, no React node needed
 }
+

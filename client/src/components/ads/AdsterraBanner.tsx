@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { adQueue } from '@/lib/adQueue';
 
 type AdsterraBannerProps = {
@@ -16,12 +17,46 @@ const BANNER_CONFIGS = {
 export default function AdsterraBanner({ type, className = '' }: AdsterraBannerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [adState, setAdState] = useState<'loading' | 'filled' | 'failed'>('loading');
+  const pathname = usePathname();
+
+  const prevPath = useRef(pathname);
+  const prevType = useRef(type);
+
+  // Pathname guard: only trigger loading if pathname or type actually changes
+  useEffect(() => {
+    let changed = false;
+    if (prevPath.current !== pathname) {
+      prevPath.current = pathname;
+      changed = true;
+    }
+    if (prevType.current !== type) {
+      prevType.current = type;
+      changed = true;
+    }
+    if (changed) {
+      setAdState('loading');
+    }
+  }, [pathname, type]);
+
+  // Deep teardown on absolute unmount
+  useEffect(() => {
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '';
+      }
+      try {
+        delete (window as any).atOptions;
+      } catch (e) {
+        (window as any).atOptions = undefined;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined' || !containerRef.current || adState !== 'loading') return;
 
-    let observer: MutationObserver;
-    let timeoutTimer: number;
+    let observer: MutationObserver | null = null;
+    let timeoutTimer: number | null = null;
 
     const loadAd = () => new Promise<void>((resolve) => {
       const config = BANNER_CONFIGS[type];
@@ -44,7 +79,7 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
       // Set global variable carefully
       ;(window as any).atOptions = atOptions;
 
-      // Ensure we clean up any old scripts in this container
+      // Ensure we clean up any old scripts/iframes in this container
       containerRef.current.innerHTML = '';
 
       // Inline config script
@@ -59,8 +94,14 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
       script.async = true;
 
       const finishLoading = (status: 'filled' | 'failed') => {
-        if (observer) observer.disconnect();
-        window.clearTimeout(timeoutTimer);
+        if (observer) {
+          observer.disconnect();
+          observer = null;
+        }
+        if (timeoutTimer) {
+          window.clearTimeout(timeoutTimer);
+          timeoutTimer = null;
+        }
         setAdState(status);
         console.log(`[Adsterra] ${type} Banner - ${status.toUpperCase()}`);
         if (status === 'failed' && containerRef.current) {
@@ -102,8 +143,12 @@ export default function AdsterraBanner({ type, className = '' }: AdsterraBannerP
     adQueue.enqueue(loadAd);
 
     return () => {
-      if (observer) observer.disconnect();
-      window.clearTimeout(timeoutTimer);
+      if (observer) {
+        observer.disconnect();
+      }
+      if (timeoutTimer) {
+        window.clearTimeout(timeoutTimer);
+      }
     };
   }, [type, adState]);
 
