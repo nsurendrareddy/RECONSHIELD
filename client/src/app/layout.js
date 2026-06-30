@@ -49,11 +49,10 @@ export default function RootLayout({ children }) {
         {/* Fonts are managed by next/font/google */}
 
         {/* Google AdSense */}
-        <Script
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
         />
 
         {/* Subscribe with Google (Offloaded to Web Worker) */}
