@@ -48,6 +48,14 @@ export default function RootLayout({ children }) {
       <head>
         {/* Fonts are managed by next/font/google */}
 
+        {/* Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+
         {/* Subscribe with Google (Offloaded to Web Worker) */}
         <Script strategy="worker" src="https://news.google.com/swg/js/v1/swg-basic.js" />
         <Script

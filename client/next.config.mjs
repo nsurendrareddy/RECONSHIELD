@@ -57,22 +57,34 @@ const additionalAdDomains = [
   'https://*.fleraprt.com'
 ];
 
-const allAdDomains = [...adDomains, ...monetagDomains, ...adsterraDomains, ...additionalAdDomains].join(' ');
+const adsenseDomains = [
+  'https://pagead2.googlesyndication.com',
+  'https://*.googlesyndication.com',
+  'https://tpc.googlesyndication.com',
+  'https://googleads.g.doubleclick.net',
+  'https://*.g.doubleclick.net',
+  'https://www.google.com',
+  'https://adservice.google.com',
+  'https://*.adtrafficquality.google'
+];
+
+const allAdDomains = [...adDomains, ...monetagDomains, ...adsterraDomains, ...additionalAdDomains, ...adsenseDomains].join(' ');
 const adDomainSources = adDomains.join(' ');
 const monetagDomainSources = monetagDomains.join(' ');
 const adsterraDomainSources = adsterraDomains.join(' ');
 const additionalAdDomainSources = additionalAdDomains.join(' ');
+const adsenseDomainSources = adsenseDomains.join(' ');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://va.vercel-scripts.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://va.vercel-scripts.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources} ${adsenseDomainSources}`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
-  `img-src 'self' blob: data: https:`,
+  `img-src 'self' blob: data: https: ${adsenseDomainSources}`,
   `font-src 'self' data: https://fonts.gstatic.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
-  `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
-  `frame-src 'self' https:`,
+  `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources} ${adsenseDomainSources}`,
+  `frame-src 'self' https: ${adsenseDomainSources}`,
   `child-src 'self' blob: https:`,
   "worker-src 'self' blob:"
 ].join('; ');
