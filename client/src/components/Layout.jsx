@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
   Shield, Activity, AlertTriangle, Lock, Globe, Menu, X, ExternalLink,
   ChevronDown, Server, Cpu, Database, Network, Layers, Mail,
@@ -11,9 +10,8 @@ import {
   ArrowRight
 } from 'lucide-react'
 
-import GlobalHeaderAd from '@/components/ads/GlobalHeaderAd'
-import AdsterraNative from '@/components/ads/AdsterraNative'
-
+const GlobalHeaderAd = dynamic(() => import('@/components/ads/GlobalHeaderAd'), { ssr: false })
+const AdsterraNative = dynamic(() => import('@/components/ads/AdsterraNative'), { ssr: false })
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
 
@@ -510,26 +508,20 @@ export default function Layout({ children }) {
           </div>
 
           {/* Desktop Mega Menu Overlay */}
-          <AnimatePresence>
-            {activeMenu && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                transition={{ duration: 0.15, ease: "easeOut" }}
-                onMouseEnter={() => handleMouseEnter(activeMenu)}
-                onMouseLeave={handleMouseLeave}
-                className="mega-menu-container absolute top-16 left-0 right-0 bg-[#0a0c10]/95 border border-white/5 rounded-2xl p-6 shadow-[0_25px_60px_rgba(0,0,0,0.85)] backdrop-blur-xl z-50 overflow-hidden"
-              >
-                {/* subtle green background glow */}
-                <div className="absolute top-0 right-0 w-80 h-80 bg-matrix-400/[0.015] blur-[100px] rounded-full pointer-events-none -z-10" />
-                
-                {renderMenuContent()}
-                
-                {renderMenuFooter()}
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {activeMenu && (
+            <div
+              onMouseEnter={() => handleMouseEnter(activeMenu)}
+              onMouseLeave={handleMouseLeave}
+              className="mega-menu-container absolute top-16 left-0 right-0 bg-[#0a0c10]/95 border border-white/5 rounded-2xl p-6 shadow-[0_25px_60px_rgba(0,0,0,0.85)] backdrop-blur-xl z-50 overflow-hidden animate-menu-slide"
+            >
+              {/* subtle green background glow */}
+              <div className="absolute top-0 right-0 w-80 h-80 bg-matrix-400/[0.015] blur-[100px] rounded-full pointer-events-none -z-10" />
+              
+              {renderMenuContent()}
+              
+              {renderMenuFooter()}
+            </div>
+          )}
         </div>
       </header>
 

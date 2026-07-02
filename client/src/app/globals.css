@@ -221,6 +221,31 @@ body {
 ::-webkit-scrollbar-thumb { background: rgba(0,255,156,0.15); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(0,255,156,0.3); }
 
+/* Custom Mega Menu Animations */
+@keyframes menu-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-menu-slide {
+  animation: menu-slide-down 0.15s ease-out forwards;
+}
+
+/* Accessibility Contrast Overrides for Dark Mode */
+.dark .text-gray-500,
+.text-gray-500 {
+  color: #94a3b8 !important; /* Lighter slate to pass WCAG AA contrast check */
+}
+.dark .text-gray-600,
+.text-gray-600 {
+  color: #a1a1aa !important; /* Lighter zinc to pass WCAG AA contrast check */
+}
+
 
 
 

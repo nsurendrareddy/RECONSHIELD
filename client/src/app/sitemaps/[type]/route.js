@@ -64,6 +64,34 @@ function isUrlIndexableAndValid(urlStr) {
     const url = new URL(urlStr);
     const path = url.pathname;
     
+    // Exclude any known redirecting paths to ensure no 301/302/307/308 in sitemap
+    const redirectPaths = [
+      '/ssl/ssl-vs-tls',
+      '/ssl/tls-1-2-vs-tls-1-3',
+      '/compare/port-scan-vs-vulnerability-scan',
+      '/threat-intelligence',
+      '/tools/threat-intelligence',
+      '/ip-scanner',
+      '/ip-lookup',
+      '/whois',
+      '/whois-lookup',
+      '/dns-lookup',
+      '/reverse-dns',
+      '/asn-lookup',
+      '/port-scanner',
+      '/security-headers',
+      '/ssl-checker',
+      '/vulnerability-scanner',
+      '/blog/categories'
+    ];
+    if (redirectPaths.includes(path)) return false;
+    if (path.startsWith('/tools/whois/')) return false;
+    if (path.startsWith('/dns/')) return false;
+    if (path.startsWith('/ip-lookup/')) return false;
+    if (path.startsWith('/whois/')) return false;
+    if (path.startsWith('/dns-lookup/')) return false;
+    if (path.startsWith('/blog/categories/')) return false;
+
     // Check reports (marked as noindex, do not place in sitemaps)
     if (path.startsWith('/reports/ssl/')) {
       return false;
@@ -255,6 +283,9 @@ export async function GET(request, { params }) {
 
       // Append SSL topics URLs
       Object.keys(SSL_TOPICS_DATA).forEach(slug => {
+        if (slug === 'ssl-vs-tls' || slug === 'tls-1-2-vs-tls-1-3') {
+          return;
+        }
         staticUrls.push({ url: `${BASE_URL}/ssl/${slug}`, priority: 0.7, freq: 'weekly' });
       });
 
@@ -330,15 +361,49 @@ export async function GET(request, { params }) {
 
              // Apply strict filter logic
              const mappedUrls = extractedUrls.map(u => {
-                 if (u && typeof u.url === 'string') {
-                    let newUrl = u.url;
-                    if (newUrl.includes('/dns/') && !newUrl.includes('/dns-records/')) {
-                        newUrl = newUrl.replace('/dns/', '/dns-records/');
+                  if (u && typeof u.url === 'string') {
+                     let newUrl = u.url;
+                     
+                     // Canonicalize redirects dynamically
+                     if (newUrl.includes('/ssl/ssl-vs-tls')) newUrl = newUrl.replace('/ssl/ssl-vs-tls', '/compare/ssl-vs-tls');
+                     else if (newUrl.includes('/ssl/tls-1-2-vs-tls-1-3')) newUrl = newUrl.replace('/ssl/tls-1-2-vs-tls-1-3', '/compare/tls-1-2-vs-tls-1-3');
+                     else if (newUrl.includes('/compare/port-scan-vs-vulnerability-scan')) newUrl = newUrl.replace('/compare/port-scan-vs-vulnerability-scan', '/compare/port-scanner-vs-vulnerability-scanner');
+                     else if (newUrl.includes('/threat-intelligence')) newUrl = newUrl.replace('/threat-intelligence', '/tools/ip-lookup');
+                     else if (newUrl.includes('/tools/threat-intelligence')) newUrl = newUrl.replace('/tools/threat-intelligence', '/tools/ip-lookup');
+                     else if (newUrl.includes('/ip-scanner')) newUrl = newUrl.replace('/ip-scanner', '/tools/ip-lookup');
+                     else if (newUrl.includes('/ip-lookup') && !newUrl.includes('/tools/ip-lookup')) newUrl = newUrl.replace('/ip-lookup', '/tools/ip-lookup');
+                     else if (newUrl.includes('/whois') && !newUrl.includes('/tools/whois') && !newUrl.includes('/whois-lookup')) newUrl = newUrl.replace('/whois', '/tools/whois');
+                     else if (newUrl.includes('/whois-lookup')) newUrl = newUrl.replace('/whois-lookup', '/tools/whois');
+                     else if (newUrl.includes('/dns-lookup') && !newUrl.includes('/tools/dns-lookup')) newUrl = newUrl.replace('/dns-lookup', '/tools/dns-lookup');
+                     else if (newUrl.includes('/reverse-dns')) newUrl = newUrl.replace('/reverse-dns', '/tools/dns-lookup');
+                     else if (newUrl.includes('/asn-lookup')) newUrl = newUrl.replace('/asn-lookup', '/tools/ip-lookup');
+                     else if (newUrl.includes('/port-scanner') && !newUrl.includes('/tools/port-scanner')) newUrl = newUrl.replace('/port-scanner', '/tools/port-scanner');
+                     else if (newUrl.includes('/security-headers')) newUrl = newUrl.replace('/security-headers', '/tools/http-headers');
+                     else if (newUrl.includes('/ssl-checker') && !newUrl.includes('/tools/ssl-checker')) newUrl = newUrl.replace('/ssl-checker', '/tools/ssl-checker');
+                     else if (newUrl.includes('/vulnerability-scanner') && !newUrl.includes('/tools/vulnerability-scanner')) newUrl = newUrl.replace('/vulnerability-scanner', '/tools/vulnerability-scanner');
+                     
+                     if (newUrl.includes('/tools/whois/') && !newUrl.includes('/domain/')) {
+                         newUrl = newUrl.replace('/tools/whois/', '/domain/');
                      }
-                    return { ...u, url: newUrl };
-                 }
-                 return u;
-              });
+                     if (newUrl.includes('/dns/') && !newUrl.includes('/dns-records/')) {
+                         newUrl = newUrl.replace('/dns/', '/dns-records/');
+                     }
+                     if (newUrl.includes('/ip-lookup/') && !newUrl.includes('/tools/ip-lookup/')) {
+                         newUrl = newUrl.replace('/ip-lookup/', '/tools/ip-lookup/');
+                     }
+                     if (newUrl.includes('/whois/') && !newUrl.includes('/tools/whois/')) {
+                         newUrl = newUrl.replace('/whois/', '/tools/whois/');
+                      }
+                     if (newUrl.includes('/dns-lookup/') && !newUrl.includes('/tools/dns-lookup/')) {
+                         newUrl = newUrl.replace('/dns-lookup/', '/tools/dns-lookup/');
+                      }
+                     if (newUrl.includes('/blog/categories/')) {
+                         newUrl = newUrl.replace('/blog/categories/', '/blog/category/');
+                      }
+                     return { ...u, url: newUrl };
+                  }
+                  return u;
+               });
               const validUrls = mappedUrls.filter(
                 (u) =>
                 u &&

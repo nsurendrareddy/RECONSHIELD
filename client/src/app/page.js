@@ -212,8 +212,6 @@ export default async function Page() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemas) }}
       />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       <link rel="dns-prefetch" href="https://api.reconshield.in" />
 
       <div className="bg-[#05080f] min-h-screen text-white">
@@ -637,7 +635,7 @@ export default async function Page() {
                 Browse All Tools
               </Link>
               <Link href="/about" className="px-6 py-3.5 bg-surface-900 hover:bg-surface-800 text-white border border-white/10 text-xs font-mono uppercase tracking-widest rounded-xl transition-all cursor-pointer">
-                Learn More
+                Learn About ReconShield
               </Link>
             </div>
           </div>

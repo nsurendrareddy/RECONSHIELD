@@ -8,14 +8,22 @@ export default function AdsterraSocialBar() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
+    let hasInjected = false;
+    let idleTimer: number | null = null;
+    let fallbackTimer: number | null = null;
+
     // Check if script already exists to prevent duplicate injections
     if (document.getElementById('adsterra-social-bar')) {
       setAdState('filled');
       return;
     }
 
-    // Delay slightly to ensure hydration is done and layout is stable
-    const timer = window.setTimeout(() => {
+    const injectScript = () => {
+      if (hasInjected) return;
+      hasInjected = true;
+
+      cleanup();
+
       if (document.getElementById('adsterra-social-bar')) return;
 
       const script = document.createElement('script');
@@ -34,14 +42,40 @@ export default function AdsterraSocialBar() {
         setAdState('failed');
       };
 
-      document.body.appendChild(script);
-    }, 1000);
+      // Delay slightly to ensure hydration is complete and layout is stable
+      fallbackTimer = window.setTimeout(() => {
+        document.body.appendChild(script);
+      }, 500);
+    };
+
+    const cleanup = () => {
+      window.removeEventListener('mousemove', injectScript);
+      window.removeEventListener('scroll', injectScript);
+      window.removeEventListener('touchstart', injectScript);
+      window.removeEventListener('keydown', injectScript);
+      if (idleTimer) {
+        window.clearTimeout(idleTimer);
+      }
+    };
+
+    // Listen for early user interaction
+    window.addEventListener('mousemove', injectScript, { passive: true });
+    window.addEventListener('scroll', injectScript, { passive: true });
+    window.addEventListener('touchstart', injectScript, { passive: true });
+    window.addEventListener('keydown', injectScript, { passive: true });
+
+    // Fallback: inject anyway on idle/timeout (e.g. after 3.5 seconds)
+    idleTimer = window.setTimeout(() => {
+      injectScript();
+    }, 3500);
 
     return () => {
-      window.clearTimeout(timer);
+      cleanup();
+      if (fallbackTimer) {
+        window.clearTimeout(fallbackTimer);
+      }
     };
   }, []);
 
   return null; // Social bar injects its own floating UI, no React node needed
 }
-

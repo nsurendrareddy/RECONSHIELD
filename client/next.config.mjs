@@ -86,7 +86,8 @@ const cspHeader = [
   `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources} ${adsenseDomainSources}`,
   `frame-src 'self' https: ${adsenseDomainSources}`,
   `child-src 'self' blob: https:`,
-  "worker-src 'self' blob:"
+  "worker-src 'self' blob:",
+  "trusted-types default nextjs nextjs#dev; require-trusted-types-for 'script'"
 ].join('; ');
 
 const nextConfig = {
@@ -130,6 +131,18 @@ const nextConfig = {
       {
         source: '/sanity-cdn/(.*)',
         headers: [{ key: 'Cache-Control', value: 'public, immutable, max-age=31536000' }],
+      },
+      {
+        source: '/(images|icons|favicons|logos)/(.*)',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+      {
+        source: '/manifest.json',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=86400' }],
+      },
+      {
+        source: '/og-image.png',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=604800' }],
       },
     ];
   },

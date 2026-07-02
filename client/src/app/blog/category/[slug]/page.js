@@ -51,6 +51,10 @@ const CATEGORY_MAP = {
   'cyber-awareness': {
     displayName: 'Cyber Awareness',
     dbTitle: 'Cyber Awareness'
+  },
+  'email-security': {
+    displayName: 'Email Security',
+    dbTitle: 'Email Security'
   }
 };
 

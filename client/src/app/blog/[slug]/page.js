@@ -29,7 +29,10 @@ async function getPost(slug) {
       serialized = serialized
         .replaceAll('/compare/port-scan-vs-vulnerability-scan', '/compare/port-scanner-vs-vulnerability-scanner')
         .replaceAll('/ssl/ssl-vs-tls', '/compare/ssl-vs-tls')
-        .replaceAll('/ssl/tls-1-2-vs-tls-1-3', '/compare/tls-1-2-vs-tls-1-3');
+        .replaceAll('/ssl/tls-1-2-vs-tls-1-3', '/compare/tls-1-2-vs-tls-1-3')
+        .replaceAll('/blog/attack-surface-discovery', '/blog/anatomy-of-passive-osint')
+        .replaceAll('/blog/reconnaissance-guide', '/blog/osint-fundamentals')
+        .replaceAll('/blog/continuous-monitoring-guide', '/blog/shadow-it-exposed-ports');
       return JSON.parse(serialized);
     } catch (replaceErr) {
       console.error('Error rewriting links in post:', replaceErr);
@@ -101,34 +104,63 @@ export default async function Page({ params }) {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": post.categories?.[0]?.title === "Cyber News" ? "NewsArticle" : "Article",
-    "headline": post.title,
-    "description": post.excerpt,
-    "image": post.mainImageUrl || (post.mainImage ? urlFor(post.mainImage).url() : "https://reconshield.in/og-image.png"),
-    "datePublished": post.publishedAt,
-    "dateModified": post.publishedAt,
-    "author": {
-      "@type": "Person",
-      "name": post.author?.name || "Surendra Reddy",
-      "url": `https://reconshield.in/author/${post.author?.slug?.current || post.author?.slug || 'surendra-reddy'}`,
-      "sameAs": [
-        "https://linkedin.com/in/surendrareddy3",
-        "https://github.com/nsurendrareddy"
-      ]
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "ReconShield",
-      "url": "https://reconshield.in",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://reconshield.in/og-image.png"
+    "@graph": [
+      {
+        "@type": post.categories?.[0]?.title === "Cyber News" ? "NewsArticle" : "Article",
+        "@id": `https://reconshield.in/blog/${slug}#article`,
+        "headline": post.title,
+        "description": post.excerpt,
+        "image": post.mainImageUrl || (post.mainImage ? urlFor(post.mainImage).url() : "https://reconshield.in/og-image.png"),
+        "datePublished": post.publishedAt,
+        "dateModified": post.publishedAt,
+        "author": {
+          "@type": "Person",
+          "name": post.author?.name || "Surendra Reddy",
+          "url": `https://reconshield.in/author/${post.author?.slug?.current || post.author?.slug || 'surendra-reddy'}`,
+          "sameAs": [
+            "https://linkedin.com/in/surendrareddy3",
+            "https://github.com/nsurendrareddy"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "ReconShield",
+          "url": "https://reconshield.in",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://reconshield.in/og-image.png"
+          }
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": `https://reconshield.in/blog/${slug}`
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `https://reconshield.in/blog/${slug}#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://reconshield.in"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Blog",
+            "item": "https://reconshield.in/blog"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": post.title,
+            "item": `https://reconshield.in/blog/${slug}`
+          }
+        ]
       }
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `https://reconshield.in/blog/${slug}`
-    }
+    ]
   };
 
   return (

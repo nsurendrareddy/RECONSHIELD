@@ -7,9 +7,9 @@ import MonetagGlobal from "@/components/ads/MonetagGlobal";
 import AdsterraSocialBar from "@/components/ads/AdsterraSocialBar";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], display: "fallback", variable: "--font-inter" });
-const jetbrains = JetBrains_Mono({ subsets: ["latin"], display: "fallback", variable: "--font-jetbrains" });
-const rajdhani = Rajdhani({ subsets: ["latin"], weight: ["500", "600", "700"], display: "optional", variable: "--font-rajdhani" });
+const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
+const jetbrains = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-jetbrains" });
+const rajdhani = Rajdhani({ subsets: ["latin"], weight: ["500", "600", "700"], display: "swap", variable: "--font-rajdhani" });
 
 export const metadata = {
   metadataBase: new URL("https://reconshield.in"),
@@ -46,11 +46,29 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`dark h-full antialiased ${inter.variable} ${jetbrains.variable} ${rajdhani.variable}`}>
       <head>
-        {/* Fonts are managed by next/font/google */}
+        {/* Trusted Types Default Passthrough Policy */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && window.trustedTypes && !window.trustedTypes.defaultPolicy) {
+                try {
+                  window.trustedTypes.createPolicy('default', {
+                    createHTML: (s) => s,
+                    createScript: (s) => s,
+                    createScriptURL: (s) => s
+                  });
+                } catch (e) {
+                  console.warn('Trusted Types default policy creation failed:', e);
+                }
+              }
+            `
+          }}
+        />
 
         {/* Google AdSense */}
-        <script
-          async
+        <Script
+          id="google-adsense"
+          strategy="lazyOnload"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
           crossOrigin="anonymous"
         />
