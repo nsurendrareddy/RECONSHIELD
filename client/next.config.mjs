@@ -54,7 +54,16 @@ const additionalAdDomains = [
   'https://tzegilo.com',
   'https://*.tzegilo.com',
   'https://fleraprt.com',
-  'https://*.fleraprt.com'
+  'https://*.fleraprt.com',
+  // Rotating ad network/delivery domains
+  'https://spendsdetachment.com',
+  'https://*.spendsdetachment.com',
+  'https://fizzyacerbitymellow.com',
+  'https://*.fizzyacerbitymellow.com',
+  'https://kettledroopingcontinuation.com',
+  'https://*.kettledroopingcontinuation.com',
+  'https://realizationnewestfangs.com',
+  'https://*.realizationnewestfangs.com'
 ];
 
 const adsenseDomains = [
