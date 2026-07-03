@@ -16,7 +16,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://va.vercel-scripts.com ${adsenseDomainSources}`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://www.googletagmanager.com https://va.vercel-scripts.com ${adsenseDomainSources}`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
   `img-src 'self' blob: data: https: ${adsenseDomainSources}`,
   `font-src 'self' data: https://fonts.gstatic.com`,
@@ -29,7 +29,7 @@ const cspHeader = [
 
 const nextConfig = {
   images: {
-    unoptimized: true,
+    unoptimized: false,
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {
@@ -39,8 +39,7 @@ const nextConfig = {
     ],
   },
   experimental: {
-    optimizePackageImports: ['recharts', 'lucide-react'],
-    nextScriptWorkers: true,
+    optimizePackageImports: ['recharts', 'lucide-react', 'framer-motion', '@xyflow/react', 'leaflet', 'react-leaflet'],
   },
   trailingSlash: false,
   async headers() {

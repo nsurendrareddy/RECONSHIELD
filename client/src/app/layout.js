@@ -93,29 +93,7 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
         />
 
-        {/*
-          Subscribe with Google.
-          Changed from strategy="worker" to "lazyOnload":
-          swg-basic.js calls document.querySelectorAll and attaches DOM listeners,
-          which are unavailable inside a Partytown Web Worker.
-        */}
-        <Script strategy="lazyOnload" src="https://news.google.com/swg/js/v1/swg-basic.js" />
-        <Script
-          id="google-news-init"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
-                basicSubscriptions.init({
-                  type: "NewsArticle",
-                  isPartOfType: ["Product"],
-                  isPartOfProductId: "CAow7aHgCw:openaccess",
-                  clientOptions: { theme: "light", lang: "en" },
-                });
-              });
-            `
-          }}
-        />
+
 
         {/*
           Google Analytics 4.
