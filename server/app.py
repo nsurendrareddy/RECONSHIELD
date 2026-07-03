@@ -1,7 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
@@ -45,31 +44,25 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Rate limiter
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-
-# CORS
-frontend_url = settings.FRONTEND_URL
-allowed_origins = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "https://reconshield.in",
-    "https://www.reconshield.in",
-    frontend_url.rstrip("/") if frontend_url else None
-]
-
-allowed_origins = list(set([o for o in allowed_origins if o]))
+from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_origin_regex=r"https://.*\.vercel\.app",
+    allow_origins=[
+        "https://reconshield.in",
+        "https://www.reconshield.in",
+        "https://api.reconshield.in",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["Content-Disposition"],
 )
+
+# Rate limiter
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
