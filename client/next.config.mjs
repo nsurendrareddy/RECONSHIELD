@@ -23,8 +23,7 @@ const cspHeader = [
   `connect-src 'self' https://api.reconshield.in https://*.google-analytics.com https://www.google-analytics.com https://www.googletagmanager.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io http://127.0.0.1:* http://localhost:* ${adsenseDomainSources}`,
   `frame-src 'self' ${adsenseDomainSources}`,
   `child-src 'self' blob:`,
-  "worker-src 'self' blob:",
-  "trusted-types default nextjs nextjs#dev; require-trusted-types-for 'script'"
+  "worker-src 'self' blob:"
 ].join('; ');
 
 const nextConfig = {
