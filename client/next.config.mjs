@@ -18,11 +18,11 @@ const cspHeader = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com ${adsenseDomainSources}`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-  `img-src 'self' blob: data: https: https://*.googleusercontent.com https://www.google-analytics.com ${adsenseDomainSources}`,
+  `img-src 'self' blob: data: https://cdn.sanity.io https://*.googleusercontent.com https://www.google-analytics.com ${adsenseDomainSources}`,
   `font-src 'self' data: https://fonts.gstatic.com`,
   `connect-src 'self' https://api.reconshield.in https://*.google-analytics.com https://www.google-analytics.com https://www.googletagmanager.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io http://127.0.0.1:* http://localhost:* ${adsenseDomainSources}`,
-  `frame-src 'self' https: ${adsenseDomainSources}`,
-  `child-src 'self' blob: https:`,
+  `frame-src 'self' ${adsenseDomainSources}`,
+  `child-src 'self' blob:`,
   "worker-src 'self' blob:",
   "trusted-types default nextjs nextjs#dev; require-trusted-types-for 'script'"
 ].join('; ');
