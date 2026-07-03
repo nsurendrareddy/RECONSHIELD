@@ -15,6 +15,7 @@ import {
   DynamicHeroSocVisual,
   DynamicCommandCenter,
   DynamicSecurityWorkflow,
+  DynamicIntelligenceModules,
 } from '@/components/DynamicWidgets';
 
 export const metadata = {
@@ -273,8 +274,9 @@ export default async function Page() {
               </div>
 
             </div>
-          </div>
+        </div>
         <DynamicCommandCenter />
+        </section>
 
         {/* ================= SECTION 7: FEATURED SECURITY TOOLS ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5" aria-label="Featured Tools">
@@ -373,6 +375,7 @@ export default async function Page() {
               </Link>
             </div>
           </div>
+        </section>
         {/* ================= SECTION 8: WHY CHOOSE RECONSHIELD ================= */}
         <section className="py-24 bg-[#0a0d14] border-b border-white/5" aria-label="Why Choose ReconShield">
           <div className="max-w-[1200px] mx-auto px-6">
@@ -781,6 +784,8 @@ export default async function Page() {
             </div>
             <p className="text-[10px] text-gray-500 font-mono uppercase tracking-wider">Fact checked intelligence. 100% spam-free. Unsubscribe anytime.</p>
           </div>
+        </section>
+
       </div>
     </>
   );

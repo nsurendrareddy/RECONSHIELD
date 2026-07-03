@@ -754,6 +754,7 @@ FileETag None`,
               </Link>
             ))}
           </div>
+        </div>
       </div>
 
       {/* Footer */}

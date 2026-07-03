@@ -1,5 +1,6 @@
 import React from 'react';
 import ContactClient from '@/components/ContactClient';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { ShieldCheck, Mail, HelpCircle, Bug, ShieldAlert, Cpu } from 'lucide-react';
 
 export const metadata = {
