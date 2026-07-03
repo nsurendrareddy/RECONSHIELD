@@ -1,5 +1,4 @@
-'use client'
-import React, { useMemo } from 'react'
+import React from 'react'
 import { ArrowLeft, Clock, Calendar, Tag, User, Globe, Shield, CheckCircle2, List, Settings, MessageSquare, ShieldAlert } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -104,11 +103,9 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
     return true;
   });
 
-  const enrichedBody = useMemo(() => {
-    return cleanBody || [];
-  }, [cleanBody]);
+  const enrichedBody = cleanBody || [];
 
-  const chunks = useMemo(() => {
+  const chunks = (() => {
     if (!enrichedBody || enrichedBody.length === 0) return { body: [], insertAfterP2: -1, insertAfterMid: -1, insertBeforeConclusion: -1 };
     
     const paragraphIndices = [];
@@ -164,7 +161,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
       insertAfterMid,
       insertBeforeConclusion
     };
-  }, [enrichedBody]);
+  })();
 
   const renderBodyWithAds = () => {
     const { body, insertAfterP2, insertAfterMid, insertBeforeConclusion } = chunks;
@@ -199,18 +196,17 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
   };
 
   // Extract headings for Table of Contents
-  const headings = useMemo(() => {
-    return cleanBody
-      ?.filter(block => block._type === 'block' && (block.style === 'h2' || block.style === 'h3'))
-      .map(block => {
-        const text = block.children?.map(child => child.text).join('') || '';
-        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-        return { style: block.style, text, id };
-      }) || [];
-  }, [cleanBody]);
+  const headings = cleanBody
+    ?.filter(block => block._type === 'block' && (block.style === 'h2' || block.style === 'h3'))
+    .map(block => {
+      const text = block.children?.map(child => child.text).join('') || '';
+      const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      return { style: block.style, text, id };
+    }) || [];
+
 
   // Analyst commentary dataset to dynamically enrich the article content
-  const commentaryData = useMemo(() => {
+  const commentaryData = (() => {
     const slug = post.slug || '';
     if (slug.includes('passive-osint')) {
       return {
@@ -306,7 +302,7 @@ FileETag None`,
         ]
       };
     }
-  }, [post.slug]);
+  })();
 
   const getInitials = (name) => {
     if (!name) return 'SR'
@@ -547,12 +543,12 @@ FileETag None`,
                 />
                 <div className="flex justify-between items-center">
                   <span className="text-[8px] font-mono text-gray-600 uppercase tracking-wider">* Encrypted transmission via Secure Socket Layer</span>
-                  <button 
-                    onClick={() => alert("Comments are locked for guest users. Please authenticate via security portal.")}
-                    className="px-4 py-2 bg-surface-900 hover:bg-[#00ff8811] border border-white/10 hover:border-[#00ff88]/30 rounded text-[10px] font-mono text-gray-400 hover:text-[#00ff88] uppercase tracking-wider transition-all"
+                  <a 
+                    href="javascript:alert('Comments are locked for guest users. Please authenticate via security portal.')"
+                    className="px-4 py-2 bg-surface-900 hover:bg-[#00ff8811] border border-white/10 hover:border-[#00ff88]/30 rounded text-[10px] font-mono text-gray-400 hover:text-[#00ff88] uppercase tracking-wider transition-all inline-block text-center cursor-pointer"
                   >
                     SUBMIT BRIEFING
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>

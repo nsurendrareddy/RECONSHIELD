@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import dynamic from 'next/dynamic'
 import {
   Shield, Activity, AlertTriangle, Lock, Globe, Menu, X, ExternalLink,
@@ -12,6 +12,61 @@ import {
 
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
+
+const TOOLS_DATA = {
+  Reconnaissance: [
+    { name: 'Subdomain Finder', stat: '12.4K', desc: 'Find active subdomains list', path: '/tools/subdomain-finder', icon: Server },
+    { name: 'WHOIS Lookup', stat: '9.8K', desc: 'Domain owner registration info', path: '/tools/whois', icon: Search },
+    { name: 'DNS Lookup', stat: '15.1K', desc: 'Resolve full target name records', path: '/tools/dns-lookup', icon: Network }
+  ],
+  Intelligence: [
+    { name: 'IP Lookup', stat: '22.3K', desc: 'Assess IP reputation & location', path: '/tools/ip-lookup', icon: Globe },
+    { name: 'ASN Directory', stat: '7.6K', desc: 'Map autonomous routes & routing', path: '/asn', icon: Layers }
+  ],
+  'Network Analysis': [
+    { name: 'Port Scanner', stat: '34.2K', desc: 'List exposed system server ports', path: '/tools/port-scanner', icon: Activity }
+  ],
+  'Web Security': [
+    { name: 'Technology Detector', stat: '18.5K', desc: 'Web stack and component audit', path: '/tools/tech-detector', icon: Cpu },
+    { name: 'Header Analyzer', stat: '11.2K', desc: 'Check CSP and security headers', path: '/tools/http-headers', icon: Shield },
+    { name: 'SSL Checker', stat: '28.4K', desc: 'Validate TLS handshake strength', path: '/tools/ssl-checker', icon: Lock }
+  ],
+  'AI Security': [
+    { name: 'Vulnerability Database', stat: '14.7K', desc: 'Search CVE intelligence directory', path: '/tools/vulnerability-scanner', icon: Database }
+  ],
+  Utilities: [
+    { name: 'Email Security', stat: '8.9K', desc: 'Audit SPF, DKIM, DMARC config', path: '/tools/email-security', icon: Mail }
+  ]
+}
+
+const PLATFORM_CARDS = [
+  { name: 'Academic Labs', desc: 'Cybersecurity learning resources', path: '/academic', icon: GraduationCap },
+  { name: 'Resources Library', desc: 'Guides, checklists, reports', path: '/resources', icon: BookOpen },
+  { name: 'Open Source Projects', desc: 'GitHub repositories', path: '/opensource', icon: Code },
+  { name: 'Cybersecurity Glossary', desc: 'Terms definitions resource', path: '/glossary', icon: FileText },
+  { name: 'Threat Reports', desc: 'Quarterly OSINT threat reviews', path: '/reports', icon: Shield },
+  { name: 'API Access', desc: 'Developers threat intelligence endpoints', path: '#', icon: Network, isFuture: true },
+  { name: 'Community Resources', desc: 'Security community forums', path: '#', icon: Users },
+  { name: 'Research Papers', desc: 'Technical security research briefs', path: '/research', icon: FileCode },
+  { name: 'Security Learning Center', desc: 'Vulnerability remediation tutorials', path: '#', icon: GraduationCap }
+]
+
+const INTEL_COL_1 = [
+  { name: 'Ports Directory', desc: 'Index of standard service ports configuration', path: '/ports' },
+  { name: 'IP Intelligence Hub', desc: 'Active IP ranges vulnerability telemetry', path: '/ip-intelligence' },
+  { name: 'DNS Records Hub', desc: 'Central lookup trace records history', path: '/dns-analysis' },
+  { name: 'Vulnerability Database', desc: 'Active list of zero-day vulnerabilities & CVEs', path: '/vulnerability' },
+  { name: 'Threat Actors (Future)', desc: 'Profiles of threat actor groups & TTPs', path: '#', isFuture: true },
+  { name: 'Exploit Intelligence (Future)', desc: 'Correlated exploit indices with remediation paths', path: '#', isFuture: true }
+]
+
+const INTEL_COL_2 = [
+  { name: 'ASN Directory', desc: 'Catalog of registered network routing spaces', path: '/asn' },
+  { name: 'SSL Analysis Hub', desc: 'TLS certifications index & vulnerability analysis', path: '/ssl' },
+  { name: 'Technology Detection Hub', desc: 'Indexed list of detected frameworks online', path: '/technology' },
+  { name: 'Subdomains Intelligence Hub', desc: 'Public DNS subdomain record mappings', path: '/subdomains' },
+  { name: 'Malware Families (Future)', desc: 'Analysis reports on emerging malware strains', path: '#', isFuture: true }
+]
 
 export default function Layout({ children }) {
   const pathname = usePathname()
@@ -62,28 +117,28 @@ export default function Layout({ children }) {
     }
   }, [])
 
-  const handleMouseEnter = (menuName) => {
+  const handleMouseEnter = useCallback((menuName) => {
     if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current)
     setActiveMenu(menuName)
-  }
+  }, [])
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     closeTimeoutRef.current = setTimeout(() => {
       setActiveMenu(null)
     }, 150)
-  }
+  }, [])
 
-  const toggleMobileMenu = (menuName) => {
+  const toggleMobileMenu = useCallback((menuName) => {
     setExpandedMobileMenus(prev => ({
       ...prev,
       [menuName]: !prev[menuName]
     }))
-  }
+  }, [])
 
-  const handleLinkClick = () => {
+  const handleLinkClick = useCallback(() => {
     setActiveMenu(null)
     setIsMenuOpen(false)
-  }
+  }, [])
 
   const isBlogPage = pathname?.startsWith('/blog')
 
@@ -155,34 +210,9 @@ export default function Layout({ children }) {
           </div>
         )
       case 'tools':
-        const toolsData = {
-          Reconnaissance: [
-            { name: 'Subdomain Finder', stat: '12.4K', desc: 'Find active subdomains list', path: '/tools/subdomain-finder', icon: Server },
-            { name: 'WHOIS Lookup', stat: '9.8K', desc: 'Domain owner registration info', path: '/tools/whois', icon: Search },
-            { name: 'DNS Lookup', stat: '15.1K', desc: 'Resolve full target name records', path: '/tools/dns-lookup', icon: Network }
-          ],
-          Intelligence: [
-            { name: 'IP Lookup', stat: '22.3K', desc: 'Assess IP reputation & location', path: '/tools/ip-lookup', icon: Globe },
-            { name: 'ASN Directory', stat: '7.6K', desc: 'Map autonomous routes & routing', path: '/asn', icon: Layers }
-          ],
-          'Network Analysis': [
-            { name: 'Port Scanner', stat: '34.2K', desc: 'List exposed system server ports', path: '/tools/port-scanner', icon: Activity }
-          ],
-          'Web Security': [
-            { name: 'Technology Detector', stat: '18.5K', desc: 'Web stack and component audit', path: '/tools/tech-detector', icon: Cpu },
-            { name: 'Header Analyzer', stat: '11.2K', desc: 'Check CSP and security headers', path: '/tools/http-headers', icon: Shield },
-            { name: 'SSL Checker', stat: '28.4K', desc: 'Validate TLS handshake strength', path: '/tools/ssl-checker', icon: Lock }
-          ],
-          'AI Security': [
-            { name: 'Vulnerability Database', stat: '14.7K', desc: 'Search CVE intelligence directory', path: '/tools/vulnerability-scanner', icon: Database }
-          ],
-          Utilities: [
-            { name: 'Email Security', stat: '8.9K', desc: 'Audit SPF, DKIM, DMARC config', path: '/tools/email-security', icon: Mail }
-          ]
-        }
         return (
           <div className="grid grid-cols-3 gap-x-8 gap-y-6">
-            {Object.entries(toolsData).map(([category, items]) => (
+            {Object.entries(TOOLS_DATA).map(([category, items]) => (
               <div key={category} className="space-y-3">
                 <h4 className="text-[10px] font-mono font-bold text-gray-500 uppercase tracking-widest pb-1 border-b border-white/5">// {category}</h4>
                 <div className="flex flex-col gap-2">
@@ -218,20 +248,9 @@ export default function Layout({ children }) {
           </div>
         )
       case 'platform':
-        const platformCards = [
-          { name: 'Academic Labs', desc: 'Cybersecurity learning resources', path: '/academic', icon: GraduationCap },
-          { name: 'Resources Library', desc: 'Guides, checklists, reports', path: '/resources', icon: BookOpen },
-          { name: 'Open Source Projects', desc: 'GitHub repositories', path: '/opensource', icon: Code },
-          { name: 'Cybersecurity Glossary', desc: 'Terms definitions resource', path: '/glossary', icon: FileText },
-          { name: 'Threat Reports', desc: 'Quarterly OSINT threat reviews', path: '/reports', icon: Shield },
-          { name: 'API Access', desc: 'Developers threat intelligence endpoints', path: '#', icon: Network, isFuture: true },
-          { name: 'Community Resources', desc: 'Security community forums', path: '#', icon: Users },
-          { name: 'Research Papers', desc: 'Technical security research briefs', path: '/research', icon: FileCode },
-          { name: 'Security Learning Center', desc: 'Vulnerability remediation tutorials', path: '#', icon: GraduationCap }
-        ]
         return (
           <div className="grid grid-cols-3 gap-4">
-            {platformCards.map((card) => {
+            {PLATFORM_CARDS.map((card) => {
               const IconComp = card.icon
               return (
                 <Link
@@ -262,25 +281,10 @@ export default function Layout({ children }) {
           </div>
         )
       case 'entityIntel':
-        const intelCol1 = [
-          { name: 'Ports Directory', desc: 'Index of standard service ports configuration', path: '/ports' },
-          { name: 'IP Intelligence Hub', desc: 'Active IP ranges vulnerability telemetry', path: '/ip-intelligence' },
-          { name: 'DNS Records Hub', desc: 'Central lookup trace records history', path: '/dns-analysis' },
-          { name: 'Vulnerability Database', desc: 'Active list of zero-day vulnerabilities & CVEs', path: '/vulnerability' },
-          { name: 'Threat Actors (Future)', desc: 'Profiles of threat actor groups & TTPs', path: '#', isFuture: true },
-          { name: 'Exploit Intelligence (Future)', desc: 'Correlated exploit indices with remediation paths', path: '#', isFuture: true }
-        ]
-        const intelCol2 = [
-          { name: 'ASN Directory', desc: 'Catalog of registered network routing spaces', path: '/asn' },
-          { name: 'SSL Analysis Hub', desc: 'TLS certifications index & vulnerability analysis', path: '/ssl' },
-          { name: 'Technology Detection Hub', desc: 'Indexed list of detected frameworks online', path: '/technology' },
-          { name: 'Subdomains Intelligence Hub', desc: 'Public DNS subdomain record mappings', path: '/subdomains' },
-          { name: 'Malware Families (Future)', desc: 'Analysis reports on emerging malware strains', path: '#', isFuture: true }
-        ]
         return (
           <div className="grid grid-cols-2 gap-x-12 gap-y-6">
             <div className="space-y-4">
-              {intelCol1.map((item) => (
+              {INTEL_COL_1.map((item) => (
                 <Link
                   key={item.name}
                   href={item.path}
@@ -295,7 +299,7 @@ export default function Layout({ children }) {
               ))}
             </div>
             <div className="space-y-4">
-              {intelCol2.map((item) => (
+              {INTEL_COL_2.map((item) => (
                 <Link
                   key={item.name}
                   href={item.path}

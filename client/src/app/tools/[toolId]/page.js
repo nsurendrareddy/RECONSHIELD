@@ -6,13 +6,14 @@ import path from 'path';
 import { ChevronRight, Share2, AlertTriangle, ShieldCheck, BarChart3, HelpCircle } from 'lucide-react';
 import { TOOLS, TOOL_SEO_CONTENT } from '@/utils/toolsData';
 import { TOOL_DOMINATION_DATA } from '@/utils/toolDominationData';
-import AuthorizedUseBanner from '@/components/AuthorizedUseBanner';
 import { SemanticToolLinks } from '@/components/SemanticLinks';
 import { renderMarkdown } from '@/utils/markdownRenderer';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
 });
+
+const AuthorizedUseBanner = dynamic(() => import('@/components/AuthorizedUseBanner'));
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;

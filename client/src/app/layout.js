@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
 import GoogleAnalyticsPageView from "@/components/GoogleAnalyticsPageView";
+import DynamicThirdPartyScripts from "@/components/DynamicThirdPartyScripts";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
@@ -84,62 +85,12 @@ export default function RootLayout({ children }) {
             `
           }}
         />
-
-        {/* Google AdSense */}
-        <Script
-          id="google-adsense"
-          strategy="lazyOnload"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3496685713682736"
-          crossOrigin="anonymous"
-        />
-
-
-
-        {/*
-          Google Analytics 4.
-          FIXED: strategy changed from "worker" to "afterInteractive".
-
-          Root cause: strategy="worker" offloads scripts to a Partytown Web Worker.
-          GA4's gtag.js requires window, document, document.cookie, and navigator —
-          none of which are available inside a Web Worker. This caused 100% data loss.
-
-          send_page_view: false — the initial page_view is fired by the
-          GoogleAnalyticsPageView component so that SPA navigations also send it.
-
-          The localStorage restore block re-grants consent for returning users
-          who previously clicked Accept in CookieBanner.
-        */}
-        <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-C1L15RFXXR"
-        />
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-C1L15RFXXR', { send_page_view: false });
-
-              // Restore consent for users who already accepted
-              try {
-                var consent = localStorage.getItem('cookieConsent');
-                if (consent === 'true') {
-                  gtag('consent', 'update', {
-                    analytics_storage: 'granted',
-                    ad_storage: 'granted'
-                  });
-                }
-              } catch(e) {}
-            `,
-          }}
-        />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
         {/* Fires GA4 page_view on every client-side route change */}
         <GoogleAnalyticsPageView />
+        {/* Dynamic loading of Google AdSense and Analytics 4 */}
+        <DynamicThirdPartyScripts />
         <Layout>
           {children}
         </Layout>
