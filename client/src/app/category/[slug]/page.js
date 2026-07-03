@@ -3,8 +3,6 @@ import { client, urlFor } from '@/utils/sanity';
 import { Shield, Target, Search, Network, Cpu, Lock, CheckCircle2, Globe, Clock, ChevronRight, AlertTriangle, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import BlogCard from '@/components/BlogCard';
-import AdsterraNative from '@/components/ads/AdsterraNative';
-import AdsterraBanner from '@/components/ads/AdsterraBanner';
 import { generateBaseMetadata, getCategoryFallbackImage } from '@/utils/metadata';
 
 export const revalidate = 60; // Cache and revalidate once a minute
@@ -358,25 +356,10 @@ export default async function CategoryPage({ params }) {
               {posts.map((post, idx) => (
                 <React.Fragment key={post._id}>
                   <BlogCard post={post} defaultCategory={data.title} />
-                  {/* Insert native banners after card #3 and #6 (indexes 2 and 5) */}
-                  {idx === 2 && (
-                    <div className="col-span-full">
-                      <AdsterraNative className="my-8" />
-                    </div>
-                  )}
-                  {idx === 5 && (
-                    <div className="col-span-full">
-                      <AdsterraNative className="my-8" />
-                    </div>
-                  )}
                 </React.Fragment>
               ))}
             </div>
 
-            {/* 300x250 banner before pagination / end of articles */}
-            <div className="mt-8 mb-6 flex justify-center">
-              <AdsterraBanner type="300x250" />
-            </div>
           </div>
 
           {/* Right Column: Sidebar - Tools & FAQs (1/3 width) */}

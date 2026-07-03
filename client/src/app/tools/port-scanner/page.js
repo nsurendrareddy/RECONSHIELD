@@ -11,8 +11,6 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
 });
 
-import AdsterraNative from '@/components/ads/AdsterraNative';
-
 export const metadata = {
   title: "Free Port Scanner - Check Open Ports Online | ReconShield",
   description: "Free online port scanner to check open ports on any server. Scan TCP/UDP ports, identify services, and detect security vulnerabilities instantly.",
@@ -885,8 +883,6 @@ export default function PortScannerPage() {
           </div>
         </section>
  
-        <AdsterraNative />
-
         {/* FAQ Section */}
         <section className="py-20 border-t border-white/5 bg-[#0a0d14]" aria-labelledby="faq-title">
           <div className="max-w-[900px] mx-auto px-6">

@@ -31,6 +31,12 @@ export default function CookieBanner() {
           onClick={() => {
             localStorage.setItem('cookieConsent', 'false');
             setShow(false);
+            if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+              window.gtag('consent', 'update', {
+                analytics_storage: 'denied',
+                ad_storage: 'denied',
+              });
+            }
           }}
           className="px-4 py-2 border border-white/10 hover:border-white/20 text-gray-400 hover:text-white rounded-lg transition-all text-[10px] tracking-wider uppercase active:scale-95"
         >
@@ -40,6 +46,12 @@ export default function CookieBanner() {
           onClick={() => {
             localStorage.setItem('cookieConsent', 'true');
             setShow(false);
+            if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+              window.gtag('consent', 'update', {
+                analytics_storage: 'granted',
+                ad_storage: 'granted',
+              });
+            }
           }}
           className="px-5 py-2 bg-[#00ff88] text-surface-950 font-bold rounded-lg hover:bg-[#00ff88]/85 transition-all text-[10px] tracking-wider uppercase shadow-lg shadow-[#00ff88]/15 active:scale-95"
         >

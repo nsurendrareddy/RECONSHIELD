@@ -10,8 +10,6 @@ import {
   ArrowRight
 } from 'lucide-react'
 
-const GlobalHeaderAd = dynamic(() => import('@/components/ads/GlobalHeaderAd'), { ssr: false })
-const AdsterraNative = dynamic(() => import('@/components/ads/AdsterraNative'), { ssr: false })
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
 
@@ -525,9 +523,6 @@ export default function Layout({ children }) {
         </div>
       </header>
 
-      {/* Site-wide header banner ad */}
-      <GlobalHeaderAd />
-
       {/* Mobile Drawer (Accordion style) */}
       {isMenuOpen && (
         <div className="lg:hidden fixed inset-0 z-[100] bg-surface-950/98 backdrop-blur-2xl transition-transform duration-300 ease-in-out">
@@ -704,10 +699,6 @@ export default function Layout({ children }) {
       <main className={`${isBlogPage ? '' : 'max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8'} min-h-[80vh] relative`}>
         {children}
       </main>
-
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
-        <AdsterraNative className="my-14" />
-      </div>
 
       {/* Footer */}
       <footer className="border-t mt-16 transition-colors duration-300 bg-surface-950/80 border-white/[0.04] text-gray-400 backdrop-blur-md">

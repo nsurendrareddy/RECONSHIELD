@@ -1,7 +1,5 @@
 import React from 'react';
 import ContactClient from '@/components/ContactClient';
-import Breadcrumbs from '@/components/Breadcrumbs';
-import AdsterraNative from '@/components/ads/AdsterraNative';
 import { ShieldCheck, Mail, HelpCircle, Bug, ShieldAlert, Cpu } from 'lucide-react';
 
 export const metadata = {
@@ -75,11 +73,6 @@ export default function Page() {
         {/* Form Section */}
         <div className="mt-8 mb-16">
           <ContactClient />
-        </div>
-
-        {/* Native ad below contact form */}
-        <div className="flex justify-center mb-12">
-          <AdsterraNative />
         </div>
 
         {/* Authority / E-E-A-T Content Sections */}

@@ -1,10 +1,9 @@
 import Layout from "@/components/Layout";
+import GoogleAnalyticsPageView from "@/components/GoogleAnalyticsPageView";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
 import { Inter, JetBrains_Mono, Rajdhani } from "next/font/google";
-import MonetagGlobal from "@/components/ads/MonetagGlobal";
-import AdsterraSocialBar from "@/components/ads/AdsterraSocialBar";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
@@ -65,6 +64,27 @@ export default function RootLayout({ children }) {
           }}
         />
 
+        {/*
+          GA4 Consent Defaults — must run synchronously BEFORE gtag.js loads.
+          Default to denied; the CookieBanner updates consent when user chooses.
+          Restoring prior consent from localStorage is done in the afterInteractive
+          init script below so it only runs client-side.
+        */}
+        <script
+          id="ga4-consent-defaults"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', {
+                analytics_storage: 'denied',
+                ad_storage: 'denied',
+                wait_for_update: 500
+              });
+            `
+          }}
+        />
+
         {/* Google AdSense */}
         <Script
           id="google-adsense"
@@ -73,11 +93,16 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
         />
 
-        {/* Subscribe with Google (Offloaded to Web Worker) */}
-        <Script strategy="worker" src="https://news.google.com/swg/js/v1/swg-basic.js" />
+        {/*
+          Subscribe with Google.
+          Changed from strategy="worker" to "lazyOnload":
+          swg-basic.js calls document.querySelectorAll and attaches DOM listeners,
+          which are unavailable inside a Partytown Web Worker.
+        */}
+        <Script strategy="lazyOnload" src="https://news.google.com/swg/js/v1/swg-basic.js" />
         <Script
           id="google-news-init"
-          strategy="worker"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
@@ -92,30 +117,51 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* Google Analytics (Offloaded to Web Worker) */}
+        {/*
+          Google Analytics 4.
+          FIXED: strategy changed from "worker" to "afterInteractive".
+
+          Root cause: strategy="worker" offloads scripts to a Partytown Web Worker.
+          GA4's gtag.js requires window, document, document.cookie, and navigator —
+          none of which are available inside a Web Worker. This caused 100% data loss.
+
+          send_page_view: false — the initial page_view is fired by the
+          GoogleAnalyticsPageView component so that SPA navigations also send it.
+
+          The localStorage restore block re-grants consent for returning users
+          who previously clicked Accept in CookieBanner.
+        */}
         <Script
-          strategy="worker"
+          strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-C1L15RFXXR"
         />
         <Script
           id="google-analytics"
-          strategy="worker"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
+              gtag('config', 'G-C1L15RFXXR', { send_page_view: false });
 
-              gtag('config', 'G-C1L15RFXXR');
+              // Restore consent for users who already accepted
+              try {
+                var consent = localStorage.getItem('cookieConsent');
+                if (consent === 'true') {
+                  gtag('consent', 'update', {
+                    analytics_storage: 'granted',
+                    ad_storage: 'granted'
+                  });
+                }
+              } catch(e) {}
             `,
           }}
         />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
-        {/* Sitewide Global Ads & Loader */}
-        <MonetagGlobal />
-        <AdsterraSocialBar />
-
+        {/* Fires GA4 page_view on every client-side route change */}
+        <GoogleAnalyticsPageView />
         <Layout>
           {children}
         </Layout>

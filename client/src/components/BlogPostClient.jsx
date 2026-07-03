@@ -5,8 +5,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
-import AdsterraBanner from '@/components/ads/AdsterraBanner'
-import AdsterraNative from '@/components/ads/AdsterraNative'
 
 const randomViews = Math.floor(Math.random() * 500) + 100;
 
@@ -189,19 +187,10 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
 
       if (idx === insertAfterP2) {
         flushChunk(`chunk-p2-${idx}`);
-        renderedElements.push(
-          <AdsterraNative key={`ad-p2`} className="my-8" />
-        );
       } else if (idx === insertAfterMid) {
         flushChunk(`chunk-mid-${idx}`);
-        renderedElements.push(
-          <AdsterraBanner key={`ad-mid`} type="300x250" className="my-8" />
-        );
       } else if (idx === insertBeforeConclusion) {
         flushChunk(`chunk-conc-${idx}`);
-        renderedElements.push(
-          <AdsterraBanner key={`ad-conc`} type="728x90" className="my-8" />
-        );
       }
     });
 
@@ -765,9 +754,6 @@ FileETag None`,
               </Link>
             ))}
           </div>
-        </div>
-
-        <AdsterraBanner type="728x90" className="mb-20" />
       </div>
 
       {/* Footer */}

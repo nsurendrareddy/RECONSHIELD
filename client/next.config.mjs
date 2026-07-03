@@ -1,71 +1,4 @@
 /** @type {import('next').NextConfig} */
-const adDomains = [
-  'https://ep1.adtrafficquality.google',
-  'https://ep2.adtrafficquality.google',
-  // Adsterra
-  'https://www.highperformanceformat.com',
-  'https://highperformanceformat.com',
-  'https://*.highperformanceformat.com',
-  'https://*.profitableratecpm.com',
-  'https://*.profitablecpmrate.com',
-  'https://*.displaycontentnetwork.com',
-  'https://*.adsterra.com',
-  'https://*.adsterranetwork.com',
-  'https://portalfluently.com',
-  'https://*.portalfluently.com',
-  'https://pl29695196.effectivecpmnetwork.com'
-];
-
-const monetagDomains = [
-  'https://n6wxm.com',
-  'https://*.n6wxm.com',
-  'https://nap5k.com',
-  'https://*.nap5k.com',
-  'https://*.onclickperformance.com',
-  'https://*.onclickalgo.com',
-  'https://*.activecpm.com',
-  'https://*.cpmrevenuegate.com',
-  'https://*.propellerads.com',
-  'https://*.propellerclick.com',
-  'https://*.propeller-opt.com'
-];
-
-const adsterraDomains = [
-  'https://www.highperformanceformat.com',
-  'https://*.highperformanceformat.com',
-  'https://pl29692251.effectivecpmnetwork.com',
-  'https://pl29692252.effectivecpmnetwork.com',
-  'https://*.effectivecpmnetwork.com'
-];
-
-const additionalAdDomains = [
-  'https://jhnwr.com',
-  'https://*.jhnwr.com',
-  'https://ldrws.com',
-  'https://*.ldrws.com',
-  'https://bobapsoabauns.com',
-  'https://*.bobapsoabauns.com',
-  'https://my.rtmark.net',
-  'https://*.my.rtmark.net',
-  'https://preferencenail.com',
-  'https://*.preferencenail.com',
-  'https://protrafficinspector.com',
-  'https://*.protrafficinspector.com',
-  'https://tzegilo.com',
-  'https://*.tzegilo.com',
-  'https://fleraprt.com',
-  'https://*.fleraprt.com',
-  // Rotating ad network/delivery domains
-  'https://spendsdetachment.com',
-  'https://*.spendsdetachment.com',
-  'https://fizzyacerbitymellow.com',
-  'https://*.fizzyacerbitymellow.com',
-  'https://kettledroopingcontinuation.com',
-  'https://*.kettledroopingcontinuation.com',
-  'https://realizationnewestfangs.com',
-  'https://*.realizationnewestfangs.com'
-];
-
 const adsenseDomains = [
   'https://pagead2.googlesyndication.com',
   'https://*.googlesyndication.com',
@@ -77,22 +10,17 @@ const adsenseDomains = [
   'https://*.adtrafficquality.google'
 ];
 
-const allAdDomains = [...adDomains, ...monetagDomains, ...adsterraDomains, ...additionalAdDomains, ...adsenseDomains].join(' ');
-const adDomainSources = adDomains.join(' ');
-const monetagDomainSources = monetagDomains.join(' ');
-const adsterraDomainSources = adsterraDomains.join(' ');
-const additionalAdDomainSources = additionalAdDomains.join(' ');
 const adsenseDomainSources = adsenseDomains.join(' ');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://va.vercel-scripts.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources} ${adsenseDomainSources}`,
-  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://news.google.com https://www.googletagmanager.com https://va.vercel-scripts.com ${adsenseDomainSources}`,
+  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
   `img-src 'self' blob: data: https: ${adsenseDomainSources}`,
-  `font-src 'self' data: https://fonts.gstatic.com ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources}`,
-  `connect-src 'self' https://*.google-analytics.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adDomainSources} ${monetagDomainSources} ${adsterraDomainSources} ${additionalAdDomainSources} ${adsenseDomainSources}`,
+  `font-src 'self' data: https://fonts.gstatic.com`,
+  `connect-src 'self' https://*.google-analytics.com https://www.googletagmanager.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io https://reconshield.onrender.com http://127.0.0.1:* http://localhost:* ${adsenseDomainSources}`,
   `frame-src 'self' https: ${adsenseDomainSources}`,
   `child-src 'self' blob: https:`,
   "worker-src 'self' blob:",

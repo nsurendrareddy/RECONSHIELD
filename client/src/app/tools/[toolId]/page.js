@@ -9,7 +9,6 @@ import { TOOL_DOMINATION_DATA } from '@/utils/toolDominationData';
 import AuthorizedUseBanner from '@/components/AuthorizedUseBanner';
 import { SemanticToolLinks } from '@/components/SemanticLinks';
 import { renderMarkdown } from '@/utils/markdownRenderer';
-import AdsterraNative from '@/components/ads/AdsterraNative';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
   loading: () => <div className="min-h-[400px] animate-pulse bg-surface-900/50 rounded-3xl max-w-5xl mx-auto my-12" />
@@ -500,11 +499,6 @@ export function ToolPageContent({ toolId }) {
                 )}
               </div>
             )}
-            
-            {/* Tool FAQs (Native ad placed above FAQ to match best placement) */}
-            <div className="mt-8 mb-6 flex justify-center">
-              <AdsterraNative className="my-8" />
-            </div>
             {activeFaqs && activeFaqs.length > 0 && (
               <div className="mt-12 border-t border-white/5 pt-12">
                 <h2 className="text-xl font-display font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
