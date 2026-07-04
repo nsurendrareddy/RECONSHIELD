@@ -119,7 +119,7 @@ const generateDnsRelations = (domain) => {
     related.push({ label: `Check SSL for ${cleanDomain}`, href: `/ssl/${cleanDomain}` });
     related.push({ label: `Find Subdomains of ${cleanDomain}`, href: `/subdomains/${cleanDomain}` });
     related.push({ label: `DNS Records for ${cleanDomain}`, href: `/dns-records/${cleanDomain}` });
-    related.push({ label: `Whois Records for ${cleanDomain}`, href: `/tools/whois/${cleanDomain}` });
+    related.push({ label: `Whois Records for ${cleanDomain}`, href: `/domain/${cleanDomain}` });
   }
 
   return { related };
@@ -132,7 +132,7 @@ const generateSslRelations = (domain) => {
   if (KNOWN_DOMAINS.includes(cleanDomain)) {
     related.push({ label: `DNS Records for ${cleanDomain}`, href: `/dns-records/${cleanDomain}` });
     related.push({ label: `Find Subdomains of ${cleanDomain}`, href: `/subdomains/${cleanDomain}` });
-    related.push({ label: `Whois Records for ${cleanDomain}`, href: `/tools/whois/${cleanDomain}` });
+    related.push({ label: `Whois Records for ${cleanDomain}`, href: `/domain/${cleanDomain}` });
   }
 
   return { related };

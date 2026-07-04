@@ -24,6 +24,7 @@ export const KNOWN_ASNS = [
   'AS712',   // Apple
   'AS714',   // Apple
   'AS715',   // Apple
+  'AS716',   // Apple
   'AS32934', // Facebook
   'AS16509', // Amazon
   'AS16510', // Amazon alternate

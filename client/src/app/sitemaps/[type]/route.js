@@ -27,7 +27,6 @@ const FALLBACK_DATA = {
   ports: KNOWN_PORTS.map(String),
   headers: KNOWN_HEADERS,
   ssl: [
-    ...KNOWN_DOMAINS, 
     'certificate-chain', 
     'cipher-suites', 
     'self-signed-certificate',
@@ -35,12 +34,11 @@ const FALLBACK_DATA = {
     'pki-explained',
     'https-security'
   ],
-  asn: KNOWN_ASNS,
-  ip: KNOWN_IPS.slice(0, 5),
+  asn: [],
+  ip: [],
   dns: KNOWN_DOMAINS,
-  whois: KNOWN_DOMAINS,
+  whois: [],
   subdomains: [
-    ...KNOWN_DOMAINS, 
     'subdomain-enumeration', 
     'passive-enumeration', 
     'certificate-transparency', 
@@ -50,9 +48,9 @@ const FALLBACK_DATA = {
     'asset-discovery',
     'attack-surface-management'
   ],
-  'malicious-ips': ['185.191.171.2', '194.165.16.2'],
-  'dns-types': Object.keys(DNS_TYPES_DATA),
-  'ssl-errors': Object.keys(SSL_ERRORS_DATA),
+  'malicious-ips': [],
+  'dns-types': [],
+  'ssl-errors': [],
   'email-auths': Object.keys(EMAIL_AUTHS_DATA),
   technology: ['react', 'nextjs', 'wordpress', 'shopify', 'cloudflare', 'nginx', 'apache'],
   vulnerability: ['sql-injection', 'stored-xss', 'reflected-xss', 'dom-xss', 'csrf', 'clickjacking', 'open-redirect', 'exposed-git', 'exposed-env', 'directory-listing', 'missing-csp', 'missing-hsts', 'missing-x-frame-options', 'missing-x-content-type-options', 'missing-dmarc', 'missing-spf', 'expired-ssl']
@@ -63,6 +61,12 @@ function isUrlIndexableAndValid(urlStr) {
   try {
     const url = new URL(urlStr);
     const path = url.pathname;
+    
+    // Normalize path to remove trailing slash
+    let cleanPath = path;
+    if (cleanPath.endsWith('/') && cleanPath !== '/') {
+      cleanPath = cleanPath.slice(0, -1);
+    }
     
     // Exclude any known redirecting paths to ensure no 301/302/307/308 in sitemap
     const redirectPaths = [
@@ -84,91 +88,85 @@ function isUrlIndexableAndValid(urlStr) {
       '/vulnerability-scanner',
       '/blog/categories'
     ];
-    if (redirectPaths.includes(path)) return false;
-    if (path.startsWith('/tools/whois/')) return false;
-    if (path.startsWith('/dns/')) return false;
-    if (path.startsWith('/ip-lookup/')) return false;
-    if (path.startsWith('/whois/')) return false;
-    if (path.startsWith('/dns-lookup/')) return false;
-    if (path.startsWith('/blog/categories/')) return false;
+    if (redirectPaths.includes(cleanPath)) return false;
+    
+    // Exclude legacy routes and internal redirects
+    if (
+      cleanPath.startsWith('/tools/whois/') ||
+      cleanPath.startsWith('/dns/') ||
+      cleanPath.startsWith('/ip-lookup/') ||
+      cleanPath.startsWith('/whois/') ||
+      cleanPath.startsWith('/dns-lookup/') ||
+      cleanPath.startsWith('/blog/categories/') ||
+      cleanPath.startsWith('/reports/') ||
+      cleanPath.startsWith('/admin/') ||
+      cleanPath.startsWith('/search')
+    ) {
+      return false;
+    }
 
-    // Check reports (marked as noindex, do not place in sitemaps)
-    if (path.startsWith('/reports/ssl/')) {
+    // Exclude dynamic tool scanning pages (e.g. /tools/[toolId]/[domain] or /tools/port-scanner/[host])
+    // Since these pages are configured with noindex in metadata
+    const toolsParts = cleanPath.split('/');
+    if (toolsParts[1] === 'tools' && toolsParts.length > 3) {
       return false;
     }
-    if (path.startsWith('/reports/subdomains/')) {
-      return false;
-    }
-    if (path.startsWith('/reports/ports/')) {
+
+    // Exclude lookup routes and others configured as noindex
+    if (
+      cleanPath.startsWith('/ip/') ||
+      cleanPath.startsWith('/asn/') ||
+      cleanPath.startsWith('/domain/') ||
+      cleanPath.startsWith('/dns-records/types/') ||
+      cleanPath.startsWith('/ssl/errors/')
+    ) {
       return false;
     }
 
     // Check ports
-    if (path.startsWith('/ports/')) {
-      const port = path.replace('/ports/', '');
+    if (cleanPath.startsWith('/ports/')) {
+      const port = cleanPath.replace('/ports/', '');
       return KNOWN_PORTS.includes(parseInt(port, 10));
     }
     
-    // Check IPs
-    if (path.startsWith('/ip/')) {
-      const ip = path.replace('/ip/', '');
-      return KNOWN_IPS.includes(ip);
-    }
-    
-    // Check ASNs
-    if (path.startsWith('/asn/')) {
-      const asn = path.replace('/asn/', '');
-      return KNOWN_ASNS.includes(asn.toUpperCase());
-    }
-    
     // Check headers
-    if (path.startsWith('/headers/')) {
-      const header = path.replace('/headers/', '');
+    if (cleanPath.startsWith('/headers/')) {
+      const header = cleanPath.replace('/headers/', '');
       return KNOWN_HEADERS.includes(header.toLowerCase());
     }
     
-    // Check SSL Errors first, then domain-specific SSL paths
-    if (path.startsWith('/ssl/errors/')) {
-      const err = path.replace('/ssl/errors/', '');
-      return Object.keys(SSL_ERRORS_DATA).includes(err);
-    }
-    if (path.startsWith('/ssl/')) {
-      const domain = path.replace('/ssl/', '');
-      if ([
+    // Check SSL
+    if (cleanPath.startsWith('/ssl/')) {
+      const domain = cleanPath.replace('/ssl/', '').toLowerCase();
+      const sslTopics = [
+        'ssl-vs-tls', 
+        'tls-1-2-vs-tls-1-3', 
         'certificate-chain', 
         'cipher-suites', 
         'self-signed-certificate',
         'wildcard-certificate',
         'pki-explained',
         'https-security'
-      ].includes(domain.toLowerCase())) {
-        return true;
-      }
-      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+      ];
+      return sslTopics.includes(domain);
     }
 
-    // Check DNS Types first, then domain-specific DNS paths
-    if (path.startsWith('/dns-records/types/')) {
-      const type = path.replace('/dns-records/types/', '');
-      return Object.keys(DNS_TYPES_DATA).includes(type);
-    }
-    if (path.startsWith('/dns-records/')) {
-      const domain = path.replace('/dns-records/', '');
+    // Check DNS Records
+    if (cleanPath.startsWith('/dns-records/')) {
+      const domain = cleanPath.replace('/dns-records/', '');
       return KNOWN_DOMAINS.includes(domain.toLowerCase());
-    }
-    if (path.startsWith('/dns/')) {
-      return false;
     }
 
     // Check Email Auths
-    if (path.startsWith('/email-auth/')) {
-      const auth = path.replace('/email-auth/', '');
-      return Object.keys(EMAIL_AUTHS_DATA).includes(auth);
+    if (cleanPath.startsWith('/email-auth/')) {
+      const auth = cleanPath.replace('/email-auth/', '');
+      return Object.keys(EMAIL_AUTHS_DATA).includes(auth.toLowerCase());
     }
     
-    if (path.startsWith('/subdomains/')) {
-      const domain = path.replace('/subdomains/', '');
-      if ([
+    // Check Subdomains
+    if (cleanPath.startsWith('/subdomains/')) {
+      const domain = cleanPath.replace('/subdomains/', '').toLowerCase();
+      const subdomainTopics = [
         'subdomain-enumeration', 
         'passive-enumeration', 
         'certificate-transparency', 
@@ -177,29 +175,23 @@ function isUrlIndexableAndValid(urlStr) {
         'active-enumeration',
         'asset-discovery',
         'attack-surface-management'
-      ].includes(domain.toLowerCase())) {
-        return true;
-      }
-      return KNOWN_DOMAINS.includes(domain.toLowerCase());
+      ];
+      return subdomainTopics.includes(domain);
     }
-    if (path.startsWith('/tools/whois/')) {
-      const domain = path.replace('/tools/whois/', '');
-      return KNOWN_DOMAINS.includes(domain.toLowerCase());
-    }
-    if (path.startsWith('/domain/')) {
-      const domain = path.replace('/domain/', '');
-      return KNOWN_DOMAINS.includes(domain.toLowerCase());
-    }
-    if (path.startsWith('/technology/')) {
-      const slug = path.replace('/technology/', '');
+
+    // Check Technology
+    if (cleanPath.startsWith('/technology/')) {
+      const slug = cleanPath.replace('/technology/', '');
       return ['react', 'nextjs', 'wordpress', 'shopify', 'cloudflare', 'nginx', 'apache'].includes(slug.toLowerCase());
     }
-    if (path.startsWith('/vulnerability/')) {
-      const slug = path.replace('/vulnerability/', '');
+
+    // Check Vulnerability
+    if (cleanPath.startsWith('/vulnerability/')) {
+      const slug = cleanPath.replace('/vulnerability/', '');
       return ['sql-injection', 'stored-xss', 'reflected-xss', 'dom-xss', 'csrf', 'clickjacking', 'open-redirect', 'exposed-git', 'exposed-env', 'directory-listing', 'missing-csp', 'missing-hsts', 'missing-x-frame-options', 'missing-x-content-type-options', 'missing-dmarc', 'missing-spf', 'expired-ssl'].includes(slug.toLowerCase());
     }
 
-    // Default true for core static pages, blog posts, and scanner tools
+    // Default true for core static pages, blog posts, and tool hubs
     return true;
   } catch (e) {
     return false;

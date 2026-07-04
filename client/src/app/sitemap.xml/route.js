@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const BASE_URL = 'https://reconshield.in';
-const SITEMAP_TYPES = ['core', 'tools', 'blog', 'ports', 'headers', 'dns-types', 'ssl-errors', 'email-auths', 'technology', 'vulnerability'];
+const SITEMAP_TYPES = ['core', 'tools', 'blog', 'ports', 'headers', 'dns', 'email-auths', 'technology', 'vulnerability', 'ssl', 'subdomains'];
 
 export async function GET() {
   try {

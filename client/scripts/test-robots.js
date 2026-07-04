@@ -72,8 +72,17 @@ async function run() {
       console.error('❌ FAILED: robots.txt Content-Type is not text/plain');
       success = false;
     }
-    const expectedContent = 'User-agent: *\nAllow: /\n\nSitemap: https://reconshield.in/sitemap.xml';
-    if (res.body.trim().replace(/\r\n/g, '\n') !== expectedContent.trim()) {
+    const expectedContent = `User-agent: *
+Allow: /
+
+Disallow: /reports/ssl/
+Disallow: /reports/subdomains/
+Disallow: /reports/ports/
+
+Disallow: /api/
+
+Sitemap: https://reconshield.in/sitemap.xml`;
+    if (res.body.trim().replace(/\r\n/g, '\n') !== expectedContent.trim().replace(/\r\n/g, '\n')) {
       console.error('❌ FAILED: robots.txt content does not match expected configuration');
       success = false;
     }

@@ -1,2 +1,2 @@
-import { redirect } from 'next/navigation';
-export default function DnsRecordsIndexPage() { redirect('/tools/dns-lookup'); }
+import { permanentRedirect } from 'next/navigation';
+export default function DnsRecordsIndexPage() { permanentRedirect('/tools/dns-lookup'); }

@@ -24,7 +24,7 @@ export const metadata = {
   openGraph: {
     title: "ReconShield - Infrastructure Visibility Platform",
     description: "ReconShield — Passive cybersecurity platform for threat intelligence, OSINT, exposure management, and IP analysis. Professional-grade security auditing tools, free.",
-    url: "https://reconshield.in/",
+    url: "https://reconshield.in",
     siteName: "ReconShield",
     images: [
       {

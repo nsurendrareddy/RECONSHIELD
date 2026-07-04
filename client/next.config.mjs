@@ -116,6 +116,8 @@ const nextConfig = {
       { source: '/ip-scanner', destination: '/tools/ip-lookup', permanent: true },
       { source: '/ip-lookup', destination: '/tools/ip-lookup', permanent: true },
       { source: '/ip-lookup/:path*', destination: '/tools/ip-lookup/:path*', permanent: true },
+      { source: '/tools/whois/:domain', destination: '/domain/:domain', permanent: true },
+      { source: '/whois/:domain', destination: '/domain/:domain', permanent: true },
       { source: '/whois', destination: '/tools/whois', permanent: true },
       { source: '/whois/:path*', destination: '/tools/whois/:path*', permanent: true },
       { source: '/whois-lookup', destination: '/tools/whois', permanent: true },
@@ -129,7 +131,10 @@ const nextConfig = {
       { source: '/vulnerability-scanner', destination: '/tools/vulnerability-scanner', permanent: true },
       { source: '/dns/:domain', destination: '/dns-records/:domain', permanent: true },
       { source: '/blog/categories', destination: '/blog', permanent: true },
-      { source: '/blog/categories/:slug', destination: '/blog/category/:slug', permanent: true }
+      { source: '/blog/categories/:slug', destination: '/blog/category/:slug', permanent: true },
+      { source: '/blog/attack-surface-discovery', destination: '/blog/anatomy-of-passive-osint', permanent: true },
+      { source: '/blog/reconnaissance-guide', destination: '/blog/osint-fundamentals', permanent: true },
+      { source: '/blog/continuous-monitoring-guide', destination: '/blog/shadow-it-exposed-ports', permanent: true }
     ];
   },
 };
