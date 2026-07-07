@@ -22,7 +22,11 @@ const adDomains = [
   'https://protrafficinspector.com',
   'https://*.protrafficinspector.com',
   'https://spendsdetachment.com',
-  'https://*.spendsdetachment.com'
+  'https://*.spendsdetachment.com',
+  'https://workdeadlinededicate.com',
+  'https://*.workdeadlinededicate.com',
+  'https://cdn.storageimagedisplay.com',
+  'https://*.storageimagedisplay.com'
 ];
 const adDomainSources = adDomains.join(' ');
 
@@ -34,13 +38,17 @@ const adImageDomains = [
   'https://protrafficinspector.com',
   'https://*.protrafficinspector.com',
   'https://spendsdetachment.com',
-  'https://*.spendsdetachment.com'
+  'https://*.spendsdetachment.com',
+  'https://workdeadlinededicate.com',
+  'https://*.workdeadlinededicate.com',
+  'https://cdn.storageimagedisplay.com',
+  'https://*.storageimagedisplay.com'
 ];
 const adImageDomainSources = adImageDomains.join(' ');
 
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com ${adsenseDomainSources} ${adDomainSources}`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com ${adsenseDomainSources} ${adDomainSources}`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
   `img-src 'self' blob: data: https://cdn.sanity.io https://*.googleusercontent.com https://www.google-analytics.com ${adsenseDomainSources} ${adImageDomainSources}`,
   `font-src 'self' data: https://fonts.gstatic.com`,
