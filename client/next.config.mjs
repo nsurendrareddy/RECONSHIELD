@@ -15,14 +15,26 @@ const adsenseDomainSources = adsenseDomains.join(' ');
 const isDev = process.env.NODE_ENV !== 'production';
 
 const adDomains = [
-  'https://www.highperformanceformat.com',
-  'https://*.effectivecpmnetwork.com'
+  'https://highperformanceformat.com',
+  'https://*.highperformanceformat.com',
+  'https://effectivecpmnetwork.com',
+  'https://*.effectivecpmnetwork.com',
+  'https://protrafficinspector.com',
+  'https://*.protrafficinspector.com',
+  'https://spendsdetachment.com',
+  'https://*.spendsdetachment.com'
 ];
 const adDomainSources = adDomains.join(' ');
 
 const adImageDomains = [
+  'https://highperformanceformat.com',
+  'https://*.highperformanceformat.com',
+  'https://effectivecpmnetwork.com',
   'https://*.effectivecpmnetwork.com',
-  'https://*.highperformanceformat.com'
+  'https://protrafficinspector.com',
+  'https://*.protrafficinspector.com',
+  'https://spendsdetachment.com',
+  'https://*.spendsdetachment.com'
 ];
 const adImageDomainSources = adImageDomains.join(' ');
 
