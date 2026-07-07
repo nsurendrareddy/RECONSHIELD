@@ -39,7 +39,11 @@ const adDomains = [
   'https://fizzyacerbitymellow.com',
   'https://*.fizzyacerbitymellow.com',
   'https://sleepoverlimitprofound.com',
-  'https://*.sleepoverlimitprofound.com'
+  'https://*.sleepoverlimitprofound.com',
+  'https://exemplarfederallithe.com',
+  'https://*.exemplarfederallithe.com',
+  'https://consumeririssalary.com',
+  'https://*.consumeririssalary.com'
 ];
 const adDomainSources = adDomains.join(' ');
 
