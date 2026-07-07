@@ -2,12 +2,17 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { adMetrics } from '@/lib/adMetrics';
+import type { AdPriority } from '@/lib/adQueue';
 
 interface AdContextType {
   isScanning: boolean;
   setIsScanning: (scanning: boolean) => void;
   isTyping: boolean;
   isMobileKeyboardActive: boolean;
+  /** Default priority for ad slots in the current page context */
+  defaultAdPriority: AdPriority;
+  setDefaultAdPriority: (priority: AdPriority) => void;
 }
 
 const AdContext = createContext<AdContextType>({
@@ -15,6 +20,8 @@ const AdContext = createContext<AdContextType>({
   setIsScanning: () => {},
   isTyping: false,
   isMobileKeyboardActive: false,
+  defaultAdPriority: 'normal',
+  setDefaultAdPriority: () => {},
 });
 
 export const useAdManager = () => useContext(AdContext);
@@ -23,14 +30,17 @@ export function AdManagerProvider({ children }: { children: React.ReactNode }) {
   const [isScanning, setIsScanning] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [isMobileKeyboardActive, setIsMobileKeyboardActive] = useState(false);
+  const [defaultAdPriority, setDefaultAdPriority] = useState<AdPriority>('normal');
   const pathname = usePathname();
 
-  // Automatically reset the scanning state upon page transitions
+  // Reset state + metrics on route change
   useEffect(() => {
     setIsScanning(false);
+    setDefaultAdPriority('normal');
+    adMetrics.onNavigation();
   }, [pathname]);
 
-  // Monitor keyboard focus and resize interactions to detect user typing and virtual keyboard states
+  // Monitor keyboard focus and resize for virtual keyboard detection
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -52,7 +62,6 @@ export function AdManagerProvider({ children }: { children: React.ReactNode }) {
     const handleResize = () => {
       const currentHeight = window.innerHeight;
       const isMobile = window.innerWidth < 768;
-      // Height contraction of >15% on mobile indicates virtual keyboard overlay
       if (isMobile && (initialHeight - currentHeight) > (initialHeight * 0.15)) {
         setIsMobileKeyboardActive(true);
       } else {
@@ -71,7 +80,7 @@ export function AdManagerProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  // Listen for CSP violations in development to capture blocked ad scripts
+  // CSP violation listener (development only)
   useEffect(() => {
     if (typeof window === 'undefined' || process.env.NODE_ENV !== 'development') return;
 
@@ -82,19 +91,26 @@ export function AdManagerProvider({ children }: { children: React.ReactNode }) {
         blockedUri.includes('effectivecpmnetwork')
       ) {
         console.warn(
-          `[Ad System CSP Warning] Blocked URI: ${blockedUri} via directive: ${e.violatedDirective}. Check your next.config.mjs CSP headers!`
+          `[Ad System CSP Warning] Blocked URI: ${blockedUri} via directive: ${e.violatedDirective}. Check next.config.mjs CSP headers!`
         );
       }
     };
 
     window.addEventListener('securitypolicyviolation', handleCspViolation);
-    return () => {
-      window.removeEventListener('securitypolicyviolation', handleCspViolation);
-    };
+    return () => window.removeEventListener('securitypolicyviolation', handleCspViolation);
   }, []);
 
   return (
-    <AdContext.Provider value={{ isScanning, setIsScanning, isTyping, isMobileKeyboardActive }}>
+    <AdContext.Provider
+      value={{
+        isScanning,
+        setIsScanning,
+        isTyping,
+        isMobileKeyboardActive,
+        defaultAdPriority,
+        setDefaultAdPriority,
+      }}
+    >
       {children}
     </AdContext.Provider>
   );

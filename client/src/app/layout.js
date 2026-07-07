@@ -48,6 +48,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`dark h-full antialiased ${inter.variable} ${jetbrains.variable} ${rajdhani.variable}`}>
       <head>
+        {/* --- Ad Network Resource Hints ---
+            Eliminates cold DNS lookup + TCP handshake + TLS for ad domains.
+            Saving: ~300–800ms on first ad script request per domain.
+        */}
+        <link rel="preconnect" href="https://www.highperformanceformat.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://www.highperformanceformat.com" />
+        <link rel="preconnect" href="https://pl29692252.effectivecpmnetwork.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://pl29692252.effectivecpmnetwork.com" />
+        <link rel="preconnect" href="https://pl29692251.effectivecpmnetwork.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://pl29692251.effectivecpmnetwork.com" />
+        {/* --- End Ad Network Resource Hints --- */}
         {/* Trusted Types Default Passthrough Policy */}
         <script
           dangerouslySetInnerHTML={{

@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import { usePathname } from 'next/navigation';
-import { adQueue } from '@/lib/adQueue';
+import { adQueue, AdPriority } from '@/lib/adQueue';
+import { adScriptLoader } from './AdScriptLoader';
+import { adMetrics } from '@/lib/adMetrics';
 
 type AdsterraBannerProps = {
   type: '728x90' | '300x250';
   className?: string;
+  priority?: AdPriority;
 };
 
 const BANNER_CONFIGS = {
@@ -14,163 +17,196 @@ const BANNER_CONFIGS = {
   '300x250': { key: 'bff74f8eee55b4a3775d46c9295efe9a', width: 300, height: 250 }
 };
 
-export default function AdsterraBanner({ type, className = '' }: AdsterraBannerProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [adState, setAdState] = useState<'loading' | 'filled' | 'failed'>('loading');
-  const pathname = usePathname();
+const INVOKE_BASE = 'https://www.highperformanceformat.com';
+const AD_TIMEOUT_MS = 8000;
 
+// Ensure skeleton styles exist
+const SKELETON_STYLE_ID = 'ad-skeleton-style';
+function ensureSkeletonStyles() {
+  if (typeof document === 'undefined' || document.getElementById(SKELETON_STYLE_ID)) return;
+  const style = document.createElement('style');
+  style.id = SKELETON_STYLE_ID;
+  style.textContent = `
+    @keyframes adSkeletonShimmer {
+      0%   { background-position: -400px 0; }
+      100% { background-position: 400px 0; }
+    }
+    .ad-skeleton {
+      background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.07) 40%, rgba(255,255,255,0.03) 80%);
+      background-size: 800px 100%;
+      animation: adSkeletonShimmer 1.6s ease-in-out infinite;
+      border-radius: 8px;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+function AdsterraBannerInner({ type, className = '', priority = 'normal' }: AdsterraBannerProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [adState, setAdState] = useState<'idle' | 'loading' | 'filled' | 'failed'>('idle');
+  const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
   const prevPath = useRef(pathname);
   const prevType = useRef(type);
 
-  // Pathname guard: only trigger loading if pathname or type actually changes
+  useEffect(() => {
+    ensureSkeletonStyles();
+    setMounted(true);
+  }, []);
+
+  // Reset on route / type change
   useEffect(() => {
     let changed = false;
-    if (prevPath.current !== pathname) {
-      prevPath.current = pathname;
-      changed = true;
-    }
-    if (prevType.current !== type) {
-      prevType.current = type;
-      changed = true;
-    }
-    if (changed) {
-      setAdState('loading');
+    if (prevPath.current !== pathname) { prevPath.current = pathname; changed = true; }
+    if (prevType.current !== type) { prevType.current = type; changed = true; }
+    if (changed && containerRef.current) {
+      containerRef.current.innerHTML = '';
+      setAdState('idle');
     }
   }, [pathname, type]);
 
-  // Deep teardown on absolute unmount
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (containerRef.current) {
-        containerRef.current.innerHTML = '';
-      }
-      try {
-        delete (window as any).atOptions;
-      } catch (e) {
-        (window as any).atOptions = undefined;
-      }
+      if (containerRef.current) containerRef.current.innerHTML = '';
+      try { delete (window as any).atOptions; } catch { (window as any).atOptions = undefined; }
     };
   }, []);
 
+  // IntersectionObserver — critical/high fire immediately; others wait for 500px proximity
+  useEffect(() => {
+    if (!mounted || adState !== 'idle' || !containerRef.current) return;
+
+    if (priority === 'critical' || priority === 'high') {
+      setAdState('loading');
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setAdState('loading'); observer.disconnect(); } },
+      { rootMargin: '500px', threshold: 0.01 }
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [mounted, adState, priority]);
+
+  // Load ad when state = 'loading'
   useEffect(() => {
     if (typeof window === 'undefined' || !containerRef.current || adState !== 'loading') return;
 
     let observer: MutationObserver | null = null;
-    let timeoutTimer: number | null = null;
+    let timeoutTimer: ReturnType<typeof window.setTimeout> | null = null;
+    let active = true;
 
     const loadAd = () => new Promise<void>((resolve) => {
       const config = BANNER_CONFIGS[type];
       if (!config || !containerRef.current) {
-        setAdState('failed');
-        console.warn(`[Adsterra] ${type} Banner - Failed: Invalid config or missing container`);
+        if (active) setAdState('failed');
         resolve();
         return;
       }
 
-      // Prepare configuration
-      const atOptions = {
-        key: config.key,
-        format: 'iframe',
-        height: config.height,
-        width: config.width,
-        params: {}
-      };
+      const INVOKE_URL = `${INVOKE_BASE}/${config.key}/invoke.js`;
+      const metricIdx = adMetrics.openSlot(type, INVOKE_URL);
 
-      // Set global variable carefully
-      ;(window as any).atOptions = atOptions;
-
-      // Ensure we clean up any old scripts/iframes in this container
+      const atOptions = { key: config.key, format: 'iframe', height: config.height, width: config.width, params: {} };
+      (window as any).atOptions = atOptions;
       containerRef.current.innerHTML = '';
 
-      // Inline config script
       const inlineScript = document.createElement('script');
       inlineScript.type = 'text/javascript';
       inlineScript.text = `window.atOptions = ${JSON.stringify(atOptions)};`;
-
-      // Main invoke script
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = `https://www.highperformanceformat.com/${config.key}/invoke.js`;
-      script.async = true;
+      containerRef.current.appendChild(inlineScript);
 
       const finishLoading = (status: 'filled' | 'failed') => {
-        if (observer) {
-          observer.disconnect();
-          observer = null;
+        if (!active) { resolve(); return; }
+        if (observer) { observer.disconnect(); observer = null; }
+        if (timeoutTimer) { window.clearTimeout(timeoutTimer); timeoutTimer = null; }
+        if (status === 'filled') { adMetrics.recordSlotFilled(metricIdx); }
+        else {
+          adMetrics.recordSlotFailed(metricIdx);
+          if (containerRef.current) containerRef.current.innerHTML = '';
         }
-        if (timeoutTimer) {
-          window.clearTimeout(timeoutTimer);
-          timeoutTimer = null;
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`[Adsterra] ${type} Banner — ${status.toUpperCase()}`);
         }
         setAdState(status);
-        console.log(`[Adsterra] ${type} Banner - ${status.toUpperCase()}`);
-        if (status === 'failed' && containerRef.current) {
-          containerRef.current.innerHTML = '';
-        }
-        resolve(); // Free the queue for the next ad
+        resolve();
       };
 
-      // Watch for iframe injection
       observer = new MutationObserver((mutations) => {
         if (!containerRef.current) return;
-        for (const mutation of mutations) {
-          if (mutation.addedNodes.length) {
-            for (const node of Array.from(mutation.addedNodes)) {
-              if (node.nodeName === 'IFRAME') {
-                finishLoading('filled');
-                return;
-              }
-            }
+        for (const m of mutations) {
+          for (const node of Array.from(m.addedNodes)) {
+            if (node.nodeName === 'IFRAME') { finishLoading('filled'); return; }
           }
         }
       });
-
       observer.observe(containerRef.current, { childList: true, subtree: true });
 
-      // 5-second strict timeout for fill diagnosis
       timeoutTimer = window.setTimeout(() => {
+        adMetrics.recordSlotTimeout(metricIdx);
         finishLoading('failed');
-      }, 5000);
+      }, AD_TIMEOUT_MS);
 
-      script.onerror = () => finishLoading('failed');
-
-      // Inject scripts
-      containerRef.current.appendChild(inlineScript);
-      containerRef.current.appendChild(script);
+      // Deduplicated load — invoke.js only fetched once globally
+      adScriptLoader.load(INVOKE_URL)
+        .then(() => {
+          adMetrics.recordSlotScriptLoaded(metricIdx);
+          if (!active || !containerRef.current) { resolve(); return; }
+          const triggerScript = document.createElement('script');
+          triggerScript.type = 'text/javascript';
+          triggerScript.src = INVOKE_URL;
+          triggerScript.async = true;
+          triggerScript.onerror = () => finishLoading('failed');
+          containerRef.current.appendChild(triggerScript);
+        })
+        .catch(() => finishLoading('failed'));
     });
 
-    // Enqueue the loading process
-    adQueue.enqueue(loadAd);
+    adQueue.enqueue(loadAd, priority);
 
     return () => {
-      if (observer) {
-        observer.disconnect();
-      }
-      if (timeoutTimer) {
-        window.clearTimeout(timeoutTimer);
-      }
+      active = false;
+      if (observer) observer.disconnect();
+      if (timeoutTimer) window.clearTimeout(timeoutTimer);
     };
-  }, [type, adState]);
+  }, [type, adState, priority]);
+
+  if (!mounted) {
+    const h = type === '728x90' ? '90px' : '250px';
+    const w = type === '728x90' ? '728px' : '300px';
+    return <div style={{ height: h, width: w, minHeight: h }} className="mx-auto" aria-hidden="true" />;
+  }
 
   if (adState === 'failed') return null;
 
-  // Render container with smooth expansion. Avoid CLS by keeping it 0 height until filled.
-  const sizeStyles = adState === 'filled' 
-    ? { minHeight: type === '728x90' ? 90 : 250, opacity: 1, height: 'auto' }
-    : { height: 0, margin: 0, padding: 0, opacity: 0, overflow: 'hidden' as const };
+  const config = BANNER_CONFIGS[type];
+  const h = config.height;
+  const w = type === '728x90' ? 'max-w-[728px]' : 'max-w-[300px]';
 
-  const baseWidth = type === '728x90' ? 'max-w-[728px]' : 'max-w-[300px]';
+  const sizeStyles =
+    adState === 'filled'
+      ? { minHeight: h, opacity: 1, height: 'auto', transition: 'opacity 400ms ease' }
+      : adState === 'loading'
+      ? { height: h, opacity: 1 }
+      : { height: 0, margin: 0, padding: 0, opacity: 0, overflow: 'hidden' as const };
 
   return (
-    <div 
-      className={`not-prose flex justify-center items-center w-full transition-all duration-500 ease-in-out ${adState === 'filled' ? className : ''}`}
+    <div
+      className={`not-prose flex justify-center items-center w-full ${adState === 'filled' ? className : ''}`}
       style={sizeStyles}
     >
+      {adState === 'loading' && (
+        <div className={`ad-skeleton w-full ${w}`} style={{ height: h }} aria-hidden="true" />
+      )}
       <div
         ref={containerRef}
-        className={`relative flex justify-center items-center overflow-hidden w-full ${baseWidth}`}
-      >
-      </div>
+        className={`relative flex justify-center items-center overflow-hidden w-full ${w}`}
+      />
     </div>
   );
 }
+
+const AdsterraBanner = memo(AdsterraBannerInner);
+export default AdsterraBanner;

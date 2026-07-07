@@ -1,81 +1,64 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+
+const SOCIAL_BAR_SCRIPT_ID = 'adsterra-social-bar';
+const SOCIAL_BAR_SRC = 'https://pl29692251.effectivecpmnetwork.com/06/ea/fc/06eafc4004351bf68b0c5aa80b3255c9.js';
 
 export default function AdsterraSocialBar() {
-  const [adState, setAdState] = useState<'loading' | 'filled' | 'failed'>('loading');
-
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    let hasInjected = false;
-    let idleTimer: number | null = null;
-    let fallbackTimer: number | null = null;
+    // Already injected — do not repeat
+    if (document.getElementById(SOCIAL_BAR_SCRIPT_ID)) return;
 
-    // Check if script already exists to prevent duplicate injections
-    if (document.getElementById('adsterra-social-bar')) {
-      setAdState('filled');
-      return;
-    }
+    let hasInjected = false;
 
     const injectScript = () => {
       if (hasInjected) return;
+      if (document.getElementById(SOCIAL_BAR_SCRIPT_ID)) return;
       hasInjected = true;
 
-      cleanup();
-
-      if (document.getElementById('adsterra-social-bar')) return;
-
       const script = document.createElement('script');
-      script.id = 'adsterra-social-bar';
-      script.src = 'https://pl29692251.effectivecpmnetwork.com/06/ea/fc/06eafc4004351bf68b0c5aa80b3255c9.js';
+      script.id = SOCIAL_BAR_SCRIPT_ID;
+      script.src = SOCIAL_BAR_SRC;
       script.type = 'text/javascript';
       script.async = true;
 
       script.onload = () => {
-        console.log('[Adsterra] Social Bar - FILLED (Script Loaded)');
-        setAdState('filled');
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[Adsterra] Social Bar — loaded');
+        }
       };
-
       script.onerror = () => {
-        console.warn('[Adsterra] Social Bar - FAILED');
-        setAdState('failed');
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('[Adsterra] Social Bar — failed to load');
+        }
       };
 
-      // Delay slightly to ensure hydration is complete and layout is stable
-      fallbackTimer = window.setTimeout(() => {
-        document.body.appendChild(script);
-      }, 500);
+      document.body.appendChild(script);
     };
 
-    const cleanup = () => {
-      window.removeEventListener('mousemove', injectScript);
-      window.removeEventListener('scroll', injectScript);
-      window.removeEventListener('touchstart', injectScript);
-      window.removeEventListener('keydown', injectScript);
-      if (idleTimer) {
-        window.clearTimeout(idleTimer);
-      }
-    };
+    // requestIdleCallback — non-critical, inject during idle time
+    // Timeout 2500ms ensures it still loads on very busy pages
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(injectScript, { timeout: 2500 });
+    } else {
+      setTimeout(injectScript, 1500);
+    }
 
-    // Listen for early user interaction
-    window.addEventListener('mousemove', injectScript, { passive: true });
-    window.addEventListener('scroll', injectScript, { passive: true });
-    window.addEventListener('touchstart', injectScript, { passive: true });
-    window.addEventListener('keydown', injectScript, { passive: true });
-
-    // Fallback: inject anyway on idle/timeout (e.g. after 3.5 seconds)
-    idleTimer = window.setTimeout(() => {
-      injectScript();
-    }, 3500);
+    // Early-fire on user interaction
+    const onInteraction = () => injectScript();
+    window.addEventListener('mousemove', onInteraction, { passive: true, once: true });
+    window.addEventListener('scroll', onInteraction, { passive: true, once: true });
+    window.addEventListener('touchstart', onInteraction, { passive: true, once: true });
 
     return () => {
-      cleanup();
-      if (fallbackTimer) {
-        window.clearTimeout(fallbackTimer);
-      }
+      window.removeEventListener('mousemove', onInteraction);
+      window.removeEventListener('scroll', onInteraction);
+      window.removeEventListener('touchstart', onInteraction);
     };
   }, []);
 
-  return null; // Social bar injects its own floating UI, no React node needed
+  return null;
 }
