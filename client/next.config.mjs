@@ -26,7 +26,11 @@ const adDomains = [
   'https://workdeadlinededicate.com',
   'https://*.workdeadlinededicate.com',
   'https://cdn.storageimagedisplay.com',
-  'https://*.storageimagedisplay.com'
+  'https://*.storageimagedisplay.com',
+  'https://zoologyfibre.com',
+  'https://*.zoologyfibre.com',
+  'https://kettledroopingcontinuation.com',
+  'https://*.kettledroopingcontinuation.com'
 ];
 const adDomainSources = adDomains.join(' ');
 
@@ -42,7 +46,11 @@ const adImageDomains = [
   'https://workdeadlinededicate.com',
   'https://*.workdeadlinededicate.com',
   'https://cdn.storageimagedisplay.com',
-  'https://*.storageimagedisplay.com'
+  'https://*.storageimagedisplay.com',
+  'https://zoologyfibre.com',
+  'https://*.zoologyfibre.com',
+  'https://kettledroopingcontinuation.com',
+  'https://*.kettledroopingcontinuation.com'
 ];
 const adImageDomainSources = adImageDomains.join(' ');
 
