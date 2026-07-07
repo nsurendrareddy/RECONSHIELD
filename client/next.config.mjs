@@ -37,7 +37,9 @@ const adDomains = [
   'https://realizationnewestfangs.com',
   'https://*.realizationnewestfangs.com',
   'https://fizzyacerbitymellow.com',
-  'https://*.fizzyacerbitymellow.com'
+  'https://*.fizzyacerbitymellow.com',
+  'https://sleepoverlimitprofound.com',
+  'https://*.sleepoverlimitprofound.com'
 ];
 const adDomainSources = adDomains.join(' ');
 
@@ -64,7 +66,9 @@ const adImageDomains = [
   'https://realizationnewestfangs.com',
   'https://*.realizationnewestfangs.com',
   'https://fizzyacerbitymellow.com',
-  'https://*.fizzyacerbitymellow.com'
+  'https://*.fizzyacerbitymellow.com',
+  'https://exemplarfederallithe.com',
+  'https://*.exemplarfederallithe.com'
 ];
 const adImageDomainSources = adImageDomains.join(' ');
 

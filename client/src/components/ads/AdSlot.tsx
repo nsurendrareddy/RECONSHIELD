@@ -256,14 +256,13 @@ function AdSlotInner({ type, id, className = '', priority = 'normal', timeout = 
     <div
       role="complementary"
       aria-label="Advertisement"
-      className={`not-prose flex justify-center items-center mx-auto overflow-hidden ${className}`}
+      className={`not-prose relative flex justify-center items-center mx-auto overflow-hidden ${className}`}
       style={containerStyle}
     >
       {/* Skeleton placeholder — shown while loading, hidden once filled */}
       {adState === 'loading' && (
         <div
           className="ad-skeleton absolute inset-0 rounded-lg"
-          style={{ width: displayWidth, height: displayHeight }}
           aria-hidden="true"
         />
       )}
