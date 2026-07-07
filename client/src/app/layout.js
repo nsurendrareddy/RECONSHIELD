@@ -58,9 +58,7 @@ export default function RootLayout({ children }) {
         <link rel="dns-prefetch" href="https://www.highperformanceformat.com" />
         <link rel="preconnect" href="https://effectivecpmnetwork.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://effectivecpmnetwork.com" />
-        <link rel="preconnect" href="https://pl29692252.effectivecpmnetwork.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://pl29692252.effectivecpmnetwork.com" />
-        <link rel="preconnect" href="https://pl29692251.effectivecpmnetwork.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://pl29692251.effectivecpmnetwork.com" />
         {/* --- End Ad Network Resource Hints --- */}
         {/* Trusted Types Default Passthrough Policy */}

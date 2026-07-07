@@ -43,7 +43,7 @@ export default function ScanTerminalLog({ scanning, data, target }) {
 
   useEffect(() => {
     if (scanning) { 
-      setVisibleLines(0)
+      setTimeout(() => setVisibleLines(0), 0)
       return 
     }
     if (!data) return

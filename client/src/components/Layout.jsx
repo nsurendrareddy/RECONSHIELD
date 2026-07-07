@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic'
 import Banner728 from '@/components/ads/Banner728'
 import {
@@ -144,7 +144,7 @@ export default function Layout({ children }) {
   const isBlogPage = pathname?.startsWith('/blog')
 
   // Menu contents configurations
-  const renderMenuContent = () => {
+  const menuContent = useMemo(() => {
     switch (activeMenu) {
       case 'scanners':
         return (
@@ -319,9 +319,9 @@ export default function Layout({ children }) {
       default:
         return null
     }
-  }
+  }, [activeMenu, handleLinkClick])
 
-  const renderMenuFooter = () => {
+  const menuFooter = useMemo(() => {
     switch (activeMenu) {
       case 'scanners':
         return (
@@ -349,7 +349,7 @@ export default function Layout({ children }) {
       default:
         return null
     }
-  }
+  }, [activeMenu, handleLinkClick])
 
   return (
     <div className={`min-h-screen transition-colors duration-300 bg-surface-950 text-white ${!isBlogPage ? 'bg-grid' : ''}`}>
@@ -520,9 +520,9 @@ export default function Layout({ children }) {
               {/* subtle green background glow */}
               <div className="absolute top-0 right-0 w-80 h-80 bg-matrix-400/[0.015] blur-[100px] rounded-full pointer-events-none -z-10" />
               
-              {renderMenuContent()}
+              {menuContent}
               
-              {renderMenuFooter()}
+              {menuFooter}
             </div>
           )}
         </div>

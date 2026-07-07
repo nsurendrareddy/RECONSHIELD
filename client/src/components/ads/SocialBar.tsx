@@ -25,7 +25,7 @@ export default function SocialBar() {
       path.includes('contact');
 
     if (isRestrictedPath || isScanning || isTyping || isMobileKeyboardActive) {
-      setShouldDisplay(false);
+      setTimeout(() => setShouldDisplay(false), 0);
       return;
     }
 
@@ -36,14 +36,14 @@ export default function SocialBar() {
       if (lastLoad) {
         const timeDiff = now - parseInt(lastLoad, 10);
         if (timeDiff < FREQUENCY_CAP_MS) {
-          setShouldDisplay(false);
+          setTimeout(() => setShouldDisplay(false), 0);
           return;
         }
       }
-      setShouldDisplay(true);
+      setTimeout(() => setShouldDisplay(true), 0);
     } catch (e) {
       console.warn('[SocialBar] Failed to check localStorage frequency cap:', e);
-      setShouldDisplay(true);
+      setTimeout(() => setShouldDisplay(true), 0);
     }
   }, [pathname, isScanning, isTyping, isMobileKeyboardActive]);
 

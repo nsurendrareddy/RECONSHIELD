@@ -3,6 +3,16 @@ import { BarChart3 } from 'lucide-react'
 
 const COLORS = { critical: '#EF4444', warning: '#FACC15', info: '#00E5FF', pass: '#00FF9C' }
 
+const CustomTooltip = ({ active, payload }) => {
+  if (!active || !payload?.length) return null
+  return (
+    <div className="bg-surface-800 border border-matrix-400/15 rounded-lg px-3 py-2 text-xs font-mono shadow-xl">
+      <span className="text-white">{payload[0].name || payload[0].payload?.subject}: </span>
+      <span className="text-matrix-400 font-bold">{payload[0].value}</span>
+    </div>
+  )
+}
+
 export default function ChartsSection({ data }) {
   const risk = data?.risk || {}
   const stats = risk.stats || {}
@@ -37,15 +47,7 @@ export default function ChartsSection({ data }) {
     { subject: 'Domain', score: risk.score || 50 },
   ]
 
-  const CustomTooltip = ({ active, payload }) => {
-    if (!active || !payload?.length) return null
-    return (
-      <div className="bg-surface-800 border border-matrix-400/15 rounded-lg px-3 py-2 text-xs font-mono shadow-xl">
-        <span className="text-white">{payload[0].name || payload[0].payload?.subject}: </span>
-        <span className="text-matrix-400 font-bold">{payload[0].value}</span>
-      </div>
-    )
-  }
+
 
   return (
     <div className="glass-card animate-slide-up overflow-hidden group">

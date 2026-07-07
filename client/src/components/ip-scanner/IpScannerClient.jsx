@@ -205,7 +205,7 @@ export default function IpScannerClient() {
 
         {/* What You Get Section */}
         <div className="mt-10 flex flex-col items-center">
-          <h2 className="font-mono text-[10px] tracking-[3px] uppercase text-[#94a3b8] mb-4">// INTELLIGENCE COLLECTED</h2>
+          <h2 className="font-mono text-[10px] tracking-[3px] uppercase text-[#94a3b8] mb-4">{'// INTELLIGENCE COLLECTED'}</h2>
           <div className="flex flex-wrap justify-center gap-2 max-w-2xl">
             {[
               'ISP / Hosting Provider', 'ASN Number', 'Country & City', 
