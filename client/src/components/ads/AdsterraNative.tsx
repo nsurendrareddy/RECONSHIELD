@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState, memo } from 'react';
 import { usePathname } from 'next/navigation';
 import { adQueue, AdPriority } from '@/lib/adQueue';
-import { adScriptLoader } from './AdScriptLoader';
+import { adScriptLoader, AdProviderHttpError } from './AdScriptLoader';
 import { adMetrics } from '@/lib/adMetrics';
+
 
 type AdsterraNativeProps = {
   className?: string;
@@ -151,7 +152,13 @@ function AdsterraNativeInner({ className = '', priority = 'normal' }: AdsterraNa
           triggerScript.onerror = () => finishLoading('failed');
           containerRef.current.appendChild(triggerScript);
         })
-        .catch(() => finishLoading('failed'));
+        .catch((err) => {
+          if (err instanceof AdProviderHttpError) {
+            adMetrics.recordSlotHttp500(metricIdx, err.statusCode);
+          }
+          finishLoading('failed');
+        });
+
     });
 
     adQueue.enqueue(loadAd, priority);

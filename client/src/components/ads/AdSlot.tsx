@@ -3,6 +3,8 @@
 import React, { useEffect, useRef, useState, useMemo, memo } from 'react';
 import { usePathname } from 'next/navigation';
 import { adMetrics } from '@/lib/adMetrics';
+import { adQueue } from '@/lib/adQueue';
+import { AdProviderHttpError } from './AdScriptLoader';
 
 export interface AdSlotProps {
   type: '300x250' | '728x90' | 'native';
@@ -139,57 +141,79 @@ function AdSlotInner({ type, id, className = '', priority = 'normal', timeout = 
 
     let active = true;
 
-    const runLoad = async () => {
-      try {
-        // Hard timeout — stop waiting after `timeout` ms (default 8s)
-        const timeoutPromise = new Promise<boolean>(resolve => {
-          window.setTimeout(() => {
-            if (active && !timedOutRef.current) {
-              timedOutRef.current = true;
-              adMetrics.recordSlotTimeout(metricIdx);
-              if (process.env.NODE_ENV === 'development') {
-                console.warn(`[Ad System] Timeout after ${timeout}ms for slot type: ${type}`);
-              }
-              resolve(false);
-            }
-          }, timeout);
-        });
-
-        const loadPromise = onLoadAd(containerRef.current!, isMobile);
-        const success = await Promise.race([loadPromise, timeoutPromise]);
-
-        if (!active) return;
-
-        if (success) {
-          setAdState('filled');
-          adMetrics.recordSlotFilled(metricIdx);
-          trackAdEvent('impression', type);
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`[Ad System] Filled: ${type}`);
-          }
-        } else {
-          setAdState('failed');
-          if (!timedOutRef.current) {
-            adMetrics.recordSlotFailed(metricIdx);
-          }
-          if (process.env.NODE_ENV === 'development') {
-            console.warn(`[Ad System] Failed/timeout: ${type}`);
-          }
-        }
-      } catch (err) {
-        if (active) {
-          setAdState('failed');
-          adMetrics.recordSlotFailed(metricIdx);
-          if (process.env.NODE_ENV === 'development') {
-            console.error(`[Ad System] Error loading slot ${type}:`, err);
-          }
-        }
+    /**
+     * Core load task — wrapped in adQueue.enqueue() for normal/low priority
+     * so that at most MAX_CONCURRENT (2) normal slots run simultaneously.
+     * critical/high bypass the queue entirely (handled by adQueue internals).
+     */
+    const loadTask = (): Promise<void> => new Promise<void>((resolveTask) => {
+      if (!active || !containerRef.current) {
+        resolveTask();
+        return;
       }
-    };
 
-    runLoad();
+      const timeoutPromise = new Promise<boolean>(resolve => {
+        window.setTimeout(() => {
+          if (active && !timedOutRef.current) {
+            timedOutRef.current = true;
+            adMetrics.recordSlotTimeout(metricIdx);
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(`[Ad System] Timeout after ${timeout}ms for slot type: ${type}`);
+            }
+            resolve(false);
+          }
+        }, timeout);
+      });
+
+      const loadPromise = onLoadAd(containerRef.current!, isMobile);
+
+      Promise.race([loadPromise, timeoutPromise])
+        .then(success => {
+          if (!active) { resolveTask(); return; }
+
+          if (success) {
+            setAdState('filled');
+            adMetrics.recordSlotFilled(metricIdx);
+            trackAdEvent('impression', type);
+            if (process.env.NODE_ENV === 'development') {
+              console.log(`[Ad System] Filled: ${type}`);
+            }
+          } else {
+            setAdState('failed');
+            if (!timedOutRef.current) {
+              adMetrics.recordSlotFailed(metricIdx);
+            }
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(`[Ad System] Failed/timeout: ${type}`);
+            }
+          }
+          resolveTask();
+        })
+        .catch(err => {
+          if (!active) { resolveTask(); return; }
+
+          // Detect HTTP 500 from provider
+          if (err instanceof AdProviderHttpError) {
+            adMetrics.recordSlotHttp500(metricIdx, err.statusCode);
+            if (process.env.NODE_ENV === 'development') {
+              console.warn(`[Ad System] Provider HTTP ${err.statusCode} for slot ${type}`);
+            }
+          } else {
+            adMetrics.recordSlotFailed(metricIdx);
+            if (process.env.NODE_ENV === 'development') {
+              console.error(`[Ad System] Error loading slot ${type}:`, err);
+            }
+          }
+          setAdState('failed');
+          resolveTask();
+        });
+    });
+
+    // Route through adQueue — critical/high bypass, normal/low are throttled
+    adQueue.enqueue(loadTask, priority);
+
     return () => { active = false; };
-  }, [adState, isMobile, onLoadAd, type, timeout]);
+  }, [adState, isMobile, onLoadAd, type, timeout, priority]);
 
   // Viewability observer — fires once when 70%+ of ad is visible
   useEffect(() => {
@@ -240,7 +264,7 @@ function AdSlotInner({ type, id, className = '', priority = 'normal', timeout = 
             <span>⚠️</span> AD SYSTEM WARNING (DEV ONLY)
           </p>
           <p className="text-[11px] text-gray-500 mt-2 leading-relaxed max-w-lg">
-            Failed to render slot type <strong className="text-red-400">"{type}"</strong>. Likely blocked by AdBlocker, DNS filter, or CSP. Disable ad-blocking to verify layout.
+            Failed to render slot type <strong className="text-red-400">"{type}"</strong>. Likely blocked by AdBlocker, DNS filter, CSP, or provider HTTP 500. Disable ad-blocking to verify layout.
           </p>
         </div>
       );

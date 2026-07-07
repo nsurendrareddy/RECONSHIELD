@@ -2,16 +2,16 @@
  * AdQueue — Priority-based ad loading scheduler.
  *
  * Priority levels:
- *   critical — Tool scan result banners: fires immediately after hydration, bypasses queue
- *   high     — First inline blog banner, homepage hero: fires immediately after hydration
- *   normal   — Sidebar banners: queued, processed sequentially
+ *   critical — Tool scan result banners: fires immediately, bypasses queue
+ *   high     — First inline blog banner, homepage hero: fires immediately
+ *   normal   — Sidebar/inline banners: queued, max 2 concurrent
  *   low      — Footer banners: deferred via requestIdleCallback
  *
- * Key improvements over v1:
- *   - No interaction gate delay for critical/high priority ads
- *   - critical/high run in parallel (no serial blocking between them)
- *   - Fallback timer reduced from 4000ms → 800ms for normal/low
- *   - requestIdleCallback used for low-priority tasks
+ * Key design decisions:
+ *   - critical/high run immediately in parallel (no serial blocking)
+ *   - normal: up to MAX_CONCURRENT (2) tasks run simultaneously
+ *   - low: deferred to idle time via requestIdleCallback
+ *   - Fallback timer: 800ms (was 4000ms)
  */
 
 export type AdPriority = 'critical' | 'high' | 'normal' | 'low';
@@ -23,16 +23,18 @@ interface QueueEntry {
   priority: AdPriority;
 }
 
+/** Maximum number of 'normal' priority ad slots that may initialize simultaneously. */
+const MAX_CONCURRENT = 2;
+
 class AdQueue {
   private queue: QueueEntry[] = [];
-  private isProcessing: boolean = false;
+  private activeCount: number = 0;
   private hydrated: boolean = false;
   private cleanupListeners: (() => void) | null = null;
 
   constructor() {
     if (typeof window === 'undefined') return;
 
-    // Use requestIdleCallback or setTimeout to detect hydration completion
     const onHydrated = () => {
       if (this.hydrated) return;
       this.hydrated = true;
@@ -46,7 +48,7 @@ class AdQueue {
       this.flushAll();
     };
 
-    // Fire on first user interaction (fast path)
+    // Fast path — fire on first user interaction
     const handleInteraction = () => onHydrated();
     window.addEventListener('mousemove', handleInteraction, { passive: true, once: true });
     window.addEventListener('scroll', handleInteraction, { passive: true, once: true });
@@ -60,20 +62,15 @@ class AdQueue {
       window.removeEventListener('keydown', handleInteraction);
     };
 
-    // Reduced fallback: 800ms (was 4000ms)
-    // critical/high don't wait at all — see enqueue()
+    // Fallback: 800ms — critical/high don't wait (see enqueue)
     setTimeout(() => onHydrated(), 800);
   }
 
   public enqueue(task: AdTask, priority: AdPriority = 'normal'): void {
-    if (typeof window === 'undefined') {
-      // SSR: no-op
-      return;
-    }
+    if (typeof window === 'undefined') return;
 
-    // critical and high: fire immediately without waiting for queue/interaction
+    // critical and high: fire immediately, bypass queue entirely
     if (priority === 'critical' || priority === 'high') {
-      // Run in parallel — do not wait for serial queue
       task().catch(err => {
         if (process.env.NODE_ENV === 'development') {
           console.error(`[AdQueue] ${priority} task failed:`, err);
@@ -100,7 +97,7 @@ class AdQueue {
       return;
     }
 
-    // normal: enqueue and process when hydrated
+    // normal: enqueue and attempt to dispatch
     this.queue.push({ task, priority });
     if (this.hydrated) {
       this.processQueue();
@@ -111,27 +108,34 @@ class AdQueue {
     this.processQueue();
   }
 
-  private async processQueue(): Promise<void> {
-    if (this.isProcessing || this.queue.length === 0) return;
+  /**
+   * Dispatches up to MAX_CONCURRENT tasks simultaneously.
+   * Called after each task completes to refill the active slots.
+   */
+  private processQueue(): void {
     if (!this.hydrated) return;
 
-    this.isProcessing = true;
+    while (this.activeCount < MAX_CONCURRENT && this.queue.length > 0) {
+      const entry = this.queue.shift();
+      if (!entry) break;
 
-    const entry = this.queue.shift();
-    if (entry) {
-      try {
-        await entry.task();
-      } catch (error) {
-        if (process.env.NODE_ENV === 'development') {
-          console.error('[AdQueue] Normal task failed:', error);
-        }
-      }
+      this.activeCount++;
+
+      entry.task()
+        .catch(err => {
+          if (process.env.NODE_ENV === 'development') {
+            console.error('[AdQueue] Normal task failed:', err);
+          }
+        })
+        .finally(() => {
+          this.activeCount--;
+          // Slot freed — try to dispatch the next queued task
+          this.processQueue();
+        });
     }
 
-    this.isProcessing = false;
-    // Process next item
-    if (this.queue.length > 0) {
-      this.processQueue();
+    if (process.env.NODE_ENV === 'development' && this.queue.length > 0) {
+      console.log(`[AdQueue] Queue: ${this.queue.length} waiting, ${this.activeCount}/${MAX_CONCURRENT} active`);
     }
   }
 }

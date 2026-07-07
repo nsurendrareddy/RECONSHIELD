@@ -51,9 +51,13 @@ export default function RootLayout({ children }) {
         {/* --- Ad Network Resource Hints ---
             Eliminates cold DNS lookup + TCP handshake + TLS for ad domains.
             Saving: ~300–800ms on first ad script request per domain.
+            Note: base domain + subdomains are both preconnected because the
+            CDN CNAME chain resolves through the base domain's DNS root.
         */}
         <link rel="preconnect" href="https://www.highperformanceformat.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://www.highperformanceformat.com" />
+        <link rel="preconnect" href="https://effectivecpmnetwork.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://effectivecpmnetwork.com" />
         <link rel="preconnect" href="https://pl29692252.effectivecpmnetwork.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://pl29692252.effectivecpmnetwork.com" />
         <link rel="preconnect" href="https://pl29692251.effectivecpmnetwork.com" crossOrigin="anonymous" />

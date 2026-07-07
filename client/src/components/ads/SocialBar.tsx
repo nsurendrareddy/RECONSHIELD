@@ -57,7 +57,9 @@ export default function SocialBar() {
         await adScriptLoader.load(scriptUrl);
         if (active) {
           localStorage.setItem('social_bar_last_load', Date.now().toString());
-          console.log('[Adsterra] Social Bar script loaded and initialized.');
+          if (process.env.NODE_ENV === 'development') {
+            console.log('[Adsterra] Social Bar script loaded and initialized.');
+          }
         }
       } catch (err) {
         console.warn('[Adsterra] Social Bar load failed:', err);
