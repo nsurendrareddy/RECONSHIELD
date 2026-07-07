@@ -35,11 +35,17 @@ class AdScriptLoader {
       script.onload = () => {
         this.loaded.add(src);
         this.promises.delete(src);
+        if (process.env.NODE_ENV === 'development') {
+          console.log('[Ad System] Script loaded:', src);
+        }
         resolve();
       };
 
       script.onerror = (err) => {
         this.promises.delete(src);
+        if (process.env.NODE_ENV === 'development') {
+          console.error('[Ad System] Script failed:', src, err);
+        }
         reject(err);
       };
 

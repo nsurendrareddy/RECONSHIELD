@@ -48,11 +48,14 @@ export default function AdSlot({ type, id, className = '', onLoadAd }: AdSlotPro
     if (prevPath.current !== pathname) {
       prevPath.current = pathname;
       setAdState('idle');
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[Ad System] Route change detected. Resetting ad slot of type:', type);
+      }
       if (containerRef.current) {
         containerRef.current.innerHTML = '';
       }
     }
-  }, [pathname]);
+  }, [pathname, type]);
 
   // Lazy loading observer: loads the ad when within 300px of the viewport
   useEffect(() => {
@@ -76,6 +79,10 @@ export default function AdSlot({ type, id, className = '', onLoadAd }: AdSlotPro
   useEffect(() => {
     if (adState !== 'loading' || !containerRef.current) return;
 
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[Ad System] Banner initialized:', type);
+    }
+
     let active = true;
     const runLoad = async () => {
       try {
@@ -84,12 +91,20 @@ export default function AdSlot({ type, id, className = '', onLoadAd }: AdSlotPro
           if (success) {
             setAdState('filled');
             trackAdEvent('impression', type);
+            if (process.env.NODE_ENV === 'development') {
+              console.log(`[Ad System] ${type === 'native' ? 'Native' : 'Banner'} rendered successfully:`, type);
+            }
           } else {
             setAdState('failed');
+            if (process.env.NODE_ENV === 'development') {
+              console.warn('[Ad System] Script load reported failure:', type);
+            }
           }
         }
       } catch (err) {
-        console.error(`[AdSlot] Failed loading ad of type ${type}:`, err);
+        if (process.env.NODE_ENV === 'development') {
+          console.error(`[Ad System] Failed loading ad of type ${type}:`, err);
+        }
         if (active) {
           setAdState('failed');
         }
@@ -110,6 +125,9 @@ export default function AdSlot({ type, id, className = '', onLoadAd }: AdSlotPro
       ([entry]) => {
         if (entry.isIntersecting && entry.intersectionRatio >= 0.7) {
           trackAdEvent('viewability', type);
+          if (process.env.NODE_ENV === 'development') {
+            console.log('[Ad System] Viewability threshold met (70%+):', type);
+          }
           viewObserver.disconnect();
         }
       },
@@ -127,7 +145,21 @@ export default function AdSlot({ type, id, className = '', onLoadAd }: AdSlotPro
     return <div className="mx-auto" style={{ height: fallbackHeight, width: fallbackWidth, minHeight: fallbackHeight }} />;
   }
 
-  if (adState === 'failed') return null;
+  if (adState === 'failed') {
+    if (process.env.NODE_ENV === 'development') {
+      return (
+        <div className="w-full max-w-[728px] mx-auto flex flex-col justify-center items-center p-5 bg-red-950/20 border border-red-500/20 rounded-2xl text-center text-xs font-mono text-red-400 my-4">
+          <p className="font-bold flex items-center gap-2">
+            <span>⚠️</span> AD SYSTEM INTEGRATION WARNING (DEVELOPMENT ONLY)
+          </p>
+          <p className="text-[11px] text-gray-500 mt-2 leading-relaxed max-w-lg">
+            Failed to render ad slot of type <strong className="text-red-400">"{type}"</strong>. This is highly likely caused by an active AdBlocker (e.g. uBlock Origin, AdBlock, Brave Shields), network DNS filtering (NextDNS, Pi-hole), or a local CSP rejection. Disable blocks to verify layout.
+          </p>
+        </div>
+      );
+    }
+    return null;
+  }
 
   const isType728 = type === '728x90';
   const displayWidth = isType728 && !isMobile ? '728px' : '300px';

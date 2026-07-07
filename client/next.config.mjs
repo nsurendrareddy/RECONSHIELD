@@ -14,14 +14,26 @@ const adsenseDomainSources = adsenseDomains.join(' ');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
+const adDomains = [
+  'https://www.highperformanceformat.com',
+  'https://*.effectivecpmnetwork.com'
+];
+const adDomainSources = adDomains.join(' ');
+
+const adImageDomains = [
+  'https://*.effectivecpmnetwork.com',
+  'https://*.highperformanceformat.com'
+];
+const adImageDomainSources = adImageDomains.join(' ');
+
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com ${adsenseDomainSources}`,
+  `script-src 'self' 'unsafe-inline' ${isDev ? "'unsafe-eval'" : ""} https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com ${adsenseDomainSources} ${adDomainSources}`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-  `img-src 'self' blob: data: https://cdn.sanity.io https://*.googleusercontent.com https://www.google-analytics.com ${adsenseDomainSources}`,
+  `img-src 'self' blob: data: https://cdn.sanity.io https://*.googleusercontent.com https://www.google-analytics.com ${adsenseDomainSources} ${adImageDomainSources}`,
   `font-src 'self' data: https://fonts.gstatic.com`,
-  `connect-src 'self' https://api.reconshield.in https://*.google-analytics.com https://www.google-analytics.com https://www.googletagmanager.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io http://127.0.0.1:* http://localhost:* ${adsenseDomainSources}`,
-  `frame-src 'self' ${adsenseDomainSources}`,
+  `connect-src 'self' https://api.reconshield.in https://*.google-analytics.com https://www.google-analytics.com https://www.googletagmanager.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io http://127.0.0.1:* http://localhost:* ${adsenseDomainSources} ${adDomainSources}`,
+  `frame-src 'self' ${adsenseDomainSources} ${adDomainSources}`,
   `child-src 'self' blob:`,
   "worker-src 'self' blob:"
 ].join('; ');

@@ -71,6 +71,28 @@ export function AdManagerProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  // Listen for CSP violations in development to capture blocked ad scripts
+  useEffect(() => {
+    if (typeof window === 'undefined' || process.env.NODE_ENV !== 'development') return;
+
+    const handleCspViolation = (e: SecurityPolicyViolationEvent) => {
+      const blockedUri = e.blockedURI || '';
+      if (
+        blockedUri.includes('highperformanceformat') ||
+        blockedUri.includes('effectivecpmnetwork')
+      ) {
+        console.warn(
+          `[Ad System CSP Warning] Blocked URI: ${blockedUri} via directive: ${e.violatedDirective}. Check your next.config.mjs CSP headers!`
+        );
+      }
+    };
+
+    window.addEventListener('securitypolicyviolation', handleCspViolation);
+    return () => {
+      window.removeEventListener('securitypolicyviolation', handleCspViolation);
+    };
+  }, []);
+
   return (
     <AdContext.Provider value={{ isScanning, setIsScanning, isTyping, isMobileKeyboardActive }}>
       {children}
