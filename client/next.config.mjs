@@ -30,7 +30,14 @@ const adDomains = [
   'https://zoologyfibre.com',
   'https://*.zoologyfibre.com',
   'https://kettledroopingcontinuation.com',
-  'https://*.kettledroopingcontinuation.com'
+  'https://*.kettledroopingcontinuation.com',
+  // Secondary ad delivery domains loaded dynamically by invoke.js
+  'https://furiousexpansion.com',
+  'https://*.furiousexpansion.com',
+  'https://realizationnewestfangs.com',
+  'https://*.realizationnewestfangs.com',
+  'https://fizzyacerbitymellow.com',
+  'https://*.fizzyacerbitymellow.com'
 ];
 const adDomainSources = adDomains.join(' ');
 
@@ -50,7 +57,14 @@ const adImageDomains = [
   'https://zoologyfibre.com',
   'https://*.zoologyfibre.com',
   'https://kettledroopingcontinuation.com',
-  'https://*.kettledroopingcontinuation.com'
+  'https://*.kettledroopingcontinuation.com',
+  // Secondary ad delivery domains loaded dynamically by invoke.js
+  'https://furiousexpansion.com',
+  'https://*.furiousexpansion.com',
+  'https://realizationnewestfangs.com',
+  'https://*.realizationnewestfangs.com',
+  'https://fizzyacerbitymellow.com',
+  'https://*.fizzyacerbitymellow.com'
 ];
 const adImageDomainSources = adImageDomains.join(' ');
 
