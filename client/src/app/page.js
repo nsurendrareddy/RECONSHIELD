@@ -8,6 +8,9 @@ import {
   Server, ArrowUpRight
 } from 'lucide-react';
 import ResponsiveImage from '@/components/ResponsiveImage';
+import Banner300 from '@/components/ads/Banner300';
+import Banner728 from '@/components/ads/Banner728';
+import NativeBanner from '@/components/ads/NativeBanner';
 
 import {
   DynamicNewsletterForm,
@@ -278,6 +281,11 @@ export default async function Page() {
         <DynamicCommandCenter />
         </section>
 
+        {/* Hero ↓ 728x90 Banner */}
+        <div className="py-8 bg-[#05080f] flex justify-center border-b border-white/5">
+          <Banner728 />
+        </div>
+
         {/* ================= SECTION 7: FEATURED SECURITY TOOLS ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5" aria-label="Featured Tools">
           <div className="max-w-[1200px] mx-auto px-6">
@@ -376,6 +384,11 @@ export default async function Page() {
             </div>
           </div>
         </section>
+
+        {/* Featured Tools ↓ Native Banner */}
+        <div className="py-8 bg-[#0a0d14] border-b border-white/5">
+          <NativeBanner />
+        </div>
         {/* ================= SECTION 8: WHY CHOOSE RECONSHIELD ================= */}
         <section className="py-24 bg-[#0a0d14] border-b border-white/5" aria-label="Why Choose ReconShield">
           <div className="max-w-[1200px] mx-auto px-6">
@@ -599,6 +612,11 @@ export default async function Page() {
         {/* ================= SECTION 12: COMPLETE SECURITY TOOLKIT ================= */}
         <DynamicIntelligenceModules />
 
+        {/* Tool Categories (Toolkit) ↓ 300x250 Banner */}
+        <div className="py-8 bg-[#05080f] flex justify-center border-b border-white/5">
+          <Banner300 />
+        </div>
+
         {/* ================= SECTION 13: CTA SECTION ================= */}
         <section className="py-24 bg-[#05080f] relative overflow-hidden border-b border-white/5">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyber-500/[0.03] blur-[120px] rounded-full pointer-events-none -z-10" />
@@ -714,6 +732,11 @@ export default async function Page() {
           </div>
         </section>
 
+        {/* Featured Blog Posts ↓ Native Banner */}
+        <div className="py-8 bg-[#05080f] border-b border-white/5">
+          <NativeBanner />
+        </div>
+
         {/* ================= EEAT BRAND DETAILS SECTION ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5">
           <div className="max-w-[1200px] mx-auto px-6">
@@ -763,6 +786,11 @@ export default async function Page() {
             </div>
           </div>
         </section>
+
+        {/* Latest Security News (EEAT) ↓ 300x250 Banner */}
+        <div className="py-8 bg-[#0a0d14] flex justify-center border-b border-white/5">
+          <Banner300 />
+        </div>
 
         {/* ================= SECTION 8: NEWSLETTER SUBSCRIPTION ================= */}
         <section className="py-24 bg-[#0a0d14] relative overflow-hidden">

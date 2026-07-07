@@ -2,6 +2,10 @@
 import React from 'react';
 import { useScan } from '@/hooks/useScan';
 import SearchBar from '@/components/SearchBar';
+import { useAdManager } from '@/components/ads/AdManager';
+import Banner300 from '@/components/ads/Banner300';
+import NativeBanner from '@/components/ads/NativeBanner';
+import { createPortal } from 'react-dom';
 import LoadingState from '@/components/LoadingState';
 import { motion } from 'framer-motion';
 import { Globe, Lock, Layers, Shield, Activity } from 'lucide-react';
@@ -29,9 +33,81 @@ const SECTION_MAP = {
   'vulnerability-scanner': { section: VulnSimSection, icon: Shield, dataKey: 'vuln_sim' },
 };
 
+function ToolPageAdDirector() {
+  const [sidebarTarget, setSidebarTarget] = React.useState(null);
+  const [faqTarget, setFaqTarget] = React.useState(null);
+  const [midProseTarget, setMidProseTarget] = React.useState(null);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const createdDivs = [];
+
+    const timer = setTimeout(() => {
+      // 1. Sidebar target lookup
+      const aside = document.querySelector('aside') || document.querySelector('.lg\\:col-span-1');
+      if (aside) {
+        const stickyContainer = aside.querySelector('.sticky') || aside;
+        const div = document.createElement('div');
+        div.className = 'hidden lg:block pt-6 border-t border-white/5 w-full mt-6';
+        stickyContainer.appendChild(div);
+        createdDivs.push(div);
+        setSidebarTarget(div);
+      }
+
+      // 2. FAQ section target lookup
+      const faq = document.querySelector('[aria-labelledby="faq-title"]') || document.getElementById('faq') || document.querySelector('.faq-section');
+      if (faq) {
+        const div = document.createElement('div');
+        div.className = 'my-8 w-full';
+        faq.parentNode.insertBefore(div, faq);
+        createdDivs.push(div);
+        setFaqTarget(div);
+      }
+
+      // 3. Mid-prose target lookup
+      const prose = document.querySelector('.prose') || document.querySelector('.prose-invert');
+      if (prose) {
+        const children = Array.from(prose.children);
+        if (children.length > 0) {
+          const midIdx = Math.floor(children.length / 2);
+          const targetPara = children[midIdx];
+          const div = document.createElement('div');
+          div.className = 'my-8 flex justify-center border-t border-b border-white/5 py-6 w-full';
+          targetPara.parentNode.insertBefore(div, targetPara.nextSibling);
+          createdDivs.push(div);
+          setMidProseTarget(div);
+        }
+      }
+    }, 200);
+
+    return () => {
+      clearTimeout(timer);
+      createdDivs.forEach(div => {
+        if (div.parentNode) {
+          div.parentNode.removeChild(div);
+        }
+      });
+    };
+  }, []);
+
+  return (
+    <>
+      {sidebarTarget && createPortal(<Banner300 />, sidebarTarget)}
+      {faqTarget && createPortal(<NativeBanner />, faqTarget)}
+      {midProseTarget && createPortal(<Banner300 />, midProseTarget)}
+    </>
+  );
+}
+
 export default function ToolScannerClient({ toolId, title, desc }) {
   const { status, scanData, domain, scan, scanProgress, progress, reset } = useScan();
   const [initialTarget, setInitialTarget] = React.useState('');
+  const { setIsScanning } = useAdManager();
+
+  React.useEffect(() => {
+    setIsScanning(status === 'scanning');
+  }, [status, setIsScanning]);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -52,6 +128,7 @@ export default function ToolScannerClient({ toolId, title, desc }) {
 
   return (
     <div className="max-w-5xl mx-auto py-12">
+      <ToolPageAdDirector />
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -68,6 +145,11 @@ export default function ToolScannerClient({ toolId, title, desc }) {
 
       <div className="glass-card p-8 mb-10">
         <SearchBar onScan={scan} isScanning={status === 'scanning'} initialTarget={initialTarget} />
+      </div>
+
+      {/* Immediately after the scan form -> 300x250 */}
+      <div className="my-6 flex justify-center">
+        <Banner300 />
       </div>
 
       {status === 'scanning' && (
@@ -107,6 +189,11 @@ export default function ToolScannerClient({ toolId, title, desc }) {
           </div>
           
           <SectionComponent data={results[tool.dataKey]} />
+
+          {/* Immediately after scan results -> Native Banner */}
+          <div className="my-8">
+            <NativeBanner />
+          </div>
 
           {/* Post-scan conversion prompt */}
           <div className="p-6 rounded-2xl bg-gradient-to-r from-cyan-500/5 to-transparent border border-cyan-500/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">

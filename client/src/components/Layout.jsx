@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import dynamic from 'next/dynamic'
+import Banner728 from '@/components/ads/Banner728'
 import {
   Shield, Activity, AlertTriangle, Lock, Globe, Menu, X, ExternalLink,
   ChevronDown, Server, Cpu, Database, Network, Layers, Mail,
@@ -699,6 +700,11 @@ export default function Layout({ children }) {
         </div>
       )}
 
+      {/* Top 728x90 Banner -> placed below navigation header */}
+      <div className="py-4 bg-[#05080f] flex justify-center border-b border-white/5">
+        <Banner728 />
+      </div>
+
       {/* Main Content */}
       <main className={`${isBlogPage ? '' : 'max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8'} min-h-[80vh] relative`}>
         {children}
@@ -807,6 +813,12 @@ export default function Layout({ children }) {
           </div>
         </div>
       </footer>
+
+      {/* Bottom 728x90 Banner -> placed below the footer */}
+      <div className="py-8 bg-[#05080f] flex justify-center border-t border-white/5">
+        <Banner728 />
+      </div>
+
       <CookieBanner />
     </div>
   )

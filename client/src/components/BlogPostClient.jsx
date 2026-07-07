@@ -4,6 +4,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
+import Banner300 from '@/components/ads/Banner300'
+import NativeBanner from '@/components/ads/NativeBanner'
 
 const randomViews = Math.floor(Math.random() * 500) + 100;
 
@@ -106,8 +108,17 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
   const enrichedBody = cleanBody || [];
 
   const chunks = (() => {
-    if (!enrichedBody || enrichedBody.length === 0) return { body: [], insertAfterP2: -1, insertAfterMid: -1, insertBeforeConclusion: -1 };
-    
+    let wordCount = 0;
+    enrichedBody.forEach(block => {
+      if (block._type === 'block' && block.children) {
+        block.children.forEach(child => {
+          if (child.text) {
+            wordCount += child.text.split(/\s+/).filter(Boolean).length;
+          }
+        });
+      }
+    });
+
     const paragraphIndices = [];
     enrichedBody.forEach((block, idx) => {
       if (block._type === 'block' && (!block.style || block.style === 'normal') && !block.listItem) {
@@ -116,55 +127,30 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
     });
 
     const totalParagraphs = paragraphIndices.length;
-    let insertAfterP2 = -1;
-    let insertAfterMid = -1;
-    let insertBeforeConclusion = -1;
+    let insertAfterP3 = -1;
+    let insertAfterP8 = -1;
+    let insertAfterP14 = -1;
+    let insertAfterP20 = -1;
+    let insertAfterP25 = -1;
 
-    if (totalParagraphs >= 3) {
-      insertAfterP2 = paragraphIndices[1];
-    }
-
-    if (totalParagraphs >= 5) {
-      const midIdx = Math.floor(totalParagraphs * 0.45);
-      if (paragraphIndices[midIdx] !== insertAfterP2) {
-        insertAfterMid = paragraphIndices[midIdx];
-      }
-    }
-
-    let conclusionIdx = -1;
-    for (let i = enrichedBody.length - 1; i >= 0; i--) {
-      const block = enrichedBody[i];
-      if (block._type === 'block' && block.style === 'h2') {
-        const text = block.children?.map(c => c.text).join('').toLowerCase() || '';
-        if (
-          text.includes('conclusion') || 
-          text.includes('summary') || 
-          text.includes('hardening') || 
-          text.includes('mitigation') || 
-          text.includes('defense')
-        ) {
-          conclusionIdx = i;
-          break;
-        }
-      }
-    }
-
-    if (conclusionIdx !== -1) {
-      insertBeforeConclusion = conclusionIdx - 1;
-    } else if (totalParagraphs >= 4) {
-      insertBeforeConclusion = paragraphIndices[totalParagraphs - 2];
-    }
+    if (totalParagraphs >= 3) insertAfterP3 = paragraphIndices[2];
+    if (totalParagraphs >= 8) insertAfterP8 = paragraphIndices[7];
+    if (totalParagraphs >= 14) insertAfterP14 = paragraphIndices[13];
+    if (totalParagraphs >= 20) insertAfterP20 = paragraphIndices[19];
+    if (wordCount > 3000 && totalParagraphs >= 25) insertAfterP25 = paragraphIndices[24];
 
     return {
       body: enrichedBody,
-      insertAfterP2,
-      insertAfterMid,
-      insertBeforeConclusion
+      insertAfterP3,
+      insertAfterP8,
+      insertAfterP14,
+      insertAfterP20,
+      insertAfterP25
     };
   })();
 
   const renderBodyWithAds = () => {
-    const { body, insertAfterP2, insertAfterMid, insertBeforeConclusion } = chunks;
+    const { body, insertAfterP3, insertAfterP8, insertAfterP14, insertAfterP20, insertAfterP25 } = chunks;
     if (!body || body.length === 0) return null;
 
     const renderedElements = [];
@@ -182,16 +168,53 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
     body.forEach((block, idx) => {
       currentChunk.push(block);
 
-      if (idx === insertAfterP2) {
-        flushChunk(`chunk-p2-${idx}`);
-      } else if (idx === insertAfterMid) {
-        flushChunk(`chunk-mid-${idx}`);
-      } else if (idx === insertBeforeConclusion) {
-        flushChunk(`chunk-conc-${idx}`);
+      if (idx === insertAfterP3) {
+        flushChunk(`chunk-p3-${idx}`);
+        renderedElements.push(
+          <div key={`ad-p3-${idx}`} className="my-8 flex justify-center">
+            <Banner300 />
+          </div>
+        );
+      } else if (idx === insertAfterP8) {
+        flushChunk(`chunk-p8-${idx}`);
+        renderedElements.push(
+          <div key={`ad-p8-${idx}`} className="my-8 flex justify-center">
+            <Banner300 />
+          </div>
+        );
+      } else if (idx === insertAfterP14) {
+        flushChunk(`chunk-p14-${idx}`);
+        renderedElements.push(
+          <div key={`ad-p14-${idx}`} className="my-8 flex justify-center">
+            <Banner300 />
+          </div>
+        );
+      } else if (idx === insertAfterP20) {
+        flushChunk(`chunk-p20-${idx}`);
+        renderedElements.push(
+          <div key={`ad-p20-${idx}`} className="my-8 flex justify-center">
+            <Banner300 />
+          </div>
+        );
+      } else if (idx === insertAfterP25) {
+        flushChunk(`chunk-p25-${idx}`);
+        renderedElements.push(
+          <div key={`ad-p25-${idx}`} className="my-8 flex justify-center">
+            <NativeBanner />
+          </div>
+        );
       }
     });
 
     flushChunk('chunk-final');
+    
+    // End of article -> Native Banner
+    renderedElements.push(
+      <div key="ad-end-of-article" className="my-8">
+        <NativeBanner />
+      </div>
+    );
+
     return renderedElements;
   };
 
@@ -655,8 +678,17 @@ FileETag None`,
                   </div>
                 </Link>
               </div>
+              {/* Sticky Sidebar 300x250 - Desktop only (hidden below 1024px / lg) */}
+              <div className="hidden lg:block pt-6 border-t border-[#1a2332]">
+                <Banner300 />
+              </div>
             </div>
           </aside>
+        </div>
+
+        {/* Before Related Articles -> 300x250 Banner */}
+        <div className="my-10 flex justify-center border-t border-b border-[#1a2332] py-8">
+          <Banner300 />
         </div>
 
         {/* More Articles */}

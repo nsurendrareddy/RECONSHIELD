@@ -3,6 +3,8 @@ import { client, urlFor } from '@/utils/sanity';
 import { Shield, Target, Search, Network, Cpu, Lock, CheckCircle2, Globe, Clock, ChevronRight, AlertTriangle, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import BlogCard from '@/components/BlogCard';
+import Banner300 from '@/components/ads/Banner300';
+import NativeBanner from '@/components/ads/NativeBanner';
 import { generateBaseMetadata, getCategoryFallbackImage } from '@/utils/metadata';
 
 export const revalidate = 60; // Cache and revalidate once a minute
@@ -353,11 +355,29 @@ export default async function CategoryPage({ params }) {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {posts.map((post, idx) => (
-                <React.Fragment key={post._id}>
-                  <BlogCard post={post} defaultCategory={data.title} />
-                </React.Fragment>
-              ))}
+              {posts.map((post, idx) => {
+                const cardIndex = idx + 1;
+                const showNative = cardIndex % 6 === 0 && cardIndex % 12 !== 0;
+                const showBanner300 = cardIndex % 12 === 0;
+
+                return (
+                  <React.Fragment key={post._id}>
+                    <BlogCard post={post} defaultCategory={data.title} />
+
+                    {showNative && (
+                      <div className="col-span-1 md:col-span-2 my-6">
+                        <NativeBanner />
+                      </div>
+                    )}
+
+                    {showBanner300 && (
+                      <div className="col-span-1 md:col-span-2 my-6 flex justify-center">
+                        <Banner300 />
+                      </div>
+                    )}
+                  </React.Fragment>
+                );
+              })}
             </div>
 
           </div>
@@ -393,6 +413,11 @@ export default async function CategoryPage({ params }) {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Sticky Sidebar 300x250 - Desktop only (hidden below 1024px / lg) */}
+            <div className="hidden lg:block sticky top-[120px] pt-6 self-start">
+              <Banner300 />
             </div>
 
           </div>

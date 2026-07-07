@@ -1,6 +1,8 @@
 import Layout from "@/components/Layout";
 import GoogleAnalyticsPageView from "@/components/GoogleAnalyticsPageView";
 import DynamicThirdPartyScripts from "@/components/DynamicThirdPartyScripts";
+import { AdManagerProvider } from "@/components/ads/AdManager";
+import SocialBar from "@/components/ads/SocialBar";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
@@ -87,13 +89,16 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-surface-950 text-white font-sans selection:bg-matrix-400/30 selection:text-matrix-400">
-        {/* Fires GA4 page_view on every client-side route change */}
-        <GoogleAnalyticsPageView />
-        {/* Dynamic loading of Google AdSense and Analytics 4 */}
-        <DynamicThirdPartyScripts />
-        <Layout>
-          {children}
-        </Layout>
+        <AdManagerProvider>
+          {/* Fires GA4 page_view on every client-side route change */}
+          <GoogleAnalyticsPageView />
+          {/* Dynamic loading of Google AdSense and Analytics 4 */}
+          <DynamicThirdPartyScripts />
+          <SocialBar />
+          <Layout>
+            {children}
+          </Layout>
+        </AdManagerProvider>
 
         <Analytics />
         <SpeedInsights />
