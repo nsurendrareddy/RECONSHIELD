@@ -1,11 +1,13 @@
+import AdsterraNative from "@/components/ads/AdsterraNative";
+import AdsterraBanner from "@/components/ads/AdsterraBanner";
 import React from 'react';
 import Link from 'next/link';
 import { Search, Globe, ArrowRight, Shield, Activity, Lock, Database } from 'lucide-react';
 import { TOOLS, COLOR_MAP } from '@/utils/toolsData';
 import { STATS_CATEGORIES } from '@/utils/statsData';
 import Breadcrumbs from '@/components/Breadcrumbs';
-import Banner300 from '@/components/ads/Banner300';
-import NativeBanner from '@/components/ads/NativeBanner';
+
+
 
 export const dynamic = 'force-dynamic';
 
@@ -96,7 +98,7 @@ export default async function SearchPage({ searchParams }) {
 
         {/* After search box -> 300x250 Banner */}
         <div className="my-6 flex justify-center">
-          <Banner300 />
+          <AdsterraBanner type="300x250" />
         </div>
 
         {/* Results Section */}
@@ -157,7 +159,7 @@ export default async function SearchPage({ searchParams }) {
                         {/* Render Native Banner after the 5th result (if it falls in the Tools matches) */}
                         {idx === 4 && (
                           <div className="col-span-1 md:col-span-2 my-6">
-                            <NativeBanner />
+                            <AdsterraNative />
                           </div>
                         )}
                       </React.Fragment>
@@ -196,7 +198,7 @@ export default async function SearchPage({ searchParams }) {
                       {/* Render Native Banner after the 5th result (if it falls in the Stats matches) */}
                       {idx === 4 - matchingTools.length && (
                         <div className="my-6">
-                          <NativeBanner />
+                          <AdsterraNative />
                         </div>
                       )}
                     </React.Fragment>

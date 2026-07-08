@@ -1,3 +1,5 @@
+import AdsterraNative from "@/components/ads/AdsterraNative";
+import AdsterraBanner from "@/components/ads/AdsterraBanner";
 import React from 'react';
 import Link from 'next/link';
 import { client, homepageBlogQuery } from '@/utils/sanity';
@@ -8,9 +10,9 @@ import {
   Server, ArrowUpRight
 } from 'lucide-react';
 import ResponsiveImage from '@/components/ResponsiveImage';
-import Banner300 from '@/components/ads/Banner300';
-import Banner728 from '@/components/ads/Banner728';
-import NativeBanner from '@/components/ads/NativeBanner';
+
+
+
 
 import {
   DynamicNewsletterForm,
@@ -283,7 +285,7 @@ export default async function Page() {
 
         {/* Hero ↓ 728x90 Banner */}
         <div className="py-8 bg-[#05080f] flex justify-center border-b border-white/5">
-          <Banner728 />
+          <AdsterraBanner type="728x90" />
         </div>
 
         {/* ================= SECTION 7: FEATURED SECURITY TOOLS ================= */}
@@ -387,7 +389,7 @@ export default async function Page() {
 
         {/* Featured Tools ↓ Native Banner */}
         <div className="py-8 bg-[#0a0d14] border-b border-white/5">
-          <NativeBanner />
+          <AdsterraNative />
         </div>
         {/* ================= SECTION 8: WHY CHOOSE RECONSHIELD ================= */}
         <section className="py-24 bg-[#0a0d14] border-b border-white/5" aria-label="Why Choose ReconShield">
@@ -614,7 +616,7 @@ export default async function Page() {
 
         {/* Tool Categories (Toolkit) ↓ 300x250 Banner */}
         <div className="py-8 bg-[#05080f] flex justify-center border-b border-white/5">
-          <Banner300 />
+          <AdsterraBanner type="300x250" />
         </div>
 
         {/* ================= SECTION 13: CTA SECTION ================= */}
@@ -734,7 +736,7 @@ export default async function Page() {
 
         {/* Featured Blog Posts ↓ Native Banner */}
         <div className="py-8 bg-[#05080f] border-b border-white/5">
-          <NativeBanner />
+          <AdsterraNative />
         </div>
 
         {/* ================= EEAT BRAND DETAILS SECTION ================= */}
@@ -789,7 +791,7 @@ export default async function Page() {
 
         {/* Latest Security News (EEAT) ↓ 300x250 Banner */}
         <div className="py-8 bg-[#0a0d14] flex justify-center border-b border-white/5">
-          <Banner300 />
+          <AdsterraBanner type="300x250" />
         </div>
 
         {/* ================= SECTION 8: NEWSLETTER SUBSCRIPTION ================= */}

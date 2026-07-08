@@ -2,7 +2,7 @@ import Layout from "@/components/Layout";
 import GoogleAnalyticsPageView from "@/components/GoogleAnalyticsPageView";
 import DynamicThirdPartyScripts from "@/components/DynamicThirdPartyScripts";
 import { AdManagerProvider } from "@/components/ads/AdManager";
-import SocialBar from "@/components/ads/SocialBar";
+import AdsterraSocialBar from "@/components/ads/AdsterraSocialBar";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
@@ -107,7 +107,7 @@ export default function RootLayout({ children }) {
           <GoogleAnalyticsPageView />
           {/* Dynamic loading of Google AdSense and Analytics 4 */}
           <DynamicThirdPartyScripts />
-          <SocialBar />
+          <AdsterraSocialBar />
           <Layout>
             {children}
           </Layout>

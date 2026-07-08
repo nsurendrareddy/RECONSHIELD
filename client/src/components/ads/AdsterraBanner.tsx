@@ -1,10 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, memo } from 'react';
-import { usePathname } from 'next/navigation';
-import { adQueue, AdPriority } from '@/lib/adQueue';
-import { adScriptLoader, AdProviderHttpError } from './AdScriptLoader';
-import { adMetrics } from '@/lib/adMetrics';
+import { AdManager, AdPriority, AdStatus } from '@/lib/AdManager';
 
 
 type AdsterraBannerProps = {
@@ -44,147 +41,39 @@ function ensureSkeletonStyles() {
 
 function AdsterraBannerInner({ type, className = '', priority = 'normal' }: AdsterraBannerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [adState, setAdState] = useState<'idle' | 'loading' | 'filled' | 'failed'>('idle');
-  const [mounted, setMounted] = useState(false);
-  const pathname = usePathname();
-  const prevPath = useRef(pathname);
-  const prevType = useRef(type);
+  const [adState, setAdState] = useState<AdStatus>('idle');
+  const instanceId = useRef(Math.random().toString(36).substring(2, 9));
 
   useEffect(() => {
     ensureSkeletonStyles();
-    setMounted(true);
   }, []);
 
-  // Reset on route / type change
   useEffect(() => {
-    let changed = false;
-    if (prevPath.current !== pathname) { prevPath.current = pathname; changed = true; }
-    if (prevType.current !== type) { prevType.current = type; changed = true; }
-    if (changed && containerRef.current) {
-      containerRef.current.innerHTML = '';
-      setAdState('idle');
-    }
-  }, [pathname, type]);
+    if (!containerRef.current) return;
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (containerRef.current) containerRef.current.innerHTML = '';
-      try { delete (window as any).atOptions; } catch { (window as any).atOptions = undefined; }
-    };
-  }, []);
+    const config = BANNER_CONFIGS[type];
+    if (!config) return;
 
-  // IntersectionObserver — critical/high fire immediately; others wait for 500px proximity
-  useEffect(() => {
-    if (!mounted || adState !== 'idle' || !containerRef.current) return;
+    const atOptions = { key: config.key, format: 'iframe', height: config.height, width: config.width, params: {} };
+    const invokeUrl = `${INVOKE_BASE}/${config.key}/invoke.js`;
+    
+    // Unique ID combining component instance and type
+    const zoneId = `banner-${type}-${instanceId.current}`;
 
-    if (priority === 'critical' || priority === 'high') {
-      setAdState('loading');
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setAdState('loading'); observer.disconnect(); } },
-      { rootMargin: '500px', threshold: 0.01 }
-    );
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
-  }, [mounted, adState, priority]);
-
-  // Load ad when state = 'loading'
-  useEffect(() => {
-    if (typeof window === 'undefined' || !containerRef.current || adState !== 'loading') return;
-
-    let observer: MutationObserver | null = null;
-    let timeoutTimer: ReturnType<typeof window.setTimeout> | null = null;
-    let active = true;
-
-    const loadAd = () => new Promise<void>((resolve) => {
-      const config = BANNER_CONFIGS[type];
-      if (!config || !containerRef.current) {
-        if (active) setAdState('failed');
-        resolve();
-        return;
-      }
-
-      const INVOKE_URL = `${INVOKE_BASE}/${config.key}/invoke.js`;
-      const metricIdx = adMetrics.openSlot(type, INVOKE_URL);
-
-      const atOptions = { key: config.key, format: 'iframe', height: config.height, width: config.width, params: {} };
-      (window as any).atOptions = atOptions;
-      containerRef.current.innerHTML = '';
-
-      const inlineScript = document.createElement('script');
-      inlineScript.type = 'text/javascript';
-      inlineScript.text = `window.atOptions = ${JSON.stringify(atOptions)};`;
-      containerRef.current.appendChild(inlineScript);
-
-      const finishLoading = (status: 'filled' | 'failed') => {
-        if (!active) { resolve(); return; }
-        if (observer) { observer.disconnect(); observer = null; }
-        if (timeoutTimer) { window.clearTimeout(timeoutTimer); timeoutTimer = null; }
-        if (status === 'filled') { adMetrics.recordSlotFilled(metricIdx); }
-        else {
-          adMetrics.recordSlotFailed(metricIdx);
-          if (containerRef.current) containerRef.current.innerHTML = '';
-        }
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`[Adsterra] ${type} Banner — ${status.toUpperCase()}`);
-        }
-        setAdState(status);
-        resolve();
-      };
-
-      observer = new MutationObserver((mutations) => {
-        if (!containerRef.current) return;
-        for (const m of mutations) {
-          for (const node of Array.from(m.addedNodes)) {
-            if (node.nodeName === 'IFRAME') { finishLoading('filled'); return; }
-          }
-        }
-      });
-      observer.observe(containerRef.current, { childList: true, subtree: true });
-
-      timeoutTimer = window.setTimeout(() => {
-        adMetrics.recordSlotTimeout(metricIdx);
-        finishLoading('failed');
-      }, AD_TIMEOUT_MS);
-
-      // Deduplicated load — invoke.js only fetched once globally
-      adScriptLoader.load(INVOKE_URL)
-        .then(() => {
-          adMetrics.recordSlotScriptLoaded(metricIdx);
-          if (!active || !containerRef.current) { resolve(); return; }
-          const triggerScript = document.createElement('script');
-          triggerScript.type = 'text/javascript';
-          triggerScript.src = INVOKE_URL;
-          triggerScript.async = true;
-          triggerScript.onerror = () => finishLoading('failed');
-          containerRef.current.appendChild(triggerScript);
-        })
-        .catch((err) => {
-          if (err instanceof AdProviderHttpError) {
-            adMetrics.recordSlotHttp500(metricIdx, err.statusCode);
-          }
-          finishLoading('failed');
-        });
-
+    AdManager.registerZone({
+      id: zoneId,
+      type,
+      container: containerRef.current,
+      priority,
+      invokeUrl,
+      atOptions,
+      onStatusChange: (status) => setAdState(status)
     });
 
-    adQueue.enqueue(loadAd, priority);
-
     return () => {
-      active = false;
-      if (observer) observer.disconnect();
-      if (timeoutTimer) window.clearTimeout(timeoutTimer);
+      AdManager.unregisterZone(zoneId, containerRef.current);
     };
-  }, [type, adState, priority]);
-
-  if (!mounted) {
-    const h = type === '728x90' ? '90px' : '250px';
-    const w = type === '728x90' ? '728px' : '300px';
-    return <div style={{ height: h, width: w, minHeight: h }} className="mx-auto" aria-hidden="true" />;
-  }
+  }, [type, priority]);
 
   if (adState === 'failed') return null;
 
@@ -204,12 +93,13 @@ function AdsterraBannerInner({ type, className = '', priority = 'normal' }: Adst
       className={`not-prose flex justify-center items-center w-full ${adState === 'filled' ? className : ''}`}
       style={sizeStyles}
     >
-      {adState === 'loading' && (
-        <div className={`ad-skeleton w-full ${w}`} style={{ height: h }} aria-hidden="true" />
+      {adState !== 'filled' && (
+        <div className={`ad-skeleton w-full ${w}`} style={{ height: h, position: 'absolute' }} aria-hidden="true" />
       )}
       <div
         ref={containerRef}
         className={`relative flex justify-center items-center overflow-hidden w-full ${w}`}
+        style={{ opacity: adState === 'filled' ? 1 : 0 }}
       />
     </div>
   );

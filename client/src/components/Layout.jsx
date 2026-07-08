@@ -1,9 +1,10 @@
-'use client'
+'use client';
+import AdsterraBanner from "@/components/ads/AdsterraBanner";
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic'
-import Banner728 from '@/components/ads/Banner728'
+
 import {
   Shield, Activity, AlertTriangle, Lock, Globe, Menu, X, ExternalLink,
   ChevronDown, Server, Cpu, Database, Network, Layers, Mail,
@@ -702,7 +703,7 @@ export default function Layout({ children }) {
 
       {/* Top 728x90 Banner -> placed below navigation header */}
       <div className="py-4 bg-[#05080f] flex justify-center border-b border-white/5">
-        <Banner728 />
+        <AdsterraBanner type="728x90" />
       </div>
 
       {/* Main Content */}
@@ -816,7 +817,7 @@ export default function Layout({ children }) {
 
       {/* Bottom 728x90 Banner -> placed below the footer */}
       <div className="py-8 bg-[#05080f] flex justify-center border-t border-white/5">
-        <Banner728 />
+        <AdsterraBanner type="728x90" />
       </div>
 
       <CookieBanner />

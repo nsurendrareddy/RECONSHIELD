@@ -1,10 +1,12 @@
+import AdsterraNative from "@/components/ads/AdsterraNative";
+import AdsterraBanner from "@/components/ads/AdsterraBanner";
 import React from 'react';
 import { client, urlFor } from '@/utils/sanity';
 import { Shield, Target, Search, Network, Cpu, Lock, CheckCircle2, Globe, Clock, ChevronRight, AlertTriangle, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import BlogCard from '@/components/BlogCard';
-import Banner300 from '@/components/ads/Banner300';
-import NativeBanner from '@/components/ads/NativeBanner';
+
+
 import { generateBaseMetadata, getCategoryFallbackImage } from '@/utils/metadata';
 
 // ISR disabled, relying on Sanity webhook
@@ -366,13 +368,13 @@ export default async function CategoryPage({ params }) {
 
                     {showNative && (
                       <div className="col-span-1 md:col-span-2 my-6">
-                        <NativeBanner />
+                        <AdsterraNative />
                       </div>
                     )}
 
                     {showBanner300 && (
                       <div className="col-span-1 md:col-span-2 my-6 flex justify-center">
-                        <Banner300 />
+                        <AdsterraBanner type="300x250" />
                       </div>
                     )}
                   </React.Fragment>
@@ -417,7 +419,7 @@ export default async function CategoryPage({ params }) {
 
             {/* Sticky Sidebar 300x250 - Desktop only (hidden below 1024px / lg) */}
             <div className="hidden lg:block sticky top-[120px] pt-6 self-start">
-              <Banner300 />
+              <AdsterraBanner type="300x250" />
             </div>
 
           </div>

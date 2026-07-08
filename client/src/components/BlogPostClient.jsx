@@ -1,11 +1,13 @@
+import AdsterraNative from "@/components/ads/AdsterraNative";
+import AdsterraBanner from "@/components/ads/AdsterraBanner";
 import React from 'react'
 import { ArrowLeft, Clock, Calendar, Tag, User, Globe, Shield, CheckCircle2, List, Settings, MessageSquare, ShieldAlert } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
 import { urlFor } from '@/utils/sanity'
-import Banner300 from '@/components/ads/Banner300'
-import NativeBanner from '@/components/ads/NativeBanner'
+
+
 
 const randomViews = Math.floor(Math.random() * 500) + 100;
 
@@ -172,35 +174,35 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
         flushChunk(`chunk-p3-${idx}`);
         renderedElements.push(
           <div key={`ad-p3-${idx}`} className="my-8 flex justify-center">
-            <Banner300 />
+            <AdsterraBanner type="300x250" />
           </div>
         );
       } else if (idx === insertAfterP8) {
         flushChunk(`chunk-p8-${idx}`);
         renderedElements.push(
           <div key={`ad-p8-${idx}`} className="my-8 flex justify-center">
-            <Banner300 />
+            <AdsterraBanner type="300x250" />
           </div>
         );
       } else if (idx === insertAfterP14) {
         flushChunk(`chunk-p14-${idx}`);
         renderedElements.push(
           <div key={`ad-p14-${idx}`} className="my-8 flex justify-center">
-            <Banner300 />
+            <AdsterraBanner type="300x250" />
           </div>
         );
       } else if (idx === insertAfterP20) {
         flushChunk(`chunk-p20-${idx}`);
         renderedElements.push(
           <div key={`ad-p20-${idx}`} className="my-8 flex justify-center">
-            <Banner300 />
+            <AdsterraBanner type="300x250" />
           </div>
         );
       } else if (idx === insertAfterP25) {
         flushChunk(`chunk-p25-${idx}`);
         renderedElements.push(
           <div key={`ad-p25-${idx}`} className="my-8 flex justify-center">
-            <NativeBanner />
+            <AdsterraNative />
           </div>
         );
       }
@@ -211,7 +213,7 @@ export default function BlogPostClient({ post, recentPosts, categories, relatedP
     // End of article -> Native Banner
     renderedElements.push(
       <div key="ad-end-of-article" className="my-8">
-        <NativeBanner />
+        <AdsterraNative />
       </div>
     );
 
@@ -680,7 +682,7 @@ FileETag None`,
               </div>
               {/* Sticky Sidebar 300x250 - Desktop only (hidden below 1024px / lg) */}
               <div className="hidden lg:block pt-6 border-t border-[#1a2332]">
-                <Banner300 />
+                <AdsterraBanner type="300x250" />
               </div>
             </div>
           </aside>
@@ -688,7 +690,7 @@ FileETag None`,
 
         {/* Before Related Articles -> 300x250 Banner */}
         <div className="my-10 flex justify-center border-t border-b border-[#1a2332] py-8">
-          <Banner300 />
+          <AdsterraBanner type="300x250" />
         </div>
 
         {/* More Articles */}

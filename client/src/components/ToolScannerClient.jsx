@@ -1,10 +1,12 @@
-'use client'
+'use client';
+import AdsterraNative from "@/components/ads/AdsterraNative";
+import AdsterraBanner from "@/components/ads/AdsterraBanner";
 import React from 'react';
 import { useScan } from '@/hooks/useScan';
 import SearchBar from '@/components/SearchBar';
 import { useAdManager } from '@/components/ads/AdManager';
-import Banner300 from '@/components/ads/Banner300';
-import NativeBanner from '@/components/ads/NativeBanner';
+
+
 import { createPortal } from 'react-dom';
 import LoadingState from '@/components/LoadingState';
 import { motion } from 'framer-motion';
@@ -93,9 +95,9 @@ function ToolPageAdDirector() {
 
   return (
     <>
-      {sidebarTarget && createPortal(<Banner300 />, sidebarTarget)}
-      {faqTarget && createPortal(<NativeBanner />, faqTarget)}
-      {midProseTarget && createPortal(<Banner300 />, midProseTarget)}
+      {sidebarTarget && createPortal(<AdsterraBanner type="300x250" />, sidebarTarget)}
+      {faqTarget && createPortal(<AdsterraNative />, faqTarget)}
+      {midProseTarget && createPortal(<AdsterraBanner type="300x250" />, midProseTarget)}
     </>
   );
 }
@@ -149,7 +151,7 @@ export default function ToolScannerClient({ toolId, title, desc }) {
 
       {/* Immediately after the scan form -> 300x250 */}
       <div className="my-6 flex justify-center">
-        <Banner300 />
+        <AdsterraBanner type="300x250" />
       </div>
 
       {status === 'scanning' && (
@@ -192,7 +194,7 @@ export default function ToolScannerClient({ toolId, title, desc }) {
 
           {/* Immediately after scan results -> Native Banner */}
           <div className="my-8">
-            <NativeBanner />
+            <AdsterraNative />
           </div>
 
           {/* Post-scan conversion prompt */}
