@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
 import { generateBaseMetadata } from '@/utils/metadata';
 
+export const revalidate = 60;
+
 // ISR disabled, relying on Sanity webhook
 
 const getAuthor = cache(async (slug) => {

@@ -1,5 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
+
+export const revalidate = 60;
+
 import NewsletterForm from '@/components/NewsletterForm';
 import { client, blogListQuery, urlFor } from '@/utils/sanity';
 import { 
