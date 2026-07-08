@@ -1,4 +1,4 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
@@ -11,6 +11,9 @@ export async function POST(req) {
     // if (secret !== `Bearer ${process.env.SANITY_WEBHOOK_SECRET}`) {
     //   return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     // }
+
+    // Revalidate the entire Sanity Data Cache to ensure fetch responses are fresh
+    revalidateTag('sanity');
 
     // Revalidate the blog listing page
     revalidatePath('/blog');
