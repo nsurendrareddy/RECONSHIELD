@@ -6,7 +6,7 @@ import { generateDatasetSchema } from '@/utils/metadata';
 import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
-export const revalidate = 3600; // ISR cache invalidation every hour
+export const dynamic = 'force-dynamic'; // Replaced ISR with on-demand edge execution
 
 const MOCK_DOMAIN_DATA = {
   'google.com': {

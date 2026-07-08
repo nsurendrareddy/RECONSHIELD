@@ -19,7 +19,7 @@ export async function GET() {
     try {
       const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://reconshield.onrender.com';
       const backendRes = await fetch(`${backendUrl}/api/sitemap-metadata`, {
-        next: { revalidate: 3600 } 
+        next: { revalidate: 86400 } 
       });
       if (backendRes.ok) {
         chunks = await backendRes.json();

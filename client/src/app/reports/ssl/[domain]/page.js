@@ -7,10 +7,6 @@ import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 export const revalidate = 604800; // 7-day cache
 
-// Whitelisted domains for static pre-rendering
-export async function generateStaticParams() {
-  return KNOWN_DOMAINS.map(domain => ({ domain }));
-}
 
 // Basic domain check
 const isValidDomain = (domain) => {

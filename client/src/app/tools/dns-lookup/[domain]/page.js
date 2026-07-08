@@ -81,16 +81,6 @@ const RECORD_TYPE_SEO = {
   }
 };
 
-export async function generateStaticParams() {
-  const params = [];
-  KNOWN_DOMAINS.forEach((domain) => {
-    params.push({ domain });
-  });
-  RECORD_TYPES.forEach((type) => {
-    params.push({ domain: type });
-  });
-  return params;
-}
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;

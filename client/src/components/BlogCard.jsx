@@ -73,6 +73,7 @@ export default function BlogCard({ post, defaultCategory }) {
               height={202}
               sizes="(max-width: 768px) 100vw, 360px"
               className="object-cover w-full h-auto group-hover:scale-[1.02] transition-transform duration-700"
+              loading="lazy"
               priority={false}
             />
           ) : (

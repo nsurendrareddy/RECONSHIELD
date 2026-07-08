@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { generateDatasetSchema } from '@/utils/metadata';
 import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 
-export const revalidate = 3600; // ISR cache invalidation every hour
+export const dynamic = 'force-dynamic'; // Replaced ISR with on-demand edge execution
 
 const MOCK_DNS_DATA = {
   'google.com': {

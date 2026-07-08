@@ -148,4 +148,14 @@ export const authorPostsQuery = `*[_type == "post" && author->slug.current == $s
   "estimatedWordCount": length(pt::text(body))
 }`;
 
-
+export const blogSidebarQuery = `{
+  "recent": *[_type == "post" && defined(slug.current) && !(_id in path("drafts.**")) && !(slug.current == $slug || slug.current == $slug + " " || slug.current == " " + $slug || slug.current == " " + $slug + " " || slug.current == $slug + "%20" || slug.current == "%20" + $slug)] | order(coalesce(publishedAt, _createdAt) desc)[0...3] {
+    _id, title, "slug": slug.current, mainImage, publishedAt, "categories": categories[]->{ title }
+  },
+  "categories": *[_type == "category"] {
+    _id, title, "count": count(*[_type == "post" && references(^._id)])
+  },
+  "related": *[_type == "post" && !(slug.current == $slug || slug.current == $slug + " " || slug.current == " " + $slug || slug.current == " " + $slug + " " || slug.current == $slug + "%20" || slug.current == "%20" + $slug) && count(categories[@._ref in *[_type == "post" && (slug.current == $slug || slug.current == $slug + " " || slug.current == " " + $slug || slug.current == " " + $slug + " " || slug.current == $slug + "%20" || slug.current == "%20" + $slug)].categories[]._ref]) > 0] | order(publishedAt desc)[0...3] {
+    _id, title, "slug": slug.current, mainImage, publishedAt, "categories": categories[]->{ title }, excerpt, "author": author->{ name, "slug": slug.current }
+  }
+}`;

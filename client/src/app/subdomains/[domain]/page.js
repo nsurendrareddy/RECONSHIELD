@@ -13,6 +13,7 @@ import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 const SUBDOMAIN_TOPICS = Object.keys(SUBDOMAIN_TOPICS_DATA);
 
+export const dynamic = 'force-dynamic';
 const isValidDomain = (domain) => {
   const normalized = domain.toLowerCase();
   if (SUBDOMAIN_TOPICS.includes(normalized)) return true;
@@ -278,11 +279,6 @@ function getDomainTelemetry(domain) {
   };
 }
 
-export async function generateStaticParams() {
-  const topicParams = SUBDOMAIN_TOPICS.map(domain => ({ domain }));
-  const domainParams = KNOWN_DOMAINS.map(domain => ({ domain }));
-  return [...topicParams, ...domainParams];
-}
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;

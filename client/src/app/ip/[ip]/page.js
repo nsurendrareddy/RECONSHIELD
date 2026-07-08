@@ -8,7 +8,7 @@ import RelatedIPs from '@/components/entities/RelatedIPs';
 
 
 // Phase 11: Edge/ISR Configuration
-export const revalidate = 3600; // ISR cache invalidation every hour
+export const dynamic = 'force-dynamic'; // Replaced ISR with on-demand edge execution
 
 const SAFE_INFRASTRUCTURE_DATA = {
   '1.1.1.1': {

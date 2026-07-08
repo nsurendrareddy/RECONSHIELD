@@ -7,11 +7,6 @@ import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 export const revalidate = 604800; // 7-day cache
 
-// Whitelisted hosts (domains and IPs) for static pre-rendering
-export async function generateStaticParams() {
-  const hosts = [...KNOWN_DOMAINS, ...KNOWN_IPS];
-  return hosts.map(host => ({ host }));
-}
 
 // Basic host check (domain or IP format)
 const isValidHost = (host) => {

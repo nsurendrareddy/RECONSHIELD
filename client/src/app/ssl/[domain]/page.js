@@ -9,6 +9,7 @@ import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 
 const SSL_TOPICS = Object.keys(SSL_TOPICS_DATA);
 
+export const dynamic = 'force-dynamic';
 // Basic domain validation
 const isValidDomain = (domain) => {
   const normalized = domain.toLowerCase();
@@ -18,9 +19,6 @@ const isValidDomain = (domain) => {
   return domainRegex.test(domain);
 };
 
-export async function generateStaticParams() {
-  return SSL_TOPICS.map(domain => ({ domain }));
-}
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;

@@ -1,14 +1,15 @@
+import { cache } from 'react';
 import BlogPostClient from '@/components/BlogPostClient';
 import { ShieldAlert, ArrowLeft, WifiOff } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { client, blogDetailQuery, urlFor, recentPostsQuery, categoriesWithCountQuery, relatedPostsQuery } from '@/utils/sanity';
-export const revalidate = 60;
+import { client, blogDetailQuery, urlFor, blogSidebarQuery } from '@/utils/sanity';
+// ISR disabled, relying on Sanity webhook
 
 import { MOCK_POSTS_DATA } from '@/utils/mockBlogData';
 
 
-async function getPost(slug) {
+const getPost = cache(async (slug) => {
   if (!slug || slug === 'undefined') return null;
   
   let post = null;
@@ -40,7 +41,7 @@ async function getPost(slug) {
   }
 
   return post;
-}
+});
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -86,21 +87,24 @@ export default async function Page({ params }) {
     notFound();
   }
 
-  // Fetch sidebar and related data with individual catch handlers to prevent 500 crashes
-  const [recentPosts, categories, relatedPosts] = await Promise.all([
-    client.fetch(recentPostsQuery, { slug }).catch(err => {
-      console.error('Error fetching recent posts:', err);
-      return [];
-    }),
-    client.fetch(categoriesWithCountQuery).catch(err => {
-      console.error('Error fetching categories:', err);
-      return [];
-    }),
-    client.fetch(relatedPostsQuery, { slug }).catch(err => {
-      console.error('Error fetching related posts:', err);
-      return [];
-    })
-  ]);
+  // Fetch sidebar and related data in a single optimized query
+  let sidebarData = { recent: [], categories: [], related: [] };
+  try {
+    const data = await client.fetch(blogSidebarQuery, { slug });
+    if (data) {
+      sidebarData = {
+        recent: data.recent || [],
+        categories: data.categories || [],
+        related: data.related || []
+      };
+    }
+  } catch (err) {
+    console.error('Error fetching optimized sidebar data:', err);
+  }
+  
+  const recentPosts = sidebarData.recent;
+  const categories = sidebarData.categories;
+  const relatedPosts = sidebarData.related;
 
   const jsonLd = {
     "@context": "https://schema.org",

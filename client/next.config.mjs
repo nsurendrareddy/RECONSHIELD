@@ -89,6 +89,11 @@ const cspHeader = [
 ].join('; ');
 
 const nextConfig = {
+  reactStrictMode: true,
+  poweredByHeader: false,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error'] } : false,
+  },
   images: {
     unoptimized: false,
     formats: ['image/avif', 'image/webp'],
@@ -119,19 +124,35 @@ const nextConfig = {
       },
       {
         source: '/_next/static/(.*)',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'CDN-Cache-Control', value: 'max-age=31536000' },
+          { key: 'Vercel-CDN-Cache-Control', value: 'max-age=31536000' }
+        ],
       },
       {
         source: '/fonts/(.*)',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'CDN-Cache-Control', value: 'max-age=31536000' },
+          { key: 'Vercel-CDN-Cache-Control', value: 'max-age=31536000' }
+        ],
       },
       {
         source: '/sanity-cdn/(.*)',
-        headers: [{ key: 'Cache-Control', value: 'public, immutable, max-age=31536000' }],
+        headers: [
+          { key: 'Cache-Control', value: 'public, immutable, max-age=31536000' },
+          { key: 'CDN-Cache-Control', value: 'max-age=31536000' },
+          { key: 'Vercel-CDN-Cache-Control', value: 'max-age=31536000' }
+        ],
       },
       {
         source: '/(images|icons|favicons|logos)/(.*)',
-        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'CDN-Cache-Control', value: 'max-age=31536000' },
+          { key: 'Vercel-CDN-Cache-Control', value: 'max-age=31536000' }
+        ],
       },
       {
         source: '/manifest.json',

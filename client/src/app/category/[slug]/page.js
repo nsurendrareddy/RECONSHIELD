@@ -7,7 +7,7 @@ import Banner300 from '@/components/ads/Banner300';
 import NativeBanner from '@/components/ads/NativeBanner';
 import { generateBaseMetadata, getCategoryFallbackImage } from '@/utils/metadata';
 
-export const revalidate = 60; // Cache and revalidate once a minute
+// ISR disabled, relying on Sanity webhook
 
 // Static categorization mapping containing premium educational value and metadata
 const CATEGORY_DATA = {

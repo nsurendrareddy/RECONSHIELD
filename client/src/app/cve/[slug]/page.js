@@ -7,7 +7,7 @@ import { generateDatasetSchema } from '@/utils/metadata';
 
 
 // Phase 11: Edge/ISR Configuration
-export const revalidate = 21600; // Cache for 6 hours (CVE base stats don't change frequently, but exploitation status might)
+export const revalidate = 86400; // Cache for 24 hours
 
 // Mocked DB Call
 async function getCveIntelligence(cveId) {

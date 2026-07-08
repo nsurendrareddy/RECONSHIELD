@@ -7,7 +7,7 @@ import RelatedPorts from '@/components/entities/RelatedPorts';
 import { generateDatasetSchema } from '@/utils/metadata';
 import { PORTS_INTELLIGENCE } from '@/utils/portsIntelligenceData';
 
-export const revalidate = 604800; // 7-day cache
+export const dynamic = 'force-dynamic'; // Replaced ISR with on-demand edge execution
 
 // Basic port validation
 const isValidPort = (portStr) => {
@@ -35,10 +35,7 @@ const PORT_DATA_FALLBACK = {
   27017: { service: 'MongoDB', risk: 'Critical', protocol: 'TCP' }
 };
 
-export async function generateStaticParams() {
-  const ports = Object.keys(PORTS_INTELLIGENCE);
-  return ports.map(port => ({ port: String(port) }));
-}
+
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;

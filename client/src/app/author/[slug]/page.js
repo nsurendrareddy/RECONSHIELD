@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { client, authorDetailQuery, authorPostsQuery, urlFor } from '@/utils/sanity';
 import { Shield, Globe, ExternalLink, Clock, ArrowLeft, BookOpen, User, Mail, Award, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
@@ -5,13 +6,17 @@ import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
 import { generateBaseMetadata } from '@/utils/metadata';
 
-export const revalidate = 60; // Revalidate every minute
+// ISR disabled, relying on Sanity webhook
+
+const getAuthor = cache(async (slug) => {
+  return await client.fetch(authorDetailQuery, { slug });
+});
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   let author = null;
   try {
-    author = await client.fetch(authorDetailQuery, { slug });
+    author = await getAuthor(slug);
   } catch (e) {
     console.error('Error fetching author metadata', e);
   }
@@ -32,7 +37,7 @@ export default async function AuthorProfilePage({ params }) {
 
   try {
     [author, posts] = await Promise.all([
-      client.fetch(authorDetailQuery, { slug }),
+      getAuthor(slug),
       client.fetch(authorPostsQuery, { slug })
     ]);
   } catch (error) {

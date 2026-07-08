@@ -329,7 +329,7 @@ export async function GET(request, { params }) {
         // Attempt to fetch programmatic SEO URLs from backend
         try {
           const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://reconshield.onrender.com';
-          const cacheTime = entityType?.includes('malicious') ? 3600 : 86400; // 1hr for threat intel, 24hr for stable entities
+          const cacheTime = 86400; // 24hr cache for all sitemap chunks
           
           const backendRes = await fetch(`${backendUrl}/api/sitemap-generate?type=${entityType}&page=${page}`, {
             next: { revalidate: cacheTime } 

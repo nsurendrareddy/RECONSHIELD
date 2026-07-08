@@ -20,8 +20,25 @@ export async function POST(req) {
       revalidatePath(`/blog/${body.slug.current}`);
     }
     
+    // Revalidate the author page if an author slug is provided in the webhook payload
+    if (body.authorSlug && body.authorSlug.current) {
+      revalidatePath(`/author/${body.authorSlug.current}`);
+    }
+    
+    // Revalidate all associated category pages if category slugs are provided
+    if (body.categorySlugs && Array.isArray(body.categorySlugs)) {
+      body.categorySlugs.forEach(cat => {
+        if (cat && cat.current) {
+          revalidatePath(`/category/${cat.current}`);
+        }
+      });
+    }
+    
     // Revalidate the homepage since it also shows recent blog posts
     revalidatePath('/');
+    
+    // Revalidate the sitemap to ensure search engines see the update immediately
+    revalidatePath('/sitemap.xml');
 
     return NextResponse.json({ revalidated: true, now: Date.now() });
   } catch (err) {

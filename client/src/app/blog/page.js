@@ -10,7 +10,7 @@ import {
 import BlogClient from './BlogClient';
 import { slugify } from '@/utils/slugify';
 
-export const revalidate = 60; // ISR revalidate every 1 minute
+// ISR disabled, relying on Sanity webhook for cache invalidation
 
 import { generateBaseMetadata } from '@/utils/metadata';
 
