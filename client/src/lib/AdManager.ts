@@ -197,11 +197,6 @@ class AdManagerSingleton {
 
       const metricIdx = adMetrics.openSlot(config.type, config.invokeUrl);
 
-      // 2. Set global window.atOptions
-      if (config.atOptions) {
-        (window as any).atOptions = config.atOptions;
-      }
-
       let observer: MutationObserver | null = null;
       let timeoutTimer: ReturnType<typeof window.setTimeout> | null = null;
       let active = true;
@@ -226,7 +221,7 @@ class AdManagerSingleton {
         resolve();
       };
 
-      // 3. Watch for iframe injection
+      // Watch for iframe injection for native ads or fallback monitoring
       observer = new MutationObserver((mutations) => {
         for (const m of mutations) {
           for (const node of Array.from(m.addedNodes)) {
@@ -244,24 +239,53 @@ class AdManagerSingleton {
 
       timeoutTimer = window.setTimeout(() => finishLoading('failed'), AD_TIMEOUT_MS);
 
-      // 4. Inject the script physically into the container to execute it
-      const triggerScript = document.createElement('script');
-      triggerScript.type = 'text/javascript';
-      triggerScript.src = config.invokeUrl;
-      triggerScript.async = true;
-      if (config.type === 'native') {
-        triggerScript.setAttribute('data-cfasync', 'false');
-      }
-      triggerScript.onerror = () => finishLoading('failed');
-      
+      // Inject the ad
       config.container.innerHTML = '';
-      if (config.type !== 'native') {
-        const inlineScript = document.createElement('script');
-        inlineScript.type = 'text/javascript';
-        inlineScript.text = `window.atOptions = ${JSON.stringify(config.atOptions)};`;
-        config.container.appendChild(inlineScript);
+      
+      if (config.type === 'native') {
+        const triggerScript = document.createElement('script');
+        triggerScript.type = 'text/javascript';
+        triggerScript.src = config.invokeUrl;
+        triggerScript.async = true;
+        triggerScript.setAttribute('data-cfasync', 'false');
+        triggerScript.onerror = () => finishLoading('failed');
+        config.container.appendChild(triggerScript);
+      } else {
+        // Use an isolated iframe sandbox to support document.write and prevent global atOptions race conditions
+        const iframe = document.createElement('iframe');
+        iframe.style.border = 'none';
+        iframe.style.overflow = 'hidden';
+        iframe.style.width = config.atOptions?.width ? `${config.atOptions.width}px` : '100%';
+        iframe.style.height = config.atOptions?.height ? `${config.atOptions.height}px` : '100%';
+        iframe.scrolling = 'no';
+        
+        // Append iframe to container first so its contentWindow becomes available
+        config.container.appendChild(iframe);
+        
+        const doc = iframe.contentWindow?.document;
+        if (doc) {
+          doc.open();
+          doc.write(`
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <style>
+                  body { margin: 0; padding: 0; background: transparent; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+                </style>
+              </head>
+              <body>
+                <script type="text/javascript">
+                  window.atOptions = ${JSON.stringify(config.atOptions || {})};
+                </script>
+                <script type="text/javascript" src="${config.invokeUrl}"></script>
+              </body>
+            </html>
+          `);
+          doc.close();
+        } else {
+          finishLoading('failed');
+        }
       }
-      config.container.appendChild(triggerScript);
     });
   }
 }
