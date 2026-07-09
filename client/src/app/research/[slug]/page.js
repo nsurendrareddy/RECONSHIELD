@@ -5,7 +5,8 @@ import { FileText, Calendar, User, BookOpen, Database, Quote, ChevronRight, Arro
 import { RESEARCH_REPORTS } from '@/utils/researchReportsData';
 import { renderMarkdown } from '@/utils/markdownRenderer';
 
-export const revalidate = 604800; // 7-day cache
+export const revalidate = false;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const slugs = Object.keys(RESEARCH_REPORTS);

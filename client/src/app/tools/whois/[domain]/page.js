@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { Server, Search, Globe, ChevronRight, Clock, AlertTriangle } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 const isValidDomain = (domain) => {
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
   return domainRegex.test(domain);

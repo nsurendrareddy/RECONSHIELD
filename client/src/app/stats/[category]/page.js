@@ -5,7 +5,8 @@ import { BarChart3, Info, Calendar, Quote, Download, Code, Globe, ShieldCheck } 
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { STATS_CATEGORIES } from '@/utils/statsData';
 
-export const revalidate = 604800; // 7-day cache revalidation
+export const revalidate = false;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return [

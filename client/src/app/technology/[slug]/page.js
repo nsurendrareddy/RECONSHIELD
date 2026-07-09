@@ -4,7 +4,8 @@ import { Cpu, Shield, Activity, ChevronRight, Lock, AlertTriangle, Globe, Server
 import { notFound } from 'next/navigation';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
-export const revalidate = 86400;
+export const revalidate = false;
+export const dynamicParams = false;
 
 const TECH_DATA = {
   react: {

@@ -6,7 +6,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import { DNS_TYPES_DATA } from '@/utils/dnsTypesData';
 import { renderMarkdown } from '@/utils/markdownRenderer';
 
-export const revalidate = 86400;
+export const revalidate = false;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return Object.keys(DNS_TYPES_DATA).map(recordType => ({ recordType }));

@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Shield, Lock, LayoutTemplate, Activity, ChevronRight, Server, Globe } from 'lucide-react';
 
+export const dynamicParams = false;
+
 const allowedHeaders = [
   'server',
   'content-security-policy',

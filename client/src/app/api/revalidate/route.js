@@ -33,6 +33,7 @@ export async function POST(req) {
       body.categorySlugs.forEach(cat => {
         if (cat && cat.current) {
           revalidatePath(`/category/${cat.current}`);
+          revalidatePath(`/blog/category/${cat.current}`);
         }
       });
     }

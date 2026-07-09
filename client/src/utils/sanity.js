@@ -49,7 +49,7 @@ function rewriteLegacyUrls(obj) {
 
 const originalFetch = client.fetch.bind(client);
 client.fetch = async function (query, params, options = {}) {
-  options.next = { ...options.next, revalidate: 60, tags: [...(options.next?.tags || []), 'sanity'] };
+  options.next = { ...options.next, revalidate: false, tags: [...(options.next?.tags || []), 'sanity'] };
   const result = await originalFetch(query, params, options);
   const trimmed = trimSlugs(result);
   return rewriteLegacyUrls(trimmed);

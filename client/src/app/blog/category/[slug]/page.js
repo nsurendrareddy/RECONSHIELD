@@ -1,6 +1,7 @@
 import React from 'react';
 
-export const revalidate = 60;
+export const revalidate = false;
+export const dynamicParams = false;
 
 import Link from 'next/link';
 import { notFound } from 'next/navigation';

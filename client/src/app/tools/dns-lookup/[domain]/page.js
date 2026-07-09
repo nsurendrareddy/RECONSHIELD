@@ -515,3 +515,12 @@ export default async function DnsIntelligencePage({ params }) {
     </>
   );
 }
+
+export async function generateStaticParams() {
+  const params = [];
+  RECORD_TYPES.forEach(t => params.push({ domain: t }));
+  KNOWN_DOMAINS.forEach(d => params.push({ domain: d }));
+  return params;
+}
+
+export const dynamicParams = false;

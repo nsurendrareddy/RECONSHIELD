@@ -6,7 +6,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import { EMAIL_AUTHS_DATA } from '@/utils/emailAuthsData';
 import { renderMarkdown } from '@/utils/markdownRenderer';
 
-export const revalidate = 86400;
+export const revalidate = false;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return Object.keys(EMAIL_AUTHS_DATA).map(authError => ({ authError }));

@@ -5,6 +5,8 @@ import { GLOSSARY_TERMS } from '@/utils/glossaryData';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { BookOpen, Shield, HelpCircle, ArrowRight, Clock, List, ExternalLink, AlertTriangle, CheckCircle } from 'lucide-react';
 
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const termData = GLOSSARY_TERMS[resolvedParams.term];

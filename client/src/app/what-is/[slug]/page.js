@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation';
 import { Shield, BookOpen, Quote, ChevronRight, ArrowLeft } from 'lucide-react';
 import Breadcrumbs from '@/components/Breadcrumbs';
 
-export const revalidate = 604800; // 7-day cache
+export const revalidate = false;
+export const dynamicParams = false;
 
 const CITATION_TERMS = {
   'tls': {

@@ -1,7 +1,7 @@
 import AdsterraNative from "@/components/ads/AdsterraNative";
 import AdsterraBanner from "@/components/ads/AdsterraBanner";
 
-export const revalidate = 60;
+export const revalidate = false;
 import React from 'react';
 import Link from 'next/link';
 import { client, homepageBlogQuery } from '@/utils/sanity';

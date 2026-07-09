@@ -588,3 +588,9 @@ export default async function Page({ params }) {
   
   return <ToolPageContent toolId={toolId} />;
 }
+
+export async function generateStaticParams() {
+  return TOOLS.map(tool => ({ toolId: tool.id }));
+}
+
+export const dynamicParams = false;

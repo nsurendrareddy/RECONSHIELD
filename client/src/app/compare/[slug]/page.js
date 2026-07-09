@@ -6,7 +6,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import { COMPARISONS_DATA } from '@/utils/comparisonsData';
 import { renderMarkdown } from '@/utils/markdownRenderer';
 
-export const revalidate = 86400;
+export const revalidate = false;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return Object.keys(COMPARISONS_DATA).map(slug => ({ slug }));

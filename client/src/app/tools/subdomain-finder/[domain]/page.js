@@ -7,6 +7,8 @@ import {
 import { notFound } from 'next/navigation';
 import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
+export const dynamic = 'force-dynamic';
+
 const isValidDomain = (domain) => {
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;
   return domainRegex.test(domain);

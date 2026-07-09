@@ -5,7 +5,7 @@ import { Network, ShieldAlert, Server, Activity, ChevronRight, CheckCircle2, Ale
 import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
-export const revalidate = 604800; // 7-day cache
+export const dynamic = 'force-dynamic';
 
 
 // Basic domain check

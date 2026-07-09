@@ -273,3 +273,9 @@ export default async function AsnIntelligencePage({ params }) {
     </>
   );
 }
+
+export async function generateStaticParams() {
+  return KNOWN_ASNS.map(asn => ({ asn }));
+}
+
+export const dynamicParams = false;

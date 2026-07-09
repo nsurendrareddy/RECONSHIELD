@@ -6,7 +6,8 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import { SSL_ERRORS_DATA } from '@/utils/sslErrorsData';
 import { renderMarkdown } from '@/utils/markdownRenderer';
 
-export const revalidate = 86400;
+export const revalidate = false;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return Object.keys(SSL_ERRORS_DATA).map(errorCode => ({ errorCode }));

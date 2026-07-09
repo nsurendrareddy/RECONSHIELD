@@ -5,7 +5,7 @@ import { Terminal, ShieldAlert, Server, Activity, ChevronRight, CheckCircle2, Al
 import { KNOWN_DOMAINS, KNOWN_IPS } from '@/lib/entityRegistry';
 import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
-export const revalidate = 604800; // 7-day cache
+export const dynamic = 'force-dynamic';
 
 
 // Basic host check (domain or IP format)
