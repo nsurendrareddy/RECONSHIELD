@@ -25,6 +25,7 @@ class AdManagerSingleton {
   private observer: IntersectionObserver | null = null;
   private registeredZones = new Map<Element, AdConfig>();
   private hasHydrated = false;
+  private renderingZones = new Map<string, () => void>();
 
   constructor() {
     if (typeof window === 'undefined') return;
@@ -75,16 +76,23 @@ class AdManagerSingleton {
         return;
       }
 
+      const timer = setTimeout(() => {
+        adMetrics.recordScriptFailed(url, 408);
+        reject(new Error(`Preload timeout for ${url}`));
+      }, 5000);
+
       const link = document.createElement('link');
       link.rel = 'preload';
       link.as = 'script';
       link.href = url;
       
       link.onload = () => {
+        clearTimeout(timer);
         adMetrics.recordScriptLoaded(url);
         resolve();
       };
       link.onerror = (err) => {
+        clearTimeout(timer);
         adMetrics.recordScriptFailed(url);
         reject(err);
       };
@@ -131,6 +139,12 @@ class AdManagerSingleton {
     
     // Remove from queue if it hasn't processed yet
     this.queue = this.queue.filter(c => c.id !== id);
+
+    // If currently rendering, abort rendering and unblock the queue immediately
+    const cancelRendering = this.renderingZones.get(id);
+    if (cancelRendering) {
+      cancelRendering();
+    }
   }
 
   private enqueueBanner(config: AdConfig): void {
@@ -205,6 +219,8 @@ class AdManagerSingleton {
         if (!active) return;
         active = false;
         
+        this.renderingZones.delete(config.id);
+        
         if (observer) observer.disconnect();
         if (timeoutTimer) window.clearTimeout(timeoutTimer);
         
@@ -220,6 +236,9 @@ class AdManagerSingleton {
         // Resolve the promise to unlock the queue for the next ad
         resolve();
       };
+
+      // Register the zone as active rendering so unmounts can abort it early
+      this.renderingZones.set(config.id, () => finishLoading('failed'));
 
       // Watch for iframe injection for native ads or fallback monitoring
       observer = new MutationObserver((mutations) => {

@@ -501,7 +501,7 @@ export function ToolPageContent({ toolId }) {
               </div>
             )}
             {activeFaqs && activeFaqs.length > 0 && (
-              <div className="mt-12 border-t border-white/5 pt-12">
+              <div id="faq" className="mt-12 border-t border-white/5 pt-12 faq-section">
                 <h2 className="text-xl font-display font-bold text-white mb-6 uppercase tracking-wider flex items-center gap-2">
                   <HelpCircle className="w-5 h-5 text-[#00ff88]" />
                   Frequently Asked Questions (FAQ)

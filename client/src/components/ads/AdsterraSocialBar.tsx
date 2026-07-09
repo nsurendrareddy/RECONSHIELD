@@ -1,14 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 
 const SOCIAL_BAR_SCRIPT_ID = 'adsterra-social-bar';
 const SOCIAL_BAR_SRC = 'https://pl29692251.effectivecpmnetwork.com/06/ea/fc/06eafc4004351bf68b0c5aa80b3255c9.js';
 
 export default function AdsterraSocialBar() {
-  const pathname = usePathname();
-
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -26,13 +23,13 @@ export default function AdsterraSocialBar() {
     
     script.onload = () => {
       if (process.env.NODE_ENV === 'development') {
-        console.log(`[Adsterra] Social Bar — loaded for route: ${pathname}`);
+        console.log(`[Adsterra] Social Bar — loaded`);
       }
     };
     
     script.onerror = (e) => {
       if (process.env.NODE_ENV === 'development') {
-        console.warn(`[Adsterra] Social Bar — failed to load for route: ${pathname}`, e);
+        console.warn(`[Adsterra] Social Bar — failed to load`, e);
       }
     };
 
@@ -40,12 +37,17 @@ export default function AdsterraSocialBar() {
     document.body.appendChild(script);
 
     return () => {
-      // Clean up script on unmount or before next route change
+      // Clean up script on unmount
       if (document.body.contains(script)) {
         document.body.removeChild(script);
       }
+      // Clean up dynamic frames and containers injected by Adsterra Social Bar in the body
+      const injectedElements = document.querySelectorAll(
+        'iframe[src*="effectivecpmnetwork.com"], div[id^="adsterra"], iframe[id^="asb-"], div[class*="social-bar"]'
+      );
+      injectedElements.forEach(el => el.remove());
     };
-  }, [pathname]);
+  }, []);
 
   return null;
 }

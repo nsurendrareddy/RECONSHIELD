@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, memo } from 'react';
+import { usePathname } from 'next/navigation';
 import { AdManager, AdPriority, AdStatus } from '@/lib/AdManager';
 
 
@@ -37,6 +38,7 @@ function AdsterraNativeInner({ className = '', priority = 'normal' }: AdsterraNa
   const containerRef = useRef<HTMLDivElement>(null);
   const [adState, setAdState] = useState<AdStatus>('idle');
   const instanceId = useRef(Math.random().toString(36).substring(2, 9));
+  const pathname = usePathname();
 
   useEffect(() => {
     ensureSkeletonStyles();
@@ -60,7 +62,7 @@ function AdsterraNativeInner({ className = '', priority = 'normal' }: AdsterraNa
     return () => {
       AdManager.unregisterZone(zoneId, containerRef.current);
     };
-  }, [priority]);
+  }, [priority, pathname]);
 
   if (adState === 'failed') return null;
 
@@ -69,7 +71,7 @@ function AdsterraNativeInner({ className = '', priority = 'normal' }: AdsterraNa
       ? { opacity: 1, minHeight: 250, height: 'auto', transition: 'opacity 400ms ease' }
       : adState === 'loading'
       ? { opacity: 1, minHeight: 250 }
-      : { height: 0, margin: 0, padding: 0, opacity: 0, overflow: 'hidden' as const };
+      : { minHeight: 250, margin: 0, padding: 0, opacity: 1, overflow: 'hidden' as const };
 
   return (
     <div
@@ -79,7 +81,7 @@ function AdsterraNativeInner({ className = '', priority = 'normal' }: AdsterraNa
       {adState !== 'filled' && (
         <div className="ad-skeleton w-full" style={{ height: 250, position: 'absolute' }} aria-hidden="true" />
       )}
-      <div ref={containerRef} className="w-full relative overflow-hidden" style={{ opacity: adState === 'filled' ? 1 : 0 }} />
+      <div ref={containerRef} className="w-full relative overflow-hidden" />
     </div>
   );
 }

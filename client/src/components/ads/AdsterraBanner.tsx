@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, memo } from 'react';
+import { usePathname } from 'next/navigation';
 import { AdManager, AdPriority, AdStatus } from '@/lib/AdManager';
 
 
@@ -43,6 +44,7 @@ function AdsterraBannerInner({ type, className = '', priority = 'normal' }: Adst
   const containerRef = useRef<HTMLDivElement>(null);
   const [adState, setAdState] = useState<AdStatus>('idle');
   const instanceId = useRef(Math.random().toString(36).substring(2, 9));
+  const pathname = usePathname();
 
   useEffect(() => {
     ensureSkeletonStyles();
@@ -73,7 +75,7 @@ function AdsterraBannerInner({ type, className = '', priority = 'normal' }: Adst
     return () => {
       AdManager.unregisterZone(zoneId, containerRef.current);
     };
-  }, [type, priority]);
+  }, [type, priority, pathname]);
 
   if (adState === 'failed') return null;
 
@@ -86,7 +88,7 @@ function AdsterraBannerInner({ type, className = '', priority = 'normal' }: Adst
       ? { minHeight: h, opacity: 1, height: 'auto', transition: 'opacity 400ms ease' }
       : adState === 'loading'
       ? { height: h, opacity: 1 }
-      : { height: 0, margin: 0, padding: 0, opacity: 0, overflow: 'hidden' as const };
+      : { height: h, margin: 0, padding: 0, opacity: 1, overflow: 'hidden' as const };
 
   return (
     <div
