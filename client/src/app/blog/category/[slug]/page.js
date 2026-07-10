@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const revalidate = false;
+export const revalidate = 60;
 export const dynamicParams = false;
 
 import Link from 'next/link';

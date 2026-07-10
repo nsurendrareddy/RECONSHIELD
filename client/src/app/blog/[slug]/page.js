@@ -1,6 +1,6 @@
 import { cache } from 'react';
 
-export const revalidate = false;
+export const revalidate = 60;
 
 import BlogPostClient from '@/components/BlogPostClient';
 import { ShieldAlert, ArrowLeft, WifiOff } from 'lucide-react';

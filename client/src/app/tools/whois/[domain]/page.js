@@ -67,7 +67,7 @@ export default async function WhoisIntelligencePage({ params }) {
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://reconshield.in' },
-          { '@type': 'ListItem', position: 2, name: 'WHOIS Intelligence', item: 'https://reconshield.in/tools/whois-checker' },
+          { '@type': 'ListItem', position: 2, name: 'WHOIS Intelligence', item: 'https://reconshield.in/tools/whois' },
           { '@type': 'ListItem', position: 3, name: domain, item: `https://reconshield.in/tools/whois/${domain}` },
         ],
       },
@@ -156,7 +156,7 @@ export default async function WhoisIntelligencePage({ params }) {
                   Initiate an active TCP connection (port 43) to the relevant WHOIS server to extract the full unredacted registration text block for <strong>{domain}</strong>.
                 </p>
                 
-                <Link href={`/tools/whois-checker?target=${domain}`} className="inline-flex items-center justify-center gap-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-6 py-3 rounded-xl font-bold transition-all">
+                <Link href={`/tools/whois?target=${domain}`} className="inline-flex items-center justify-center gap-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-6 py-3 rounded-xl font-bold transition-all">
                   <Search className="w-4 h-4" />
                   Extract WHOIS for {domain}
                 </Link>

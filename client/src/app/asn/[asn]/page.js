@@ -233,7 +233,7 @@ export default async function AsnIntelligencePage({ params }) {
                 <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">Entity Graph Relations</h3>
                 
                 <div className="space-y-3">
-                  <Link href={`/tools/whois-checker`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
+                  <Link href={`/tools/whois`} className="flex items-center gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors group">
                     <div className="w-8 h-8 rounded-md bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500/20">
                       <Globe className="w-4 h-4" />
                     </div>
