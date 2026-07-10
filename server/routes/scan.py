@@ -5,7 +5,7 @@ from datetime import datetime
 from fastapi import APIRouter, Request, BackgroundTasks, HTTPException
 from middleware.rate_limiter import limiter
 from middleware.validator import ScanRequest
-from db.store import create_scan, update_scan, fail_scan, get_scan, get_history
+from db.store import create_scan, update_scan, fail_scan, get_scan, get_history, get_scan_progress, append_scan_progress
 from services.whois_service import whois_lookup
 from services.dns_service import dns_lookup
 from services.ssl_service import ssl_analysis
@@ -29,27 +29,26 @@ from utils.logger import logger
 
 router = APIRouter()
 
-# In-memory progress tracking for active scans
-_scan_progress: dict[str, list[dict]] = {}
+# Scan progress is stored persistently inside the scans SQLite table
 
 TOTAL_MODULES = 20  # Updated count
 
 
 async def _run_module(name: str, coro, scan_id: str):
     """Run a single module and track progress."""
-    _scan_progress.setdefault(scan_id, []).append(
-        {"module": name, "status": "running", "ts": datetime.utcnow().isoformat()}
-    )
+    await append_scan_progress(scan_id, {
+        "module": name, "status": "running", "ts": datetime.utcnow().isoformat()
+    })
     try:
         result = await coro
-        _scan_progress[scan_id].append(
-            {"module": name, "status": "done", "ts": datetime.utcnow().isoformat()}
-        )
+        await append_scan_progress(scan_id, {
+            "module": name, "status": "done", "ts": datetime.utcnow().isoformat()
+        })
         return result
     except Exception as e:
-        _scan_progress[scan_id].append(
-            {"module": name, "status": "error", "error": str(e), "ts": datetime.utcnow().isoformat()}
-        )
+        await append_scan_progress(scan_id, {
+            "module": name, "status": "error", "error": str(e), "ts": datetime.utcnow().isoformat()
+        })
         return {"error": str(e)}
 
 
@@ -57,9 +56,6 @@ async def _run_scan(scan_id: str, domain: str):
     """Run all scan modules with progress tracking."""
     try:
         logger.info(f"Starting scan {scan_id} for {domain}")
-        _scan_progress[scan_id] = [
-            {"module": "init", "status": "done", "ts": datetime.utcnow().isoformat()}
-        ]
 
         # Phase 1: Core services — run concurrently
         core_results = await asyncio.gather(
@@ -119,36 +115,37 @@ async def _run_scan(scan_id: str, domain: str):
             )
 
         # Risk analysis
-        _scan_progress[scan_id].append(
-            {"module": "Risk Analysis", "status": "running", "ts": datetime.utcnow().isoformat()}
-        )
+        await append_scan_progress(scan_id, {
+            "module": "Risk Analysis", "status": "running", "ts": datetime.utcnow().isoformat()
+        })
         risk = analyze_risk(scan_data)
         scan_data["risk"] = risk
+        await append_scan_progress(scan_id, {
+            "module": "Risk Analysis", "status": "done", "ts": datetime.utcnow().isoformat()
+        })
 
         # AI Explanations
-        _scan_progress[scan_id].append(
-            {"module": "AI Analysis", "status": "running", "ts": datetime.utcnow().isoformat()}
-        )
+        await append_scan_progress(scan_id, {
+            "module": "AI Analysis", "status": "running", "ts": datetime.utcnow().isoformat()
+        })
         ai_explanations = generate_ai_explanations(scan_data)
         executive_summary = generate_executive_summary(scan_data, risk["score"], risk["grade"])
         scan_data["ai_explanations"] = ai_explanations
         scan_data["executive_summary"] = executive_summary
+        await append_scan_progress(scan_id, {
+            "module": "AI Analysis", "status": "done", "ts": datetime.utcnow().isoformat()
+        })
 
-        _scan_progress[scan_id].append(
-            {"module": "Complete", "status": "done", "ts": datetime.utcnow().isoformat()}
-        )
+        await append_scan_progress(scan_id, {
+            "module": "Complete", "status": "done", "ts": datetime.utcnow().isoformat()
+        })
 
         await update_scan(scan_id, scan_data, risk["score"], risk["grade"])
         logger.info(f"Scan {scan_id} completed — Score: {risk['score']}, Grade: {risk['grade']}")
 
-        # Cleanup progress after 5 min
-        await asyncio.sleep(300)
-        _scan_progress.pop(scan_id, None)
-
     except Exception as e:
         logger.error(f"Scan {scan_id} failed: {e}", exc_info=True)
         await fail_scan(scan_id, str(e))
-        _scan_progress.pop(scan_id, None)
 
 
 @router.post("")
@@ -183,7 +180,7 @@ async def get_scan_status(scan_id: str):
     if not scan:
         raise HTTPException(status_code=404, detail="Scan not found")
 
-    progress = _scan_progress.get(scan_id, [])
+    progress = await get_scan_progress(scan_id)
     completed_modules = [p["module"] for p in progress if p["status"] == "done"]
     running_modules = [p["module"] for p in progress if p["status"] == "running"]
     current_module = (
@@ -191,6 +188,11 @@ async def get_scan_status(scan_id: str):
         completed_modules[-1] if completed_modules else
         "Initializing"
     )
+
+    # Calculate total modules dynamically based on Linux tools availability
+    linux = get_available_tools()
+    has_linux = any(linux.values())
+    total_modules = 21 if has_linux else 20
 
     return {
         "id": scan["id"],
@@ -200,7 +202,7 @@ async def get_scan_status(scan_id: str):
         "progress": progress,
         "current_module": current_module,
         "completed_count": len(completed_modules),
-        "total_modules": TOTAL_MODULES,
+        "total_modules": total_modules,
     }
 
 

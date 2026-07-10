@@ -35,18 +35,22 @@ export function useScan() {
           setProgress(statusRes.current_module ? `Running: ${statusRes.current_module}` : 'Processing...')
 
           if (statusRes.status === 'completed') {
-            stopPolling()
             const fullResult = await getScan(id)
             setScanData(fullResult)
             setStatus('completed')
             setProgress('')
-          } else if (statusRes.status === 'failed') {
             stopPolling()
+          } else if (statusRes.status === 'failed') {
             setError('Scan failed. Target may be unreachable.')
             setStatus('error')
+            stopPolling()
           }
         } catch (e) {
-          if (attempts > 90) { stopPolling(); setError('Scan timed out'); setStatus('error') }
+          if (attempts > 90) { 
+            stopPolling()
+            setError('Scan timed out')
+            setStatus('error') 
+          }
         }
       }, 1500)
     } catch (e) {
