@@ -16,30 +16,29 @@ export async function POST(req) {
     revalidateTag('sanity');
 
     // Revalidate the blog listing page
-    revalidatePath('/blog');
+    revalidateTag('blog');
     
     // Revalidate the specific blog post if a slug is provided
     if (body.slug && body.slug.current) {
-      revalidatePath(`/blog/${body.slug.current}`);
+      revalidateTag(`blog-post-${body.slug.current}`);
     }
     
     // Revalidate the author page if an author slug is provided in the webhook payload
     if (body.authorSlug && body.authorSlug.current) {
-      revalidatePath(`/author/${body.authorSlug.current}`);
+      revalidateTag(`author-${body.authorSlug.current}`);
     }
     
     // Revalidate all associated category pages if category slugs are provided
     if (body.categorySlugs && Array.isArray(body.categorySlugs)) {
       body.categorySlugs.forEach(cat => {
         if (cat && cat.current) {
-          revalidatePath(`/category/${cat.current}`);
-          revalidatePath(`/blog/category/${cat.current}`);
+          revalidateTag(`category-${cat.current}`);
         }
       });
     }
     
     // Revalidate the homepage since it also shows recent blog posts
-    revalidatePath('/');
+    revalidateTag('homepage');
     
     // Revalidate the sitemap to ensure search engines see the update immediately
     revalidatePath('/sitemap.xml');

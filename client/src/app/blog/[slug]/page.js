@@ -1,7 +1,5 @@
 import { cache } from 'react';
 
-export const revalidate = 60;
-
 import BlogPostClient from '@/components/BlogPostClient';
 import { ShieldAlert, ArrowLeft, WifiOff } from 'lucide-react';
 import Link from 'next/link';
@@ -11,13 +9,23 @@ import { client, blogDetailQuery, urlFor, blogSidebarQuery } from '@/utils/sanit
 
 import { MOCK_POSTS_DATA } from '@/utils/mockBlogData';
 
+export async function generateStaticParams() {
+  try {
+    const posts = await client.fetch(`*[_type == "post" && defined(slug.current) && !(_id in path("drafts.**"))] { "slug": slug.current }`);
+    return posts.map(post => ({ slug: post.slug }));
+  } catch (error) {
+    console.error("Failed to generateStaticParams for blog posts:", error);
+    return [];
+  }
+}
+
 
 const getPost = cache(async (slug) => {
   if (!slug || slug === 'undefined') return null;
   
   let post = null;
   try {
-    const sanityPost = await client.fetch(blogDetailQuery, { slug });
+    const sanityPost = await client.fetch(blogDetailQuery, { slug }, { next: { tags: [`blog-post-${slug}`] } });
     if (sanityPost) post = sanityPost;
   } catch (err) {
     console.error('>>> SANITY FETCH ERROR:', err);
@@ -93,7 +101,7 @@ export default async function Page({ params }) {
   // Fetch sidebar and related data in a single optimized query
   let sidebarData = { recent: [], categories: [], related: [] };
   try {
-    const data = await client.fetch(blogSidebarQuery, { slug });
+    const data = await client.fetch(blogSidebarQuery, { slug }, { next: { tags: [`blog-post-${slug}`] } });
     if (data) {
       sidebarData = {
         recent: data.recent || [],

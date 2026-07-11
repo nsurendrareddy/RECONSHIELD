@@ -6,12 +6,20 @@ import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
 import { generateBaseMetadata } from '@/utils/metadata';
 
-export const revalidate = 60;
-
 // ISR disabled, relying on Sanity webhook
 
+export async function generateStaticParams() {
+  try {
+    const authors = await client.fetch(`*[_type == "author" && defined(slug.current) && !(_id in path("drafts.**"))] { "slug": slug.current }`);
+    return authors.map(author => ({ slug: author.slug }));
+  } catch (error) {
+    console.error("Failed to generateStaticParams for authors:", error);
+    return [];
+  }
+}
+
 const getAuthor = cache(async (slug) => {
-  return await client.fetch(authorDetailQuery, { slug });
+  return await client.fetch(authorDetailQuery, { slug }, { next: { tags: [`author-${slug}`] } });
 });
 
 export async function generateMetadata({ params }) {
@@ -40,7 +48,7 @@ export default async function AuthorProfilePage({ params }) {
   try {
     [author, posts] = await Promise.all([
       getAuthor(slug),
-      client.fetch(authorPostsQuery, { slug })
+      client.fetch(authorPostsQuery, { slug }, { next: { tags: [`author-${slug}`] } })
     ]);
   } catch (error) {
     console.error('Error fetching author data:', error);

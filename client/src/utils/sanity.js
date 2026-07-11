@@ -49,7 +49,7 @@ function rewriteLegacyUrls(obj) {
 
 const originalFetch = client.fetch.bind(client);
 client.fetch = async function (query, params, options = {}) {
-  const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : 60;
+  const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : false;
   options.next = { 
     ...options.next, 
     revalidate: revalValue, 

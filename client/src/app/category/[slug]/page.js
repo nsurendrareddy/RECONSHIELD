@@ -218,6 +218,10 @@ const MOCK_POSTS = [
   }
 ];
 
+export async function generateStaticParams() {
+  return Object.keys(CATEGORY_DATA).map(slug => ({ slug }));
+}
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const data = CATEGORY_DATA[slug];
@@ -270,7 +274,7 @@ export default async function CategoryPage({ params }) {
       "author": author->{ name, "slug": slug.current },
       "estimatedWordCount": length(pt::text(body))
     }`;
-    posts = await client.fetch(groq, { catTitle: data.title });
+    posts = await client.fetch(groq, { catTitle: data.title }, { next: { tags: [`category-${slug}`] } });
   } catch (error) {
     console.error('Error fetching category posts:', error);
   }

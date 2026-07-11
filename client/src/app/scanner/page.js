@@ -9,6 +9,8 @@ import {
 import ScannerHubClient from '@/components/ScannerHubClient';
 import { client, homepageBlogQuery } from '@/utils/sanity';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: "Website Security Scanner - Free Security Audit | ReconShield",
   description: "Free website security scanner for comprehensive security audits. Scan domains for vulnerabilities, SSL issues, DNS problems, and more. Instant results.",
@@ -95,7 +97,7 @@ const MOCK_POSTS = [
 export default async function ScannerPage() {
   let posts = [];
   try {
-    posts = await client.fetch(homepageBlogQuery);
+    posts = await client.fetch(homepageBlogQuery, {}, { next: { tags: ['blog'] } });
   } catch (error) {
     console.error('Error fetching blog posts for scanner page:', error);
   }

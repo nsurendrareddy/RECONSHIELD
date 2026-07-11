@@ -1,6 +1,5 @@
 import React from 'react';
 
-export const revalidate = 60;
 export const dynamicParams = false;
 
 import Link from 'next/link';
@@ -122,7 +121,7 @@ export default async function CategoryPage({ params }) {
   
   let posts = [];
   try {
-    posts = await client.fetch(query, { slug, dbTitle });
+    posts = await client.fetch(query, { slug, dbTitle }, { next: { tags: [`category-${slug}`] } });
   } catch (error) {
     console.error(`Failed to fetch posts for category ${slug}:`, error);
   }

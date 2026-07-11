@@ -55,6 +55,15 @@ async function getCveIntelligence(cveId) {
   return null;
 }
 
+export async function generateStaticParams() {
+  return [
+    { slug: 'CVE-2023-44487' },
+    { slug: 'CVE-2021-44228' },
+    { slug: 'CVE-2017-0144' },
+    { slug: 'CVE-2023-42793' }
+  ];
+}
+
 // Phase 10: Dynamic SEO & OpenGraph
 export async function generateMetadata({ params }) {
   try {

@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const revalidate = 60;
-
 import NewsletterForm from '@/components/NewsletterForm';
 import { client, blogListQuery, urlFor } from '@/utils/sanity';
 import { 
@@ -12,8 +10,6 @@ import {
 } from 'lucide-react';
 import BlogClient from './BlogClient';
 import { slugify } from '@/utils/slugify';
-
-// ISR disabled, relying on Sanity webhook for cache invalidation
 
 import { generateBaseMetadata } from '@/utils/metadata';
 
@@ -38,7 +34,7 @@ export default async function BlogPage() {
   let posts = [];
   
   try {
-    posts = await client.fetch(blogListQuery);
+    posts = await client.fetch(blogListQuery, {}, { next: { tags: ['blog'] } });
   } catch (error) {
     console.error('Error fetching blog posts from Sanity:', error);
   }

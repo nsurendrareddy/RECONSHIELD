@@ -60,6 +60,19 @@ async function getThreatActorIntelligence(slug) {
   return null; // Triggers 404
 }
 
+export async function generateStaticParams() {
+  return [
+    { slug: 'lazarus-group' },
+    { slug: 'apt38' },
+    { slug: 'lazarus-group-diamond-sleet' },
+    { slug: 'kimsuky' },
+    { slug: 'nemesis-bear' },
+    { slug: 'apt28' },
+    { slug: 'unknown-proxies' },
+    { slug: 'unknown-ddos-operators' }
+  ];
+}
+
 // Phase 10: Dynamic SEO & OpenGraph
 export async function generateMetadata({ params }) {
   try {

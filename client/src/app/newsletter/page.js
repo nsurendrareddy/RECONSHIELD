@@ -12,7 +12,7 @@ export const metadata = generateBaseMetadata({
 });
 
 export default async function NewsletterPage() {
-  const recentPosts = await client.fetch(homepageBlogQuery);
+  const recentPosts = await client.fetch(homepageBlogQuery, {}, { next: { tags: ['blog'] } });
 
   return (
     <div className="bg-[#0a0c0f] min-h-screen text-white font-sans selection:bg-[#00ff8833] selection:text-[#00ff88] py-20 px-4 md:px-8">

@@ -1,7 +1,6 @@
 import AdsterraNative from "@/components/ads/AdsterraNative";
 import AdsterraBanner from "@/components/ads/AdsterraBanner";
 
-export const revalidate = 60;
 import React from 'react';
 import Link from 'next/link';
 import { client, homepageBlogQuery } from '@/utils/sanity';
@@ -142,7 +141,7 @@ const MOCK_POSTS = [
 export default async function Page() {
   let posts = [];
   try {
-    posts = await client.fetch(homepageBlogQuery);
+    posts = await client.fetch(homepageBlogQuery, {}, { next: { tags: ['homepage'] } });
   } catch (error) {
     console.error('Error fetching blog posts for homepage:', error);
   }
