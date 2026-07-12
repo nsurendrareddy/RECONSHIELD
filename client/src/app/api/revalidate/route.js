@@ -3,32 +3,28 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req) {
   try {
-    const body = await req.json();
+    let body = {};
+    try {
+      body = await req.json();
+    } catch (e) {
+      console.warn('Webhook request body is empty or not valid JSON:', e.message);
+    }
 
-    // Verify this request is actually coming from Sanity
-    // In a real production environment, you should use a secret token
-    // const secret = req.headers.get('authorization');
-    // if (secret !== `Bearer ${process.env.SANITY_WEBHOOK_SECRET}`) {
-    //   return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-    // }
+    console.log('Sanity webhook triggered revalidation with body:', body);
 
-    // Revalidate the entire Sanity Data Cache to ensure fetch responses are fresh
+    // 1. Revalidate data tags (Data Cache)
     revalidateTag('sanity');
-
-    // Revalidate the blog listing page
     revalidateTag('blog');
-    
-    // Revalidate the specific blog post if a slug is provided
+    revalidateTag('homepage');
+
     if (body.slug && body.slug.current) {
       revalidateTag(`blog-post-${body.slug.current}`);
     }
-    
-    // Revalidate the author page if an author slug is provided in the webhook payload
+
     if (body.authorSlug && body.authorSlug.current) {
       revalidateTag(`author-${body.authorSlug.current}`);
     }
-    
-    // Revalidate all associated category pages if category slugs are provided
+
     if (body.categorySlugs && Array.isArray(body.categorySlugs)) {
       body.categorySlugs.forEach(cat => {
         if (cat && cat.current) {
@@ -36,15 +32,48 @@ export async function POST(req) {
         }
       });
     }
-    
-    // Revalidate the homepage since it also shows recent blog posts
-    revalidateTag('homepage');
-    
-    // Revalidate the sitemap to ensure search engines see the update immediately
+
+    // 2. Revalidate paths (Full Route Cache)
+    revalidatePath('/');
+    revalidatePath('/blog');
+    revalidatePath('/scanner');
+    revalidatePath('/newsletter');
+    revalidatePath('/rss.xml');
+    revalidatePath('/feed.xml');
     revalidatePath('/sitemap.xml');
 
-    return NextResponse.json({ revalidated: true, now: Date.now() });
+    // Invalidate chunked sitemaps
+    revalidatePath('/sitemaps/[type]', 'page');
+
+    // Invalidate dynamic page patterns to cover newly published, updated, or deleted posts, categories, and authors
+    revalidatePath('/blog/[slug]', 'page');
+    revalidatePath('/category/[slug]', 'page');
+    revalidatePath('/blog/category/[slug]', 'page');
+    revalidatePath('/author/[slug]', 'page');
+
+    // If specific parameters exist in the webhook body, we also purge their concrete routes for instant updates
+    if (body.slug && body.slug.current) {
+      revalidatePath(`/blog/${body.slug.current}`);
+    }
+    if (body.authorSlug && body.authorSlug.current) {
+      revalidatePath(`/author/${body.authorSlug.current}`);
+    }
+    if (body.categorySlugs && Array.isArray(body.categorySlugs)) {
+      body.categorySlugs.forEach(cat => {
+        if (cat && cat.current) {
+          revalidatePath(`/category/${cat.current}`);
+          revalidatePath(`/blog/category/${cat.current}`);
+        }
+      });
+    }
+
+    return NextResponse.json({
+      revalidated: true,
+      now: Date.now(),
+      message: 'Revalidation complete (Tags and Full Route Cache purged).'
+    });
   } catch (err) {
+    console.error('Revalidation error:', err);
     return NextResponse.json({ message: 'Error revalidating', error: err.message }, { status: 500 });
   }
 }
