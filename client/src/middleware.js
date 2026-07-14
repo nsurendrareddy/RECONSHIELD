@@ -9,17 +9,7 @@ import {
 
 // Configuration for routes the middleware should run on
 export const config = {
-  matcher: [
-    '/ip/:path*',
-    '/asn/:path*',
-    '/ports/:path*',
-    '/ssl/:path*',
-    '/dns-records/:path*',
-    '/dns/:path*',
-    '/tools/whois/:path*',
-    '/subdomains/:path*',
-    '/headers/:path*'
-  ],
+  matcher: [],
 };
 
 // Private IPv4 ranges (RFC 1918) and localhost (RFC 1122)

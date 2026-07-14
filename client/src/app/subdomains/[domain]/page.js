@@ -13,7 +13,14 @@ import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
 const SUBDOMAIN_TOPICS = Object.keys(SUBDOMAIN_TOPICS_DATA);
 
-export const dynamic = 'force-dynamic';
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  const params = [];
+  SUBDOMAIN_TOPICS.forEach((topic) => params.push({ domain: topic }));
+  KNOWN_DOMAINS.forEach((domain) => params.push({ domain }));
+  return params;
+}
 const isValidDomain = (domain) => {
   const normalized = domain.toLowerCase();
   if (SUBDOMAIN_TOPICS.includes(normalized)) return true;

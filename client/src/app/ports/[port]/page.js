@@ -6,8 +6,13 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import RelatedPorts from '@/components/entities/RelatedPorts';
 import { generateDatasetSchema } from '@/utils/metadata';
 import { PORTS_INTELLIGENCE } from '@/utils/portsIntelligenceData';
+import { KNOWN_PORTS } from '@/lib/entityRegistry';
 
-export const dynamic = 'force-dynamic'; // Replaced ISR with on-demand edge execution
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return KNOWN_PORTS.map((port) => ({ port: port.toString() }));
+}
 
 // Basic port validation
 const isValidPort = (portStr) => {

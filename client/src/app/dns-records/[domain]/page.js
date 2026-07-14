@@ -5,7 +5,11 @@ import { notFound } from 'next/navigation';
 import { generateDatasetSchema } from '@/utils/metadata';
 import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 
-export const dynamic = 'force-dynamic'; // Replaced ISR with on-demand edge execution
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return KNOWN_DOMAINS.map((domain) => ({ domain }));
+}
 
 const MOCK_DNS_DATA = {
   'google.com': {

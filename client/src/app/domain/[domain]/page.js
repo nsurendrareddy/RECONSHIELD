@@ -6,7 +6,11 @@ import { generateDatasetSchema } from '@/utils/metadata';
 import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
-export const dynamic = 'force-dynamic'; // Replaced ISR with on-demand edge execution
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return KNOWN_DOMAINS.map((domain) => ({ domain }));
+}
 
 const MOCK_DOMAIN_DATA = {
   'google.com': {

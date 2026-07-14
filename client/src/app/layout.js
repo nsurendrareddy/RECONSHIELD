@@ -114,7 +114,7 @@ export default function RootLayout({ children }) {
         </AdManagerProvider>
 
         <Analytics />
-        <SpeedInsights />
+        {process.env.NEXT_PUBLIC_DISABLE_SPEED_INSIGHTS !== 'true' && <SpeedInsights />}
         {/* Site-wide JSON-LD */}
         <script
           type="application/ld+json"

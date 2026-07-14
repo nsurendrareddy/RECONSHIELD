@@ -7,8 +7,11 @@ import { KNOWN_IPS } from '@/lib/entityRegistry';
 import RelatedIPs from '@/components/entities/RelatedIPs';
 
 
-// Phase 11: Edge/ISR Configuration
-export const dynamic = 'force-dynamic'; // Replaced ISR with on-demand edge execution
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return KNOWN_IPS.map((ip) => ({ ip }));
+}
 
 const SAFE_INFRASTRUCTURE_DATA = {
   '1.1.1.1': {

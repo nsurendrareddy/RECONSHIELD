@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
+import HeroSocVisual from '@/components/HeroSocVisual';
 
 // A high-performance IntersectionObserver wrapper to defer heavy client components until they are close to the viewport
 function ViewportDeferred({ children, height = '300px', className = '' }) {
@@ -34,17 +35,8 @@ function ViewportDeferred({ children, height = '300px', className = '' }) {
   );
 }
 
-// Hero element is deferred with a large rootMargin so it still loads before the user sees it,
-// but its JS (setInterval timers, animation states) only initialises when the hero is near the viewport.
-const HeroSocVisualComp = dynamic(() => import('@/components/HeroSocVisual'), {
-  ssr: false,
-  loading: () => <div className="w-full max-w-lg mx-auto min-h-[352px] bg-surface-900/20 border border-white/5 rounded-2xl animate-pulse" />,
-});
-export const DynamicHeroSocVisual = (props) => (
-  <ViewportDeferred height="352px" className="w-full max-w-lg mx-auto">
-    <HeroSocVisualComp {...props} />
-  </ViewportDeferred>
-);
+// Hero element is loaded statically to prevent dynamic hydration delay and LCP degradation above the fold.
+export const DynamicHeroSocVisual = (props) => <HeroSocVisual {...props} />;
 
 
 // Newsletter is very light and can load immediately

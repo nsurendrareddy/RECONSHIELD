@@ -56,10 +56,9 @@ export default function ResponsiveImage({
     );
   }
 
-  // Enforce Immutable Caching by routing through our Next.js rewrite proxy
+  // Bypass Vercel Edge rewrite proxy and fetch directly from Sanity CDN
   const proxyUrl = (url) => {
-    if (!url) return '';
-    return url.replace('https://cdn.sanity.io/', '/sanity-cdn/');
+    return url || '';
   };
 
   return (

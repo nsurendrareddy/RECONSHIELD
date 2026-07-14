@@ -9,7 +9,7 @@ import {
 import ScannerHubClient from '@/components/ScannerHubClient';
 import { client, homepageBlogQuery } from '@/utils/sanity';
 
-export const dynamic = 'force-dynamic';
+
 
 export const metadata = {
   title: "Website Security Scanner - Free Security Audit | ReconShield",
