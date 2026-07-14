@@ -3,37 +3,31 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req) {
   try {
+    // 1. Secret Token Verification
+    const secret = req.nextUrl.searchParams.get('secret') || req.headers.get('x-revalidate-secret');
+    const configuredSecret = process.env.SANITY_REVALIDATE_SECRET;
+
+    if (configuredSecret && secret !== configuredSecret) {
+      console.warn('>>> REVALIDATE WEBHOOK: Unauthorized request (secret mismatch)');
+      return NextResponse.json({ message: 'Invalid secret token' }, { status: 401 });
+    }
+
+    // 2. Parse payload safely
     let body = {};
     try {
       body = await req.json();
     } catch (e) {
-      console.warn('Webhook request body is empty or not valid JSON:', e.message);
+      console.warn('>>> REVALIDATE WEBHOOK: Request body is empty or not valid JSON:', e.message);
     }
 
-    console.log('Sanity webhook triggered revalidation with body:', body);
+    const docType = body._type;
+    const documentId = body._id;
+    console.log(`>>> REVALIDATE WEBHOOK: Triggered for document type [${docType}], ID [${documentId}]`);
 
-    // 1. Revalidate data tags (Data Cache)
+    // 3. Global Purges for lists (always affected by any post/author/category modification)
     revalidateTag('sanity');
     revalidateTag('blog');
     revalidateTag('homepage');
-
-    if (body.slug && body.slug.current) {
-      revalidateTag(`blog-post-${body.slug.current}`);
-    }
-
-    if (body.authorSlug && body.authorSlug.current) {
-      revalidateTag(`author-${body.authorSlug.current}`);
-    }
-
-    if (body.categorySlugs && Array.isArray(body.categorySlugs)) {
-      body.categorySlugs.forEach(cat => {
-        if (cat && cat.current) {
-          revalidateTag(`category-${cat.current}`);
-        }
-      });
-    }
-
-    // 2. Revalidate paths (Full Route Cache)
     revalidatePath('/');
     revalidatePath('/blog');
     revalidatePath('/scanner');
@@ -41,39 +35,73 @@ export async function POST(req) {
     revalidatePath('/rss.xml');
     revalidatePath('/feed.xml');
     revalidatePath('/sitemap.xml');
-
-    // Invalidate chunked sitemaps
     revalidatePath('/sitemaps/[type]', 'page');
 
-    // Invalidate dynamic page patterns to cover newly published, updated, or deleted posts, categories, and authors
-    revalidatePath('/blog/[slug]', 'page');
-    revalidatePath('/category/[slug]', 'page');
-    revalidatePath('/blog/category/[slug]', 'page');
-    revalidatePath('/author/[slug]', 'page');
+    // 4. Targeted Invalidation based on Document Type
+    if (docType === 'post') {
+      // Invalidate the post page itself
+      if (body.slug && body.slug.current) {
+        const postSlug = body.slug.current;
+        revalidateTag(`blog-post-${postSlug}`);
+        revalidatePath(`/blog/${postSlug}`);
+        revalidatePath('/blog/[slug]', 'page');
+        console.log(`>>> REVALIDATE WEBHOOK: Purged tags/paths for post: ${postSlug}`);
+      }
 
-    // If specific parameters exist in the webhook body, we also purge their concrete routes for instant updates
-    if (body.slug && body.slug.current) {
-      revalidatePath(`/blog/${body.slug.current}`);
-    }
-    if (body.authorSlug && body.authorSlug.current) {
-      revalidatePath(`/author/${body.authorSlug.current}`);
-    }
-    if (body.categorySlugs && Array.isArray(body.categorySlugs)) {
-      body.categorySlugs.forEach(cat => {
-        if (cat && cat.current) {
-          revalidatePath(`/category/${cat.current}`);
-          revalidatePath(`/blog/category/${cat.current}`);
-        }
-      });
+      // Invalidate the related author's page
+      if (body.authorSlug && body.authorSlug.current) {
+        const authorSlug = body.authorSlug.current;
+        revalidateTag(`author-${authorSlug}`);
+        revalidatePath(`/author/${authorSlug}`);
+        revalidatePath('/author/[slug]', 'page');
+        console.log(`>>> REVALIDATE WEBHOOK: Purged tags/paths for author: ${authorSlug}`);
+      }
+
+      // Invalidate the related categories
+      if (body.categorySlugs && Array.isArray(body.categorySlugs)) {
+        body.categorySlugs.forEach((cat) => {
+          if (cat && cat.current) {
+            const catSlug = cat.current;
+            revalidateTag(`category-${catSlug}`);
+            revalidatePath(`/category/${catSlug}`);
+            revalidatePath(`/blog/category/${catSlug}`);
+            revalidatePath('/category/[slug]', 'page');
+            revalidatePath('/blog/category/[slug]', 'page');
+            console.log(`>>> REVALIDATE WEBHOOK: Purged tags/paths for category: ${catSlug}`);
+          }
+        });
+      }
+    } 
+    else if (docType === 'author') {
+      // Invalidate the author profile page
+      if (body.slug && body.slug.current) {
+        const authorSlug = body.slug.current;
+        revalidateTag(`author-${authorSlug}`);
+        revalidatePath(`/author/${authorSlug}`);
+        revalidatePath('/author/[slug]', 'page');
+        console.log(`>>> REVALIDATE WEBHOOK: Purged tags/paths for author doc: ${authorSlug}`);
+      }
+    } 
+    else if (docType === 'category') {
+      // Invalidate the category pages
+      if (body.slug && body.slug.current) {
+        const catSlug = body.slug.current;
+        revalidateTag(`category-${catSlug}`);
+        revalidatePath(`/category/${catSlug}`);
+        revalidatePath(`/blog/category/${catSlug}`);
+        revalidatePath('/category/[slug]', 'page');
+        revalidatePath('/blog/category/[slug]', 'page');
+        console.log(`>>> REVALIDATE WEBHOOK: Purged tags/paths for category doc: ${catSlug}`);
+      }
     }
 
     return NextResponse.json({
       revalidated: true,
       now: Date.now(),
-      message: 'Revalidation complete (Tags and Full Route Cache purged).'
+      message: `Revalidation complete for document [${documentId}] of type [${docType}].`
     });
   } catch (err) {
-    console.error('Revalidation error:', err);
+    console.error('>>> REVALIDATE WEBHOOK ERROR:', err);
     return NextResponse.json({ message: 'Error revalidating', error: err.message }, { status: 500 });
   }
 }
