@@ -49,7 +49,8 @@ function rewriteLegacyUrls(obj) {
 
 const originalFetch = client.fetch.bind(client);
 client.fetch = async function (query, params, options = {}) {
-  const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : false;
+  // Default to 60 seconds revalidation (time-based ISR fallback) instead of caching indefinitely
+  const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : 60;
   options.next = { 
     ...options.next, 
     revalidate: revalValue, 
