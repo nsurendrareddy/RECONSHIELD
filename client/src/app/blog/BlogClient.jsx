@@ -131,7 +131,7 @@ export default function BlogClient({ posts }) {
 
                 <div className="p-8">
                   <h3 className="text-xl md:text-3xl font-display font-bold text-white mb-4 leading-snug group-hover:text-matrix-400 transition-colors">
-                    <Link href={`/blog/${featuredPost.slug?.current || featuredPost.slug}`}>
+                    <Link href={`/blog/${featuredPost.slug?.current || featuredPost.slug}`} prefetch={false}>
                       {featuredPost.title}
                     </Link>
                   </h3>
@@ -149,6 +149,7 @@ export default function BlogClient({ posts }) {
                     </div>
                     <Link 
                       href={`/author/${getAuthorSlug(featuredPost)}`} 
+                      prefetch={false}
                       className="text-xs font-mono text-gray-300 hover:text-[#00ff88] transition-colors"
                     >
                       {featuredPost.author?.name || 'Surendra Reddy'}
@@ -180,7 +181,7 @@ export default function BlogClient({ posts }) {
                       {post.categories?.[0]?.title || 'OSINT'}
                     </span>
                     <h5 className="text-xs font-bold text-white group-hover:text-matrix-400 transition-colors line-clamp-2">
-                      <Link href={`/blog/${post.slug?.current || post.slug}`}>{post.title}</Link>
+                      <Link href={`/blog/${post.slug?.current || post.slug}`} prefetch={false}>{post.title}</Link>
                     </h5>
                     <span className="block font-mono text-[8px] text-gray-500 mt-2 uppercase">
                       {formatDate(post.publishedAt || post._createdAt)}
@@ -280,7 +281,7 @@ export default function BlogClient({ posts }) {
                     {/* Card Content */}
                     <div className="p-6">
                       <h4 className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-matrix-400 transition-colors line-clamp-2">
-                        <Link href={`/blog/${post.slug?.current || post.slug}`}>{post.title}</Link>
+                        <Link href={`/blog/${post.slug?.current || post.slug}`} prefetch={false}>{post.title}</Link>
                       </h4>
                       <p className="text-gray-400 text-xs leading-relaxed line-clamp-3 mb-6">
                         {post.excerpt}
@@ -298,6 +299,7 @@ export default function BlogClient({ posts }) {
                         </div>
                         <Link 
                           href={`/author/${authorSlug}`} 
+                          prefetch={false}
                           className="text-[10px] font-mono text-gray-300 hover:text-[#00ff88] transition-colors"
                         >
                           {post.author?.name || 'Surendra Reddy'}

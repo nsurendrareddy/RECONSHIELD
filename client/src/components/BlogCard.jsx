@@ -60,6 +60,7 @@ export default function BlogCard({ post, defaultCategory }) {
   return (
     <Link
       href={`/blog/${postSlug}`}
+      prefetch={false}
       className="group flex flex-col justify-between bg-surface-900 border border-white/5 hover:border-matrix-400/30 transition-all duration-300 rounded-2xl overflow-hidden shadow-lg hover:-translate-y-0.5"
     >
       <div>

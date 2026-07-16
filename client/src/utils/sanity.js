@@ -1,4 +1,5 @@
 import { createClient } from 'next-sanity';
+import { cache } from 'react';
 import { createImageUrlBuilder } from '@sanity/image-url';
 
 export const client = createClient({
@@ -48,6 +49,14 @@ function rewriteLegacyUrls(obj) {
 }
 
 const originalFetch = client.fetch.bind(client);
+
+// Memoize query execution using React cache and serialized arguments
+const memoizedFetch = cache(async (query, paramsStr, optionsStr) => {
+  const params = paramsStr ? JSON.parse(paramsStr) : undefined;
+  const options = optionsStr ? JSON.parse(optionsStr) : undefined;
+  return await originalFetch(query, params, options);
+});
+
 client.fetch = async function (query, params, options = {}) {
   // Default to 60 seconds revalidation (time-based ISR fallback) instead of caching indefinitely
   const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : 60;
@@ -56,7 +65,12 @@ client.fetch = async function (query, params, options = {}) {
     revalidate: revalValue, 
     tags: [...(options.next?.tags || []), 'sanity'] 
   };
-  const result = await originalFetch(query, params, options);
+  
+  // Serialize params and options to strings for exact argument matching in React cache
+  const paramsStr = params ? JSON.stringify(params) : '';
+  const optionsStr = options ? JSON.stringify(options) : '';
+  
+  const result = await memoizedFetch(query, paramsStr, optionsStr);
   const trimmed = trimSlugs(result);
   return rewriteLegacyUrls(trimmed);
 };
