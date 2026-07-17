@@ -7,7 +7,14 @@ import {
 import { notFound } from 'next/navigation';
 import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
-export const dynamic = 'force-dynamic';
+import { KNOWN_DOMAINS, KNOWN_IPS } from '@/lib/entityRegistry';
+
+export async function generateStaticParams() {
+  const hosts = [...KNOWN_DOMAINS, ...KNOWN_IPS];
+  return hosts.map((host) => ({ host }));
+}
+
+export const dynamicParams = true;
 
 const isValidHost = (host) => {
   const ipRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;

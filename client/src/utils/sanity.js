@@ -58,8 +58,8 @@ const memoizedFetch = cache(async (query, paramsStr, optionsStr) => {
 });
 
 client.fetch = async function (query, params, options = {}) {
-  // Default to 60 seconds revalidation (time-based ISR fallback) instead of caching indefinitely
-  const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : 60;
+  // Default to false (cache indefinitely) instead of 60s revalidation fallback, relying on Sanity webhooks
+  const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : false;
   options.next = { 
     ...options.next, 
     revalidate: revalValue, 

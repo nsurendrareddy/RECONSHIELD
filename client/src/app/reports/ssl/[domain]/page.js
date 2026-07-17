@@ -5,7 +5,11 @@ import { Lock, Shield, Server, Activity, ChevronRight, CheckCircle2, AlertTriang
 import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
 import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
-export const dynamic = 'force-dynamic';
+export async function generateStaticParams() {
+  return KNOWN_DOMAINS.map((domain) => ({ domain }));
+}
+
+export const dynamicParams = true;
 
 
 // Basic domain check

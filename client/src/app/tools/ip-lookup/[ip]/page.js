@@ -8,7 +8,13 @@ import {
 import { notFound } from 'next/navigation';
 import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
-export const dynamic = 'force-dynamic';
+import { KNOWN_IPS } from '@/lib/entityRegistry';
+
+export async function generateStaticParams() {
+  return KNOWN_IPS.map((ip) => ({ ip }));
+}
+
+export const dynamicParams = true;
 
 // IP Validation Utility
 const isValidIp = (ip) => {

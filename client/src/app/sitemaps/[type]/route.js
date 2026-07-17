@@ -17,7 +17,12 @@ import { RESEARCH_REPORTS } from '@/utils/researchReportsData';
 import { GLOSSARY_TERMS } from '@/utils/glossaryData';
 import { SSL_TOPICS_DATA, SUBDOMAIN_TOPICS_DATA } from '@/utils/programmaticTopicsData';
 
-export const runtime = 'edge'; 
+export const revalidate = 86400; // Cache generated sitemap xml for 24 hours
+
+export async function generateStaticParams() {
+  const SITEMAP_TYPES = ['core', 'tools', 'blog', 'ports', 'headers', 'dns', 'email-auths', 'technology', 'vulnerability', 'ssl', 'subdomains'];
+  return SITEMAP_TYPES.map(type => ({ type: `${type}-1.xml` }));
+}
 
 const BASE_URL = 'https://reconshield.in';
 const STATIC_LAST_MODIFIED = new Date().toISOString();
@@ -84,6 +89,9 @@ function isUrlIndexableAndValid(urlStr) {
       '/asn-lookup',
       '/port-scanner',
       '/security-headers',
+      '/tools/whois-checker',
+      '/tools/security-headers',
+      '/tools/email-security-checker',
       '/ssl-checker',
       '/vulnerability-scanner',
       '/blog/categories'
@@ -370,6 +378,9 @@ export async function GET(request, { params }) {
                      else if (newUrl.includes('/reverse-dns')) newUrl = newUrl.replace('/reverse-dns', '/tools/dns-lookup');
                      else if (newUrl.includes('/asn-lookup')) newUrl = newUrl.replace('/asn-lookup', '/tools/ip-lookup');
                      else if (newUrl.includes('/port-scanner') && !newUrl.includes('/tools/port-scanner')) newUrl = newUrl.replace('/port-scanner', '/tools/port-scanner');
+                     else if (newUrl.includes('/tools/whois-checker')) newUrl = newUrl.replace('/tools/whois-checker', '/tools/whois');
+                     else if (newUrl.includes('/tools/security-headers')) newUrl = newUrl.replace('/tools/security-headers', '/tools/http-headers');
+                     else if (newUrl.includes('/tools/email-security-checker')) newUrl = newUrl.replace('/tools/email-security-checker', '/tools/email-security');
                      else if (newUrl.includes('/security-headers')) newUrl = newUrl.replace('/security-headers', '/tools/http-headers');
                      else if (newUrl.includes('/ssl-checker') && !newUrl.includes('/tools/ssl-checker')) newUrl = newUrl.replace('/ssl-checker', '/tools/ssl-checker');
                      else if (newUrl.includes('/vulnerability-scanner') && !newUrl.includes('/tools/vulnerability-scanner')) newUrl = newUrl.replace('/vulnerability-scanner', '/tools/vulnerability-scanner');

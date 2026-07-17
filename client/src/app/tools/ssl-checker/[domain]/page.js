@@ -3,7 +3,13 @@ import Link from 'next/link';
 import { Server, Search, Globe, ChevronRight, Clock, AlertTriangle, Shield, Database, Lock } from 'lucide-react';
 import { notFound } from 'next/navigation';
 
-export const dynamic = 'force-dynamic';
+import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
+
+export async function generateStaticParams() {
+  return KNOWN_DOMAINS.map((domain) => ({ domain }));
+}
+
+export const dynamicParams = true;
 
 const isValidDomain = (domain) => {
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;

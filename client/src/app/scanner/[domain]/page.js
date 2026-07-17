@@ -7,7 +7,13 @@ import {
 import { notFound } from 'next/navigation';
 import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
-export const dynamic = 'force-dynamic';
+import { KNOWN_DOMAINS } from '@/lib/entityRegistry';
+
+export async function generateStaticParams() {
+  return KNOWN_DOMAINS.map((domain) => ({ domain }));
+}
+
+export const dynamicParams = true;
 
 const isValidDomain = (domain) => {
   const domainRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$/i;

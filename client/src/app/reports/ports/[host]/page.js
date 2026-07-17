@@ -5,7 +5,12 @@ import { Terminal, ShieldAlert, Server, Activity, ChevronRight, CheckCircle2, Al
 import { KNOWN_DOMAINS, KNOWN_IPS } from '@/lib/entityRegistry';
 import SimulatedDataNotice from '@/components/SimulatedDataNotice';
 
-export const dynamic = 'force-dynamic';
+export async function generateStaticParams() {
+  const hosts = [...KNOWN_DOMAINS, ...KNOWN_IPS];
+  return hosts.map((host) => ({ host }));
+}
+
+export const dynamicParams = true;
 
 
 // Basic host check (domain or IP format)
