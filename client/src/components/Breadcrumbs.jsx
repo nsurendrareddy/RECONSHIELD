@@ -18,7 +18,7 @@ export default function Breadcrumbs({ crumbs }) {
         "@type": "ListItem",
         "position": index + 2, // +2 because Home is 1
         "name": crumb.label,
-        "item": `https://reconshield.in${crumb.href}`
+        "item": crumb.href.startsWith('http') ? crumb.href : `https://reconshield.in${crumb.href.startsWith('/') ? '' : '/'}${crumb.href}`
       }))
     ]
   };

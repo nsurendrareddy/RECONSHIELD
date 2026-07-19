@@ -178,6 +178,36 @@ export default async function Page({ params }) {
     ]
   };
 
+  if (post.faqs) {
+    jsonLd["@graph"].push({
+      "@type": "FAQPage",
+      "@id": `https://reconshield.in/blog/${slug}#faq`,
+      "mainEntity": post.faqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    });
+  }
+
+  if (post.howto) {
+    jsonLd["@graph"].push({
+      "@type": "HowTo",
+      "@id": `https://reconshield.in/blog/${slug}#howto`,
+      "name": post.howto.name,
+      "description": post.howto.description,
+      "step": post.howto.steps.map((step, idx) => ({
+        "@type": "HowToStep",
+        "url": `https://reconshield.in/blog/${slug}#step-${idx + 1}`,
+        "name": step.name,
+        "text": step.text
+      }))
+    });
+  }
+
   return (
     <>
       <script

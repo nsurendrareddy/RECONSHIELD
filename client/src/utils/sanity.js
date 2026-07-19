@@ -58,8 +58,8 @@ const memoizedFetch = cache(async (query, paramsStr, optionsStr) => {
 });
 
 client.fetch = async function (query, params, options = {}) {
-  // Default to false (cache indefinitely) instead of 60s revalidation fallback, relying on Sanity webhooks
-  const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : false;
+  // Fallback to 60s revalidation if no revalidate option is provided, to ensure updates show up even if webhooks fail or are not configured
+  const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : 60;
   options.next = { 
     ...options.next, 
     revalidate: revalValue, 

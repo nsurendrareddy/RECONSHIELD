@@ -6,10 +6,6 @@ export default function robots() {
       disallow: [
         '/ip/',
         '/domain/',
-        '/dns-records/',
-        '/ports/',
-        '/ssl/',
-        '/subdomains/',
         '/asn/',
         '/api/',
         '/reports/',

@@ -140,7 +140,7 @@ export default function ToolScannerClient({ toolId, title, desc }) {
           <IconComponent size={28} />
         </div>
         <div>
-          <div className="text-3xl font-display font-bold text-white uppercase tracking-wider">{title}</div>
+          <h1 className="text-3xl font-display font-bold text-white uppercase tracking-wider">{title}</h1>
           <p className="text-gray-500 font-mono text-sm mt-1">{desc}</p>
         </div>
       </motion.div>

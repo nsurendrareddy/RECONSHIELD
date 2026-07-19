@@ -755,6 +755,7 @@ export default function Layout({ children }) {
                 <li><Link prefetch={false} href="/resources" className="hover:text-matrix-400 transition-colors">Resources Library</Link></li>
                 <li><Link prefetch={false} href="/opensource" className="hover:text-matrix-400 transition-colors">Open Source OSS</Link></li>
                 <li><Link prefetch={false} href="/glossary" className="hover:text-matrix-400 transition-colors">Cyber Glossary</Link></li>
+                <li><Link prefetch={false} href="/newsletter" className="hover:text-matrix-400 transition-colors text-matrix-400">Briefing Newsletter</Link></li>
               </ul>
             </div>
 
@@ -763,6 +764,7 @@ export default function Layout({ children }) {
               <ul className="space-y-2 text-sm">
                 <li><Link prefetch={false} href="/terms" className="hover:text-matrix-400 transition-colors">Terms of Use</Link></li>
                 <li><Link prefetch={false} href="/privacy" className="hover:text-matrix-400 transition-colors">Privacy Policy</Link></li>
+                <li><Link prefetch={false} href="/cookie-policy" className="hover:text-matrix-400 transition-colors">Cookie Policy</Link></li>
                 <li><Link prefetch={false} href="/disclaimer" className="hover:text-matrix-400 transition-colors text-amber-500/80 hover:text-amber-500">Legal Disclaimer</Link></li>
                 <li><Link prefetch={false} href="/editorial-policy" className="hover:text-matrix-400 transition-colors">Editorial Policy</Link></li>
                 <li><Link prefetch={false} href="/research-methodology" className="hover:text-matrix-400 transition-colors">Research Methodology</Link></li>
