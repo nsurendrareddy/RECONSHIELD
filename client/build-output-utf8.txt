@@ -1,0 +1,798 @@
+﻿
+> client@0.1.0 build
+> next build && node scripts/validate-links.js
+
+node.exe : Warning: Custom Cache-Control headers detected for the following 
+routes:
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Warning: Custom...llowing routes: 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  - /_next/static/(.*)
+
+Setting a custom Cache-Control header can break Next.js development behavior.
+Γû▓ Next.js 16.2.5 (Turbopack)
+- Experiments (use with caution):
+  Γ£ô nextScriptWorkers
+  ┬╖ optimizePackageImports
+
+ΓÜá The "middleware" file convention is deprecated. Please use "proxy" 
+instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 12.9s
+  Running TypeScript ...
+  Finished TypeScript in 168ms ...
+  Collecting page data using 11 workers ...
+ΓÜá Using edge runtime on a page currently disables static generation for that 
+page
+  Generating static pages using 11 workers (0/258) ...
+>>> API INITIALIZED: BASE_URL=''
+  Generating static pages using 11 workers (64/258) 
+>>> API INITIALIZED: BASE_URL=''
+>>> API INITIALIZED: BASE_URL=''
+  Generating static pages using 11 workers (128/258) 
+  Generating static pages using 11 workers (193/258) 
+Γ£ô Generating static pages using 11 workers (258/258) in 4.7s
+  Finalizing page optimization ...
+
+Route (app)                                       Revalidate  Expire
+Γöî Γùï /
+Γö£ Γùï /_not-found
+Γö£ Γùï /about
+Γö£ Γùï /about-reconshield
+Γö£ Γùï /academic
+Γö£ Γùï /admin/authority
+Γö£ Γùï /api-docs
+Γö£ ╞Æ /api/revalidate
+Γö£ Γùï /apple-icon
+Γö£ Γùï /asn
+Γö£ ╞Æ /asn/[asn]
+Γö£ ╞Æ /author/[slug]
+Γö£ Γùï /authors
+Γö£ Γùï /authors/reconshield-research
+Γö£ Γùï /blog                                                 1m      1y
+Γö£ ╞Æ /blog/[slug]
+Γö£ ΓùÅ /blog/category/[slug]
+Γöé Γö£ /blog/category/internet-facing-assets
+Γöé Γö£ /blog/category/osint-and-analysis
+Γöé Γö£ /blog/category/osint-analysis
+Γöé Γöö [+8 more paths]
+Γö£ ╞Æ /category/[slug]
+Γö£ Γùï /compare                                              1d      1y
+Γö£ ΓùÅ /compare/[slug]                                       1d      1y
+Γöé Γö£ /compare/whois-vs-rdap                                1d      1y
+Γöé Γö£ /compare/ssl-vs-tls                                   1d      1y
+Γöé Γö£ /compare/dns-vs-whois                                 1d      1y
+Γöé Γöö [+8 more paths]
+Γö£ Γùï /contact
+Γö£ Γùï /cookie-policy
+Γö£ Γùï /cve
+Γö£ ╞Æ /cve/[slug]
+Γö£ Γùï /data-sources
+Γö£ Γùï /developers
+Γö£ Γùï /disclaimer
+Γö£ Γùï /dns-analysis
+Γö£ Γùï /dns-records
+Γö£ ╞Æ /dns-records/[domain]
+Γö£ ΓùÅ /dns-records/types/[recordType]                       1d      1y
+Γöé Γö£ /dns-records/types/a-record                           1d      1y
+Γöé Γö£ /dns-records/types/aaaa-record                        1d      1y
+Γöé Γö£ /dns-records/types/mx-record                          1d      1y
+Γöé Γöö [+5 more paths]
+Γö£ ╞Æ /dns/[domain]
+Γö£ ╞Æ /domain/[domain]
+Γö£ Γùï /editorial-policy
+Γö£ Γùï /editorial-standards
+Γö£ Γùï /email-auth
+Γö£ ΓùÅ /email-auth/[authError]                               1d      1y
+Γöé Γö£ /email-auth/spf-errors                                1d      1y
+Γöé Γö£ /email-auth/dkim-errors                               1d      1y
+Γöé Γöö /email-auth/dmarc-errors                              1d      1y
+Γö£ Γùï /fact-checking-policy
+Γö£ ╞Æ /feed.xml
+Γö£ Γùï /free-tools
+Γö£ Γùï /glossary
+Γö£ ΓùÅ /glossary/[term]
+Γöé Γö£ /glossary/whois
+Γöé Γö£ /glossary/dns
+Γöé Γö£ /glossary/spf
+Γöé Γöö [+6 more paths]
+Γö£ Γùï /headers
+Γö£ ΓùÅ /headers/[header]
+Γöé Γö£ /headers/server
+Γöé Γö£ /headers/content-security-policy
+Γöé Γö£ /headers/x-frame-options
+Γöé Γöö [+4 more paths]
+Γö£ Γùï /icon
+Γö£ Γùï /icon.svg
+Γö£ Γùï /ip-intelligence
+Γö£ ╞Æ /ip/[ip]
+Γö£ Γùï /methodology
+Γö£ Γùï /newsletter
+Γö£ Γùï /opensource
+Γö£ Γùï /ports
+Γö£ ΓùÅ /ports/[port]                                         1w      1y
+Γöé Γö£ /ports/21                                             1w      1y
+Γöé Γö£ /ports/22                                             1w      1y
+Γöé Γö£ /ports/25                                             1w      1y
+Γöé Γöö [+8 more paths]
+Γö£ Γùï /press
+Γö£ Γùï /privacy
+Γö£ Γùï /reports
+Γö£ ΓùÅ /reports/ports/[host]                                 1w      1y
+Γöé Γö£ /reports/ports/google.com                             1w      1y
+Γöé Γö£ /reports/ports/reconshield.in                         1w      1y
+Γöé Γö£ /reports/ports/github.com                             1w      1y
+Γöé Γöö [+17 more paths]
+Γö£ ΓùÅ /reports/ssl/[domain]                                 1w      1y
+Γöé Γö£ /reports/ssl/google.com                               1w      1y
+Γöé Γö£ /reports/ssl/reconshield.in                           1w      1y
+Γöé Γö£ /reports/ssl/github.com                               1w      1y
+Γöé Γöö [+5 more paths]
+Γö£ ΓùÅ /reports/subdomains/[domain]                          1w      1y
+Γöé Γö£ /reports/subdomains/google.com                        1w      1y
+Γöé Γö£ /reports/subdomains/reconshield.in                    1w      1y
+Γöé Γö£ /reports/subdomains/github.com                        1w      1y
+Γöé Γöö [+5 more paths]
+Γö£ Γùï /research
+Γö£ Γùï /research-methodology
+Γö£ Γùï /research-team
+Γö£ ΓùÅ /research/[slug]                                      1w      1y
+Γöé Γö£ /research/tls-security-report                         1w      1y
+Γöé Γö£ /research/open-port-exposure-report                   1w      1y
+Γöé Γö£ /research/shadow-it-benchmark                         1w      1y
+Γöé Γöö [+2 more paths]
+Γö£ Γùï /resources
+Γö£ ╞Æ /rss.xml
+Γö£ Γùï /scanner
+Γö£ ╞Æ /scanner/[domain]
+Γö£ ╞Æ /search
+Γö£ Γùï /security-disclosure
+Γö£ Γùï /sitemap.xml                                          1h      1y
+Γö£ ╞Æ /sitemaps/[type]
+Γö£ Γùï /ssl
+Γö£ ΓùÅ /ssl/[domain]
+Γöé Γö£ /ssl/ssl-vs-tls
+Γöé Γö£ /ssl/tls-1-2-vs-tls-1-3
+Γöé Γö£ /ssl/certificate-chain
+Γöé Γöö [+5 more paths]
+Γö£ ΓùÅ /ssl/errors/[errorCode]                               1d      1y
+Γöé Γö£ /ssl/errors/err_cert_date_invalid                     1d      1y
+Γöé Γö£ /ssl/errors/err_ssl_protocol_error                    1d      1y
+Γöé Γö£ /ssl/errors/err_cert_authority_invalid                1d      1y
+Γöé Γöö /ssl/errors/net_err_cert_common_name_invalid          1d      1y
+Γö£ Γùï /stats
+Γö£ ΓùÅ /stats/[category]                                     1w      1y
+Γöé Γö£ /stats/tls-adoption                                   1w      1y
+Γöé Γö£ /stats/security-headers                               1w      1y
+Γöé Γö£ /stats/email-security                                 1w      1y
+Γöé Γöö [+2 more paths]
+Γö£ ΓùÅ /stats/[category]/[archive]                           1w      1y
+Γöé Γö£ /stats/tls-adoption/2026-05                           1w      1y
+Γöé Γö£ /stats/tls-adoption/2026-06                           1w      1y
+Γöé Γö£ /stats/security-headers/2026-05                       1w      1y
+Γöé Γöö [+7 more paths]
+Γö£ Γùï /studies
+Γö£ Γùï /subdomains
+Γö£ ΓùÅ /subdomains/[domain]
+Γöé Γö£ /subdomains/subdomain-enumeration
+Γöé Γö£ /subdomains/passive-enumeration
+Γöé Γö£ /subdomains/active-enumeration
+Γöé Γöö [+13 more paths]
+Γö£ Γùï /technology
+Γö£ ΓùÅ /technology/[slug]                                    1d      1y
+Γöé Γö£ /technology/react                                     1d      1y
+Γöé Γö£ /technology/nextjs                                    1d      1y
+Γöé Γö£ /technology/wordpress                                 1d      1y
+Γöé Γöö [+4 more paths]
+Γö£ Γùï /terms
+Γö£ Γùï /threat-actor
+Γö£ ╞Æ /threat-actor/[slug]
+Γö£ Γùï /tools
+Γö£ ╞Æ /tools/[toolId]
+Γö£ Γùï /tools/dns-lookup
+Γö£ ΓùÅ /tools/dns-lookup/[domain]
+Γöé Γö£ /tools/dns-lookup/google.com
+Γöé Γö£ /tools/dns-lookup/reconshield.in
+Γöé Γö£ /tools/dns-lookup/github.com
+Γöé Γöö [+13 more paths]
+Γö£ Γùï /tools/email-security
+Γö£ ╞Æ /tools/email-security/[domain]
+Γö£ Γùï /tools/http-headers
+Γö£ ╞Æ /tools/http-headers/[domain]
+Γö£ Γùï /tools/ip-lookup
+Γö£ ╞Æ /tools/ip-lookup/[ip]
+Γö£ Γùï /tools/port-scanner
+Γö£ ╞Æ /tools/port-scanner/[host]
+Γö£ Γùï /tools/ssl-checker
+Γö£ ╞Æ /tools/ssl-checker/[domain]
+Γö£ Γùï /tools/subdomain-finder
+Γö£ ╞Æ /tools/subdomain-finder/[domain]
+Γö£ Γùï /tools/tech-detector
+Γö£ ╞Æ /tools/tech-detector/[domain]
+Γö£ Γùï /tools/vulnerability-scanner
+Γö£ ╞Æ /tools/vulnerability-scanner/[domain]
+Γö£ Γùï /tools/whois
+Γö£ ╞Æ /tools/whois/[domain]
+Γö£ Γùï /update-policy
+Γö£ Γùï /vulnerability
+Γö£ ΓùÅ /vulnerability/[slug]                                 1d      1y
+Γöé Γö£ /vulnerability/sql-injection                          1d      1y
+Γöé Γö£ /vulnerability/stored-xss                             1d      1y
+Γöé Γö£ /vulnerability/reflected-xss                          1d      1y
+Γöé Γöö [+14 more paths]
+Γöö ΓùÅ /what-is/[slug]                                       1w      1y
+  Γö£ /what-is/tls                                          1w      1y
+  Γö£ /what-is/pki                                          1w      1y
+  Γö£ /what-is/certificate-transparency                     1w      1y
+  Γöö [+2 more paths]
+
+
+╞Æ Proxy (Middleware)
+
+Γùï  (Static)   prerendered as static content
+ΓùÅ  (SSG)      prerendered as static HTML (uses generateStaticParams)
+╞Æ  (Dynamic)  server-rendered on demand
+
+Starting production Next.js server on port 3095...
+(node:21304) [DEP0190] DeprecationWarning: Passing args to a child process 
+with shell option true can lead to security vulnerabilities, as the arguments 
+are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Γû▓ Next.js 16.2.5
+- Local:         http://localhost:3095
+- Network:       http://192.168.31.182:3095
+Γ£ô Ready in 270ms
+Server is ready and responding!
+Fetching sitemap.xml...
+Discovered 12 sub-sitemaps.
+Processing sub-sitemap: http://localhost:3095
+Processing sub-sitemap: http://localhost:3095/tools
+Processing sub-sitemap: http://localhost:3095/tools/dns-lookup
+Processing sub-sitemap: http://localhost:3095/tools/email-security
+Processing sub-sitemap: http://localhost:3095/tools/http-headers
+Processing sub-sitemap: http://localhost:3095/tools/ip-lookup
+Processing sub-sitemap: http://localhost:3095/tools/port-scanner
+Processing sub-sitemap: http://localhost:3095/tools/ssl-checker
+Processing sub-sitemap: http://localhost:3095/tools/subdomain-finder
+Processing sub-sitemap: http://localhost:3095/tools/tech-detector
+Processing sub-sitemap: http://localhost:3095/tools/vulnerability-scanner
+Processing sub-sitemap: http://localhost:3095/tools/whois
+Discovered 0 unique sitemap URLs to validate.
+Crawling internal links starting from homepage...
+[Link Check] Crawling: /
+[Link Check] Crawling: /icon?194921469f084844
+[Link Check] Crawling: /apple-icon?bfc5f47460b3819f
+[Link Check] Crawling: /blog
+[Link Check] Crawling: /about
+[Link Check] Crawling: /scanner
+[Link Check] Crawling: /tools/ip-lookup
+[Link Check] Crawling: /tools
+[Link Check] Crawling: /tools/whois
+[Link Check] Crawling: /tools/vulnerability-scanner
+[Link Check] Crawling: /tools/ssl-checker
+[Link Check] Crawling: /tools/email-security
+[Link Check] Crawling: /tools/dns-lookup
+[Link Check] Crawling: /tools/port-scanner
+[Link Check] Crawling: /blog/domain-ownership-verification
+[Link Check] Crawling: /blog/domain-expiration-monitoring
+[Link Check] Crawling: /blog/osint-fundamentals
+[Link Check] Crawling: /tools/subdomain-finder
+[Link Check] Crawling: /about-reconshield
+[Link Check] Crawling: /research-team
+[Link Check] Crawling: /press
+[Link Check] Crawling: /academic
+[Link Check] Crawling: /resources
+[Link Check] Crawling: /opensource
+[Link Check] Crawling: /glossary
+[Link Check] Crawling: /terms
+[Link Check] Crawling: /privacy
+[Link Check] Crawling: /disclaimer
+[Link Check] Crawling: /editorial-policy
+[Link Check] Crawling: /research-methodology
+[Link Check] Crawling: /security-disclosure
+[Link Check] Crawling: /contact
+[Link Check] Crawling: /ports
+[Link Check] Crawling: /asn
+[Link Check] Crawling: /ip-intelligence
+[Link Check] Crawling: /ssl
+[Link Check] Crawling: /dns-analysis
+[Link Check] Crawling: /technology
+[Link Check] Crawling: /vulnerability
+[Link Check] Crawling: /subdomains
+[Link Check] Crawling: /fact-checking-policy
+[Link Check] Crawling: /authors
+[Link Check] Crawling: /editorial-standards
+[Link Check] Crawling: /blog/category/threat-intelligence
+[Link Check] Crawling: /blog/category/osint-and-analysis
+[Link Check] Crawling: /blog/category/web-security
+[Link Check] Crawling: /blog/category/ai-cybersecurity
+[Link Check] Crawling: /blog/category/vulnerability-research
+[Link Check] Crawling: /blog/category/internet-facing-assets
+[Link Check] Crawling: /blog/hackers-breach-klue-integration-steal-salesforce-crm-data
+[Link Check] Crawling: /author/surendra-reddy
+[Link Check] Crawling: /blog/fortibleed-explained-80000-fortinet-firewalls-compromised-worldwide
+[Link Check] Crawling: /blog/how-to-protect-yourself-from-ai-powered-cyber-attacks
+[Link Check] Crawling: /blog/24-billion-records-exposed-largest-data-leak-ever
+[Link Check] Crawling: /blog/sundoctors-data-breach-australian-clinical-labs-cyber-incident
+[Link Check] Crawling: /blog/fortibleed-fortinet-firewall-breach-70000-systems-exposed
+[Link Check] Crawling: /blog/cloud-security-misconfigurations
+[Link Check] Crawling: /blog/dns-security-explained
+[Link Check] Crawling: /blog/ai-powered-attacks-rise-security-flaws-surface-faster
+[Link Check] Crawling: /tools/http-headers
+[Link Check] Crawling: /tools/tech-detector
+[Link Check] Crawling: /category/threat-intelligence
+[Link Check] Crawling: /blog/spf-dkim-dmarc-blueprint
+[Link Check] Crawling: /blog/ssl-tls-regulatory-compliance
+[Link Check] Crawling: /blog/what-is-reconshield
+[Link Check] Crawling: /blog/anatomy-of-passive-osint
+[Link Check] Crawling: /blog/securing-bgp-route-leaks
+[Link Check] Crawling: /blog/shadow-it-exposed-ports
+[Link Check] Crawling: /blog/what-is-whois-lookup
+[Link Check] Crawling: /blog/whois-vs-rdap
+[Link Check] Crawling: /blog/reverse-whois-explained
+[Link Check] Crawling: /blog/domain-investigation-guide
+[Link Check] Crawling: /blog/whois-for-threat-intelligence
+[Link Check] Crawling: /blog/domain-registration-lifecycle-explained
+[Link Check] Crawling: /blog/ssl-certificate-explained
+[Link Check] Crawling: /blog/tls-1-3-guide
+[Link Check] Crawling: /blog/ssl-expiry-monitoring
+[Link Check] Crawling: /blog/ssl-troubleshooting
+[Link Check] Crawling: /tools/dns-lookup/a
+[Link Check] Crawling: /tools/dns-lookup/aaaa
+[Link Check] Crawling: /tools/dns-lookup/mx
+[Link Check] Crawling: /tools/dns-lookup/txt
+[Link Check] Crawling: /tools/dns-lookup/cname
+[Link Check] Crawling: /tools/dns-lookup/ns
+[Link Check] Crawling: /tools/dns-lookup/caa
+[Link Check] Crawling: /tools/dns-lookup/dnssec
+[Link Check] Crawling: /blog/email-spoofing-prevention
+[Link Check] Crawling: /blog/owasp-http-headers-hardening
+[Link Check] Crawling: /blog?category=Online Fraud
+[Link Check] Crawling: /blog?category=Attack Surface Management
+[Link Check] Crawling: /blog?category=Attack Surface Analysis
+[Link Check] Crawling: /blog?category=Web Security
+[Link Check] Crawling: /blog?category=Threat Intelligence
+[Link Check] Crawling: /blog?category=Cyber Awareness
+[Link Check] Crawling: /blog?category=Vulnerability Research
+[Link Check] Crawling: /blog?category=OSINT &amp; Reconnaissance
+[Link Check] Crawling: /blog?category=AI Cybersecurity
+[Link Check] Crawling: /cookie-policy
+[Link Check] Crawling: /blog/what-is-subdomain-enumeration
+[Link Check] Crawling: /blog/subdomain-takeover-guide
+[Link Check] Crawling: /blog/certificate-transparency-logs-explained
+[Link Check] Crawling: /blog/passive-vs-active-reconnaissance
+[Link Check] Crawling: /blog/attack-surface-management-guide
+[Link Check] Crawling: /blog/best-subdomain-finder-tools
+[Link Check] Crawling: /authors/reconshield-research
+[Link Check] Crawling: /methodology
+[Link Check] Crawling: /update-policy
+[Link Check] Crawling: /stats
+[Link Check] Crawling: /glossary/asn
+[Link Check] Crawling: /glossary/dkim
+[Link Check] Crawling: /glossary/dmarc
+[Link Check] Crawling: /glossary/dns
+[Link Check] Crawling: /glossary/osint
+[Link Check] Crawling: /glossary/spf
+[Link Check] Crawling: /glossary/ssl
+[Link Check] Crawling: /glossary/tls
+[Link Check] Crawling: /glossary/whois
+[Link Check] Crawling: /ports/21
+[Link Check] Crawling: /ports/22
+[Link Check] Crawling: /ports/23
+[Link Check] Crawling: /ports/25
+[Link Check] Crawling: /ports/53
+[Link Check] Crawling: /ports/80
+[Link Check] Crawling: /ports/110
+[Link Check] Crawling: /ports/143
+[Link Check] Crawling: /ports/443
+[Link Check] Crawling: /ports/587
+[Link Check] Crawling: /ports/3306
+[Link Check] Crawling: /ports/3389
+[Link Check] Crawling: /ports/5432
+[Link Check] Crawling: /ports/6379
+[Link Check] Crawling: /ports/8080
+[Link Check] Crawling: /ports/27017
+[Link Check] Crawling: /asn/AS15169
+[Link Check] Crawling: /asn/AS13335
+[Link Check] Crawling: /asn/AS714
+[Link Check] Crawling: /asn/AS32934
+[Link Check] Crawling: /asn/AS16509
+[Link Check] Crawling: /asn/AS8075
+[Link Check] Crawling: /asn/AS14618
+[Link Check] Crawling: /asn/AS54113
+[Link Check] Crawling: /compare/ssl-vs-tls
+[Link Check] Crawling: /compare/tls-1-2-vs-tls-1-3
+[Link Check] Crawling: /ssl/certificate-chain
+[Link Check] Crawling: /ssl/cipher-suites
+[Link Check] Crawling: /ssl/self-signed-certificate
+[Link Check] Crawling: /ssl/wildcard-certificate
+[Link Check] Crawling: /ssl/pki-explained
+[Link Check] Crawling: /ssl/https-security
+[Link Check] Crawling: /dns-records/types/a-record
+[Link Check] Crawling: /dns-records/types/aaaa-record
+[Link Check] Crawling: /dns-records/types/mx-record
+[Link Check] Crawling: /dns-records/types/txt-record
+[Link Check] Crawling: /dns-records/types/ns-record
+[Link Check] Crawling: /dns-records/types/soa-record
+[Link Check] Crawling: /dns-records/types/ptr-record
+[Link Check] Crawling: /dns-records/types/cname-record
+[Link Check] Crawling: /technology/react
+[Link Check] Crawling: /technology/nextjs
+[Link Check] Crawling: /technology/wordpress
+[Link Check] Crawling: /technology/shopify
+[Link Check] Crawling: /technology/cloudflare
+[Link Check] Crawling: /technology/nginx
+[Link Check] Crawling: /technology/apache
+[Link Check] Crawling: /vulnerability/exposed-git
+[Link Check] Crawling: /vulnerability/exposed-env
+[Link Check] Crawling: /vulnerability/directory-listing
+[Link Check] Crawling: /vulnerability/sql-injection
+[Link Check] Crawling: /vulnerability/stored-xss
+[Link Check] Crawling: /vulnerability/reflected-xss
+[Link Check] Crawling: /vulnerability/dom-xss
+[Link Check] Crawling: /vulnerability/csrf
+[Link Check] Crawling: /vulnerability/clickjacking
+[Link Check] Crawling: /vulnerability/open-redirect
+[Link Check] Crawling: /vulnerability/missing-csp
+[Link Check] Crawling: /vulnerability/missing-hsts
+[Link Check] Crawling: /vulnerability/missing-x-frame-options
+[Link Check] Crawling: /vulnerability/missing-x-content-type-options
+[Link Check] Crawling: /vulnerability/missing-dmarc
+[Link Check] Crawling: /vulnerability/missing-spf
+[Link Check] Crawling: /vulnerability/expired-ssl
+[Link Check] Crawling: /subdomains/subdomain-enumeration
+[Link Check] Crawling: /subdomains/passive-enumeration
+[Link Check] Crawling: /subdomains/certificate-transparency
+[Link Check] Crawling: /subdomains/subdomain-takeover
+[Link Check] Crawling: /subdomains/shadow-it
+[Link Check] Crawling: /subdomains/active-enumeration
+[Link Check] Crawling: /subdomains/asset-discovery
+[Link Check] Crawling: /subdomains/attack-surface-management
+[Link Check] Crawling: /blog/dkim-configuration-guide
+[Link Check] Crawling: /blog/spf-complete-guide
+[Link Check] Crawling: /blog/whois-privacy-protection
+[Link Check] Crawling: /blog/passive-reconnaissance-guide
+[Link Check] Crawling: /blog/ip-reputation-check-guide
+[Link Check] Crawling: /blog/whois-a-domain-name
+[Link Check] Crawling: /blog/dns-record-types
+[Link Check] Crawling: /blog/cyber-operational-resilience
+[Link Check] Crawling: /blog/beginners-guide-to-threat-intelligence-ioc-analysis
+[Link Check] Crawling: /blog/dutch-botnet-takedown-17-million-infected-devices
+[Link Check] Crawling: /blog/http-security-headers-explained-complete-guide
+[Link Check] Crawling: /blog/pan-os-authentication-vulnerability-bypass-exploited-wild
+[Link Check] Crawling: /blog/microsoft-teams-helpdesk-impersonation-attack-guide
+[Link Check] Crawling: /blog/glassworm-malware-npm-supply-chain-attack-guide
+[Link Check] Crawling: /blog/dns-intelligence-explained-cybersecurity-researchers
+[Link Check] Crawling: /blog/7zip-vulnerabilities-arbitrary-code-execution
+[Link Check] Crawling: /blog/attack-surface-management
+[Link Check] Crawling: /blog/what-is-osint-beginners-guide
+[Link Check] Crawling: /blog/ai-driven-cyber-risk-management-upgrade-tenable-one-open-connector
+[Link Check] Crawling: /blog/open-source-ecosystem-threat-hackers-breach-34-software-packages
+[Link Check] Crawling: /blog/free-cybersecurity-tools
+[Link Check] Crawling: /blog/rising-ai-threats-fragmented-security-systems-fortinet-report
+[Link Check] Crawling: /blog/greenwood-cyber-ai-lab-opens-tulsa-microsoft-black-tech-street
+[Link Check] Crawling: /blog/pyrsistencesniper-detects-117-malware-persistence-techniques
+[Link Check] Crawling: /blog/new-zealand-ai-superhacking-testing-ground
+[Link Check] Crawling: /blog/what-is-reconshield-ai-powered-osint-platform
+[Link Check] Crawling: /blog/anthropic-claude-mythos-glasswing-zero-day-vulnerabilities
+[Link Check] Crawling: /blog/vellore-man-arrested-cambodia-cyber-slavery-online-scam-networks
+[Link Check] Crawling: /blog/zero-networks-ai-cyber-threats-next-generation-containment-strategy
+[Link Check] Crawling: /blog/f5-big-ip-ssh-intrusion-enterprise-linux-systems
+[Link Check] Crawling: /blog/how-to-scan-a-website-for-vulnerabilities-2026
+[Link Check] Crawling: /blog/public-exploit-code-chromium-flaw-cve-2026-5281-webgpu-dawn
+[Link Check] Crawling: /blog/ai-phishing-deepfake-attacks-2026
+[Link Check] Crawling: /blog/german-football-association-password-theft-cyberattack
+[Link Check] Crawling: /blog/linux-kernel-cve-2026-46333-ssh-keysign-pwn-threat-analysis
+[Link Check] Crawling: /blog/qr-code-phishing-surges-2026-microsoft-email-threat-report
+[Link Check] Crawling: /blog/hackers-exploit-vulnerable-lenovo-driver-disable-edr-protections
+[Link Check] Crawling: /blog/telangana-man-arrested-mule-account-cybercrime-network
+[Link Check] Crawling: /blog/urgent-chrome-update-critical-remote-code-execution-vulnerabilities
+[Link Check] Crawling: /blog/ai-powered-phishing-attacks-2026-threat-analysis
+[Link Check] Crawling: /blog/ai-powered-cyber-threats-enterprise-security-2026
+[Link Check] Crawling: /blog/cyberabad-police-arrest-youth-mule-bank-accounts-cyber-fraud
+[Link Check] Crawling: /blog/malicious-vscode-extension-github-internal-repositories
+[Link Check] Crawling: /blog/ai-driven-cyber-threats-enterprise-security-adaptation
+[Link Check] Crawling: /blog/copy-fail-cve-2026-31431-linux-kernel-root-flaw
+[Link Check] Crawling: /blog/ssl-vs-tls-explained-https-security-guide
+[Link Check] Crawling: /blog/how-port-scanning-works-open-ports-tcp-vs-udp-security
+[Link Check] Crawling: /blog/foxconn-cyberattack-apple-google-data-breach
+[Link Check] Crawling: /blog/microsoft-teams-vulnerability-enables-hackers-spoofing-attacks
+[Link Check] Crawling: /blog/digital-invitation-scam-cybersecurity-tips
+[Link Check] Crawling: /blog/wordpress-plugin-vulnerability-unauthorized-website-access
+[Link Check] Crawling: /blog/critical-nginx-rce-vulnerability-active-exploitation
+[Link Check] Crawling: /blog/grafana-labs-security-breach-github-codebase-access
+[Link Check] Crawling: /blog/rs-152-crore-cyber-scam-mule-accounts-india
+[Link Check] Crawling: /blog/india-lost-rs-52000-crore-cyber-frauds-telecom-security
+[Link Check] Crawling: /blog/mangaluru-mobile-phone-hack-691-lakh-cyber-fraud
+[Link Check] Crawling: /blog/cyber-fraud-without-otp
+[Link Check] Crawling: /blog/apac-cyber-defence-gap-ai-threats-fortinet
+[Link Check] Crawling: /blog/php-soap-vulnerabilities-enable-remote-code-execution
+[Link Check] Crawling: /blog/pentest-swarm-ai-tool-live-access-nmap-sqlmap-burp-suite-metasploit
+[Link Check] Crawling: /blog/chatgpt-vulnerability-ai-security-risks-prompt-injection-enterprise-defenses
+[Link Check] Crawling: /blog/claude-code-security-extension-vulnerability-detection
+[Link Check] Crawling: /blog/bengaluru-elderly-woman-loses-rs-7-69-lakh-fake-whatsapp-link-cyber-fraud
+[Link Check] Crawling: /blog/what-is-reconshield-ai-osint-cybersecurity-platform
+[Link Check] Crawling: /blog/pro-iran-cyber-group-threatens-us-israeli-infrastructure-attacks
+[Link Check] Crawling: /blog/gremlin-stealer-encrypted-resource-sections-c2-exfiltration
+[Link Check] Crawling: /blog/everpure-data-management-cyber-resilience-final-line-of-defence
+[Link Check] Crawling: /blog/uk-ai-fueled-cyber-risks-linked-to-security-weaknesses-not-repository-transparency
+[Link Check] Crawling: /blog/agentic-ai-software-engineering-mobile-attack-surfaces
+[Link Check] Crawling: /blog/claude-mythos-ai-cybersecurity-risk-analysis
+[Link Check] Crawling: /blog/irdai-ai-cybersecurity-defence-deadline-insurance-firms
+[Link Check] Crawling: /blog/project-glasswing-anthropic-mythos-vulnerability-sharing
+[Link Check] Crawling: /blog/security-researchers-warn-critical-n8n-flaws-may-expose
+[Link Check] Crawling: /blog/irdai-cyber-defence-guidelines-insurers
+[Link Check] Crawling: /blog/windows-miniplasma-security-threat
+[Link Check] Crawling: /blog/cisa-microsoft-exchange-server-spoofing-vulnerability-exploitation
+[Link Check] Crawling: /blog/samsung-weather-app-north-korea-territory-controversy
+[Link Check] Crawling: /blog/cybersecurity-agencies-warn-users-against-new-digital-fraud-tactics
+[Link Check] Crawling: /blog/sebi-ai-cyber-defense-task-force-india-markets
+[Link Check] Crawling: /blog/macos-kernel-exploit-apple-m5-mythos-preview
+[Link Check] Crawling: /blog/mythos-stress-test-indian-banks-fintechs-ai-cyber-threats
+[Link Check] Crawling: /blog/ai-cyber-warfare-future-conflicts-dixit
+[Link Check] Crawling: /blog/arctic-wolf-launches-ai-mobile-threat-defense
+[Link Check] Crawling: /blog/ai-cyber-risk-becomes-systemic-mythos-warns
+[Link Check] Crawling: /blog/uk-cybercrime-reform-hackers
+[Link Check] Crawling: /blog/government-deploys-ai-systems-detect-mule-accounts-financial-cybercrime
+[Link Check] Crawling: /blog/pentagon-cybercom-ai-funding-cybersecurity
+[Link Check] Crawling: /blog/google-north-korean-hackers-ai-cybersecurity-blind-spots
+[Link Check] Crawling: /blog/google-foils-ai-created-zero-day-cyberattack
+[Link Check] Crawling: /blog/how-to-check-ip-reputation-a-complete-guide-for-security-researchers
+[Link Check] Crawling: /blog/ai-fraud-and-cybercrime-marketplaces-are-evolving-rapidly-says-accertify
+[Link Check] Crawling: /blog/reconshield-ai-powered-cybersecurity-and-threat-intelligence-platform
+[Link Check] Crawling: /blog/microsoft-acknowledges-windows-11-update-installation-failures-error-0x800f0922
+[Link Check] Crawling: /blog/controversy-grows-after-cyber-crime-wing-targets-social-media-posts
+[Link Check] Crawling: /blog/software-defined-vehicles-introduce-growing-cybersecurity
+[Link Check] Crawling: /blog/sebi-expands-cybersecurity-efforts-to-counter-emerging-ai-based-financial-threats
+[Link Check] Crawling: /blog/firefox-receives-423-security-patches-powered-by-claude-mythos-and-ai-tools
+[Link Check] Crawling: /blog/linux-servers-under-attack-by-stealthy-pamdoora-ssh-credential-stealer
+[Link Check] Crawling: /blog/critical-microsoft-365-copilot-vulnerabilities-expose-sensitive-information
+[Link Check] Crawling: /blog/ai-investment-fraudsters-spawn-15-500-scam-sites-abusing-legitimate-marketing-tool
+[Link Check] Crawling: /blog/cpanel-and-whm-release-emergency-fixes-for-critical-vulnerabilities-administrators-urged-to
+[Link Check] Crawling: /blog/quasar-linux-rat-targets-developers-to-compromise-the-software-supply-chain
+[Link Check] Crawling: /blog/7-3-million-downloads-later-fake-android-apps-exposed-for-payment-fraud
+[Link Check] Crawling: /blog/this-week-in-cybersecurity-concepts
+[Link Check] Crawling: /blog/what-is-attack-surface-management-complete-guide-2026
+[Link Check] Crawling: /blog/fifa-world-cup-2026-cyber-threats-security-researchers-warn
+[Link Check] Crawling: /blog/claude-fable-5-removed-security-risks-government-concerns-ai-safety
+[Link Check] Crawling: /blog/bughunter-review-2026-ai-bug-bounty-toolkit
+[Link Check] Crawling: /blog/palo-alto-pan-os-authentication-vulnerability-bypass-exploited-wild
+[Link Check] Crawling: /blog/outlook-word-rce-vulnerabilities
+[Link Check] Crawling: /blog/microsoft-patch-tuesday-june-2026-200-vulnerabilities-ai-bug-discovery
+[Link Check] Crawling: /blog/june-2026-cybersecurity-review
+[Link Check] Crawling: /blog/claude-fable-5-vs-mythos-5
+[Link Check] Crawling: /blog/servicenow-flaw-exploited-unauthorized-access-customer-instances
+[Link Check] Crawling: /blog/fortisandbox-vulnerability-critical-cve-2026-39808-mitigation
+[Link Check] Crawling: /blog/owasp-top-10-explained
+[Link Check] Crawling: /blog/linux-kernel-vulnerability
+[Link Check] Crawling: /blog/claude-fable-5-explained
+[Link Check] Crawling: /blog/reconnaissance-techniques
+[Link Check] Crawling: /blog/how-cyber-fraud-networks-recruit-victims-cambodia-scam-compounds
+[Link Check] Crawling: /blog/https-security-best-practices
+[Link Check] Crawling: /blog/fake-trading-app-scam-600-victims-99-crore-software-engineer-arrested
+[Link Check] Crawling: /blog/apk-malware-hidden-in-fake-wedding-invite-drains-bengaluru-man-s-bank-account
+[Link Check] Crawling: /blog/how-to-check-ip-reputation-a-complete-guide-for-security-researcher
+[Link Check] Crawling: /research/tls-security-report
+[Link Check] Crawling: /research/open-port-exposure-report
+[Link Check] Crawling: /research/shadow-it-benchmark
+[Link Check] Crawling: /research/certificate-expiry-study
+[Link Check] Crawling: /research/subdomain-takeover-report
+[Link Check] Crawling: /tools/port-scanner?port=21
+[Link Check] Crawling: /tools/port-scanner?port=22
+[Link Check] Crawling: /tools/port-scanner?port=23
+[Link Check] Crawling: /tools/port-scanner?port=25
+[Link Check] Crawling: /tools/port-scanner?port=53
+[Link Check] Crawling: /tools/port-scanner?port=80
+[Link Check] Crawling: /tools/port-scanner?port=110
+[Link Check] Crawling: /tools/port-scanner?port=143
+[Link Check] Crawling: /tools/port-scanner?port=443
+[Link Check] Crawling: /tools/port-scanner?port=587
+[Link Check] Crawling: /tools/port-scanner?port=3306
+[Link Check] Crawling: /tools/port-scanner?port=3389
+[Link Check] Crawling: /tools/port-scanner?port=5432
+[Link Check] Crawling: /tools/port-scanner?port=6379
+[Link Check] Crawling: /tools/port-scanner?port=8080
+[Link Check] Crawling: /tools/port-scanner?port=27017
+[Link Check] Crawling: /tools/whois-checker
+>>> API INITIALIZED: BASE_URL=''
+[Link Check] Crawling: /asn/AS712
+[Link Check] Crawling: /asn/AS715
+[Link Check] Crawling: /asn/AS16510
+[Link Check] Crawling: /asn/AS36692
+[Link Check] Crawling: /compare
+[Link Check] Crawling: /research
+[Link Check] Crawling: /data-sources
+[Link Check] Crawling: /compare/whois-vs-rdap
+[Link Check] Crawling: /compare/dns-vs-whois
+[Link Check] Crawling: /compare/spf-vs-dkim-vs-dmarc
+[Link Check] Crawling: /compare/port-scanner-vs-vulnerability-scanner
+[Link Check] Crawling: /compare/subdomain-vs-subfolder
+[Link Check] Crawling: /compare/active-vs-passive-recon
+[Link Check] Crawling: /compare/tcp-vs-udp
+[Link Check] Crawling: /compare/nmap-vs-nessus
+[Link Check] Crawling: /compare/shodan-vs-censys
+[Link Check] Crawling: /reports
+[Link Check] Crawling: /studies
+[Link Check] Crawling: /contact?inquiry=download&amp;report=dmarc-alignment
+[Link Check] Crawling: /contact?inquiry=download&amp;report=security-headers
+[Link Check] Crawling: /contact?inquiry=download&amp;report=exposed-ports
+[Link Check] Crawling: /contact?inquiry=study&amp;id=global-email-alignment-index
+[Link Check] Crawling: /contact?inquiry=study&amp;id=tls-deprecation-handshake-survey
+[Link Check] Crawling: /contact?inquiry=study&amp;id=public-cloud-port-exposures
+--- CRAWL AND SITEMAP VALIDATION COMPLETE ---
+Total Pages Visited: 359
+Total Sitemap URLs Validated: 0
+Broken Links / Issues Found: 0
+Shutting down local production server...
+Build verification PASSED successfully!
+Error fetching categories: [TypeError: fetch failed] {
+  isNetworkError: true,
+  request: {
+    timeout: { connect: 300000, socket: 300000 },
+    maxRedirects: 0,
+    maxRetries: undefined,
+    retryDelay: undefined,
+    lineage: undefined,
+    method: 'GET',
+    uri: '/data/query/production?query=*%5B_type+%3D%3D+%22category%22%5D+%7B%0
+A++_id%2C%0A++title%2C%0A++%22count%22%3A+count%28*%5B_type+%3D%3D+%22post%22+%
+26%26+references%28%5E._id%29%5D%29%0A%7D',
+    json: true,
+    body: undefined,
+    query: { returnQuery: 'false' },
+    headers: { Accept: 'application/json' },
+    token: undefined,
+    tag: undefined,
+    returnQuery: false,
+    perspective: undefined,
+    resultSourceMap: undefined,
+    lastLiveEventId: undefined,
+    cacheMode: undefined,
+    canUseCdn: true,
+    signal: undefined,
+    fetch: undefined,
+    useAbortSignal: false,
+    useCdn: undefined,
+    url: 'https://etmnx6kx.api.sanity.io/v2023-05-03/data/query/production?quer
+y=*%5B_type+%3D%3D+%22category%22%5D+%7B%0A++_id%2C%0A++title%2C%0A++%22count%2
+2%3A+count%28*%5B_type+%3D%3D+%22post%22+%26%26+references%28%5E._id%29%5D%29%0
+A%7D&returnQuery=false',
+    proxy: undefined,
+    withCredentials: false,
+    attemptNumber: 5
+  },
+  [cause]: Error: read ECONNRESET
+      at ignore-listed frames {
+    errno: -4077,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}
+Error fetching recent posts: [TypeError: fetch failed] {
+  isNetworkError: true,
+  request: {
+    timeout: { connect: 300000, socket: 300000 },
+    maxRedirects: 0,
+    maxRetries: undefined,
+    retryDelay: undefined,
+    lineage: undefined,
+    method: 'GET',
+    uri: '/data/query/production?query=*%5B_type+%3D%3D+%22post%22+%26%26+defin
+ed%28slug.current%29+%26%26+%21%28_id+in+path%28%22drafts.**%22%29%29+%26%26+%2
+1%28slug.current+%3D%3D+%24slug+%7C%7C+slug.current+%3D%3D+%24slug+%2B+%22+%22+
+%7C%7C+slug.current+%3D%3D+%22+%22+%2B+%24slug+%7C%7C+slug.current+%3D%3D+%22+%
+22+%2B+%24slug+%2B+%22+%22+%7C%7C+slug.current+%3D%3D+%24slug+%2B+%22%2520%22+%
+7C%7C+slug.current+%3D%3D+%22%2520%22+%2B+%24slug%29%5D+%7C+order%28coalesce%28
+publishedAt%2C+_createdAt%29+desc%29%5B0...3%5D+%7B%0A++_id%2C%0A++title%2C%0A+
++%22slug%22%3A+slug.current%2C%0A++mainImage%2C%0A++publishedAt%2C%0A++%22categ
+ories%22%3A+categories%5B%5D-%3E%7B+title+%7D%0A%7D&%24slug=%22how-to-protect-y
+ourself-from-ai-powered-cyber-attacks%22',
+    json: true,
+    body: undefined,
+    query: { returnQuery: 'false' },
+    headers: { Accept: 'application/json' },
+    token: undefined,
+    tag: undefined,
+    returnQuery: false,
+    perspective: undefined,
+    resultSourceMap: undefined,
+    lastLiveEventId: undefined,
+    cacheMode: undefined,
+    canUseCdn: true,
+    signal: undefined,
+    fetch: undefined,
+    useAbortSignal: false,
+    useCdn: undefined,
+    url: 'https://etmnx6kx.api.sanity.io/v2023-05-03/data/query/production?quer
+y=*%5B_type+%3D%3D+%22post%22+%26%26+defined%28slug.current%29+%26%26+%21%28_id
++in+path%28%22drafts.**%22%29%29+%26%26+%21%28slug.current+%3D%3D+%24slug+%7C%7
+C+slug.current+%3D%3D+%24slug+%2B+%22+%22+%7C%7C+slug.current+%3D%3D+%22+%22+%2
+B+%24slug+%7C%7C+slug.current+%3D%3D+%22+%22+%2B+%24slug+%2B+%22+%22+%7C%7C+slu
+g.current+%3D%3D+%24slug+%2B+%22%2520%22+%7C%7C+slug.current+%3D%3D+%22%2520%22
++%2B+%24slug%29%5D+%7C+order%28coalesce%28publishedAt%2C+_createdAt%29+desc%29%
+5B0...3%5D+%7B%0A++_id%2C%0A++title%2C%0A++%22slug%22%3A+slug.current%2C%0A++ma
+inImage%2C%0A++publishedAt%2C%0A++%22categories%22%3A+categories%5B%5D-%3E%7B+t
+itle+%7D%0A%7D&%24slug=%22how-to-protect-yourself-from-ai-powered-cyber-attacks
+%22&returnQuery=false',
+    proxy: undefined,
+    withCredentials: false,
+    attemptNumber: 5
+  },
+  [cause]: Error: read ECONNRESET
+      at ignore-listed frames {
+    errno: -4077,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}
+Error fetching related posts: [TypeError: fetch failed] {
+  isNetworkError: true,
+  request: {
+    timeout: { connect: 300000, socket: 300000 },
+    maxRedirects: 0,
+    maxRetries: undefined,
+    retryDelay: undefined,
+    lineage: undefined,
+    method: 'GET',
+    uri: '/data/query/production?query=*%5B_type+%3D%3D+%22post%22+%26%26+%21%2
+8slug.current+%3D%3D+%24slug+%7C%7C+slug.current+%3D%3D+%24slug+%2B+%22+%22+%7C
+%7C+slug.current+%3D%3D+%22+%22+%2B+%24slug+%7C%7C+slug.current+%3D%3D+%22+%22+
+%2B+%24slug+%2B+%22+%22+%7C%7C+slug.current+%3D%3D+%24slug+%2B+%22%2520%22+%7C%
+7C+slug.current+%3D%3D+%22%2520%22+%2B+%24slug%29+%26%26+count%28categories%5B%
+40._ref+in+*%5B_type+%3D%3D+%22post%22+%26%26+%28slug.current+%3D%3D+%24slug+%7
+C%7C+slug.current+%3D%3D+%24slug+%2B+%22+%22+%7C%7C+slug.current+%3D%3D+%22+%22
++%2B+%24slug+%7C%7C+slug.current+%3D%3D+%22+%22+%2B+%24slug+%2B+%22+%22+%7C%7C+
+slug.current+%3D%3D+%24slug+%2B+%22%2520%22+%7C%7C+slug.current+%3D%3D+%22%2520
+%22+%2B+%24slug%29%5D.categories%5B%5D._ref%5D%29+%3E+0%5D+%7C+order%28publishe
+dAt+desc%29%5B0...3%5D+%7B%0A++_id%2C%0A++title%2C%0A++%22slug%22%3A+slug.curre
+nt%2C%0A++mainImage%2C%0A++publishedAt%2C%0A++%22categories%22%3A+categories%5B
+%5D-%3E%7B+title+%7D%2C%0A++excerpt%2C%0A++%22author%22%3A+author-%3E%7B+name%2
+C+%22slug%22%3A+slug.current+%7D%0A%7D&%24slug=%22how-to-protect-yourself-from-
+ai-powered-cyber-attacks%22',
+    json: true,
+    body: undefined,
+    query: { returnQuery: 'false' },
+    headers: { Accept: 'application/json' },
+    token: undefined,
+    tag: undefined,
+    returnQuery: false,
+    perspective: undefined,
+    resultSourceMap: undefined,
+    lastLiveEventId: undefined,
+    cacheMode: undefined,
+    canUseCdn: true,
+    signal: undefined,
+    fetch: undefined,
+    useAbortSignal: false,
+    useCdn: undefined,
+    url: 'https://etmnx6kx.api.sanity.io/v2023-05-03/data/query/production?quer
+y=*%5B_type+%3D%3D+%22post%22+%26%26+%21%28slug.current+%3D%3D+%24slug+%7C%7C+s
+lug.current+%3D%3D+%24slug+%2B+%22+%22+%7C%7C+slug.current+%3D%3D+%22+%22+%2B+%
+24slug+%7C%7C+slug.current+%3D%3D+%22+%22+%2B+%24slug+%2B+%22+%22+%7C%7C+slug.c
+urrent+%3D%3D+%24slug+%2B+%22%2520%22+%7C%7C+slug.current+%3D%3D+%22%2520%22+%2
+B+%24slug%29+%26%26+count%28categories%5B%40._ref+in+*%5B_type+%3D%3D+%22post%2
+2+%26%26+%28slug.current+%3D%3D+%24slug+%7C%7C+slug.current+%3D%3D+%24slug+%2B+
+%22+%22+%7C%7C+slug.current+%3D%3D+%22+%22+%2B+%24slug+%7C%7C+slug.current+%3D%
+3D+%22+%22+%2B+%24slug+%2B+%22+%22+%7C%7C+slug.current+%3D%3D+%24slug+%2B+%22%2
+520%22+%7C%7C+slug.current+%3D%3D+%22%2520%22+%2B+%24slug%29%5D.categories%5B%5
+D._ref%5D%29+%3E+0%5D+%7C+order%28publishedAt+desc%29%5B0...3%5D+%7B%0A++_id%2C
+%0A++title%2C%0A++%22slug%22%3A+slug.current%2C%0A++mainImage%2C%0A++publishedA
+t%2C%0A++%22categories%22%3A+categories%5B%5D-%3E%7B+title+%7D%2C%0A++excerpt%2
+C%0A++%22author%22%3A+author-%3E%7B+name%2C+%22slug%22%3A+slug.current+%7D%0A%7
+D&%24slug=%22how-to-protect-yourself-from-ai-powered-cyber-attacks%22&returnQue
+ry=false',
+    proxy: undefined,
+    withCredentials: false,
+    attemptNumber: 5
+  },
+  [cause]: Error: read ECONNRESET
+      at ignore-listed frames {
+    errno: -4077,
+    code: 'ECONNRESET',
+    syscall: 'read'
+  }
+}

@@ -322,7 +322,7 @@ export async function GET(request, { params }) {
           xml += `  <url>\n    <loc>${BASE_URL}/blog</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
           
           try {
-              const posts = await client.fetch(blogListQuery);
+              const posts = await client.fetch(blogListQuery, {}, { next: { tags: ['blog'] } });
               let safePosts = (posts || []).filter(post => post?.slug?.current || typeof post?.slug === 'string');
               
               if (safePosts.length === 0) {

@@ -15,7 +15,7 @@ function escapeXml(unsafe) {
 }
 
 export async function GET() {
-  const posts = await client.fetch(blogListQuery);
+  const posts = await client.fetch(blogListQuery, {}, { next: { tags: ['blog'] } });
   const siteUrl = "https://reconshield.in";
   
   const rssItems = posts

@@ -92,26 +92,25 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
   const { slug } = await params;
-  const post = await getPost(slug);
+  
+  // Fetch post details and sidebar data in parallel to optimize server CPU wait time
+  const postPromise = getPost(slug);
+  const sidebarPromise = client.fetch(blogSidebarQuery, { slug }, { next: { tags: [`blog-post-${slug}`] } }).catch(err => {
+    console.error('Error fetching optimized sidebar data:', err);
+    return null;
+  });
+
+  const [post, sidebarRes] = await Promise.all([postPromise, sidebarPromise]);
 
   if (!post || post._error) {
     notFound();
   }
 
-  // Fetch sidebar and related data in a single optimized query
-  let sidebarData = { recent: [], categories: [], related: [] };
-  try {
-    const data = await client.fetch(blogSidebarQuery, { slug }, { next: { tags: [`blog-post-${slug}`] } });
-    if (data) {
-      sidebarData = {
-        recent: data.recent || [],
-        categories: data.categories || [],
-        related: data.related || []
-      };
-    }
-  } catch (err) {
-    console.error('Error fetching optimized sidebar data:', err);
-  }
+  const sidebarData = {
+    recent: sidebarRes?.recent || [],
+    categories: sidebarRes?.categories || [],
+    related: sidebarRes?.related || []
+  };
   
   const recentPosts = sidebarData.recent;
   const categories = sidebarData.categories;

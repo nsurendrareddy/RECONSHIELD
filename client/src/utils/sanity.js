@@ -58,12 +58,12 @@ const memoizedFetch = cache(async (query, paramsStr, optionsStr) => {
 });
 
 client.fetch = async function (query, params, options = {}) {
-  // Fallback to 60s revalidation if no revalidate option is provided, to ensure updates show up even if webhooks fail or are not configured
-  const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : 60;
+  // Fallback to false (indefinite edge cache) if no revalidate option is provided
+  const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : false;
   options.next = { 
     ...options.next, 
     revalidate: revalValue, 
-    tags: [...(options.next?.tags || []), 'sanity'] 
+    tags: options.next?.tags || [] 
   };
   
   // Serialize params and options to strings for exact argument matching in React cache
