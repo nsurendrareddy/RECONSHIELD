@@ -37,7 +37,7 @@ export async function GET() {
       for (let i = 1; i <= chunkCount; i++) {
         xml += `  <sitemap>\n`;
         xml += `    <loc>${BASE_URL}/sitemaps/${type}-${i}.xml</loc>\n`;
-        xml += `    <lastmod>${new Date().toISOString()}</lastmod>\n`;
+        xml += `    <lastmod>2026-07-23T00:00:00.000Z</lastmod>\n`;
         xml += `  </sitemap>\n`;
       }
     }

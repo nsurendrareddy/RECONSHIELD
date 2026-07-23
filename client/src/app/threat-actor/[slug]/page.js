@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Shield, Globe, Server, Activity, AlertTriangle, Cpu, Network, Target, Users, Search, ChevronRight } from 'lucide-react';
 
-// Phase 11: Edge/ISR Configuration
-export const revalidate = 86400; // Cache for 24 hours since Actor profiles change less frequently than IPs
+export const revalidate = false; // Cache forever (fully static)
+export const dynamicParams = false; // No on-demand dynamic pages
 
 // Mocked DB Call (Phase 2, 3, 4, 5)
 async function getThreatActorIntelligence(slug) {

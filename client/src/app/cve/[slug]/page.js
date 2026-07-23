@@ -6,8 +6,8 @@ import { slugify } from '@/utils/slugify';
 import { generateDatasetSchema } from '@/utils/metadata';
 
 
-// Phase 11: Edge/ISR Configuration
-export const revalidate = 86400; // Cache for 24 hours
+export const revalidate = false; // Cache forever (fully static)
+export const dynamicParams = false; // No on-demand dynamic pages
 
 // Mocked DB Call
 async function getCveIntelligence(cveId) {

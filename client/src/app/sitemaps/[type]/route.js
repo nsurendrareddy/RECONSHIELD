@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 }
 
 const BASE_URL = 'https://reconshield.in';
-const STATIC_LAST_MODIFIED = new Date().toISOString();
+const STATIC_LAST_MODIFIED = '2026-07-23T00:00:00.000Z';
 
 // Centralized sitemap fallback data generated from verified existing pages
 const FALLBACK_DATA = {

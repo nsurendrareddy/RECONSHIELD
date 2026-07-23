@@ -22,6 +22,15 @@ export async function POST(req) {
 
     const docType = body._type;
     const documentId = body._id;
+
+    if (documentId && documentId.startsWith('drafts.')) {
+      console.log(`>>> REVALIDATE WEBHOOK: Skipping draft document [${documentId}]`);
+      return NextResponse.json({
+        revalidated: false,
+        message: `Skipping revalidation for draft document [${documentId}].`
+      });
+    }
+
     console.log(`>>> REVALIDATE WEBHOOK: Triggered for document type [${docType}], ID [${documentId}]`);
 
     // 3. Global Purges for lists (always affected by any post/author/category modification)
@@ -35,7 +44,6 @@ export async function POST(req) {
     revalidatePath('/rss.xml');
     revalidatePath('/feed.xml');
     revalidatePath('/sitemap.xml');
-    revalidatePath('/sitemaps/[type]', 'page');
 
     // 4. Targeted Invalidation based on Document Type
     if (docType === 'post') {
@@ -44,7 +52,6 @@ export async function POST(req) {
         const postSlug = body.slug.current;
         revalidateTag(`blog-post-${postSlug}`);
         revalidatePath(`/blog/${postSlug}`);
-        revalidatePath('/blog/[slug]', 'page');
         console.log(`>>> REVALIDATE WEBHOOK: Purged tags/paths for post: ${postSlug}`);
       }
 
@@ -53,7 +60,6 @@ export async function POST(req) {
         const authorSlug = body.authorSlug.current;
         revalidateTag(`author-${authorSlug}`);
         revalidatePath(`/author/${authorSlug}`);
-        revalidatePath('/author/[slug]', 'page');
         console.log(`>>> REVALIDATE WEBHOOK: Purged tags/paths for author: ${authorSlug}`);
       }
 
@@ -65,8 +71,6 @@ export async function POST(req) {
             revalidateTag(`category-${catSlug}`);
             revalidatePath(`/category/${catSlug}`);
             revalidatePath(`/blog/category/${catSlug}`);
-            revalidatePath('/category/[slug]', 'page');
-            revalidatePath('/blog/category/[slug]', 'page');
             console.log(`>>> REVALIDATE WEBHOOK: Purged tags/paths for category: ${catSlug}`);
           }
         });
@@ -78,7 +82,6 @@ export async function POST(req) {
         const authorSlug = body.slug.current;
         revalidateTag(`author-${authorSlug}`);
         revalidatePath(`/author/${authorSlug}`);
-        revalidatePath('/author/[slug]', 'page');
         console.log(`>>> REVALIDATE WEBHOOK: Purged tags/paths for author doc: ${authorSlug}`);
       }
     } 
@@ -89,8 +92,6 @@ export async function POST(req) {
         revalidateTag(`category-${catSlug}`);
         revalidatePath(`/category/${catSlug}`);
         revalidatePath(`/blog/category/${catSlug}`);
-        revalidatePath('/category/[slug]', 'page');
-        revalidatePath('/blog/category/[slug]', 'page');
         console.log(`>>> REVALIDATE WEBHOOK: Purged tags/paths for category doc: ${catSlug}`);
       }
     }

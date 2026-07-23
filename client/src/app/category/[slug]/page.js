@@ -5,7 +5,7 @@ import { client, urlFor } from '@/utils/sanity';
 import { Shield, Target, Search, Network, Cpu, Lock, CheckCircle2, Globe, Clock, ChevronRight, AlertTriangle, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import BlogCard from '@/components/BlogCard';
-
+import { notFound } from 'next/navigation';
 
 import { generateBaseMetadata, getCategoryFallbackImage } from '@/utils/metadata';
 
@@ -222,6 +222,8 @@ export async function generateStaticParams() {
   return Object.keys(CATEGORY_DATA).map(slug => ({ slug }));
 }
 
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const data = CATEGORY_DATA[slug];
@@ -242,16 +244,7 @@ export default async function CategoryPage({ params }) {
   const data = CATEGORY_DATA[slug];
 
   if (!data) {
-    return (
-      <div className="max-w-4xl mx-auto text-center py-24 px-6 text-white">
-        <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" />
-        <h1 className="text-3xl font-display font-bold uppercase tracking-wider">Category Not Found</h1>
-        <p className="text-gray-400 font-mono mt-2 mb-8">The requested cybersecurity directory does not exist.</p>
-        <Link href="/" className="px-6 py-3 bg-surface-900 border border-white/10 text-xs font-mono text-matrix-400 hover:text-white uppercase tracking-widest transition-colors rounded-xl">
-          Return to Dashboard
-        </Link>
-      </div>
-    );
+    notFound();
   }
 
   const IconComponent = data.icon;

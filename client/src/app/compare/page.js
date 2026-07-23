@@ -4,7 +4,7 @@ import { Network, Lock, ShieldCheck, FileText, ArrowRight, Shield, Award, HelpCi
 import Breadcrumbs from '@/components/Breadcrumbs';
 import { COMPARISONS_DATA } from '@/utils/comparisonsData';
 
-export const revalidate = 86400;
+export const revalidate = false;
 
 export const metadata = {
   title: 'Cybersecurity Comparisons | WHOIS vs RDAP, SPF vs DKIM, SSL vs TLS | ReconShield',
