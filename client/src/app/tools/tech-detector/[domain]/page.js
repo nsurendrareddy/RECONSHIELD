@@ -44,7 +44,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/tools/tech-detector/${domain}`,
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       url: `https://reconshield.in/tools/tech-detector/${domain}`,
       title: `${domain} Tech Stack Analysis`,

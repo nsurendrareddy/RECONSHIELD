@@ -44,7 +44,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/scanner/${domain}`,
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       url: `https://reconshield.in/scanner/${domain}`,
       title: `${domain} Security Report`,

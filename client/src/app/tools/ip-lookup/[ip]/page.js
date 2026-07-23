@@ -166,7 +166,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/tools/ip-lookup/${ip}`,
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       url: `https://reconshield.in/tools/ip-lookup/${ip}`,
       title: `IP Reputation Report for ${ip}`,

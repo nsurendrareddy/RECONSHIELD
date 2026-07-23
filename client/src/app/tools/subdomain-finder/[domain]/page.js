@@ -44,7 +44,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/tools/subdomain-finder/${domain}`,
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       url: `https://reconshield.in/tools/subdomain-finder/${domain}`,
       title: `${domain} Subdomain Map`,

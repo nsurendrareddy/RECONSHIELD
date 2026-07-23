@@ -4,13 +4,8 @@ export default function robots() {
       userAgent: '*',
       allow: '/',
       disallow: [
-        '/ip/',
-        '/domain/',
-        '/asn/',
         '/api/',
-        '/reports/',
-        '/scan/',
-        '/lookup/'
+        '/admin/'
       ],
     },
     sitemap: 'https://reconshield.in/sitemap.xml',

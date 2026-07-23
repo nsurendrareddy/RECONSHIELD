@@ -46,7 +46,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/tools/port-scanner/${host}`,
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       url: `https://reconshield.in/tools/port-scanner/${host}`,
       title: `${host} Open Ports Security Analysis`,

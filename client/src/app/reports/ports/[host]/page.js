@@ -106,7 +106,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/reports/ports/${host}`,
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       url: `https://reconshield.in/reports/ports/${host}`,
       title: `${host} Port Exposure Report`,

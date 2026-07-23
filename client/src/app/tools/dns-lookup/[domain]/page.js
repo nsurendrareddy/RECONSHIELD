@@ -121,7 +121,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/tools/dns-lookup/${domain}`,
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       url: `https://reconshield.in/tools/dns-lookup/${domain}`,
       title: `${domain} DNS Record Query & Analysis`,

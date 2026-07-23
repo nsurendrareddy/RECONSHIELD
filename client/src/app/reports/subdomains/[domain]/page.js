@@ -82,7 +82,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/reports/subdomains/${domain}`,
     },
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     openGraph: {
       url: `https://reconshield.in/reports/subdomains/${domain}`,
       title: `${domain} Subdomain Scan Report`,
