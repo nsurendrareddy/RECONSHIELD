@@ -105,7 +105,7 @@ const nextConfig = {
     ],
   },
   experimental: {
-    optimizePackageImports: ['recharts', 'lucide-react', 'framer-motion', '@xyflow/react', 'leaflet', 'react-leaflet'],
+    optimizePackageImports: ['recharts', 'lucide-react', 'framer-motion', '@xyflow/react', 'leaflet', 'react-leaflet', '@portabletext/react', '@sanity/client'],
   },
   trailingSlash: false,
   async headers() {

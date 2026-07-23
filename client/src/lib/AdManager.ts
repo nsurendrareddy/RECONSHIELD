@@ -46,14 +46,18 @@ class AdManagerSingleton {
       { rootMargin: '500px', threshold: 0.01 }
     );
 
-    // Fast path: start queue on interaction or immediately after script evaluation
+    // Fast path: start queue on interaction or during browser idle
     const onHydrate = () => {
       if (this.hasHydrated) return;
       this.hasHydrated = true;
       this.processQueue();
     };
 
-    setTimeout(onHydrate, 0);
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(onHydrate, { timeout: 1200 });
+    } else {
+      setTimeout(onHydrate, 800);
+    }
     window.addEventListener('mousemove', onHydrate, { passive: true, once: true });
     window.addEventListener('scroll', onHydrate, { passive: true, once: true });
     window.addEventListener('touchstart', onHydrate, { passive: true, once: true });

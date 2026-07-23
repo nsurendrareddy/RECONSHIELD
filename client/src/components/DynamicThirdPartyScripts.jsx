@@ -65,11 +65,9 @@ export default function DynamicThirdPartyScripts() {
     // Idle fallback
     let idleId;
     if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      idleId = window.requestIdleCallback(() => {
-        setTimeout(loadScripts, 2000);
-      });
+      idleId = window.requestIdleCallback(loadScripts, { timeout: 2500 });
     } else {
-      setTimeout(loadScripts, 3500);
+      setTimeout(loadScripts, 2500);
     }
 
     return () => {

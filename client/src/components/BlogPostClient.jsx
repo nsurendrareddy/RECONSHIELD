@@ -9,7 +9,14 @@ import { urlFor } from '@/utils/sanity'
 
 
 
-const randomViews = Math.floor(Math.random() * 500) + 100;
+function getSeededViews(str) {
+  if (!str) return 342;
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return (Math.abs(hash) % 450) + 150;
+}
 
 // Custom portable text components with IDs on headers for anchor scrolling
 const ptComponents = {
@@ -427,7 +434,7 @@ FileETag None`,
             </div>
             <div className="flex items-center gap-1.5">
               <Globe className="w-3 h-3" />
-              <span>{randomViews} VIEWS</span>
+              <span>{getSeededViews(post?.slug?.current || post?.slug || post?.title)} VIEWS</span>
             </div>
           </div>
         </div>

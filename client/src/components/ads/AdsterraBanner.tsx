@@ -19,36 +19,11 @@ const BANNER_CONFIGS = {
 const INVOKE_BASE = 'https://www.highperformanceformat.com';
 const AD_TIMEOUT_MS = 8000;
 
-// Ensure skeleton styles exist
-const SKELETON_STYLE_ID = 'ad-skeleton-style';
-function ensureSkeletonStyles() {
-  if (typeof document === 'undefined' || document.getElementById(SKELETON_STYLE_ID)) return;
-  const style = document.createElement('style');
-  style.id = SKELETON_STYLE_ID;
-  style.textContent = `
-    @keyframes adSkeletonShimmer {
-      0%   { background-position: -400px 0; }
-      100% { background-position: 400px 0; }
-    }
-    .ad-skeleton {
-      background: linear-gradient(90deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.07) 40%, rgba(255,255,255,0.03) 80%);
-      background-size: 800px 100%;
-      animation: adSkeletonShimmer 1.6s ease-in-out infinite;
-      border-radius: 8px;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
 function AdsterraBannerInner({ type, className = '', priority = 'normal' }: AdsterraBannerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [adState, setAdState] = useState<AdStatus>('idle');
   const instanceId = useRef(Math.random().toString(36).substring(2, 9));
   const pathname = usePathname();
-
-  useEffect(() => {
-    ensureSkeletonStyles();
-  }, []);
 
   useEffect(() => {
     if (!containerRef.current) return;
