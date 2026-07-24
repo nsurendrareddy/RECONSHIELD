@@ -327,7 +327,7 @@ export async function generateMetadata({ params }) {
     alternates: {
       canonical: `https://reconshield.in/subdomains/${domain}`,
     },
-    robots: { index: true, follow: true },
+    robots: { index: false, follow: true },
     openGraph: {
       url: `https://reconshield.in/subdomains/${domain}`,
       title: `${domain} Internet-Facing Assets Profile | ReconShield`,

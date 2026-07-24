@@ -5,9 +5,11 @@ export default function robots() {
       allow: '/',
       disallow: [
         '/api/',
-        '/admin/'
+        '/admin/',
+        '/reports/'
       ],
     },
     sitemap: 'https://reconshield.in/sitemap.xml',
   }
 }
+
