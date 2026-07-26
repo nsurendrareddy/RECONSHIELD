@@ -33,20 +33,13 @@ export async function POST(req) {
 
     console.log(`>>> REVALIDATE WEBHOOK: Triggered for document type [${docType}], ID [${documentId}]`);
 
-    // 3. Global Purges for lists (always affected by any post/author/category modification)
-    revalidateTag('sanity');
-    revalidateTag('blog');
-    revalidateTag('homepage');
-    revalidatePath('/');
-    revalidatePath('/blog');
-    revalidatePath('/scanner');
-    revalidatePath('/newsletter');
-    revalidatePath('/rss.xml');
-    revalidatePath('/feed.xml');
-    revalidatePath('/sitemap.xml');
-
-    // 4. Targeted Invalidation based on Document Type
+    // 3. Document-Specific Targeted Invalidation
     if (docType === 'post') {
+      revalidateTag('blog');
+      revalidateTag('homepage');
+      revalidatePath('/blog');
+      revalidatePath('/sitemap.xml');
+
       // Invalidate the post page itself
       if (body.slug && body.slug.current) {
         const postSlug = body.slug.current;
