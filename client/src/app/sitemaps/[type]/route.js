@@ -473,29 +473,6 @@ export async function GET(request, { params }) {
                 if (isUrlIndexableAndValid(url)) {
                   xml += `  <url>\n    <loc>${url}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.6</priority>\n  </url>\n`;
                 }
-
-                // Add public report pages if applicable
-                if (entityType === 'ssl' && KNOWN_DOMAINS.includes(item.toLowerCase())) {
-                  const reportUrl = `${BASE_URL}/reports/ssl/${encodeURIComponent(item)}`;
-                  if (isUrlIndexableAndValid(reportUrl)) {
-                    xml += `  <url>\n    <loc>${reportUrl}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
-                  }
-                }
-                if (entityType === 'subdomains' && KNOWN_DOMAINS.includes(item.toLowerCase())) {
-                  const reportUrl = `${BASE_URL}/reports/subdomains/${encodeURIComponent(item)}`;
-                  if (isUrlIndexableAndValid(reportUrl)) {
-                    xml += `  <url>\n    <loc>${reportUrl}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
-                  }
-                }
-                if (entityType === 'ports' && KNOWN_PORTS.includes(parseInt(item, 10))) {
-                  // For ports, generate reports/ports/[host] using KNOWN_DOMAINS/KNOWN_IPS
-                  KNOWN_DOMAINS.forEach(dom => {
-                    const reportUrl = `${BASE_URL}/reports/ports/${encodeURIComponent(dom)}`;
-                    if (isUrlIndexableAndValid(reportUrl)) {
-                      xml += `  <url>\n    <loc>${reportUrl}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.5</priority>\n  </url>\n`;
-                    }
-                  });
-                }
               }
             } else {
                // Minimal fallback for root entity type if no specific items exist

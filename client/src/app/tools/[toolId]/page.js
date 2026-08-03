@@ -15,53 +15,50 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 
 const AuthorizedUseBanner = dynamic(() => import('@/components/AuthorizedUseBanner'));
 
+const TOOL_TITLES = {
+  'ip-lookup': 'IP Lookup — Check IP Location, ISP & Reputation | ReconShield',
+  'whois': 'WHOIS Lookup — Domain Owner, Expiration & Registrar Check | ReconShield',
+  'dns-lookup': 'DNS Lookup — Check A, MX, TXT, NS & SPF Records | ReconShield',
+  'port-scanner': 'Port Scanner — Check Open TCP Ports & Network Services | ReconShield',
+  'ssl-checker': 'SSL Checker — Verify SSL Certificate Expiration & TLS Grade | ReconShield',
+  'subdomain-finder': 'Subdomain Finder — Discover Hidden Subdomains & DNS | ReconShield',
+  'http-headers': 'HTTP Headers Checker — Analyze Security Response Headers | ReconShield',
+  'tech-detector': 'Website Technology Checker — Detect CMS & Tech Stack | ReconShield',
+  'vulnerability-scanner': 'Vulnerability Scanner — Free Exposure Assessment | ReconShield',
+  'email-security': 'Email Security Checker — Validate SPF, DKIM & DMARC | ReconShield'
+};
+
+const TOOL_DESCRIPTIONS = {
+  'ip-lookup': 'Free IP address lookup tool. Instantly check IP geolocation, ISP, ASN, network owner, proxy/VPN status, and blacklist reputation with ReconShield.',
+  'whois': 'Free WHOIS lookup tool. Check domain registrar, creation date, expiration countdown, nameservers, EPP status locks, and RDAP data instantly.',
+  'dns-lookup': 'Free online DNS lookup tool. Query A, AAAA, MX, TXT, CNAME, NS, SOA, and security TXT records for any domain with instant DNSSEC analysis.',
+  'port-scanner': 'Free online port scanner. Audit open TCP/UDP ports, detect running network services, and identify high-risk exposed interfaces on any host.',
+  'ssl-checker': 'Free SSL/TLS certificate checker. Audit certificate validity, expiration dates, intermediate trust chains, supported ciphers, and security grades.',
+  'subdomain-finder': 'Free subdomain finder tool to discover hidden subdomains, map external attack surfaces, inspect CT logs, and check DNS records.',
+  'http-headers': 'Free HTTP security headers checker. Analyze CSP, HSTS, X-Frame-Options, X-Content-Type-Options, and Referrer-Policy response headers.',
+  'tech-detector': 'Free website technology checker. Detect Content Management Systems (CMS), JavaScript frameworks, CDNs, hosting providers, WAFs, and tech stack details.',
+  'vulnerability-scanner': 'Free passive vulnerability scanner. Assess your web infrastructure for exposure risks, misconfigurations, and compliance gaps.',
+  'email-security': 'Free email security checker. Validate SPF syntax, DKIM records, and DMARC enforcement policies to prevent domain forgery.'
+};
+
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const toolId = resolvedParams?.toolId || 'dns-lookup';
   
   const tool = TOOLS.find(t => t.id === toolId) || TOOLS.find(t => t.id === 'dns-lookup');
-  
-  if (toolId === 'tech-detector') {
-    return {
-      title: "Website Technology Checker – Detect CMS, Frameworks & Tech Stack",
-      description: "Free online website technology checker. Detect content management systems (CMS), javascript frameworks, CDNs, hosting providers, WAFs, and web infrastructure instantly.",
-      alternates: {
-        canonical: "https://reconshield.in/tools/tech-detector",
-      },
-      openGraph: {
-        url: "https://reconshield.in/tools/tech-detector",
-        title: "Website Technology Checker – Detect CMS & Web Frameworks",
-        description: "Analyze and identify any website's tech stack. Free CMS detector, framework lookup, and technology database fingerprinting tool.",
-        type: 'website',
-        siteName: 'ReconShield',
-        locale: 'en_US',
-        images: [
-          {
-            url: '/og-image.png',
-            width: 1200,
-            height: 630,
-          },
-        ],
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: "Website Technology Checker | Tech Stack Detector",
-        description: "Find out what technologies, hosting, and CMS any website is built with. Passive infrastructure visibility & profiling tool.",
-        images: ['/og-image.png']
-      }
-    };
-  }
+  const title = TOOL_TITLES[toolId] || `${tool.name} Tool — Audit & Verify Security Configurations | ReconShield`;
+  const description = TOOL_DESCRIPTIONS[toolId] || tool.desc;
 
   return {
-    title: `${tool.name} Tool – Audit & Verify Security Configurations | ReconShield`,
-    description: `Free enterprise-grade ${tool.name} tool. ${tool.desc} Analyze records, identify exposure gaps, and secure configurations instantly.`,
+    title,
+    description,
     alternates: {
       canonical: `https://reconshield.in/tools/${toolId}`,
     },
     openGraph: {
       url: `https://reconshield.in/tools/${toolId}`,
-      title: `${tool.name} - Free Online Security Analyzer | ReconShield`,
-      description: tool.desc,
+      title,
+      description,
       type: 'website',
       siteName: 'ReconShield',
       locale: 'en_US',
@@ -75,8 +72,8 @@ export async function generateMetadata({ params }) {
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${tool.name} | Free Cybersecurity Auditing Tool`,
-      description: tool.desc,
+      title,
+      description,
       images: ['/og-image.png']
     }
   };

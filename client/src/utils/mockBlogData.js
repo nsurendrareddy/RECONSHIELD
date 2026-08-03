@@ -423,41 +423,242 @@ SOC teams utilize AI assistants to ingest, correlate, and triage security logs f
     title: "TLS 1.3 Guide: Implementation, Ciphers, and Performance Hardening",
     slug: "tls-1-3-guide",
     publishedAt: "2026-06-02T09:30:00Z",
-    excerpt: "",
+    excerpt: "A comprehensive technical operational guide to TLS 1.3 implementation, zero round-trip handshakes (0-RTT), modern cipher suite selection, and web server performance tuning.",
     categories: [{ title: "Web Security" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 0,
-    body: convertMarkdownToPortableText("")
+    estimatedWordCount: 2450,
+    body: convertMarkdownToPortableText(`
+## The Evolution to TLS 1.3
+Transport Layer Security version 1.3 (RFC 8446) represents a fundamental overhaul of internet encryption architecture. By removing legacy cryptographic algorithms and streamlining handshake negotiations, TLS 1.3 delivers significantly lower latency and heightened security guarantees.
+
+### Key Architectural Improvements over TLS 1.2
+- **Single Round-Trip Handshake (1-RTT):** Standard TLS 1.3 handshakes complete in one round trip compared to two in TLS 1.2, reducing connection establishment latency by up to 50%.
+- **Zero Round-Trip Resumption (0-RTT):** Enables clients to send encrypted payload data on the very first packet when reconnecting to familiar servers.
+- **Removed Deprecated Algorithms:** Legacy ciphers including RSA key exchange, Static Diffie-Hellman, SHA-1, MD5, RC4, 3DES, and CBC-mode ciphers have been completely eliminated.
+- **Encrypted Handshake Messages:** Certificate payload and extension negotiations are encrypted after the key exchange phase.
+
+### Standard TLS 1.3 Cipher Suites
+TLS 1.3 simplifies cipher negotiation to five highly secure suites combining AEAD (Authenticated Encryption with Associated Data) ciphers and Diffie-Hellman ephemeral key exchanges:
+1. \`TLS_AES_256_GCM_SHA384\`
+2. \`TLS_CHACHA20_POLY1305_SHA256\`
+3. \`TLS_AES_128_GCM_SHA256\`
+4. \`TLS_AES_128_CCM_SHA256\`
+5. \`TLS_AES_128_CCM_8_SHA256\`
+
+### Hardening Enterprise Web Servers
+To audit whether your web server properly enforces TLS 1.3 and modern ciphers, execute a regular [SSL/TLS Configuration Check](/tools/ssl-checker).
+
+#### Nginx Configuration
+\`\`\`nginx
+ssl_protocols TLSv1.2 TLSv1.3;
+ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305;
+ssl_prefer_server_ciphers off;
+\`\`\`
+
+#### Apache Configuration
+\`\`\`apache
+SSLProtocol -all +TLSv1.2 +TLSv1.3
+SSLCipherSuite HIGH:!aNULL:!MD5:!3DES
+SSLHonorCipherOrder off
+\`\`\`
+    `),
+    faqs: [
+      { q: "Why was static RSA key exchange removed in TLS 1.3?", a: "Static RSA key exchange does not provide Perfect Forward Secrecy (PFS). If a server's private key is compromised in the future, all previously recorded traffic could be decrypted." },
+      { q: "What are the security risks associated with 0-RTT resumption?", a: "0-RTT data is susceptible to replay attacks because early data packets lack cryptographic fresh key verification. 0-RTT should only be enabled for idempotent requests (such as HTTP GET)." }
+    ],
+    howto: {
+      name: "How to Validate TLS 1.3 Handshake Protocols",
+      description: "Steps to test and verify active TLS 1.3 configurations using command line tools.",
+      steps: [
+        { name: "OpenSSL Connection Test", text: "Execute 'openssl s_client -connect domain.com:443 -tls1_3' to initiate a forced TLS 1.3 handshake." },
+        { name: "Verify Cipher Exchange", text: "Confirm the output displays TLSv1.3 and an AEAD cipher suite such as TLS_AES_256_GCM_SHA384." }
+      ]
+    }
   },
   'ssl-expiry-monitoring': {
     title: "SSL Expiry Monitoring: Automating Renewal Pipelines for Zero Outages",
     slug: "ssl-expiry-monitoring",
     publishedAt: "2026-06-02T09:00:00Z",
-    excerpt: "",
+    excerpt: "An operational blueprint for enterprise SSL/TLS certificate lifecycle management, automated ACME renewal pipelines, and proactive expiry monitoring.",
     categories: [{ title: "Web Security" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 0,
-    body: convertMarkdownToPortableText("")
+    estimatedWordCount: 2300,
+    body: convertMarkdownToPortableText(`
+## The Business Impact of Certificate Outages
+Expired SSL/TLS certificates cause immediate service disruptions, trigger alarming browser security warnings, break API integrations, and inflict significant brand damage. As certificate validity periods shorten globally to 90 days (and potentially 45 days in future standards), manual tracking via spreadsheets is no longer viable.
+
+### Common Root Causes of Unexpected Expiry
+- **Unmapped Subdomains:** Shadow IT assets created by engineering teams without centralized certificate tracking.
+- **Failed Automated Renewals:** Silent ACME protocol errors caused by blocked port 80 HTTP-01 challenges or DNS API authentication failures.
+- **Intermediary Chain Changes:** Failure to update intermediate certificate chains when root authorities rotate certificates.
+- **Load Balancer Misconfigurations:** Certificate updated on web servers but not on upstream edge proxies or CDN endpoints.
+
+### Building an Automated Monitoring Pipeline
+Enterprise certificate management requires continuous scanning and multi-layered alert notifications:
+1. **External Network Probing:** Periodically test target domain endpoints over port 443 using an automated [SSL Expiry & Certificate Health Check](/tools/ssl-checker).
+2. **ACME Protocol Automation:** Implement automated renewal agents (such as Certbot or acme.sh) configured to trigger renewals at 30 days prior to expiration.
+3. **CAA Record Enforcement:** Publish [DNS CAA Records](/tools/dns-lookup) specifying designated Certificate Authorities to prevent unauthorized certificate issuance.
+4. **Alert Escalation Ladders:** Configure alert webhooks to trigger at 30, 14, 7, and 3 days before expiration via PagerDuty, Slack, or email.
+
+### Remediating Failed ACME Renewals
+Ensure your firewalls permit ACME challenge validation requests and verify DNS TXT record propagation when using DNS-01 validation.
+    `),
+    faqs: [
+      { q: "How far in advance should SSL/TLS certificates be renewed?", a: "Enterprise best practices recommend initiating automated renewal attempts 30 days before expiration to provide ample time to troubleshoot potential ACME failure logs." },
+      { q: "What is the difference between HTTP-01 and DNS-01 ACME challenges?", a: "HTTP-01 proves domain control by placing a token file on web server port 80. DNS-01 proves control by creating a TXT record under _acme-challenge, enabling wildcard certificate issuance." }
+    ],
+    howto: {
+      name: "How to Set Up ACME Certbot Auto-Renewal Verification",
+      description: "Step-by-step instructions to test and verify automated certificate renewal crons.",
+      steps: [
+        { name: "Execute Certbot Dry Run", text: "Run 'sudo certbot renew --dry-run' to simulate an automated renewal cycle without replacing active certificates." },
+        { name: "Verify Timer Daemon", text: "Check systemd timer status with 'systemctl status certbot.timer' to confirm automated scheduling." }
+      ]
+    }
   },
   'https-security-best-practices': {
     title: "HTTPS Security Best Practices: Hardening Web Server Transport Security",
     slug: "https-security-best-practices",
     publishedAt: "2026-06-02T08:30:00Z",
-    excerpt: "",
+    excerpt: "Essential server configuration standards for enforcing HTTPS, implementing HSTS preloading, configuring secure redirects, and eliminating mixed-content vulnerabilities.",
     categories: [{ title: "Web Security" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 0,
-    body: convertMarkdownToPortableText("")
+    estimatedWordCount: 2250,
+    body: convertMarkdownToPortableText(`
+## Enforcing Robust Web Transport Encryption
+Deploying an SSL/TLS certificate is only the first step in securing web transport. Without strict web server security configurations, users can still be subjected to SSL stripping attacks, protocol downgrade exploits, and mixed-content leakage.
+
+### Core HTTPS Hardening Pillars
+
+#### 1. HTTP-to-HTTPS Canonical Redirects
+All plaintext HTTP requests over port 80 must return a \`301 Permanent Redirect\` pointing to the equivalent HTTPS URL over port 443. Never allow plaintext content to co-exist with encrypted endpoints.
+
+#### 2. HTTP Strict Transport Security (HSTS)
+HSTS (\`Strict-Transport-Security\` header) instructs browsers to automatically convert all future HTTP requests to HTTPS before sending them to the network.
+\`\`\`http
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+\`\`\`
+To audit HSTS headers and other security directives, use our [Security Headers Inspection Tool](/tools/http-headers).
+
+#### 3. HSTS Preload List Registration
+Submitting your domain to the Chrome HSTS Preload list ensures that modern browsers ship with hardcoded HTTPS enforcement for your domain, protecting even first-time visitors from SSL stripping.
+
+#### 4. Mixed-Content Elimination
+Ensure all subresources (images, scripts, stylesheets, fonts, and API requests) load strictly over HTTPS. Use Content Security Policy directives to automatically upgrade insecure requests:
+\`\`\`http
+Content-Security-Policy: upgrade-insecure-requests;
+\`\`\`
+
+#### 5. Cookie Security Flags
+Ensure all session cookies set by your web server enforce \`Secure\`, \`HttpOnly\`, and \`SameSite=Lax\` or \`SameSite=Strict\` flags to prevent network interception and cross-site scripting exposure.
+    `),
+    faqs: [
+      { q: "What is SSL Stripping?", a: "SSL stripping is a MITM attack where an adversary intercepts HTTP requests and prevents the browser from upgrading to HTTPS, keeping the victim on an unencrypted connection." },
+      { q: "What is the requirement for HSTS Preloading?", a: "A domain must serve a valid SSL certificate, redirect all HTTP traffic to HTTPS, include all subdomains, set a max-age of at least 1 year (31536000 seconds), and include the 'preload' directive." }
+    ],
+    howto: {
+      name: "How to Hardening Nginx HTTPS Transport Security",
+      description: "Steps to implement strict 301 redirects and HSTS headers in Nginx configurations.",
+      steps: [
+        { name: "Configure Port 80 Redirect", text: "Add 'return 301 https://$host$request_uri;' inside the port 80 server block." },
+        { name: "Add HSTS Header", text: "Add 'add_header Strict-Transport-Security \"max-age=63072000; includeSubDomains; preload\" always;' to the port 443 server block." }
+      ]
+    }
   },
   'ssl-troubleshooting': {
     title: "SSL Troubleshooting: Resolving Common Certificate and Trust Errors",
     slug: "ssl-troubleshooting",
     publishedAt: "2026-06-02T08:00:00Z",
-    excerpt: "",
+    excerpt: "A diagnostic field guide to identifying, analyzing, and resolving SSL/TLS certificate errors, broken trust chains, hostname mismatches, and protocol mismatches.",
     categories: [{ title: "Web Security" }],
     author: { name: "Surendra Reddy", slug: "surendra-reddy" },
-    estimatedWordCount: 0,
-    body: convertMarkdownToPortableText("")
+    estimatedWordCount: 2150,
+    body: convertMarkdownToPortableText(`
+## Diagnosing SSL/TLS Connection Failures
+When an SSL/TLS connection fails, web browsers display intimidating error screens such as \`NET::ERR_CERT_COMMON_NAME_INVALID\` or \`SEC_ERROR_UNKNOWN_ISSUER\`. Understanding the underlying cryptographic cause allows administrators to restore secure connectivity rapidly.
+
+### Common SSL Errors and Remediation
+
+#### 1. Hostname Mismatch (\`ERR_CERT_COMMON_NAME_INVALID\`)
+- **Cause:** The domain in the browser URL does not match any entry in the certificate's Common Name (CN) or Subject Alternative Name (SAN) fields.
+- **Fix:** Re-issue the certificate with all domain variants (\`example.com\` and \`www.example.com\`) included in the SAN list.
+
+#### 2. Incomplete Certificate Chain (\`SEC_ERROR_UNKNOWN_ISSUER\`)
+- **Cause:** The web server sent the leaf certificate but failed to bundle the intermediate CA certificate, leaving the browser unable to verify the path back to a trusted root CA.
+- **Fix:** Concatenate your leaf certificate and intermediate certificates into a full-chain PEM file (e.g., \`fullchain.pem\`) and configure your web server to serve the full chain.
+
+#### 3. Mixed Content Warning (\`ERR_CERT_DATE_INVALID\`)
+- **Cause:** The system clock on either the client or server is skewed, or the certificate has passed its \`notAfter\` expiration timestamp.
+- **Fix:** Synchronize server time via NTP and issue an updated certificate.
+
+#### 4. Revoked Certificate (\`NET::ERR_CERT_REVOKED\`)
+- **Cause:** The issuing CA published a revocation notice for the certificate via CRL or OCSP responder.
+- **Fix:** Immediately revoke the compromised certificate key pair and request a new certificate.
+
+### Diagnostic Tools
+Run a full diagnostic sweep on any public endpoint using our [SSL/TLS Diagnostic Health Checker](/tools/ssl-checker) to inspect SAN coverage, intermediate chains, and cipher compatibility.
+    `),
+    faqs: [
+      { q: "Why does an SSL error occur on mobile devices but not desktop browsers?", a: "Desktop browsers often cache intermediate certificates locally or perform automatic intermediate fetching (AIA), whereas mobile browsers strictly enforce chain completeness." },
+      { q: "How do I test intermediate chain bundling locally?", a: "Run 'openssl s_client -connect domain.com:443 -showcerts' and verify that multiple certificate blocks are returned in the output." }
+    ],
+    howto: {
+      name: "How to Build a Complete SSL Certificate Bundle in Nginx",
+      description: "Steps to bundle leaf and intermediate certificates to resolve chain errors.",
+      steps: [
+        { name: "Combine PEM Files", text: "Run 'cat your_domain.crt intermediate.crt > fullchain.pem' in your terminal." },
+        { name: "Update Nginx Directive", text: "Set 'ssl_certificate /path/to/fullchain.pem;' in your Nginx configuration and reload the service." }
+      ]
+    }
+  },
+  'cloud-security-misconfigurations': {
+    title: "Cloud Security Misconfigurations: Preventing Storage and Identity Exposures",
+    slug: "cloud-security-misconfigurations",
+    publishedAt: "2026-06-01T10:00:00Z",
+    excerpt: "An in-depth analysis of cloud security risks including public storage bucket exposure, over-privileged IAM roles, unauthenticated API gateways, and shadow cloud infrastructure.",
+    categories: [{ title: "Vulnerability Research" }],
+    author: { name: "Surendra Reddy", slug: "surendra-reddy" },
+    estimatedWordCount: 2500,
+    body: convertMarkdownToPortableText(`
+## The Cloud Attack Surface in Modern Operations
+As enterprises migrate workloads to multi-cloud architectures (AWS, GCP, Azure), configuration errors remain the single largest cause of cloud data breaches. Unlike traditional on-premises networks where perimeters are protected by hardware firewalls, cloud environments rely on software-defined identities and policy configurations.
+
+### Top Cloud Security Misconfigurations
+
+#### 1. Publicly Accessible Object Storage Buckets
+Unintentional public read/write permissions on AWS S3 buckets, Azure Blob containers, or Google Cloud Storage buckets routinely expose sensitive databases, source code archives, and PII.
+- **Remediation:** Enforce organization-level 'Block Public Access' policies at the root cloud account level.
+
+#### 2. Over-Privileged IAM Policies
+Assigning wildcard permissions (\`"Effect": "Allow", "Action": "*"\`) to service roles or developer credentials allows compromised keys to grant full administrative control to attackers.
+- **Remediation:** Enforce Principle of Least Privilege (PoLP) and implement Automated IAM Access Analyzers to prune unused permissions.
+
+#### 3. Exposed Cloud Management Interfaces & Unauthenticated APIs
+Publishing administrative consoles or internal API endpoints without authentication allows adversaries to perform automated reconnaissance.
+- Audit public endpoints using [IP & Port Security Telemetry](/tools/ip-lookup) to detect exposed cloud services.
+- Test web endpoints using our [Vulnerability Scanner](/tools/vulnerability-scanner) to audit exposed cloud storage paths and APIs.
+
+#### 4. Hardcoded Secrets in Source Code Repositories
+Developer API keys, database credentials, and cloud access keys checked into public Git repositories are harvested by automated attacker bots within seconds of commit.
+- **Remediation:** Deploy pre-commit hooks (like \`trufflehog\` or \`git-secrets\`) and use cloud secret managers (AWS Secrets Manager, HashiCorp Vault).
+
+### Building a Continuous Cloud Security Posture Management (CSPM) Strategy
+1. **Automate Infrastructure as Code (IaC) Scanning:** Use tools like Checkov or TFSec in CI/CD pipelines to catch misconfigurations before deployment.
+2. **Implement Guardrails:** Enforce AWS SCPs or GCP Organization Policies to restrict regions, bucket publicity, and IAM key creation.
+3. **Continuous Asset Monitoring:** Periodically verify public domain assets and DNS records using a [DNS Record Audit](/tools/dns-lookup).
+    `),
+    faqs: [
+      { q: "What is Cloud Security Posture Management (CSPM)?", a: "CSPM refers to automated security tools that continuously audit cloud environment configurations against security frameworks (CIS Benchmarks, NIST) to detect drift and misconfigurations." },
+      { q: "How can I prevent hardcoded API keys in git commits?", a: "By installing pre-commit hooks that scan diffs for secret signatures before commits are allowed, and using dynamic short-lived credentials via IAM OIDC." }
+    ],
+    howto: {
+      name: "How to Enable AWS S3 Block Public Access Account-Wide",
+      description: "Steps to enforce strict public access prevention across all AWS S3 storage buckets.",
+      steps: [
+        { name: "Run AWS CLI Command", text: "Execute 'aws s3control put-public-access-block --account-id 123456789012 --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true'." },
+        { name: "Verify Policy Compliance", text: "Check AWS Security Hub or S3 Console to verify account-level status displays 'Block All Public Access: ON'." }
+      ]
+    }
   },
 
   // EMAIL SECURITY CLUSTER

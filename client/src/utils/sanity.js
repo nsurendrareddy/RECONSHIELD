@@ -60,6 +60,7 @@ const memoizedFetch = cache(async (query, paramsStr, optionsStr) => {
 client.fetch = async function (query, params, options = {}) {
   // Fallback to false (indefinite edge cache) if no revalidate option is provided
   const revalValue = options.next?.revalidate !== undefined ? options.next.revalidate : false;
+  options.cache = options.cache || 'force-cache';
   options.next = { 
     ...options.next, 
     revalidate: revalValue, 
