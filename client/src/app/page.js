@@ -292,98 +292,59 @@ export default async function Page() {
         {/* ================= SECTION 7: FEATURED SECURITY TOOLS ================= */}
         <section className="py-24 bg-[#05080f] border-b border-white/5" aria-label="Featured Tools">
           <div className="max-w-[1200px] mx-auto px-6">
-            <div className="text-center mb-16 space-y-2">
-              <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// ESSENTIAL UTILITIES</span>
-              <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">Featured Security Tools</h2>
-              <p className="text-gray-400 text-sm max-w-xl mx-auto leading-relaxed">
-                Run targeted diagnostic checks on specific network protocols, registrar data, or configurations.
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-12">
+              <div className="space-y-1">
+                <span className="font-mono text-xs text-[#00ff88] font-bold uppercase tracking-widest">// FLAGSHIP SECURITY SUITES</span>
+                <h2 className="text-3xl font-display font-bold text-white uppercase tracking-wide">Featured Flagship Tools</h2>
+                <p className="text-gray-400 text-sm max-w-xl leading-relaxed">
+                  Enterprise-grade security diagnostics, deliverability suites, and OSINT builders. 100% free with no registration required.
+                </p>
+              </div>
+              <Link href="/tools" className="text-xs font-mono text-[#00ff88] hover:underline uppercase flex items-center gap-1 shrink-0">
+                <span>View All Tools →</span>
+              </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Link href="/tools/whois" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
-                    <Search className="w-5 h-5" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              {[
+                { name: 'Email Security Suite', path: '/tools/email-security-suite', tagline: 'SPF, DKIM, DMARC & BIMI deliverability audit', isNew: true },
+                { name: 'CSP Visual Builder', path: '/tools/csp-evaluator-builder', tagline: 'CSP header builder & XSS filter validator', isNew: true },
+                { name: 'JWT Security Auditor', path: '/tools/jwt-security-auditor', tagline: 'Decode & test weak HMAC secret flaws', isNew: true },
+                { name: 'Google Dork Studio', path: '/tools/google-dork-builder', tagline: 'Construct OSINT search queries & dorks', isNew: true },
+                { name: 'IOC Defang & STIX', path: '/tools/ioc-defang-sanitizer', tagline: 'Sanitize URLs/IPs & export STIX 2.1', isNew: true },
+                { name: 'Sigma & YARA Studio', path: '/tools/sigma-yara-rule-studio', tagline: 'Convert Sigma rules to Splunk/Elastic', isNew: true },
+                { name: 'Linux Hardening Script', path: '/tools/linux-hardening-generator', tagline: 'CIS Benchmark Bash script generator', isNew: true },
+                { name: 'TLS Hardening Studio', path: '/tools/tls-cipher-hardening-generator', tagline: 'Mozilla SSL config rule generator', isNew: true },
+                { name: 'MITRE ATT&CK Explorer', path: '/tools/mitre-attack-navigator', tagline: 'TTP matrix explorer & heatmap studio', isNew: true },
+                { name: 'Browser Security Studio', path: '/tools/http-headers', tagline: 'HTTP response header auditor & grader', isNew: false }
+              ].map((tool, idx) => (
+                <Link
+                  key={tool.name}
+                  href={tool.path}
+                  className="group p-5 bg-surface-900 border border-white/10 rounded-2xl hover:border-[#00ff88]/50 transition-all flex flex-col justify-between shadow-lg"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono text-[#00ff88] font-bold">0{idx + 1}</span>
+                      {tool.isNew && (
+                        <span className="text-[8px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.2 rounded bg-[#00ff88]/20 text-[#00ff88] border border-[#00ff88]/30">
+                          NEW
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="text-xs font-bold text-white uppercase group-hover:text-[#00ff88] transition-colors leading-snug">
+                      {tool.name}
+                    </h3>
+                    <p className="text-[10px] text-gray-500 font-sans line-clamp-2 leading-relaxed">
+                      {tool.tagline}
+                    </p>
                   </div>
-                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">WHOIS Lookup</h3>
-                  <p className="text-gray-400 text-xs leading-relaxed">Domain ownership and registration intelligence.</p>
-                </div>
-                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
-                  <span>Open Tool</span>
-                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </div>
-              </Link>
-
-              <Link href="/tools/vulnerability-scanner" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
-                    <ShieldAlert className="w-5 h-5" />
+                  <div className="pt-4 border-t border-white/5 mt-4 flex items-center justify-between text-[10px] font-mono text-[#00ff88]">
+                    <span>Launch Tool</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>
-                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">Vulnerability Scanner</h3>
-                  <p className="text-gray-400 text-xs leading-relaxed">Identify vulnerabilities and weaknesses.</p>
-                </div>
-                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
-                  <span>Open Tool</span>
-                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </div>
-              </Link>
-
-              <Link href="/tools/ssl-checker" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
-                    <Lock className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">SSL Certificate Checker</h3>
-                  <p className="text-gray-400 text-xs leading-relaxed">Validate SSL/TLS certificates.</p>
-                </div>
-                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
-                  <span>Open Tool</span>
-                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </div>
-              </Link>
-
-              <Link href="/tools/email-security" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">Email Security Checker</h3>
-                  <p className="text-gray-400 text-xs leading-relaxed">SPF, DKIM and DMARC validation.</p>
-                </div>
-                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
-                  <span>Open Tool</span>
-                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </div>
-              </Link>
-
-              <Link href="/tools/dns-lookup" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
-                    <Globe className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">DNS Lookup</h3>
-                  <p className="text-gray-400 text-xs leading-relaxed">Analyze DNS records.</p>
-                </div>
-                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
-                  <span>Open Tool</span>
-                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </div>
-              </Link>
-
-              <Link href="/tools/port-scanner" className="group p-6 bg-surface-900 border border-white/5 rounded-2xl hover:border-cyan-500/30 transition-all flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-surface-950 flex items-center justify-center text-cyan-400 mb-6 group-hover:scale-105 transition-transform border border-white/5">
-                    <Terminal className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-white font-bold text-lg mb-2 font-display uppercase tracking-wide group-hover:text-cyan-400 transition-colors">Port Scanner</h3>
-                  <p className="text-gray-400 text-xs leading-relaxed">Detect open ports and exposed services.</p>
-                </div>
-                <div className="pt-4 border-t border-white/5 mt-6 flex items-center justify-between text-xs font-mono text-cyan-400">
-                  <span>Open Tool</span>
-                  <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                </div>
-              </Link>
+                </Link>
+              ))}
             </div>
           </div>
         </section>

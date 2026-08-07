@@ -214,40 +214,91 @@ export default function Layout({ children }) {
         )
       case 'tools':
         return (
-          <div className="grid grid-cols-3 gap-x-8 gap-y-6">
-            {Object.entries(TOOLS_DATA).map(([category, items]) => (
-              <div key={category} className="space-y-3">
-                <h4 className="text-[10px] font-mono font-bold text-gray-500 uppercase tracking-widest pb-1 border-b border-white/5">// {category}</h4>
-                <div className="flex flex-col gap-2">
-                  {items.map((item) => {
-                    const IconComp = item.icon
-                    return (
-                      <Link prefetch={false}
-                        key={item.name}
-                        href={item.path}
-                        onClick={handleLinkClick}
-                        className="group flex items-start gap-2.5 p-1 rounded-lg hover:bg-white/[0.02] transition-colors"
-                      >
-                        <div className="w-7 h-7 rounded-md flex items-center justify-center bg-matrix-400/5 border border-matrix-400/10 text-matrix-400 group-hover:border-matrix-400/30 group-hover:bg-matrix-400/10 transition-all shrink-0">
-                          <IconComp className="w-3.5 h-3.5" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs font-bold text-white group-hover:text-matrix-400 transition-colors uppercase">
-                              {item.name}
-                            </span>
-                            <span className="text-[8px] font-mono text-matrix-400 bg-matrix-400/5 border border-matrix-400/20 px-1 rounded-sm">
-                              {item.stat}
-                            </span>
-                          </div>
-                          <p className="text-[10px] text-gray-500 mt-0.5 leading-tight">{item.desc}</p>
-                        </div>
-                      </Link>
-                    )
-                  })}
-                </div>
+          <div className="space-y-6">
+            {/* Top Featured Flagship Tools */}
+            <div>
+              <div className="flex items-center justify-between pb-2 border-b border-white/5 mb-3">
+                <h4 className="text-[10px] font-mono font-bold text-matrix-400 uppercase tracking-widest">// FEATURED FLAGSHIP TOOLS</h4>
+                <span className="text-[9px] font-mono text-gray-500 uppercase">10 Flagship Suites</span>
               </div>
-            ))}
+              <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+                {[
+                  { name: 'Email Security Suite', path: '/tools/email-security-suite', desc: 'SPF, DKIM, DMARC & BIMI Audit', isNew: true, icon: Mail },
+                  { name: 'CSP Visual Evaluator & Builder', path: '/tools/csp-evaluator-builder', desc: 'CSP Header Builder & XSS Guard', isNew: true, icon: Shield },
+                  { name: 'JWT Security Auditor', path: '/tools/jwt-security-auditor', desc: 'Decode & Test Secret Flaws', isNew: true, icon: Lock },
+                  { name: 'Google Dork Builder & OSINT', path: '/tools/google-dork-builder', desc: 'Query Studio for OSINT', isNew: true, icon: Search },
+                  { name: 'IOC Defang & STIX Studio', path: '/tools/ioc-defang-sanitizer', desc: 'Sanitize Indicators & Export STIX', isNew: true, icon: Shield },
+                  { name: 'Sigma & YARA Studio', path: '/tools/sigma-yara-rule-studio', desc: 'SIEM Rule Converter & Linter', isNew: true, icon: Code },
+                  { name: 'Linux Hardening Generator', path: '/tools/linux-hardening-generator', desc: 'CIS Benchmark Script Builder', isNew: true, icon: Terminal },
+                  { name: 'TLS Hardening Studio', path: '/tools/tls-cipher-hardening-generator', desc: 'Mozilla SSL Config Rule Generator', isNew: true, icon: Lock },
+                  { name: 'MITRE ATT&CK Explorer', path: '/tools/mitre-attack-navigator', desc: 'TTP Matrix & Heatmap Studio', isNew: true, icon: Network },
+                  { name: 'Browser Security Studio', path: '/tools/http-headers', desc: 'HTTP Security Headers Grader', isNew: false, icon: Globe },
+                ].map((tool) => {
+                  const IconComp = tool.icon;
+                  return (
+                    <Link
+                      key={tool.name}
+                      href={tool.path}
+                      onClick={handleLinkClick}
+                      className="group p-2.5 rounded-xl bg-surface-950/80 border border-white/5 hover:border-matrix-400/40 transition-all flex flex-col justify-between"
+                    >
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between">
+                          <IconComp className="w-3.5 h-3.5 text-matrix-400" />
+                          {tool.isNew && (
+                            <span className="text-[8px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.2 rounded bg-matrix-400/20 text-matrix-400 border border-matrix-400/30">
+                              NEW
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-xs font-bold text-white group-hover:text-matrix-400 transition-colors uppercase block truncate">
+                          {tool.name}
+                        </span>
+                        <p className="text-[9px] text-gray-500 font-sans line-clamp-2 leading-tight">
+                          {tool.desc}
+                        </p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Tool Categories & Bottom Link Bar */}
+            <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+                <span className="text-gray-500 uppercase text-[10px] tracking-widest mr-2">// Categories:</span>
+                {[
+                  { name: 'Web Security', path: '/tools/web-security' },
+                  { name: 'Email Security', path: '/tools/email-security' },
+                  { name: 'OSINT', path: '/tools/osint' },
+                  { name: 'Threat Intelligence', path: '/tools/threat-intelligence' },
+                  { name: 'Networking', path: '/tools/networking' },
+                  { name: 'SSL/TLS', path: '/tools/ssl-tls' },
+                  { name: 'Cryptography', path: '/tools/cryptography' },
+                  { name: 'Linux', path: '/tools/linux' },
+                  { name: 'Cloud Security', path: '/tools/cloud-security' },
+                  { name: 'Developer Tools', path: '/tools/encoding' },
+                ].map((cat) => (
+                  <Link
+                    key={cat.name}
+                    href={cat.path}
+                    onClick={handleLinkClick}
+                    className="px-2.5 py-1 rounded-lg bg-surface-950 text-gray-400 hover:text-white hover:border-matrix-400/30 border border-white/5 transition-colors"
+                  >
+                    {cat.name}
+                  </Link>
+                ))}
+              </div>
+
+              <Link
+                href="/tools"
+                onClick={handleLinkClick}
+                className="px-4 py-2 bg-matrix-400 hover:bg-matrix-300 text-black text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-[0_0_12px_rgba(0,255,156,0.3)] shrink-0 flex items-center gap-1.5"
+              >
+                <span>→ Explore All Tools</span>
+              </Link>
+            </div>
           </div>
         )
       case 'platform':

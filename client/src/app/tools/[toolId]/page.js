@@ -7,6 +7,7 @@ import { ChevronRight, Share2, AlertTriangle, ShieldCheck, BarChart3, HelpCircle
 import { TOOLS, TOOL_SEO_CONTENT } from '@/utils/toolsData';
 import { TOOL_DOMINATION_DATA } from '@/utils/toolDominationData';
 import { SemanticToolLinks } from '@/components/SemanticLinks';
+import ToolPageSidebar from '@/components/ToolPageSidebar';
 import { renderMarkdown } from '@/utils/markdownRenderer';
 
 const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient'), {
@@ -518,9 +519,10 @@ export function ToolPageContent({ toolId }) {
             <ShareButtons toolId={toolId} toolName={tool.name} />
           </div>
 
-          {/* Right Column: Sidebar (Related Tools) */}
+          {/* Right Column: Sidebar (Featured Flagship Tools & Related Tools) */}
           <div className="lg:col-span-1">
             <div className="sticky top-24">
+              <ToolPageSidebar currentToolId={toolId} />
 
               <h3 className="text-sm font-mono font-bold text-gray-400 uppercase tracking-widest mb-6">Related Tools</h3>
               <div className="space-y-4">

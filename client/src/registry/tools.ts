@@ -1,6 +1,51 @@
 import { ToolMetadata } from '@/types/tool';
 
+export interface FlagshipTool {
+  id: string;
+  name: string;
+  slug: string;
+  tagline: string;
+  category: string;
+  isNew?: boolean;
+  iconName: string;
+}
+
+export const FLAGSHIP_TOOLS: FlagshipTool[] = [
+  { id: 'email-security-suite', name: 'Email Security Suite', slug: 'email-security-suite', tagline: 'SPF, DKIM, DMARC & BIMI deliverability audit', category: 'Email Security', isNew: true, iconName: 'Mail' },
+  { id: 'csp-evaluator-builder', name: 'CSP Visual Evaluator & Builder', slug: 'csp-evaluator-builder', tagline: 'CSP header builder & XSS filter validator', category: 'Web Security', isNew: true, iconName: 'ShieldAlert' },
+  { id: 'jwt-security-auditor', name: 'JWT Security Auditor', slug: 'jwt-security-auditor', tagline: 'Decode & test weak HMAC secrets & algorithm flaws', category: 'API Security', isNew: true, iconName: 'Ticket' },
+  { id: 'google-dork-builder', name: 'Google Dork Builder & OSINT Studio', slug: 'google-dork-builder', tagline: 'Construct OSINT search queries & dorks', category: 'OSINT', isNew: true, iconName: 'Search' },
+  { id: 'ioc-defang-sanitizer', name: 'IOC Defang & STIX Studio', slug: 'ioc-defang-sanitizer', tagline: 'Sanitize URLs/IPs & export to STIX 2.1', category: 'Incident Response', isNew: true, iconName: 'Microscope' },
+  { id: 'sigma-yara-rule-studio', name: 'Sigma & YARA Studio', slug: 'sigma-yara-rule-studio', tagline: 'Convert Sigma rules to Splunk/Elastic & validate YARA', category: 'SIEM', isNew: true, iconName: 'Code' },
+  { id: 'linux-hardening-generator', name: 'Linux Hardening Generator', slug: 'linux-hardening-generator', tagline: 'CIS Benchmark Bash script generator', category: 'Linux', isNew: true, iconName: 'Terminal' },
+  { id: 'tls-cipher-hardening-generator', name: 'TLS Hardening Studio', slug: 'tls-cipher-hardening-generator', tagline: 'Mozilla SSL config rule generator', category: 'SSL/TLS', isNew: true, iconName: 'Lock' },
+  { id: 'mitre-attack-navigator', name: 'MITRE ATT&CK Explorer', slug: 'mitre-attack-navigator', tagline: 'TTP matrix explorer & detection mapper', category: 'Threat Intelligence', isNew: true, iconName: 'Grid' },
+  { id: 'http-headers', name: 'Browser Security Studio', slug: 'http-headers', tagline: 'HTTP response header auditor & grader', category: 'Web Security', isNew: false, iconName: 'Globe' }
+];
+
 export const TOOLS_REGISTRY: ToolMetadata[] = [
+  {
+    id: 'email-security-suite',
+    name: 'Email Security Suite',
+    slug: 'email-security-suite',
+    tagline: 'SPF, DKIM, DMARC & BIMI deliverability audit',
+    description: 'Unified anti-spoofing audit pipeline. Validate SPF 10-lookup limits, DKIM records, DMARC enforcement policies, BIMI branding, and MX mail server TLS configurations in a single browser-side check.',
+    category: 'email-security',
+    secondaryCategories: ['dns', 'compliance'],
+    tags: ['spf', 'dkim', 'dmarc', 'bimi', 'email', 'phishing', 'security'],
+    iconName: 'Mail',
+    difficulty: 'Intermediate',
+    estimatedTime: 'Instant (2s)',
+    isPopular: true,
+    isFeatured: true,
+    isNew: true,
+    faqs: [
+      { question: 'What is the SPF 10-DNS lookup limit?', answer: 'RFC 7208 mandates that an SPF evaluation must not require more than 10 DNS lookups. Exceeding 10 lookups causes PermError.' },
+      { question: 'Why is p=reject recommended?', answer: 'A DMARC policy of p=reject blocks unauthenticated emails completely, preventing attackers from spoofing your domain name.' }
+    ],
+    relatedToolIds: ['dns-lookup', 'http-headers', 'ssl-checker'],
+    relatedBlogSlugs: ['spf-dkim-dmarc-blueprint', 'email-spoofing-prevention']
+  },
   {
     id: 'whois',
     name: 'WHOIS Lookup',
@@ -86,27 +131,6 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     ],
     relatedToolIds: ['whois', 'email-security', 'subdomain-finder'],
     relatedBlogSlugs: ['dns-record-types', 'dns-security-explained']
-  },
-  {
-    id: 'email-security',
-    name: 'Email Security Checker',
-    slug: 'email-security',
-    tagline: 'Validate SPF, DKIM, and DMARC anti-spoofing policies',
-    description: 'Analyze email authentication records to prevent domain spoofing, phishing abuse, and deliverability drops.',
-    category: 'email-security',
-    secondaryCategories: ['dns', 'compliance'],
-    tags: ['spf', 'dkim', 'dmarc', 'email', 'phishing', 'security'],
-    iconName: 'Mail',
-    difficulty: 'Intermediate',
-    estimatedTime: 'Instant (2s)',
-    isPopular: true,
-    isFeatured: true,
-    faqs: [
-      { question: 'What is DMARC?', answer: 'DMARC (Domain-based Message Authentication) dictates how mail servers handle emails that fail SPF or DKIM checks.' },
-      { question: 'Why is p=reject recommended?', answer: 'A policy of p=reject blocks unauthenticated emails completely, preventing attackers from spoofing your domain name.' }
-    ],
-    relatedToolIds: ['dns-lookup', 'http-headers', 'ssl-checker'],
-    relatedBlogSlugs: ['spf-dkim-dmarc-blueprint', 'email-spoofing-prevention']
   },
   {
     id: 'http-headers',
