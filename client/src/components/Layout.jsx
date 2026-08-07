@@ -9,7 +9,7 @@ import {
   Shield, Activity, AlertTriangle, Lock, Globe, Menu, X, ExternalLink,
   ChevronDown, Server, Cpu, Database, Network, Layers, Mail,
   GraduationCap, BookOpen, Code, FileText, Users, FileCode, Search,
-  ArrowRight
+  ArrowRight, Terminal
 } from 'lucide-react'
 
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
