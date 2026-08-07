@@ -12,78 +12,14 @@ const adsenseDomains = [
 
 const adsenseDomainSources = adsenseDomains.join(' ');
 
-const isDev = process.env.NODE_ENV !== 'production';
-
-const adDomains = [
-  'https://highperformanceformat.com',
-  'https://*.highperformanceformat.com',
-  'https://effectivecpmnetwork.com',
-  'https://*.effectivecpmnetwork.com',
-  'https://protrafficinspector.com',
-  'https://*.protrafficinspector.com',
-  'https://spendsdetachment.com',
-  'https://*.spendsdetachment.com',
-  'https://workdeadlinededicate.com',
-  'https://*.workdeadlinededicate.com',
-  'https://cdn.storageimagedisplay.com',
-  'https://*.storageimagedisplay.com',
-  'https://zoologyfibre.com',
-  'https://*.zoologyfibre.com',
-  'https://kettledroopingcontinuation.com',
-  'https://*.kettledroopingcontinuation.com',
-  // Secondary ad delivery domains loaded dynamically by invoke.js
-  'https://furiousexpansion.com',
-  'https://*.furiousexpansion.com',
-  'https://realizationnewestfangs.com',
-  'https://*.realizationnewestfangs.com',
-  'https://fizzyacerbitymellow.com',
-  'https://*.fizzyacerbitymellow.com',
-  'https://sleepoverlimitprofound.com',
-  'https://*.sleepoverlimitprofound.com',
-  'https://exemplarfederallithe.com',
-  'https://*.exemplarfederallithe.com',
-  'https://consumeririssalary.com',
-  'https://*.consumeririssalary.com'
-];
-const adDomainSources = adDomains.join(' ');
-
-const adImageDomains = [
-  'https://highperformanceformat.com',
-  'https://*.highperformanceformat.com',
-  'https://effectivecpmnetwork.com',
-  'https://*.effectivecpmnetwork.com',
-  'https://protrafficinspector.com',
-  'https://*.protrafficinspector.com',
-  'https://spendsdetachment.com',
-  'https://*.spendsdetachment.com',
-  'https://workdeadlinededicate.com',
-  'https://*.workdeadlinededicate.com',
-  'https://cdn.storageimagedisplay.com',
-  'https://*.storageimagedisplay.com',
-  'https://zoologyfibre.com',
-  'https://*.zoologyfibre.com',
-  'https://kettledroopingcontinuation.com',
-  'https://*.kettledroopingcontinuation.com',
-  // Secondary ad delivery domains loaded dynamically by invoke.js
-  'https://furiousexpansion.com',
-  'https://*.furiousexpansion.com',
-  'https://realizationnewestfangs.com',
-  'https://*.realizationnewestfangs.com',
-  'https://fizzyacerbitymellow.com',
-  'https://*.fizzyacerbitymellow.com',
-  'https://exemplarfederallithe.com',
-  'https://*.exemplarfederallithe.com'
-];
-const adImageDomainSources = adImageDomains.join(' ');
-
 const cspHeader = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com ${adsenseDomainSources} ${adDomainSources}`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://va.vercel-scripts.com ${adsenseDomainSources}`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-  `img-src 'self' blob: data: https://cdn.sanity.io https://*.googleusercontent.com https://www.google-analytics.com ${adsenseDomainSources} ${adImageDomainSources}`,
+  `img-src 'self' blob: data: https://cdn.sanity.io https://*.googleusercontent.com https://www.google-analytics.com ${adsenseDomainSources}`,
   `font-src 'self' data: https://fonts.gstatic.com`,
-  `connect-src 'self' https://api.reconshield.in https://*.google-analytics.com https://www.google-analytics.com https://www.googletagmanager.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io http://127.0.0.1:* http://localhost:* ${adsenseDomainSources} ${adDomainSources}`,
-  `frame-src 'self' ${adsenseDomainSources} ${adDomainSources}`,
+  `connect-src 'self' https://api.reconshield.in https://*.google-analytics.com https://www.google-analytics.com https://www.googletagmanager.com https://cdn.sanity.io https://*.api.sanity.io wss://*.api.sanity.io http://127.0.0.1:* http://localhost:* ${adsenseDomainSources}`,
+  `frame-src 'self' ${adsenseDomainSources}`,
   `child-src 'self' blob:`,
   "worker-src 'self' blob:"
 ].join('; ');

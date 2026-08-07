@@ -14,6 +14,7 @@ import {
 
 const NewsletterForm = dynamic(() => import('@/components/NewsletterForm'), { ssr: false })
 const CookieBanner = dynamic(() => import('@/components/CookieBanner'), { ssr: false })
+const CommandPalette = dynamic(() => import('@/components/CommandPalette'), { ssr: false })
 
 const TOOLS_DATA = {
   Reconnaissance: [
@@ -823,6 +824,7 @@ export default function Layout({ children }) {
       </div>
 
       <CookieBanner />
+      <CommandPalette />
     </div>
   )
 }

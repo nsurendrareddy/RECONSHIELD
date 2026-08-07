@@ -1,40 +1,53 @@
 import React from 'react';
 import Link from 'next/link';
+import { ArrowRight, Shield, BookOpen, Layers } from 'lucide-react';
+import { getToolById } from '@/registry/tools';
+import { getRelatedTools } from '@/lib/recommendationEngine';
 
 export function SemanticToolLinks({ currentTool }) {
-  // Logic: Map tools to relevant blog posts or other tools to build Hub-and-Spoke structure
-  const relationshipMap = {
-    'email-security': [
-      { title: 'Understanding DMARC Policies', url: '/blog/what-is-dmarc' },
-      { title: 'Free Cybersecurity Tools Guide', url: '/blog/free-cybersecurity-tools' }
-    ],
-    'vulnerability-scanner': [
-      { title: 'Attack Surface Management', url: '/blog/category/attack-surface-management' }
-    ],
-    'ip-lookup': [
-      { title: 'What is OSINT? A Beginner\'s Guide', url: '/blog/what-is-osint-beginners-guide' }
-    ],
-    'dns-lookup': [
-      { title: 'Free Cybersecurity Tools Guide', url: '/blog/free-cybersecurity-tools' }
-    ]
-  };
+  const tool = getToolById(currentTool);
+  if (!tool) return null;
 
-  const links = relationshipMap[currentTool] || [];
-
-  if (links.length === 0) return null;
+  const relatedTools = getRelatedTools(tool, 3);
 
   return (
-    <aside className="border-t border-matrix-400/20 pt-6 mt-8">
-      <h3 className="font-mono text-sm uppercase text-matrix-400 mb-4">Related Intelligence</h3>
-      <ul className="space-y-2">
-        {links.map(link => (
-          <li key={link.url}>
-             <Link href={link.url} className="text-gray-400 hover:text-white transition-colors text-sm">
-               → {link.title}
-             </Link>
-          </li>
+    <aside className="p-6 bg-surface-900/80 border border-white/10 rounded-2xl space-y-4 my-8 font-sans">
+      <div className="flex items-center gap-2">
+        <Shield className="w-4 h-4 text-matrix-400" />
+        <h3 className="font-mono text-xs uppercase tracking-widest text-matrix-400 font-bold">
+          Related Security Intelligence &amp; Utilities
+        </h3>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
+        {relatedTools.map(t => (
+          <Link
+            key={t.id}
+            href={`/tools/${t.slug}`}
+            className="p-3 bg-surface-950 border border-white/5 rounded-xl hover:border-matrix-400/40 transition-all flex flex-col justify-between group"
+          >
+            <div>
+              <span className="text-[9px] text-gray-500 uppercase tracking-wider">{t.category}</span>
+              <h4 className="text-white font-bold group-hover:text-matrix-400 transition-colors mt-0.5">{t.name}</h4>
+            </div>
+            <div className="flex items-center justify-between text-matrix-400 text-[10px] pt-3">
+              <span>Launch</span>
+              <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </Link>
         ))}
-      </ul>
+      </div>
+
+      <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-gray-400">
+        <Link href={`/tools/${tool.category}`} className="hover:text-matrix-400 transition-colors flex items-center gap-1">
+          <Layers className="w-3.5 h-3.5 text-matrix-400" />
+          <span>Explore all {tool.category.toUpperCase()} tools →</span>
+        </Link>
+        <Link href="/blog" className="hover:text-matrix-400 transition-colors flex items-center gap-1">
+          <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
+          <span>Read Security Briefings →</span>
+        </Link>
+      </div>
     </aside>
   );
 }

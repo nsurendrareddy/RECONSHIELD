@@ -350,9 +350,14 @@ export async function GET(request, { params }) {
           const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://reconshield.onrender.com';
           const cacheTime = 86400; // 24hr cache for all sitemap chunks
           
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3000);
+          
           const backendRes = await fetch(`${backendUrl}/api/sitemap-generate?type=${entityType}&page=${page}`, {
+            signal: controller.signal,
             next: { revalidate: cacheTime } 
           });
+          clearTimeout(timeoutId);
           
           if (backendRes.ok) {
              const textData = await backendRes.text();

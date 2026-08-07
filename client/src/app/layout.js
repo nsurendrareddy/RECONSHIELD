@@ -2,7 +2,6 @@ import Layout from "@/components/Layout";
 import GoogleAnalyticsPageView from "@/components/GoogleAnalyticsPageView";
 import DynamicThirdPartyScripts from "@/components/DynamicThirdPartyScripts";
 import { AdManagerProvider } from "@/components/ads/AdManager";
-import AdsterraSocialBar from "@/components/ads/AdsterraSocialBar";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
@@ -48,19 +47,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`dark h-full antialiased ${inter.variable} ${jetbrains.variable} ${rajdhani.variable}`}>
       <head>
-        {/* --- Ad Network Resource Hints ---
-            Eliminates cold DNS lookup + TCP handshake + TLS for ad domains.
-            Saving: ~300–800ms on first ad script request per domain.
-            Note: base domain + subdomains are both preconnected because the
-            CDN CNAME chain resolves through the base domain's DNS root.
-        */}
-        <link rel="preconnect" href="https://www.highperformanceformat.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://www.highperformanceformat.com" />
-        <link rel="preconnect" href="https://effectivecpmnetwork.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://effectivecpmnetwork.com" />
-        <link rel="dns-prefetch" href="https://pl29692252.effectivecpmnetwork.com" />
-        <link rel="dns-prefetch" href="https://pl29692251.effectivecpmnetwork.com" />
-        {/* --- End Ad Network Resource Hints --- */}
         {/* Trusted Types Default Passthrough Policy */}
         <script
           dangerouslySetInnerHTML={{
@@ -107,7 +93,6 @@ export default function RootLayout({ children }) {
           <GoogleAnalyticsPageView />
           {/* Dynamic loading of Google AdSense and Analytics 4 */}
           <DynamicThirdPartyScripts />
-          <AdsterraSocialBar />
           <Layout>
             {children}
           </Layout>
@@ -125,7 +110,7 @@ export default function RootLayout({ children }) {
                 "@type": "WebSite",
                 "@id": "https://reconshield.in/#website",
                 "name": "ReconShield",
-                "alternateName": ["analysis Shield"],
+                "alternateName": ["ReconShield", "Recon Shield"],
                 "url": "https://reconshield.in",
                 "publisher": { "@id": "https://reconshield.in/#organization" }
               },

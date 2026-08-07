@@ -18,14 +18,20 @@ export async function GET() {
     let chunks = {};
     try {
       const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://reconshield.onrender.com';
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 3000);
+      
       const backendRes = await fetch(`${backendUrl}/api/sitemap-metadata`, {
+        signal: controller.signal,
         next: { revalidate: 86400 } 
       });
+      clearTimeout(timeoutId);
+      
       if (backendRes.ok) {
         chunks = await backendRes.json();
       }
     } catch (error) {
-      console.error('Failed to fetch sitemap metadata:', error);
+      console.warn('Backend sitemap metadata unavailable or timed out; using static fallbacks.');
     }
     
     for (const type of SITEMAP_TYPES) {
