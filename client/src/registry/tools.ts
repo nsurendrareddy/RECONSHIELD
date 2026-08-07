@@ -15,12 +15,12 @@ export const FLAGSHIP_TOOLS: FlagshipTool[] = [
   { id: 'csp-evaluator-builder', name: 'CSP Visual Evaluator & Builder', slug: 'csp-evaluator-builder', tagline: 'CSP header builder & XSS filter validator', category: 'Web Security', isNew: true, iconName: 'ShieldAlert' },
   { id: 'jwt-security-auditor', name: 'JWT Security Auditor', slug: 'jwt-security-auditor', tagline: 'Decode & test weak HMAC secrets & algorithm flaws', category: 'API Security', isNew: true, iconName: 'Ticket' },
   { id: 'google-dork-builder', name: 'Google Dork Builder & OSINT Studio', slug: 'google-dork-builder', tagline: 'Construct OSINT search queries & dorks', category: 'OSINT', isNew: true, iconName: 'Search' },
-  { id: 'ioc-defang-sanitizer', name: 'IOC Defang & STIX Studio', slug: 'ioc-defang-sanitizer', tagline: 'Sanitize URLs/IPs & export to STIX 2.1', category: 'Incident Response', isNew: true, iconName: 'Microscope' },
-  { id: 'sigma-yara-rule-studio', name: 'Sigma & YARA Studio', slug: 'sigma-yara-rule-studio', tagline: 'Convert Sigma rules to Splunk/Elastic & validate YARA', category: 'SIEM', isNew: true, iconName: 'Code' },
+  { id: 'ioc-defang-stix-studio', name: 'IOC Defang & STIX Studio', slug: 'ioc-defang-stix-studio', tagline: 'Sanitize URLs/IPs & export to STIX 2.1', category: 'Incident Response', isNew: true, iconName: 'Microscope' },
+  { id: 'sigma-yara-studio', name: 'Sigma & YARA Studio', slug: 'sigma-yara-studio', tagline: 'Convert Sigma rules to Splunk/Elastic & validate YARA', category: 'SIEM', isNew: true, iconName: 'Code' },
   { id: 'linux-hardening-generator', name: 'Linux Hardening Generator', slug: 'linux-hardening-generator', tagline: 'CIS Benchmark Bash script generator', category: 'Linux', isNew: true, iconName: 'Terminal' },
-  { id: 'tls-cipher-hardening-generator', name: 'TLS Hardening Studio', slug: 'tls-cipher-hardening-generator', tagline: 'Mozilla SSL config rule generator', category: 'SSL/TLS', isNew: true, iconName: 'Lock' },
-  { id: 'mitre-attack-navigator', name: 'MITRE ATT&CK Explorer', slug: 'mitre-attack-navigator', tagline: 'TTP matrix explorer & detection mapper', category: 'Threat Intelligence', isNew: true, iconName: 'Grid' },
-  { id: 'http-headers', name: 'Browser Security Studio', slug: 'http-headers', tagline: 'HTTP response header auditor & grader', category: 'Web Security', isNew: false, iconName: 'Globe' }
+  { id: 'tls-hardening-studio', name: 'TLS Hardening Studio', slug: 'tls-hardening-studio', tagline: 'Mozilla SSL config rule generator', category: 'SSL/TLS', isNew: true, iconName: 'Lock' },
+  { id: 'mitre-attack-explorer', name: 'MITRE ATT&CK Explorer', slug: 'mitre-attack-explorer', tagline: 'TTP matrix explorer & detection mapper', category: 'Threat Intelligence', isNew: true, iconName: 'Grid' },
+  { id: 'browser-security-studio', name: 'Browser Security Studio', slug: 'browser-security-studio', tagline: 'HTTP response header auditor & grader', category: 'Web Security', isNew: false, iconName: 'Globe' }
 ];
 
 export const TOOLS_REGISTRY: ToolMetadata[] = [
@@ -40,11 +40,181 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     isFeatured: true,
     isNew: true,
     faqs: [
-      { question: 'What is the SPF 10-DNS lookup limit?', answer: 'RFC 7208 mandates that an SPF evaluation must not require more than 10 DNS lookups. Exceeding 10 lookups causes PermError.' },
-      { question: 'Why is p=reject recommended?', answer: 'A DMARC policy of p=reject blocks unauthenticated emails completely, preventing attackers from spoofing your domain name.' }
+      { question: 'What is the SPF 10-DNS lookup limit?', answer: 'RFC 7208 mandates that an SPF evaluation must not require more than 10 DNS lookups.' }
     ],
     relatedToolIds: ['dns-lookup', 'http-headers', 'ssl-checker'],
-    relatedBlogSlugs: ['spf-dkim-dmarc-blueprint', 'email-spoofing-prevention']
+    relatedBlogSlugs: ['spf-dkim-dmarc-blueprint']
+  },
+  {
+    id: 'csp-evaluator-builder',
+    name: 'CSP Visual Evaluator & Builder',
+    slug: 'csp-evaluator-builder',
+    tagline: 'CSP header builder & XSS filter validator',
+    description: 'Design, test, and validate Content Security Policy headers to mitigate Cross-Site Scripting (XSS) and clickjacking attacks.',
+    category: 'web-security',
+    secondaryCategories: ['ssl-tls'],
+    tags: ['csp', 'xss', 'headers', 'security'],
+    iconName: 'ShieldAlert',
+    difficulty: 'Intermediate',
+    estimatedTime: 'Instant (1s)',
+    isPopular: true,
+    isFeatured: true,
+    isNew: true,
+    faqs: [],
+    relatedToolIds: ['browser-security-studio', 'ssl-checker'],
+    relatedBlogSlugs: []
+  },
+  {
+    id: 'jwt-security-auditor',
+    name: 'JWT Security Auditor',
+    slug: 'jwt-security-auditor',
+    tagline: 'Decode & test weak HMAC secrets & algorithm flaws',
+    description: 'Audit JSON Web Token structures, check signature algorithms, detect algorithm confusion risks, and test HMAC secret strength privately.',
+    category: 'api-security',
+    secondaryCategories: ['web-security'],
+    tags: ['jwt', 'token', 'auth', 'crypto'],
+    iconName: 'Ticket',
+    difficulty: 'Intermediate',
+    estimatedTime: 'Instant (1s)',
+    isPopular: true,
+    isFeatured: true,
+    isNew: true,
+    faqs: [],
+    relatedToolIds: ['ssl-checker'],
+    relatedBlogSlugs: []
+  },
+  {
+    id: 'google-dork-builder',
+    name: 'Google Dork Query Builder & OSINT Studio',
+    slug: 'google-dork-builder',
+    tagline: 'Construct OSINT search queries & dorks',
+    description: 'Construct targeted search operator dorks for security audits, shadow IT discovery, and passive asset reconnaissance.',
+    category: 'osint',
+    secondaryCategories: ['web-security'],
+    tags: ['dork', 'google', 'osint', 'recon'],
+    iconName: 'Search',
+    difficulty: 'Beginner',
+    estimatedTime: 'Instant (1s)',
+    isPopular: true,
+    isFeatured: true,
+    isNew: true,
+    faqs: [],
+    relatedToolIds: ['subdomain-finder', 'whois'],
+    relatedBlogSlugs: []
+  },
+  {
+    id: 'ioc-defang-stix-studio',
+    name: 'IOC Defang & STIX Studio',
+    slug: 'ioc-defang-stix-studio',
+    tagline: 'Sanitize URLs/IPs & export to STIX 2.1',
+    description: 'Sanitize malicious indicators of compromise (URLs, IPs, emails) for safe sharing in SOC reports and incident documentation.',
+    category: 'incident-response',
+    secondaryCategories: ['threat-intelligence'],
+    tags: ['defang', 'ioc', 'stix', 'threat'],
+    iconName: 'Microscope',
+    difficulty: 'Beginner',
+    estimatedTime: 'Instant (1s)',
+    isPopular: true,
+    isFeatured: true,
+    isNew: true,
+    faqs: [],
+    relatedToolIds: ['vulnerability-scanner'],
+    relatedBlogSlugs: []
+  },
+  {
+    id: 'sigma-yara-studio',
+    name: 'Sigma & YARA Studio',
+    slug: 'sigma-yara-studio',
+    tagline: 'Convert Sigma rules to Splunk/Elastic & validate YARA',
+    description: 'Translate open-source Sigma detection rules into Splunk, Elastic, and Sentinel queries automatically.',
+    category: 'siem',
+    secondaryCategories: ['threat-intelligence'],
+    tags: ['sigma', 'yara', 'splunk', 'elastic'],
+    iconName: 'Code',
+    difficulty: 'Intermediate',
+    estimatedTime: 'Instant (1s)',
+    isPopular: true,
+    isFeatured: true,
+    isNew: true,
+    faqs: [],
+    relatedToolIds: ['mitre-attack-explorer'],
+    relatedBlogSlugs: []
+  },
+  {
+    id: 'linux-hardening-generator',
+    name: 'Linux Hardening Generator',
+    slug: 'linux-hardening-generator',
+    tagline: 'CIS Benchmark Bash script generator',
+    description: 'Construct automated Bash hardening scripts for Ubuntu, Debian, and RHEL server baselines.',
+    category: 'linux',
+    secondaryCategories: ['compliance'],
+    tags: ['linux', 'cis', 'hardening', 'ssh'],
+    iconName: 'Terminal',
+    difficulty: 'Intermediate',
+    estimatedTime: 'Instant (1s)',
+    isPopular: true,
+    isFeatured: true,
+    isNew: true,
+    faqs: [],
+    relatedToolIds: ['port-scanner'],
+    relatedBlogSlugs: []
+  },
+  {
+    id: 'tls-hardening-studio',
+    name: 'TLS Hardening Studio',
+    slug: 'tls-hardening-studio',
+    tagline: 'Mozilla SSL config rule generator',
+    description: 'Construct Mozilla-compliant TLS 1.2 and 1.3 web server encryption configurations.',
+    category: 'ssl-tls',
+    secondaryCategories: ['web-security'],
+    tags: ['tls', 'ssl', 'nginx', 'apache'],
+    iconName: 'Lock',
+    difficulty: 'Intermediate',
+    estimatedTime: 'Instant (1s)',
+    isPopular: true,
+    isFeatured: true,
+    isNew: true,
+    faqs: [],
+    relatedToolIds: ['ssl-checker'],
+    relatedBlogSlugs: []
+  },
+  {
+    id: 'mitre-attack-explorer',
+    name: 'MITRE ATT&CK Explorer',
+    slug: 'mitre-attack-explorer',
+    tagline: 'TTP matrix explorer & detection mapper',
+    description: 'Browse enterprise adversary tactics, techniques, and procedures (TTPs) mapped directly to defensive detection rules.',
+    category: 'threat-intelligence',
+    secondaryCategories: ['siem'],
+    tags: ['mitre', 'attack', 'ttp', 'matrix'],
+    iconName: 'Grid',
+    difficulty: 'Intermediate',
+    estimatedTime: 'Instant (1s)',
+    isPopular: true,
+    isFeatured: true,
+    isNew: true,
+    faqs: [],
+    relatedToolIds: ['sigma-yara-studio'],
+    relatedBlogSlugs: []
+  },
+  {
+    id: 'browser-security-studio',
+    name: 'Browser Security Studio',
+    slug: 'browser-security-studio',
+    tagline: 'HTTP response header auditor & grader',
+    description: 'Inspect HTTP response headers for Content-Security-Policy, HSTS, X-Frame-Options, and X-Content-Type-Options.',
+    category: 'web-security',
+    secondaryCategories: ['ssl-tls'],
+    tags: ['headers', 'csp', 'hsts', 'xss'],
+    iconName: 'Globe',
+    difficulty: 'Intermediate',
+    estimatedTime: 'Instant (1s)',
+    isPopular: true,
+    isFeatured: true,
+    isNew: false,
+    faqs: [],
+    relatedToolIds: ['csp-evaluator-builder', 'ssl-checker'],
+    relatedBlogSlugs: []
   },
   {
     id: 'whois',
@@ -60,12 +230,9 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     estimatedTime: 'Instant (1s)',
     isPopular: true,
     isFeatured: true,
-    faqs: [
-      { question: 'What information does WHOIS provide?', answer: 'WHOIS returns domain registrar details, registration/expiry dates, status codes, and active authoritative nameservers.' },
-      { question: 'Why are contact details hidden on some domains?', answer: 'ICDR GDPR guidelines allow domain owners to enable WHOIS privacy protection, masking personal emails and physical addresses.' }
-    ],
+    faqs: [],
     relatedToolIds: ['dns-lookup', 'subdomain-finder', 'ssl-checker'],
-    relatedBlogSlugs: ['what-is-whois-lookup', 'whois-privacy-protection']
+    relatedBlogSlugs: []
   },
   {
     id: 'port-scanner',
@@ -74,20 +241,16 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     tagline: 'Detect open ports and exposed network services',
     description: 'Audit network interfaces to detect open TCP ports, running services, and potential entry points.',
     category: 'networking',
-    secondaryCategories: ['web-security', 'red-team'],
+    secondaryCategories: ['web-security'],
     tags: ['nmap', 'port', 'tcp', 'scanner', 'firewall', 'network'],
     iconName: 'Terminal',
     difficulty: 'Intermediate',
     estimatedTime: '3-5 seconds',
     isPopular: true,
     isFeatured: true,
-    ports: [21, 22, 23, 25, 53, 80, 110, 143, 443, 3306, 3389, 5432, 8080],
-    faqs: [
-      { question: 'What is an open port?', answer: 'An open port is a network socket configured to accept incoming connection requests from remote clients or systems.' },
-      { question: 'Why should unused ports be closed?', answer: 'Unused open ports expose services to automated brute-force attacks, port scans, and potential remote exploit payloads.' }
-    ],
-    relatedToolIds: ['whois', 'vulnerability-scanner', 'http-headers'],
-    relatedBlogSlugs: ['how-port-scanning-works-open-ports-tcp-vs-udp-security', 'shadow-it-exposed-ports']
+    faqs: [],
+    relatedToolIds: ['whois', 'vulnerability-scanner'],
+    relatedBlogSlugs: []
   },
   {
     id: 'ssl-checker',
@@ -96,20 +259,16 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     tagline: 'Audit SSL/TLS certificate validity and chain',
     description: 'Inspect HTTPS certificate validity, expiration dates, issuing Certificate Authority (CA), SAN domains, and TLS ciphers.',
     category: 'ssl-tls',
-    secondaryCategories: ['certificates', 'web-security'],
-    tags: ['ssl', 'tls', 'https', 'certificate', 'security', 'crypto'],
+    secondaryCategories: ['certificates'],
+    tags: ['ssl', 'tls', 'https', 'certificate'],
     iconName: 'Lock',
     difficulty: 'Beginner',
     estimatedTime: 'Instant (2s)',
     isPopular: true,
     isFeatured: true,
-    protocols: ['TLS 1.2', 'TLS 1.3'],
-    faqs: [
-      { question: 'Why does an SSL certificate expire?', answer: 'Certificates expire after a fixed lifespan (max 398 days) to ensure key security and enforce modern TLS encryption standards.' },
-      { question: 'What happens when an SSL certificate expires?', answer: 'Browsers display a critical connection warning (ERR_CERT_DATE_INVALID) and block user access to prevent MITM attacks.' }
-    ],
-    relatedToolIds: ['http-headers', 'dns-lookup', 'vulnerability-scanner'],
-    relatedBlogSlugs: ['ssl-vs-tls-explained-https-security-guide', 'ssl-expiry-monitoring']
+    faqs: [],
+    relatedToolIds: ['dns-lookup', 'vulnerability-scanner'],
+    relatedBlogSlugs: []
   },
   {
     id: 'dns-lookup',
@@ -118,19 +277,16 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     tagline: 'Comprehensive DNS record resolution and analysis',
     description: 'Query A, AAAA, MX, TXT, CNAME, NS, SOA, and CAA records across global authoritative DNS servers.',
     category: 'dns',
-    secondaryCategories: ['domains', 'email-security'],
-    tags: ['dns', 'records', 'mx', 'txt', 'a-record', 'nameserver'],
+    secondaryCategories: ['domains'],
+    tags: ['dns', 'records', 'mx', 'txt'],
     iconName: 'Globe',
     difficulty: 'Beginner',
     estimatedTime: 'Instant (1s)',
     isPopular: true,
     isFeatured: true,
-    faqs: [
-      { question: 'What is an MX record?', answer: 'An MX (Mail Exchanger) record specifies the mail server responsible for accepting incoming emails for a domain.' },
-      { question: 'What is a TXT record used for?', answer: 'TXT records hold human or machine-readable text used for domain verification, SPF anti-spoofing policies, and DKIM keys.' }
-    ],
-    relatedToolIds: ['whois', 'email-security', 'subdomain-finder'],
-    relatedBlogSlugs: ['dns-record-types', 'dns-security-explained']
+    faqs: [],
+    relatedToolIds: ['whois', 'subdomain-finder'],
+    relatedBlogSlugs: []
   },
   {
     id: 'http-headers',
@@ -139,19 +295,16 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     tagline: 'Evaluate security header configurations and grades',
     description: 'Inspect HTTP response headers for Content-Security-Policy, HSTS, X-Frame-Options, and X-Content-Type-Options.',
     category: 'web-security',
-    secondaryCategories: ['ssl-tls', 'api-security'],
-    tags: ['headers', 'csp', 'hsts', 'xss', 'security', 'owasp'],
+    secondaryCategories: ['ssl-tls'],
+    tags: ['headers', 'csp', 'hsts', 'xss'],
     iconName: 'ShieldAlert',
     difficulty: 'Intermediate',
     estimatedTime: 'Instant (2s)',
     isPopular: true,
     isFeatured: true,
-    faqs: [
-      { question: 'What is a Content Security Policy (CSP)?', answer: 'CSP is an HTTP response header that restricts which scripts, styles, and media resources a browser can load, stopping XSS.' },
-      { question: 'Why is Strict-Transport-Security (HSTS) essential?', answer: 'HSTS forces browsers to communicate strictly over encrypted HTTPS connections, preventing SSL-stripping MITM attacks.' }
-    ],
-    relatedToolIds: ['ssl-checker', 'vulnerability-scanner', 'tech-detector'],
-    relatedBlogSlugs: ['http-security-headers-explained-complete-guide', 'owasp-http-headers-hardening']
+    faqs: [],
+    relatedToolIds: ['ssl-checker', 'vulnerability-scanner'],
+    relatedBlogSlugs: []
   },
   {
     id: 'subdomain-finder',
@@ -160,19 +313,16 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     tagline: 'Discover public subdomains and attack surface assets',
     description: 'Perform passive subdomain enumeration using Certificate Transparency logs and public asset intelligence.',
     category: 'domains',
-    secondaryCategories: ['osint', 'web-security'],
-    tags: ['subdomain', 'enumeration', 'ct-logs', 'osint', 'attack-surface'],
+    secondaryCategories: ['osint'],
+    tags: ['subdomain', 'enumeration', 'ct-logs'],
     iconName: 'Server',
     difficulty: 'Intermediate',
     estimatedTime: '2-4 seconds',
     isPopular: true,
     isFeatured: true,
-    faqs: [
-      { question: 'What is subdomain enumeration?', answer: 'Subdomain enumeration is the process of mapping all valid subdomains belonging to a target domain to audit attack surfaces.' },
-      { question: 'What is a subdomain takeover vulnerability?', answer: 'A subdomain takeover occurs when a subdomain points to an external cloud resource (e.g. AWS S3, GitHub Pages) that has been deallocated.' }
-    ],
+    faqs: [],
     relatedToolIds: ['whois', 'dns-lookup', 'port-scanner'],
-    relatedBlogSlugs: ['what-is-subdomain-enumeration', 'subdomain-takeover-guide']
+    relatedBlogSlugs: []
   },
   {
     id: 'tech-detector',
@@ -181,17 +331,15 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     tagline: 'Identify CMS, web frameworks, CDNs, and server stack',
     description: 'Analyze web application headers, HTML DOM footprints, and JavaScript variables to uncover the underlying tech stack.',
     category: 'web-security',
-    secondaryCategories: ['osint', 'api-security'],
-    tags: ['wappalyzer', 'cms', 'framework', 'tech-stack', 'recon'],
+    secondaryCategories: ['osint'],
+    tags: ['wappalyzer', 'cms', 'framework'],
     iconName: 'Cpu',
     difficulty: 'Beginner',
     estimatedTime: 'Instant (2s)',
     isPopular: true,
-    faqs: [
-      { question: 'How does technology detection work?', answer: 'Tech detection scans HTTP headers (e.g. Server, X-Powered-By), HTML meta tags, script URLs, and global JS object signatures.' }
-    ],
-    relatedToolIds: ['http-headers', 'vulnerability-scanner', 'subdomain-finder'],
-    relatedBlogSlugs: ['free-cybersecurity-tools']
+    faqs: [],
+    relatedToolIds: ['vulnerability-scanner', 'subdomain-finder'],
+    relatedBlogSlugs: []
   },
   {
     id: 'ip-lookup',
@@ -200,17 +348,15 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     tagline: 'IP geolocation, ASN routing, and ISP identification',
     description: 'Query IP addresses for Autonomous System Numbers (ASN), BGP network range, ISP owner, country location, and threat reputation.',
     category: 'ip-intelligence',
-    secondaryCategories: ['networking', 'threat-intelligence'],
-    tags: ['ip', 'asn', 'geolocation', 'bgp', 'isp', 'reputation'],
+    secondaryCategories: ['networking'],
+    tags: ['ip', 'asn', 'geolocation'],
     iconName: 'Radio',
     difficulty: 'Beginner',
     estimatedTime: 'Instant (1s)',
     isPopular: true,
-    faqs: [
-      { question: 'What is an Autonomous System Number (ASN)?', answer: 'An ASN is a unique number assigned to a network routing domain controlled by an ISP, enterprise, or cloud provider.' }
-    ],
+    faqs: [],
     relatedToolIds: ['whois', 'dns-lookup', 'port-scanner'],
-    relatedBlogSlugs: ['ip-reputation-check-guide', 'securing-bgp-route-leaks']
+    relatedBlogSlugs: []
   },
   {
     id: 'vulnerability-scanner',
@@ -219,18 +365,16 @@ export const TOOLS_REGISTRY: ToolMetadata[] = [
     tagline: 'Identify web security weaknesses and misconfigurations',
     description: 'Run automated passive diagnostics to uncover missing security headers, outdated SSL protocols, and exposed administrative paths.',
     category: 'web-security',
-    secondaryCategories: ['ssl-tls', 'compliance'],
-    tags: ['vulnerability', 'scan', 'owasp', 'security', 'cve'],
+    secondaryCategories: ['ssl-tls'],
+    tags: ['vulnerability', 'scan', 'owasp'],
     iconName: 'ShieldAlert',
     difficulty: 'Intermediate',
     estimatedTime: '3-6 seconds',
     isPopular: true,
     isFeatured: true,
-    faqs: [
-      { question: 'Is this vulnerability scan passive or active?', answer: 'ReconShield runs non-intrusive passive checks that analyze public responses without executing destructive exploit payloads.' }
-    ],
-    relatedToolIds: ['http-headers', 'ssl-checker', 'port-scanner'],
-    relatedBlogSlugs: ['how-to-scan-a-website-for-vulnerabilities-2026', 'owasp-top-10-explained']
+    faqs: [],
+    relatedToolIds: ['ssl-checker', 'port-scanner'],
+    relatedBlogSlugs: []
   }
 ];
 
