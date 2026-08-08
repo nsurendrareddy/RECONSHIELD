@@ -64,6 +64,10 @@ function isValidTarget(host) {
 
 export default function ResearchShellClient() {
   const [currentTarget, setCurrentTarget] = useState('');
+  const [currentScanId, setCurrentScanId] = useState('');
+  const [currentScanStatus, setCurrentScanStatus] = useState('idle'); // idle | running | completed | failed
+  const [latestScanResult, setLatestScanResult] = useState(null);
+
   const [inputLine, setInputLine] = useState('');
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
@@ -73,14 +77,23 @@ export default function ResearchShellClient() {
   
   // Real observations collected during the session
   const [observations, setObservations] = useState({
-    assets: {}, // domain -> { rawScanResult, dns, whois, ssl, headers, tech, subdomains, ports, ip }
+    assets: {}, // domain -> { dns, whois, ssl, headers, tech, subdomains, ports, ip }
     successfulCount: 0
   });
 
   const inputRef = useRef(null);
   const terminalScrollRef = useRef(null);
+  const pollTimerRef = useRef(null);
 
-  // Initialize Terminal Banner
+  // Stop single-scan status polling
+  const stopScanPolling = useCallback(() => {
+    if (pollTimerRef.current) {
+      clearInterval(pollTimerRef.current);
+      pollTimerRef.current = null;
+    }
+  }, []);
+
+  // Initialize Terminal Banner and cleanup on unmount
   useEffect(() => {
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
     setOutputBuffer([
@@ -91,7 +104,11 @@ export default function ResearchShellClient() {
         timestamp: new Date().toLocaleTimeString()
       }
     ]);
-  }, []);
+
+    return () => {
+      stopScanPolling();
+    };
+  }, [stopScanPolling]);
 
   // Auto-scroll terminal on new output
   useEffect(() => {
@@ -124,14 +141,13 @@ export default function ResearchShellClient() {
   }, []);
 
   // Save successful real observation into session state
-  const recordObservation = (domain, category, payload, rawScan = null) => {
+  const recordObservation = (domain, category, payload) => {
     const cleanD = cleanHost(domain);
     setObservations(prev => {
       const prevAssetData = prev.assets[cleanD] || {};
       const newAssetData = {
         ...prevAssetData,
         [category]: payload,
-        ...(rawScan ? { rawScanResult: rawScan } : {}),
         lastUpdated: new Date().toISOString()
       };
       return {
@@ -144,44 +160,21 @@ export default function ResearchShellClient() {
     });
   };
 
-  // Helper: Fetch scan data for domain from existing ReconShield API
-  const fetchDomainScanData = async (targetDomain) => {
-    const cleanD = cleanHost(targetDomain);
-    if (!cleanD) throw new Error('Invalid target domain specified');
-    
-    // Return cached scan result if already completed in this session
-    if (observations.assets[cleanD]?.rawScanResult) {
-      console.log(`[RSH DEBUG] Returning session cached scan data for: ${cleanD}`);
-      return observations.assets[cleanD].rawScanResult;
-    }
+  // Helper: Read active scan telemetry (read-only GET /api/scan/{id})
+  const getActiveScanTelemetry = async () => {
+    if (!currentScanId) return null;
+    if (latestScanResult) return latestScanResult;
 
-    console.log(`[RSH DEBUG] Calling startScan API endpoint for domain: ${cleanD}`);
-    const scanData = await startScan(cleanD, true);
-    const scanId = scanData.id;
-
-    let attempts = 0;
-    while (attempts < 60) {
-      attempts++;
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      try {
-        const statusRes = await getScanStatus(scanId);
-        console.log(`[RSH DEBUG] Polling scan status (attempt ${attempts}):`, statusRes.status);
-        
-        if (statusRes.status === 'completed') {
-          const fullResult = await getScan(scanId);
-          return fullResult;
-        } else if (statusRes.status === 'failed') {
-          throw new Error(`ReconShield backend scanner returned failure for ${cleanD}`);
-        }
-      } catch (err) {
-        if (err.message.includes('failure') || attempts >= 60) {
-          throw err;
-        }
-        console.warn(`[RSH DEBUG] Transient polling status warning (attempt ${attempts}):`, err.message);
+    try {
+      const scanObj = await getScan(currentScanId);
+      if (scanObj && scanObj.status === 'completed') {
+        setLatestScanResult(scanObj);
       }
+      return scanObj;
+    } catch (e) {
+      console.warn(`[RSH DEBUG] GET /api/scan/${currentScanId} error:`, e.message);
+      return null;
     }
-    throw new Error(`Scan request for ${cleanD} timed out waiting for backend completion`);
   };
 
   // Execute Command Handler
@@ -208,7 +201,7 @@ export default function ResearchShellClient() {
     setIsExecuting(true);
     const startTime = performance.now();
 
-    console.log(`[RSH DEBUG] Executing Command: '${command}', Explicit Arg: '${explicitArg}', Active Target: '${currentTarget}', Target To Use: '${targetToUse}'`);
+    console.log(`[RSH DEBUG] Command: '${command}', Explicit Arg: '${explicitArg}', Active Target: '${currentTarget}', Target To Use: '${targetToUse}'`);
 
     try {
       switch (command) {
@@ -221,20 +214,52 @@ export default function ResearchShellClient() {
             appendOutput('text', `ReconShield Recon Engine\nRSH v1.0`);
             break;
           }
+
           const newTarget = cleanHost(args[0]);
           if (!isValidTarget(newTarget)) {
             appendOutput('error', `[!] Invalid target: '${args[0]}'\nExpected valid domain (e.g. example.com) or IPv4 address.`);
             break;
           }
+
+          // Reset previous investigation state & stop any running polling timer
+          stopScanPolling();
           setCurrentTarget(newTarget);
-          appendOutput('success', `[•] Initializing ReconShield investigation...\n\n[✓] Target registered:\n${newTarget}\n\n[✓] Recon session initialized.\n\nAvailable modules:\n\n  dns\n  whois\n  subdomains\n  ssl\n  headers\n  tech\n  ports\n  ip\n\nNext command:\n\n  dns`);
+          setLatestScanResult(null);
+          setCurrentScanStatus('running');
+
+          // POST /api/scan is called EXACTLY ONCE per investigation
+          console.log(`[RSH DEBUG] Issuing ONE POST /api/scan request for target: ${newTarget}`);
+          const scanResponse = await startScan(newTarget, true);
+          const newScanId = scanResponse.id;
+          setCurrentScanId(newScanId);
+
+          // Return immediately to prompt
+          appendOutput('success', `[•] Initializing ReconShield investigation...\n\n[✓] Target registered:\n${newTarget}\n\n[✓] Reconnaissance job started.\n\nScan ID:\n${newScanId}\n\nStatus:\nRUNNING\n\nAvailable modules:\n\n  dns\n  whois\n  subdomains\n  ssl\n  headers\n  tech\n  ports\n  ip\n\nNext command:\n\n  dns`);
+
+          // Start ONE status polling process per active scan
+          pollTimerRef.current = setInterval(async () => {
+            try {
+              const statusRes = await getScanStatus(newScanId);
+              setCurrentScanStatus(statusRes.status);
+              if (statusRes.status === 'completed' || statusRes.status === 'failed') {
+                stopScanPolling();
+                if (statusRes.status === 'completed') {
+                  const fullRes = await getScan(newScanId);
+                  setLatestScanResult(fullRes);
+                }
+              }
+            } catch (e) {
+              console.warn('[RSH DEBUG] Scan status polling warning:', e.message);
+            }
+          }, 3000);
+
           break;
         }
 
         case 'target': {
           if (!args[0]) {
             if (currentTarget) {
-              appendOutput('info', `Active target:\n  ${currentTarget}\n\nScope:\n  ${currentTarget}\n\nUse 'help' to view available commands.`);
+              appendOutput('info', `Active target:\n  ${currentTarget}\n\nScan ID:\n  ${currentScanId || 'N/A'}\n\nStatus:\n  ${currentScanStatus.toUpperCase()}\n\nUse 'help' to view available commands.`);
             } else {
               appendOutput('error', '[!] Missing target argument.\nUsage: target <domain|ip>\nExample: target google.com');
             }
@@ -243,8 +268,7 @@ export default function ResearchShellClient() {
             if (!isValidTarget(newTarget)) {
               appendOutput('error', `[!] Invalid target: '${args[0]}'\nExpected valid domain (e.g. google.com) or IPv4 address.`);
             } else {
-              setCurrentTarget(newTarget);
-              appendOutput('success', `[✓] Active target set:\n${newTarget}\n\nScope:\n  ${newTarget}\n\nUse 'help' to view available commands.`);
+              executeCommand(`recon ${newTarget}`);
             }
           }
           break;
@@ -272,81 +296,95 @@ export default function ResearchShellClient() {
           break;
 
         case 'dns': {
-          if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `dns <domain>`.');
+          if (explicitArg && currentTarget && explicitArg !== currentTarget) {
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
             break;
           }
-          appendOutput('info', `[•] Querying DNS resolver for ${targetToUse}...`);
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
 
-          try {
-            const scanResult = await fetchDomainScanData(targetToUse);
-            const dnsModule = scanResult?.dns || scanResult;
-            const records = dnsModule.records || {};
+          appendOutput('info', `[•] Checking DNS module for ${targetToUse}...`);
+          const scanObj = await getActiveScanTelemetry();
 
-            const aRecs = records.a || [];
-            const aaaaRecs = records.aaaa || [];
-            const mxRecs = records.mx || [];
-            const nsRecs = records.ns || [];
-            const txtRecs = records.txt || [];
-            const cnameRecs = records.cname || [];
-            const soaRecs = records.soa || [];
+          if (!scanObj || (!scanObj.dns && scanObj.status === 'running')) {
+            appendOutput('warning', `[•] DNS module is still running.\n\nPlease try again shortly.`);
+            break;
+          }
 
-            if (aRecs.length === 0 && aaaaRecs.length === 0 && mxRecs.length === 0 && nsRecs.length === 0 && txtRecs.length === 0 && cnameRecs.length === 0 && soaRecs.length === 0) {
-              appendOutput('error', `[✗] DNS lookup failed.\n\nReason:\nNo DNS records returned for ${targetToUse} from ReconShield DNS backend.`);
-              break;
-            }
+          const dnsModule = scanObj?.dns || scanObj;
+          const records = dnsModule.records || {};
 
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'dns', records, scanResult);
+          const aRecs = records.a || [];
+          const aaaaRecs = records.aaaa || [];
+          const mxRecs = records.mx || [];
+          const nsRecs = records.ns || [];
+          const txtRecs = records.txt || [];
+          const cnameRecs = records.cname || [];
+          const soaRecs = records.soa || [];
 
-            let dnsLines = [];
-            if (aRecs.length > 0) dnsLines.push(`A Records:\n  ${aRecs.join('\n  ')}`);
-            if (aaaaRecs.length > 0) dnsLines.push(`AAAA Records:\n  ${aaaaRecs.join('\n  ')}`);
-            if (mxRecs.length > 0) dnsLines.push(`MX Records:\n  ${mxRecs.join('\n  ')}`);
-            if (nsRecs.length > 0) dnsLines.push(`NS Records:\n  ${nsRecs.join('\n  ')}`);
-            if (txtRecs.length > 0) dnsLines.push(`TXT Records:\n  ${txtRecs.join('\n  ')}`);
-            if (cnameRecs.length > 0) dnsLines.push(`CNAME Records:\n  ${cnameRecs.join('\n  ')}`);
-            if (soaRecs.length > 0) dnsLines.push(`SOA Records:\n  ${soaRecs.join('\n  ')}`);
+          if (aRecs.length === 0 && aaaaRecs.length === 0 && mxRecs.length === 0 && nsRecs.length === 0 && txtRecs.length === 0 && cnameRecs.length === 0 && soaRecs.length === 0) {
+            appendOutput('error', `[✗] DNS module failed.\n\nReason:\nNo DNS records returned for ${targetToUse}. Domain may be inactive.`);
+            break;
+          }
 
-            const dnsOutput = `[✓] DNS lookup completed: ${targetToUse}
+          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+          recordObservation(targetToUse, 'dns', records);
+
+          let dnsLines = [];
+          if (aRecs.length > 0) dnsLines.push(`A Records:\n  ${aRecs.join('\n  ')}`);
+          if (aaaaRecs.length > 0) dnsLines.push(`AAAA Records:\n  ${aaaaRecs.join('\n  ')}`);
+          if (mxRecs.length > 0) dnsLines.push(`MX Records:\n  ${mxRecs.join('\n  ')}`);
+          if (nsRecs.length > 0) dnsLines.push(`NS Records:\n  ${nsRecs.join('\n  ')}`);
+          if (txtRecs.length > 0) dnsLines.push(`TXT Records:\n  ${txtRecs.join('\n  ')}`);
+          if (cnameRecs.length > 0) dnsLines.push(`CNAME Records:\n  ${cnameRecs.join('\n  ')}`);
+          if (soaRecs.length > 0) dnsLines.push(`SOA Records:\n  ${soaRecs.join('\n  ')}`);
+
+          const dnsOutput = `[✓] DNS module complete: ${targetToUse}
 ────────────────────────────────────────────
 ${dnsLines.join('\n\n')}
 
 ────────────────────────────────────────────
 [✓] Completed in ${elapsed}s`;
-            appendOutput('success', dnsOutput);
-          } catch (err) {
-            console.error(`[RSH ERROR] DNS query failed for ${targetToUse}:`, err);
-            appendOutput('error', `[✗] DNS lookup failed.\n\nReason:\n${err.message}`);
-          }
+          appendOutput('success', dnsOutput);
           break;
         }
 
         case 'whois': {
-          if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `whois <domain>`.');
+          if (explicitArg && currentTarget && explicitArg !== currentTarget) {
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
             break;
           }
-          appendOutput('info', `[•] Querying WHOIS / RDAP registry for ${targetToUse}...`);
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
 
-          try {
-            const scanResult = await fetchDomainScanData(targetToUse);
-            const whoisData = scanResult?.whois || scanResult?.domain || {};
+          appendOutput('info', `[•] Checking WHOIS module for ${targetToUse}...`);
+          const scanObj = await getActiveScanTelemetry();
 
-            if (whoisData.error && whoisData.error.includes('429')) {
-              appendOutput('warning', `[!] WHOIS rate limit reached.\n\nReason:\n${whoisData.error}`);
-              break;
-            }
+          if (!scanObj || (!scanObj.whois && scanObj.status === 'running')) {
+            appendOutput('warning', `[•] WHOIS module is still running.\n\nPlease try again shortly.`);
+            break;
+          }
 
-            const registrar = whoisData.registrar || 'N/A';
-            const created = whoisData.created || whoisData.creation_date || 'N/A';
-            const expires = whoisData.expires || whoisData.expiration_date || 'N/A';
-            const nsList = whoisData.name_servers || whoisData.nameservers || [];
+          const whoisData = scanObj?.whois || scanObj?.domain || {};
 
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'whois', whoisData, scanResult);
+          if (whoisData.error && whoisData.error.includes('429')) {
+            appendOutput('warning', `[!] WHOIS rate limit reached.\n\nReason:\n${whoisData.error}`);
+            break;
+          }
 
-            const whoisOutput = `WHOIS / RDAP REGISTRY DATA: ${targetToUse}
+          const registrar = whoisData.registrar || 'N/A';
+          const created = whoisData.created || whoisData.creation_date || 'N/A';
+          const expires = whoisData.expires || whoisData.expiration_date || 'N/A';
+          const nsList = whoisData.name_servers || whoisData.nameservers || [];
+
+          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+          recordObservation(targetToUse, 'whois', whoisData);
+
+          const whoisOutput = `[✓] WHOIS / RDAP REGISTRY DATA: ${targetToUse}
 ────────────────────────────────────────────
 Domain Name: ${targetToUse.toUpperCase()}
 Registrar: ${registrar}
@@ -357,74 +395,84 @@ ${nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  None listed'}
 
 ────────────────────────────────────────────
 [✓] Completed in ${elapsed}s`;
-            appendOutput('success', whoisOutput);
-          } catch (err) {
-            console.error(`[RSH ERROR] WHOIS query failed for ${targetToUse}:`, err);
-            appendOutput('error', `[✗] WHOIS lookup failed.\n\nReason:\n${err.message}`);
-          }
+          appendOutput('success', whoisOutput);
           break;
         }
 
         case 'subdomains': {
-          if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `subdomains <domain>`.');
+          if (explicitArg && currentTarget && explicitArg !== currentTarget) {
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
             break;
           }
-          appendOutput('info', `[•] Discovering subdomains for ${targetToUse}...`);
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
 
-          try {
-            const scanResult = await fetchDomainScanData(targetToUse);
-            const subData = scanResult?.subdomains || {};
-            const categorized = subData.categorized || [];
-            const subList = categorized.map(s => s.subdomain || s).slice(0, 20);
+          appendOutput('info', `[•] Checking Subdomain module for ${targetToUse}...`);
+          const scanObj = await getActiveScanTelemetry();
 
-            if (subList.length === 0) {
-              appendOutput('error', `[!] No subdomains observed for ${targetToUse}.`);
-              break;
-            }
+          if (!scanObj || (!scanObj.subdomains && scanObj.status === 'running')) {
+            appendOutput('warning', `[•] Subdomain discovery module is still running.\n\nPlease try again shortly.`);
+            break;
+          }
 
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'subdomains', subList, scanResult);
+          const subData = scanObj?.subdomains || {};
+          const categorized = subData.categorized || [];
+          const subList = categorized.map(s => s.subdomain || s).slice(0, 20);
 
-            const subLines = subList.map((s, idx) => `[${String(idx + 1).padStart(2, '0')}]  ${s}`).join('\n');
-            const subOutput = `SUBDOMAIN DISCOVERY MATRIX: ${targetToUse}
+          if (subList.length === 0) {
+            appendOutput('error', `[!] No subdomains observed for ${targetToUse}.`);
+            break;
+          }
+
+          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+          recordObservation(targetToUse, 'subdomains', subList);
+
+          const subLines = subList.map((s, idx) => `[${String(idx + 1).padStart(2, '0')}]  ${s}`).join('\n');
+          const subOutput = `[✓] SUBDOMAIN DISCOVERY MATRIX: ${targetToUse}
 ────────────────────────────────────────────
 ${subLines}
 
 ────────────────────────────────────────────
 Subdomains Observed: ${subList.length}
 [✓] Completed in ${elapsed}s`;
-            appendOutput('success', subOutput);
-          } catch (err) {
-            console.error(`[RSH ERROR] Subdomain query failed for ${targetToUse}:`, err);
-            appendOutput('error', `[✗] Subdomain discovery failed.\n\nReason:\n${err.message}`);
-          }
+          appendOutput('success', subOutput);
           break;
         }
 
         case 'ssl': {
-          if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `ssl <domain>`.');
+          if (explicitArg && currentTarget && explicitArg !== currentTarget) {
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
             break;
           }
-          appendOutput('info', `[•] Inspecting TLS certificate suite for ${targetToUse}...`);
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
 
-          try {
-            const scanResult = await fetchDomainScanData(targetToUse);
-            const sslData = scanResult?.ssl || {};
-            const cert = sslData.certificate || sslData;
+          appendOutput('info', `[•] Checking TLS/SSL module for ${targetToUse}...`);
+          const scanObj = await getActiveScanTelemetry();
 
-            const subject = cert.subject || targetToUse;
-            const issuer = cert.issuer || 'N/A';
-            const validFrom = cert.not_before || cert.valid_from || 'N/A';
-            const validTo = cert.not_after || cert.valid_to || 'N/A';
-            const daysRemaining = cert.days_remaining ?? 'N/A';
-            const protocol = sslData.cipher?.protocol || sslData.protocol || 'TLS 1.3';
+          if (!scanObj || (!scanObj.ssl && scanObj.status === 'running')) {
+            appendOutput('warning', `[•] TLS certificate module is still running.\n\nPlease try again shortly.`);
+            break;
+          }
 
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'ssl', sslData, scanResult);
+          const sslData = scanObj?.ssl || {};
+          const cert = sslData.certificate || sslData;
 
-            const sslOutput = `TLS/SSL HANDSHAKE & CERTIFICATE ANALYSIS: ${targetToUse}
+          const subject = cert.subject || targetToUse;
+          const issuer = cert.issuer || 'N/A';
+          const validFrom = cert.not_before || cert.valid_from || 'N/A';
+          const validTo = cert.not_after || cert.valid_to || 'N/A';
+          const daysRemaining = cert.days_remaining ?? 'N/A';
+          const protocol = sslData.cipher?.protocol || sslData.protocol || 'TLS 1.3';
+
+          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+          recordObservation(targetToUse, 'ssl', sslData);
+
+          const sslOutput = `[✓] TLS/SSL CERTIFICATE ANALYSIS: ${targetToUse}
 ────────────────────────────────────────────
 Subject: ${subject}
 Issuer: ${issuer}
@@ -435,35 +483,40 @@ Protocol: ${protocol}
 
 ────────────────────────────────────────────
 [✓] Completed in ${elapsed}s`;
-            appendOutput('success', sslOutput);
-          } catch (err) {
-            console.error(`[RSH ERROR] SSL query failed for ${targetToUse}:`, err);
-            appendOutput('error', `[✗] TLS inspection failed.\n\nReason:\n${err.message}`);
-          }
+          appendOutput('success', sslOutput);
           break;
         }
 
         case 'headers': {
-          if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `headers <url>`.');
+          if (explicitArg && currentTarget && explicitArg !== currentTarget) {
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
             break;
           }
-          appendOutput('info', `[•] Evaluating HTTP response security headers for ${targetToUse}...`);
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
 
-          try {
-            const scanResult = await fetchDomainScanData(targetToUse);
-            const headersData = scanResult?.headers || scanResult;
+          appendOutput('info', `[•] Checking HTTP Headers module for ${targetToUse}...`);
+          const scanObj = await getActiveScanTelemetry();
 
-            const hsts = headersData.hsts?.present || headersData.hsts;
-            const csp = headersData.csp?.present || headersData.csp;
-            const xframe = headersData.x_frame_options || headersData.xframe || 'Not specified';
-            const xcontent = headersData.x_content_type_options || headersData.xcontent || 'Not specified';
-            const referrer = headersData.referrer_policy || 'Not specified';
+          if (!scanObj || (!scanObj.headers && scanObj.status === 'running')) {
+            appendOutput('warning', `[•] Security Headers module is still running.\n\nPlease try again shortly.`);
+            break;
+          }
 
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'headers', headersData, scanResult);
+          const headersData = scanObj?.headers || scanObj;
 
-            const headerOutput = `HTTP SECURITY HEADERS ANALYSIS: ${targetToUse}
+          const hsts = headersData.hsts?.present || headersData.hsts;
+          const csp = headersData.csp?.present || headersData.csp;
+          const xframe = headersData.x_frame_options || headersData.xframe || 'Not specified';
+          const xcontent = headersData.x_content_type_options || headersData.xcontent || 'Not specified';
+          const referrer = headersData.referrer_policy || 'Not specified';
+
+          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+          recordObservation(targetToUse, 'headers', headersData);
+
+          const headerOutput = `[✓] HTTP SECURITY HEADERS ANALYSIS: ${targetToUse}
 ────────────────────────────────────────────
 Strict-Transport-Security: ${hsts ? '✓ PRESENT' : '⚠ MISSING'}
 Content-Security-Policy: ${csp ? '✓ PRESENT' : '⚠ MISSING'}
@@ -473,89 +526,96 @@ Referrer-Policy: ${referrer}
 
 ────────────────────────────────────────────
 [✓] Completed in ${elapsed}s`;
-            appendOutput('success', headerOutput);
-          } catch (err) {
-            console.error(`[RSH ERROR] Headers query failed for ${targetToUse}:`, err);
-            appendOutput('error', `[✗] Header inspection failed.\n\nReason:\n${err.message}`);
-          }
+          appendOutput('success', headerOutput);
           break;
         }
 
         case 'tech': {
-          if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `tech <url>`.');
+          if (explicitArg && currentTarget && explicitArg !== currentTarget) {
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
             break;
           }
-          appendOutput('info', `[•] Fingerprinting technology stack for ${targetToUse}...`);
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
 
-          try {
-            const scanResult = await fetchDomainScanData(targetToUse);
-            const techModule = scanResult?.tech || scanResult?.technologies || [];
-            const techList = Array.isArray(techModule) ? techModule : (techModule.detected || []);
+          appendOutput('info', `[•] Checking Technology Detection module for ${targetToUse}...`);
+          const scanObj = await getActiveScanTelemetry();
 
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'tech', techList, scanResult);
+          if (!scanObj || (!scanObj.tech && scanObj.status === 'running')) {
+            appendOutput('warning', `[•] Technology Detection module is still running.\n\nPlease try again shortly.`);
+            break;
+          }
 
-            const techOutput = `TECHNOLOGY STACK FINGERPRINT: ${targetToUse}
+          const techModule = scanObj?.tech || scanObj?.technologies || [];
+          const techList = Array.isArray(techModule) ? techModule : (techModule.detected || []);
+
+          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+          recordObservation(targetToUse, 'tech', techList);
+
+          const techOutput = `[✓] TECHNOLOGY STACK FINGERPRINT: ${targetToUse}
 ────────────────────────────────────────────
 Detected Components:
 ${techList.length > 0 ? '  • ' + techList.join('\n  • ') : '  • Standard HTTP Web Server'}
 
 ────────────────────────────────────────────
 [✓] Completed in ${elapsed}s`;
-            appendOutput('success', techOutput);
-          } catch (err) {
-            console.error(`[RSH ERROR] Tech detection failed for ${targetToUse}:`, err);
-            appendOutput('error', `[✗] Technology detection failed.\n\nReason:\n${err.message}`);
-          }
+          appendOutput('success', techOutput);
           break;
         }
 
         case 'ports': {
-          if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `ports <host>`.');
+          if (explicitArg && currentTarget && explicitArg !== currentTarget) {
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
             break;
           }
-          appendOutput('info', `[•] Auditing service ports for ${targetToUse}...`);
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
 
-          try {
-            const scanResult = await fetchDomainScanData(targetToUse);
-            const portModule = scanResult?.ports || {};
-            const portList = portModule.open_ports || portModule.ports || [];
+          appendOutput('info', `[•] Checking Port Scanner module for ${targetToUse}...`);
+          const scanObj = await getActiveScanTelemetry();
 
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'ports', portList, scanResult);
+          if (!scanObj || (!scanObj.ports && scanObj.status === 'running')) {
+            appendOutput('warning', `[•] Port Scanner module is still running.\n\nPlease try again shortly.`);
+            break;
+          }
 
-            const portOutput = `PORT INTELLIGENCE & SERVICE AUDIT: ${targetToUse}
+          const portModule = scanObj?.ports || {};
+          const portList = portModule.open_ports || portModule.ports || [];
+
+          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
+          recordObservation(targetToUse, 'ports', portList);
+
+          const portOutput = `[✓] PORT INTELLIGENCE & SERVICE AUDIT: ${targetToUse}
 ────────────────────────────────────────────
 ${Array.isArray(portList) && portList.length > 0 ? portList.map(p => `PORT ${p.port || p}/tcp  STATE: OPEN`).join('\n') : '  Standard HTTP (80) / HTTPS (443) services observed'}
 
 ────────────────────────────────────────────
 [✓] Completed in ${elapsed}s`;
-            appendOutput('success', portOutput);
-          } catch (err) {
-            console.error(`[RSH ERROR] Port scan failed for ${targetToUse}:`, err);
-            appendOutput('error', `[✗] Port scan failed.\n\nReason:\n${err.message}`);
-          }
+          appendOutput('success', portOutput);
           break;
         }
 
         case 'ip': {
-          let ipTarget = explicitArg || currentTarget || '8.8.8.8';
-          appendOutput('info', `[•] Querying BGP geolocation & IP reputation engine for ${ipTarget}...`);
+          let ipInput = explicitArg || currentTarget || '8.8.8.8';
+          appendOutput('info', `[•] Querying BGP geolocation & IP reputation engine for ${ipInput}...`);
 
           try {
-            let resolvedIp = ipTarget;
+            let resolvedIp = ipInput;
             const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
 
-            // If ipTarget is a domain (e.g. google.com), first resolve its IPv4 address via DNS A record!
-            if (!ipRegex.test(ipTarget)) {
-              appendOutput('info', `[•] Resolving domain '${ipTarget}' to IPv4 address...`);
-              const scanResult = await fetchDomainScanData(ipTarget).catch(() => null);
-              const dnsA = scanResult?.dns?.records?.a;
+            if (!ipRegex.test(ipInput)) {
+              appendOutput('info', `[•] Resolving domain '${ipInput}' to IPv4 address via active DNS records...`);
+              const scanObj = await getActiveScanTelemetry();
+              const dnsA = scanObj?.dns?.records?.a;
               if (Array.isArray(dnsA) && dnsA.length > 0) {
                 resolvedIp = dnsA[0];
-                appendOutput('info', `[✓] Domain '${ipTarget}' resolved to IPv4: ${resolvedIp}`);
+                appendOutput('info', `[✓] Domain '${ipInput}' resolved to IPv4: ${resolvedIp}`);
+              } else {
+                throw new Error(`Unable to resolve IPv4 address for '${ipInput}' from DNS records`);
               }
             }
 
@@ -567,21 +627,21 @@ ${Array.isArray(portList) && portList.length > 0 ? portList.map(p => `PORT ${p.p
             }
 
             const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(ipTarget, 'ip', ipData);
+            recordObservation(ipInput, 'ip', ipData);
 
-            const ipOutput = `IP INTELLIGENCE & GEOLOCATION
+            const ipOutput = `[✓] IP INTELLIGENCE & GEOLOCATION
 ────────────────────────────────────────────
-Target Domain / IP: ${ipTarget}
-IPv4 Address: ${ipData.ip || resolvedIp}
-City/Region: ${ipData.city || 'N/A'}, ${ipData.region || 'N/A'}
-Country: ${ipData.country || ipData.country_name || 'N/A'}
-Autonomous System: ${ipData.asn || 'N/A'} (${ipData.org || 'N/A'})
+Target Domain / IP: ${ipInput}
+IPv4 Address: ${ipData.ip_info?.ip || ipData.ip || resolvedIp}
+City/Region: ${ipData.ip_info?.city || ipData.city || 'N/A'}, ${ipData.ip_info?.region || ipData.region || 'N/A'}
+Country: ${ipData.ip_info?.country || ipData.country || ipData.country_name || 'N/A'}
+Autonomous System: ${ipData.ip_info?.asn || ipData.asn || 'N/A'} (${ipData.ip_info?.org || ipData.org || 'N/A'})
 
 ────────────────────────────────────────────
 [✓] Completed in ${elapsed}s`;
             appendOutput('success', ipOutput);
           } catch (err) {
-            console.error(`[RSH ERROR] IP query failed for ${ipTarget}:`, err);
+            console.error(`[RSH ERROR] IP query failed for ${ipInput}:`, err);
             appendOutput('error', `[✗] IP intelligence lookup failed.\n\nReason:\n${err.message}`);
           }
           break;
@@ -595,13 +655,13 @@ Autonomous System: ${ipData.asn || 'N/A'} (${ipData.org || 'N/A'})
             const asnData = await scanIp(asnTarget).catch(() => null);
             const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
 
-            if (asnData && (asnData.asn || asnData.ip)) {
+            if (asnData && (asnData.ip_info?.asn || asnData.asn || asnData.ip)) {
               recordObservation(asnTarget, 'asn', asnData);
-              const asnOutput = `AUTONOMOUS SYSTEM NETWORK (ASN) DETAILS
+              const asnOutput = `[✓] AUTONOMOUS SYSTEM NETWORK (ASN) DETAILS
 ────────────────────────────────────────────
-ASN Identifier: ${asnData.asn || asnTarget}
-Organization: ${asnData.org || 'N/A'}
-Country: ${asnData.country || 'N/A'}
+ASN Identifier: ${asnData.ip_info?.asn || asnData.asn || asnTarget}
+Organization: ${asnData.ip_info?.org || asnData.org || 'N/A'}
+Country: ${asnData.ip_info?.country || asnData.country || 'N/A'}
 
 ────────────────────────────────────────────
 [✓] Completed in ${elapsed}s`;
@@ -618,13 +678,13 @@ Country: ${asnData.country || 'N/A'}
 
         case 'inspect': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `inspect <domain>`.');
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
             break;
           }
 
           const targetObs = observations.assets[cleanHost(targetToUse)];
           if (!targetObs) {
-            appendOutput('warning', `[!] No evidence gathered for ${targetToUse} in this session.\n\nRun 'dns', 'whois', 'ssl', or 'headers' first to collect real evidence.`);
+            appendOutput('warning', `[!] No evidence gathered for ${targetToUse} in this session.\n\nRun 'dns', 'whois', 'ssl', or 'headers' first to inspect modules.`);
             break;
           }
 
@@ -632,7 +692,7 @@ Country: ${asnData.country || 'N/A'}
           const inspectOutput = `ASSET COMPREHENSIVE INSPECTION: ${targetToUse}
 ════════════════════════════════════════════
 Asset Name:       ${targetToUse}
-Observations:     ${Object.keys(targetObs).filter(k => k !== 'lastUpdated' && k !== 'rawScanResult').join(', ').toUpperCase()}
+Observations:     ${Object.keys(targetObs).filter(k => k !== 'lastUpdated').join(', ').toUpperCase()}
 Last Observation: ${targetObs.lastUpdated || 'Current session'}
 
 EVIDENCE SUMMARY
@@ -650,7 +710,7 @@ EVIDENCE SUMMARY
 
         case 'relationships': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `relationships <domain>`.');
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
             break;
           }
 
@@ -682,13 +742,13 @@ ${targetToUse}
 
         case 'why': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `why <domain>`.');
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
             break;
           }
 
           const targetObs = observations.assets[cleanHost(targetToUse)];
           if (!targetObs) {
-            appendOutput('warning', `[!] No evidence gathered for ${targetToUse} in this session.\n\nRun 'dns', 'ssl', or 'headers' first to collect telemetry for significance analysis.`);
+            appendOutput('warning', `[!] No evidence gathered for ${targetToUse} in this session.\n\nRun 'dns', 'ssl', or 'headers' first to collect telemetry.`);
             break;
           }
 
@@ -715,7 +775,7 @@ CONFIDENCE: HIGH (Observation-based, non-destructive audit)
 
         case 'evidence': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>`.');
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
             break;
           }
 
@@ -726,10 +786,9 @@ CONFIDENCE: HIGH (Observation-based, non-destructive audit)
           }
 
           const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-          const { rawScanResult, ...cleanPayload } = targetObs;
           const evOutput = `RAW EVIDENCE PAYLOAD: ${targetToUse}
 ════════════════════════════════════════════
-${JSON.stringify(cleanPayload, null, 2)}
+${JSON.stringify(targetObs, null, 2)}
 ════════════════════════════════════════════
 [✓] Completed in ${elapsed}s`;
           appendOutput('success', evOutput);
@@ -741,6 +800,8 @@ ${JSON.stringify(cleanPayload, null, 2)}
             session: 'RSH-SESSION-EXPORT',
             timestamp: new Date().toISOString(),
             currentTarget,
+            currentScanId,
+            currentScanStatus,
             history,
             observations
           }, null, 2);
@@ -822,7 +883,7 @@ ${JSON.stringify(cleanPayload, null, 2)}
   // Quick Command click inserts command into terminal input box
   const handleQuickCommandClick = (cmdName) => {
     if (isExecuting) return;
-    const initialText = cmdName === 'recon' ? 'recon ' : (cmdName + (currentTarget ? ` ${currentTarget}` : ' '));
+    const initialText = cmdName === 'recon' ? 'recon ' : cmdName;
     setInputLine(initialText);
     if (inputRef.current) {
       inputRef.current.focus();
@@ -1046,7 +1107,7 @@ ${JSON.stringify(cleanPayload, null, 2)}
                 {isExecuting && (
                   <div className="flex items-center gap-2 text-cyan-400 font-mono text-xs animate-pulse pt-1">
                     <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                    <span>Executing real backend reconnaissance operation...</span>
+                    <span>Processing terminal request...</span>
                   </div>
                 )}
               </div>
@@ -1110,9 +1171,14 @@ ${JSON.stringify(cleanPayload, null, 2)}
                 <div className="text-lg font-bold text-white font-mono break-all">
                   {currentTarget || <span className="text-gray-500 italic">None set</span>}
                 </div>
-                <div className="text-[11px] font-mono text-gray-400 mt-1 flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full ${currentTarget ? 'bg-matrix-400' : 'bg-gray-600'}`} />
-                  <span>{currentTarget ? '● Target Scope Locked' : 'Use `recon <target>`'}</span>
+                {currentScanId && (
+                  <div className="text-[10px] font-mono text-gray-400 mt-0.5 truncate">
+                    Scan ID: {currentScanId.slice(0, 18)}...
+                  </div>
+                )}
+                <div className="text-[11px] font-mono text-gray-400 mt-1.5 flex items-center gap-2">
+                  <span className={`w-2 h-2 rounded-full ${currentScanStatus === 'completed' ? 'bg-matrix-400' : currentScanStatus === 'running' ? 'bg-cyan-400 animate-pulse' : 'bg-gray-600'}`} />
+                  <span>{currentTarget ? `● ${currentScanStatus.toUpperCase()}` : 'Use `recon <target>`'}</span>
                 </div>
               </div>
 
