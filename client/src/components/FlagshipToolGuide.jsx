@@ -236,6 +236,7 @@ export default function FlagshipToolGuide({
             <Link
               key={idx}
               href={item.href}
+              prefetch={false}
               className="p-4 bg-surface-950 border border-white/5 rounded-xl hover:border-matrix-400/40 transition-all flex flex-col justify-between space-y-2 group"
             >
               <span className="text-white font-bold group-hover:text-matrix-400 transition-colors">{item.name}</span>

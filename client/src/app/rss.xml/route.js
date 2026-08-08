@@ -1,5 +1,7 @@
 import { client, blogListQuery } from "@/utils/sanity";
 
+export const revalidate = 86400; // Cache RSS feed for 24 hours
+
 function escapeXml(unsafe) {
   if (!unsafe) return '';
   return unsafe.replace(/[<>&'"]/g, function (c) {
@@ -49,6 +51,7 @@ export async function GET() {
   return new Response(rssFeed, {
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
+      "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=86400"
     },
   });
 }

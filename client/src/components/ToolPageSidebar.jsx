@@ -24,6 +24,7 @@ export default function ToolPageSidebar({ currentToolId }) {
               <Link
                 key={tool.id}
                 href={`/tools/${tool.slug}`}
+                prefetch={false}
                 className={`p-2.5 rounded-xl border transition-all flex items-center justify-between group ${
                   isActive
                     ? 'bg-matrix-400/10 border-matrix-400/40 text-matrix-400'
@@ -59,6 +60,7 @@ export default function ToolPageSidebar({ currentToolId }) {
             <Link
               key={cat.id}
               href={`/tools/${cat.slug}`}
+              prefetch={false}
               className="px-2.5 py-1 rounded-lg bg-surface-950 border border-white/5 text-gray-400 hover:text-white hover:border-cyan-400/30 transition-colors text-[11px]"
             >
               {cat.name}

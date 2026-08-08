@@ -24,6 +24,7 @@ export function SemanticToolLinks({ currentTool }) {
           <Link
             key={t.id}
             href={`/tools/${t.slug}`}
+            prefetch={false}
             className="p-3 bg-surface-950 border border-white/5 rounded-xl hover:border-matrix-400/40 transition-all flex flex-col justify-between group"
           >
             <div>
@@ -39,11 +40,11 @@ export function SemanticToolLinks({ currentTool }) {
       </div>
 
       <div className="pt-3 border-t border-white/5 flex items-center justify-between text-xs font-mono text-gray-400">
-        <Link href={`/tools/${tool.category}`} className="hover:text-matrix-400 transition-colors flex items-center gap-1">
+        <Link href={`/tools/${tool.category}`} prefetch={false} className="hover:text-matrix-400 transition-colors flex items-center gap-1">
           <Layers className="w-3.5 h-3.5 text-matrix-400" />
           <span>Explore all {tool.category.toUpperCase()} tools →</span>
         </Link>
-        <Link href="/blog" className="hover:text-matrix-400 transition-colors flex items-center gap-1">
+        <Link href="/blog" prefetch={false} className="hover:text-matrix-400 transition-colors flex items-center gap-1">
           <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
           <span>Read Security Briefings →</span>
         </Link>

@@ -76,6 +76,7 @@ export default function BlogCard({ post, defaultCategory }) {
               className="object-cover w-full h-auto group-hover:scale-[1.02] transition-transform duration-700"
               loading="lazy"
               priority={false}
+              unoptimized={true}
             />
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-surface-950 to-surface-900 flex items-center justify-center">

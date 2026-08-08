@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 
+export const revalidate = 86400; // Cache sitemap index for 24 hours
+
 const BASE_URL = 'https://reconshield.in';
 const SITEMAP_TYPES = ['core', 'tools', 'blog', 'ports', 'headers', 'dns', 'email-auths', 'technology', 'vulnerability', 'ssl', 'subdomains'];
 

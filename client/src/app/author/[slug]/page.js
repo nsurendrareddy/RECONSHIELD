@@ -146,6 +146,7 @@ export default async function AuthorProfilePage({ params }) {
                     width={160}
                     height={160}
                     className="object-cover w-full h-full"
+                    unoptimized={true}
                   />
                 ) : (
                   <span className="text-4xl font-mono font-bold text-[#00ff88]">{initials}</span>
@@ -270,6 +271,7 @@ export default async function AuthorProfilePage({ params }) {
                           height={203}
                           sizes="(max-width: 768px) 100vw, 361px"
                           className="object-cover w-full h-auto group-hover:scale-105 transition-transform duration-700"
+                          unoptimized={true}
                         />
                       )}
                     </div>

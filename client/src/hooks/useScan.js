@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { startScan, getScan, getScanStatus } from '../utils/api'
 
 export function useScan() {
@@ -8,13 +8,26 @@ export function useScan() {
   const [progress, setProgress] = useState('')
   const [scanProgress, setScanProgress] = useState(null)
   const [domain, setDomain] = useState('')
-  const pollRef = useRef(null)
+  const pollTimerRef = useRef(null)
+  const isMountedRef = useRef(true)
 
   const stopPolling = useCallback(() => {
-    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null }
+    if (pollTimerRef.current) {
+      clearTimeout(pollTimerRef.current)
+      pollTimerRef.current = null
+    }
   }, [])
 
+  useEffect(() => {
+    isMountedRef.current = true
+    return () => {
+      isMountedRef.current = false
+      stopPolling()
+    }
+  }, [stopPolling])
+
   const scan = useCallback(async (targetDomain) => {
+    stopPolling()
     setStatus('scanning')
     setError(null)
     setScanData(null)
@@ -24,18 +37,24 @@ export function useScan() {
 
     try {
       const { id } = await startScan(targetDomain, true)
+      if (!isMountedRef.current) return
       setProgress('Scan queued. Modules starting...')
 
       let attempts = 0
-      pollRef.current = setInterval(async () => {
+
+      const pollNext = async () => {
+        if (!isMountedRef.current) return
         attempts++
         try {
           const statusRes = await getScanStatus(id)
+          if (!isMountedRef.current) return
+
           setScanProgress(statusRes)
           setProgress(statusRes.current_module ? `Running: ${statusRes.current_module}` : 'Processing...')
 
           if (statusRes.status === 'completed') {
             const fullResult = await getScan(id)
+            if (!isMountedRef.current) return
             setScanData(fullResult)
             setStatus('completed')
             setProgress('')
@@ -44,24 +63,44 @@ export function useScan() {
             setError('Scan failed. Target may be unreachable.')
             setStatus('error')
             stopPolling()
+          } else {
+            if (attempts > 90) {
+              stopPolling()
+              setError('Scan timed out')
+              setStatus('error')
+            } else {
+              pollTimerRef.current = setTimeout(pollNext, 1500)
+            }
           }
         } catch (e) {
-          if (attempts > 90) { 
+          if (!isMountedRef.current) return
+          if (attempts > 90) {
             stopPolling()
             setError('Scan timed out')
-            setStatus('error') 
+            setStatus('error')
+          } else {
+            pollTimerRef.current = setTimeout(pollNext, 1500)
           }
         }
-      }, 1500)
+      }
+
+      pollTimerRef.current = setTimeout(pollNext, 1500)
     } catch (e) {
-      setError(e.message)
-      setStatus('error')
+      if (isMountedRef.current) {
+        setError(e.message)
+        setStatus('error')
+      }
     }
   }, [stopPolling])
 
   const reset = useCallback(() => {
     stopPolling()
-    setStatus('idle'); setScanData(null); setError(null); setProgress(''); setScanProgress(null); setDomain('')
+    setStatus('idle')
+    setScanData(null)
+    setError(null)
+    setProgress('')
+    setScanProgress(null)
+    setDomain('')
   }, [stopPolling])
 
   return { status, scanData, error, progress, scanProgress, domain, scan, reset }

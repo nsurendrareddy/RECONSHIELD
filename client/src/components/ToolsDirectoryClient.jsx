@@ -199,6 +199,7 @@ export default function ToolsDirectoryClient() {
                   <span className="text-gray-500">{tool.estimatedTime}</span>
                   <Link
                     href={`/tools/${tool.slug}`}
+                    prefetch={false}
                     className="text-cyan-400 font-bold uppercase hover:underline flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
                   >
                     <span>Launch Tool</span>
@@ -257,6 +258,7 @@ export default function ToolsDirectoryClient() {
                   <span className="text-gray-500">{tool.estimatedTime}</span>
                   <Link
                     href={`/tools/${tool.slug}`}
+                    prefetch={false}
                     className="text-matrix-400 font-bold uppercase hover:underline flex items-center gap-1 group-hover:translate-x-0.5 transition-transform"
                   >
                     <span>Launch Tool</span>

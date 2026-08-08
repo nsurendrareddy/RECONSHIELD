@@ -16,7 +16,7 @@ export default function RelatedASNs({ currentAsn }) {
           <ul className="space-y-2">
             {relations.peers.map(peer => (
               <li key={peer.label}>
-                <Link href={peer.href} className="text-blue-400 hover:text-[#00ff88] hover:underline font-mono text-sm transition-colors flex items-center gap-2">
+                <Link href={peer.href} prefetch={false} className="text-blue-400 hover:text-[#00ff88] hover:underline font-mono text-sm transition-colors flex items-center gap-2">
                   <Zap className="w-3 h-3 text-blue-400" /> {peer.label}
                 </Link>
               </li>

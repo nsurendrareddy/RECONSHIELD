@@ -17,7 +17,7 @@ export default function RelatedIPs({ currentIp }) {
           <ul className="grid grid-cols-2 gap-2">
             {relations.neighbors.map((neighbor, i) => (
               <li key={i}>
-                <Link href={neighbor.href} className="flex items-center gap-2 text-sm text-blue-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-3 py-2 rounded-md font-mono">
+                <Link href={neighbor.href} prefetch={false} className="flex items-center gap-2 text-sm text-blue-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-3 py-2 rounded-md font-mono">
                   <Search className="w-3 h-3" /> {neighbor.label}
                 </Link>
               </li>
@@ -27,11 +27,11 @@ export default function RelatedIPs({ currentIp }) {
         
         <div>
           <h4 className="text-xs font-mono text-gray-500 uppercase mb-3">Subnet / Organization</h4>
-          <Link href={relations.asnLink.href} className="text-sm text-blue-400 hover:text-white hover:underline transition-colors block mb-2">
+          <Link href={relations.asnLink.href} prefetch={false} className="text-sm text-blue-400 hover:text-white hover:underline transition-colors block mb-2">
             {relations.asnLink.label}
           </Link>
           {relations.subnets.map((subnet, i) => (
-            <Link key={i} href={subnet.href} className="text-sm text-blue-400 hover:text-white hover:underline transition-colors block">
+            <Link key={i} href={subnet.href} prefetch={false} className="text-sm text-blue-400 hover:text-white hover:underline transition-colors block">
               Analyze {subnet.label}
             </Link>
           ))}

@@ -155,6 +155,7 @@ export default async function BlogPage() {
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700"
                         priority
+                        unoptimized={true}
                       />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0d1117] via-transparent lg:bg-gradient-to-r" />

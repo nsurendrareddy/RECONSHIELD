@@ -171,6 +171,7 @@ export default function ToolsHubClient() {
                   
                   <Link 
                     href={`/tools/${tool.id}`} 
+                    prefetch={false}
                     className="inline-flex items-center gap-1 text-xs font-mono text-matrix-400 hover:text-white transition-colors uppercase tracking-widest font-bold"
                   >
                     Launch Tool <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

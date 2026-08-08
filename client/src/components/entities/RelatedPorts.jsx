@@ -18,14 +18,14 @@ export default function RelatedPorts({ currentPort }) {
         <ul className="grid grid-cols-2 gap-2">
           {relations.cluster.map((portNode, i) => (
             <li key={i}>
-              <Link href={portNode.href} className="flex items-center gap-2 text-sm text-purple-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-3 py-2 rounded-md font-mono">
+              <Link href={portNode.href} prefetch={false} className="flex items-center gap-2 text-sm text-purple-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-3 py-2 rounded-md font-mono">
                 <Zap className="w-3 h-3" /> {portNode.label}
               </Link>
             </li>
           ))}
         </ul>
         <div className="mt-4 pt-4 border-t border-white/5">
-           <Link href="/ports" className="text-xs text-gray-500 hover:text-purple-400 transition-colors uppercase tracking-widest font-bold">
+           <Link href="/ports" prefetch={false} className="text-xs text-gray-500 hover:text-purple-400 transition-colors uppercase tracking-widest font-bold">
              → Browse Full Port Directory
            </Link>
         </div>

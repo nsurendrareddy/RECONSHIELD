@@ -75,14 +75,6 @@ const nextConfig = {
         ],
       },
       {
-        source: '/sanity-cdn/(.*)',
-        headers: [
-          { key: 'Cache-Control', value: 'public, immutable, max-age=31536000' },
-          { key: 'CDN-Cache-Control', value: 'max-age=31536000' },
-          { key: 'Vercel-CDN-Cache-Control', value: 'max-age=31536000' }
-        ],
-      },
-      {
         source: '/(images|icons|favicons|logos)/(.*)',
         headers: [
           { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
@@ -104,10 +96,6 @@ const nextConfig = {
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:10000';
     return {
       afterFiles: [
-        {
-          source: '/sanity-cdn/:path*',
-          destination: 'https://cdn.sanity.io/:path*',
-        },
         {
           source: '/uploads/:path*',
           destination: `${backendUrl}/uploads/:path*`,

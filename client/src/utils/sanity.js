@@ -37,6 +37,13 @@ function rewriteLegacyUrls(obj) {
   if (!obj) return obj;
   try {
     let serialized = JSON.stringify(obj);
+    if (
+      !serialized.includes('/compare/port-scan-vs-vulnerability-scan') &&
+      !serialized.includes('/ssl/ssl-vs-tls') &&
+      !serialized.includes('/ssl/tls-1-2-vs-tls-1-3')
+    ) {
+      return obj;
+    }
     serialized = serialized
       .replaceAll('/compare/port-scan-vs-vulnerability-scan', '/compare/port-scanner-vs-vulnerability-scanner')
       .replaceAll('/ssl/ssl-vs-tls', '/compare/ssl-vs-tls')

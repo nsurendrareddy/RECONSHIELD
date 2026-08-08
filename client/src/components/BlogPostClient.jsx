@@ -33,6 +33,7 @@ const ptComponents = {
             sizes="(max-width: 800px) 100vw, 800px"
             quality={75}
             className="object-cover w-full h-auto"
+            unoptimized={true}
           />
           {value.caption && (
             <div className="absolute bottom-0 left-0 right-0 bg-black/60 backdrop-blur-sm p-2 text-[10px] font-mono text-gray-400 text-center">
@@ -404,6 +405,7 @@ FileETag None`,
               sizes="(max-width: 1440px) 100vw, 1440px"
               quality={75}
               className="object-cover w-full h-auto"
+              unoptimized={true}
             />
           )}
         </div>
@@ -626,6 +628,7 @@ FileETag None`,
                             sizes="240px"
                             quality={75}
                             className="object-cover w-full h-auto group-hover:scale-105 transition-transform duration-500"
+                            unoptimized={true}
                           />
                         )}
                       </div>
@@ -719,6 +722,7 @@ FileETag None`,
                       sizes="(max-width: 768px) 100vw, 361px"
                       quality={70}
                       className="object-cover w-full h-auto group-hover:scale-105 transition-transform duration-700"
+                      unoptimized={true}
                     />
                   )}
                 </div>
@@ -761,6 +765,7 @@ FileETag None`,
                       sizes="(max-width: 768px) 100vw, 361px"
                       quality={70}
                       className="object-cover w-full h-auto group-hover:scale-105 transition-transform duration-700"
+                      unoptimized={true}
                     />
                   )}
                 </div>

@@ -150,6 +150,7 @@ export default function ToolsListContainer({ tools, categories }) {
                 <span className="text-[10px] font-mono text-gray-600 uppercase tracking-widest">ReconShield Utility</span>
                 <Link 
                   href={tool.route}
+                  prefetch={false}
                   className="inline-flex items-center gap-1 text-xs font-mono text-cyan-400 hover:text-white transition-colors uppercase tracking-widest font-bold"
                 >
                   <span>{tool.cta}</span>

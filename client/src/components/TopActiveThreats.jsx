@@ -59,7 +59,7 @@ export default function TopActiveThreats() {
                </dd>
 
                <dd className="hidden md:flex md:col-start-5 md:row-start-1 md:row-span-2 items-center justify-end pl-4">
-                 <Link href={`/ip/${threat.ip}`} className="p-2 hover:bg-[#ff3366]/10 rounded-full transition-colors text-[#94a3b8] hover:text-[#ff3366]">
+                 <Link href={`/ip/${threat.ip}`} prefetch={false} className="p-2 hover:bg-[#ff3366]/10 rounded-full transition-colors text-[#94a3b8] hover:text-[#ff3366]">
                    <ArrowUpRight className="w-4 h-4" />
                    <span className="sr-only">View Intelligence for {threat.ip}</span>
                  </Link>
