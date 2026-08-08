@@ -504,6 +504,15 @@ export default function Layout({ children }) {
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${activeMenu === 'tools' ? 'rotate-180 text-matrix-400' : ''}`} />
               </button>
 
+              <Link prefetch={false}
+                href="/research-shell"
+                onClick={handleLinkClick}
+                aria-label="Research Shell"
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${pathname === '/research-shell' ? 'text-matrix-400 bg-white/[0.02]' : 'text-gray-400 hover:text-matrix-400 hover:bg-white/[0.01]'}`}
+              >
+                Research Shell
+              </Link>
+
               {/* Platform Menu Button */}
               <button
                 onMouseEnter={() => handleMouseEnter('platform')}
@@ -678,6 +687,15 @@ export default function Layout({ children }) {
                   </div>
                 )}
               </div>
+
+              <Link prefetch={false}
+                href="/research-shell"
+                onClick={handleLinkClick}
+                aria-label="Research Shell"
+                className={`block py-2.5 text-lg font-medium border-b border-white/5 ${pathname === '/research-shell' ? 'text-matrix-400' : 'text-gray-300'}`}
+              >
+                Research Shell
+              </Link>
 
               {/* Platform Accordion */}
               <div>
