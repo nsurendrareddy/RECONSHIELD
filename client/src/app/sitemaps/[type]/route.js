@@ -314,8 +314,22 @@ export async function GET(request, { params }) {
     else if (entityType === 'tools' && page === 1) {
        xml += `  <url>\n    <loc>${BASE_URL}/tools</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.9</priority>\n  </url>\n`;
        
-       TOOLS.forEach(tool => {
-          xml += `  <url>\n    <loc>${BASE_URL}/tools/${tool.id}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${tool.popular ? 0.9 : 0.8}</priority>\n  </url>\n`;
+       const ALIAS_TOOL_IDS = [
+         'ioc-defang-sanitizer',
+         'sigma-yara-rule-studio',
+         'tls-cipher-hardening-generator',
+         'mitre-attack-navigator'
+       ];
+
+       const canonicalTools = TOOLS.filter(tool => !ALIAS_TOOL_IDS.includes(tool.id));
+       const addedUrls = new Set();
+
+       canonicalTools.forEach(tool => {
+          const toolUrl = `${BASE_URL}/tools/${tool.id}`;
+          if (!addedUrls.has(toolUrl)) {
+            addedUrls.add(toolUrl);
+            xml += `  <url>\n    <loc>${toolUrl}</loc>\n    <lastmod>${STATIC_LAST_MODIFIED}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${tool.popular ? 0.9 : 0.8}</priority>\n  </url>\n`;
+          }
        });
      }
      // 3. Blog Sitemaps

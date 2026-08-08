@@ -5,10 +5,11 @@ export function generateBaseMetadata({
   type = 'website',
   image = '/og-image.png'
 }) {
+  const cleanTitle = (title || '').replace(/\s*\|\s*ReconShield\s*$/i, '').trim();
   const url = `https://reconshield.in${path === '/' ? '' : path}`;
   
   return {
-    title,
+    title: cleanTitle,
     description,
     alternates: {
       canonical: url,
@@ -18,7 +19,7 @@ export function generateBaseMetadata({
       follow: true,
     },
     openGraph: {
-      title,
+      title: cleanTitle,
       description,
       url,
       siteName: 'ReconShield',
@@ -27,7 +28,7 @@ export function generateBaseMetadata({
           url: image,
           width: 1200,
           height: 630,
-          alt: title,
+          alt: cleanTitle,
         },
       ],
       locale: 'en_US',
@@ -35,7 +36,7 @@ export function generateBaseMetadata({
     },
     twitter: {
       card: 'summary_large_image',
-      title,
+      title: cleanTitle,
       description,
       images: [image],
     },

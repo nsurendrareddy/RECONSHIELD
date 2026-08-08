@@ -2,7 +2,7 @@ import React from 'react';
 import ResearchShellClient from '@/components/ResearchShellClient';
 
 export const metadata = {
-  title: 'ReconShield Research Shell — Cybersecurity Reconnaissance Terminal | ReconShield',
+  title: 'ReconShield Research Shell — Cybersecurity Reconnaissance Terminal',
   description: 'Use the ReconShield Research Shell (RSH) to manually investigate domains, DNS, SSL, subdomains, technologies, HTTP headers, and other publicly observable security intelligence.',
   alternates: {
     canonical: 'https://reconshield.in/research-shell',

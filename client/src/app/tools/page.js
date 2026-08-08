@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Shield, Search, Terminal, Globe, Lock, Mail, Server, Radio, Cpu, ShieldAlert, Check } from 'lucide-react';
 
 export const metadata = {
-  title: "Free Cybersecurity Tools & OSINT Directory | ReconShield",
+  title: "Free Cybersecurity Tools & OSINT Directory",
   description: "Free cybersecurity tools directory. WHOIS lookup, DNS checker, port scanner, SSL tester, email security validator, and passive OSINT tools. 100% free.",
   alternates: {
     canonical: "https://reconshield.in/tools",

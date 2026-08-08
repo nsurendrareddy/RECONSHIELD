@@ -17,16 +17,16 @@ const ToolScannerClient = dynamic(() => import('@/components/ToolScannerClient')
 const AuthorizedUseBanner = dynamic(() => import('@/components/AuthorizedUseBanner'));
 
 const TOOL_TITLES = {
-  'ip-lookup': 'IP Lookup — Check IP Location, ISP & Reputation | ReconShield',
-  'whois': 'WHOIS Lookup — Domain Owner, Expiration & Registrar Check | ReconShield',
-  'dns-lookup': 'DNS Lookup — Check A, MX, TXT, NS & SPF Records | ReconShield',
-  'port-scanner': 'Port Scanner — Check Open TCP Ports & Network Services | ReconShield',
-  'ssl-checker': 'SSL Checker — Verify SSL Certificate Expiration & TLS Grade | ReconShield',
-  'subdomain-finder': 'Subdomain Finder — Discover Hidden Subdomains & DNS | ReconShield',
-  'http-headers': 'HTTP Headers Checker — Analyze Security Response Headers | ReconShield',
-  'tech-detector': 'Website Technology Checker — Detect CMS & Tech Stack | ReconShield',
-  'vulnerability-scanner': 'Vulnerability Scanner — Free Exposure Assessment | ReconShield',
-  'email-security': 'Email Security Checker — Validate SPF, DKIM & DMARC | ReconShield'
+  'ip-lookup': 'IP Lookup — Check IP Location, ISP & Reputation',
+  'whois': 'WHOIS Lookup — Domain Owner, Expiration & Registrar Check',
+  'dns-lookup': 'DNS Lookup — Check A, MX, TXT, NS & SPF Records',
+  'port-scanner': 'Port Scanner — Check Open TCP Ports & Network Services',
+  'ssl-checker': 'SSL Checker — Verify SSL Certificate Expiration & TLS Grade',
+  'subdomain-finder': 'Subdomain Finder — Discover Hidden Subdomains & DNS',
+  'http-headers': 'HTTP Headers Checker — Analyze Security Response Headers',
+  'tech-detector': 'Website Technology Checker — Detect CMS & Tech Stack',
+  'vulnerability-scanner': 'Vulnerability Scanner — Free Exposure Assessment',
+  'email-security': 'Email Security Checker — Validate SPF, DKIM & DMARC'
 };
 
 const TOOL_DESCRIPTIONS = {
@@ -47,7 +47,7 @@ export async function generateMetadata({ params }) {
   const toolId = resolvedParams?.toolId || 'dns-lookup';
   
   const tool = TOOLS.find(t => t.id === toolId) || TOOLS.find(t => t.id === 'dns-lookup');
-  const title = TOOL_TITLES[toolId] || `${tool.name} Tool — Audit & Verify Security Configurations | ReconShield`;
+  const title = (TOOL_TITLES[toolId] || `${tool.name} Tool — Audit & Verify Security Configurations`).replace(/\s*\|\s*ReconShield\s*$/i, '');
   const description = TOOL_DESCRIPTIONS[toolId] || tool.desc;
 
   return {

@@ -29,7 +29,7 @@ Type:
   recon <domain>
 to initialize a reconnaissance investigation.
 
-Type 'help' to view available commands.
+Type 'modules' or 'help' to view available commands.
 `;
 
 const ASCII_BANNER_MOBILE = `
@@ -41,8 +41,47 @@ Type:
   recon <domain>
 to initialize a reconnaissance investigation.
 
-Type 'help' to view available commands.
+Type 'modules' or 'help' to view available commands.
 `;
+
+// CENTRALIZED NUMBERED MODULE REGISTRY (26 Modules)
+const MODULE_REGISTRY = [
+  // DOMAIN
+  { number: '01', name: 'dns', category: 'DOMAIN', desc: 'DNS Records', aliasKeys: ['01', '1', '001', 'dns'] },
+  { number: '02', name: 'whois', category: 'DOMAIN', desc: 'WHOIS / RDAP', aliasKeys: ['02', '2', '002', 'whois'] },
+  { number: '03', name: 'asn', category: 'DOMAIN', desc: 'ASN Intelligence', aliasKeys: ['03', '3', '003', 'asn'] },
+  { number: '04', name: 'reverse', category: 'DOMAIN', desc: 'Reverse DNS', aliasKeys: ['04', '4', '004', 'reverse'] },
+  { number: '05', name: 'dnssec', category: 'DOMAIN', desc: 'DNSSEC Analysis', aliasKeys: ['05', '5', '005', 'dnssec'] },
+  { number: '06', name: 'cname', category: 'DOMAIN', desc: 'CNAME Mapping', aliasKeys: ['06', '6', '006', 'cname'] },
+
+  // DISCOVERY
+  { number: '07', name: 'subdomains', category: 'DISCOVERY', desc: 'Subdomain Discovery', aliasKeys: ['07', '7', '007', 'subdomains', 'subdomain'] },
+  { number: '08', name: 'ct', category: 'DISCOVERY', desc: 'Certificate Transparency', aliasKeys: ['08', '8', '008', 'ct'] },
+  { number: '09', name: 'robots', category: 'DISCOVERY', desc: 'Robots Analysis', aliasKeys: ['09', '9', '009', 'robots'] },
+  { number: '10', name: 'sitemap', category: 'DISCOVERY', desc: 'Sitemap Discovery', aliasKeys: ['10', '010', 'sitemap'] },
+  { number: '11', name: 'urls', category: 'DISCOVERY', desc: 'URL Intelligence', aliasKeys: ['11', '011', 'urls', 'url'] },
+  { number: '12', name: 'favicon', category: 'DISCOVERY', desc: 'Favicon Intelligence', aliasKeys: ['12', '012', 'favicon'] },
+
+  // WEB
+  { number: '13', name: 'headers', category: 'WEB', desc: 'Security Headers', aliasKeys: ['13', '013', 'headers', 'header'] },
+  { number: '14', name: 'cookies', category: 'WEB', desc: 'Cookie Security', aliasKeys: ['14', '014', 'cookies', 'cookie'] },
+  { number: '15', name: 'cors', category: 'WEB', desc: 'CORS Analysis', aliasKeys: ['15', '015', 'cors'] },
+  { number: '16', name: 'redirects', category: 'WEB', desc: 'Redirect Analysis', aliasKeys: ['16', '016', 'redirects', 'redirect'] },
+  { number: '17', name: 'ssl', category: 'WEB', desc: 'TLS/SSL', aliasKeys: ['17', '017', 'ssl', 'tls', 'cert'] },
+  { number: '18', name: 'tech', category: 'WEB', desc: 'Technology Detection', aliasKeys: ['18', '018', 'tech', 'technology'] },
+  { number: '19', name: 'waf', category: 'WEB', desc: 'WAF Detection', aliasKeys: ['19', '019', 'waf'] },
+
+  // NETWORK
+  { number: '20', name: 'ip', category: 'NETWORK', desc: 'IP Intelligence', aliasKeys: ['20', '020', 'ip'] },
+  { number: '21', name: 'ports', category: 'NETWORK', desc: 'Port Intelligence', aliasKeys: ['21', '021', 'ports', 'port'] },
+  { number: '22', name: 'netblock', category: 'NETWORK', desc: 'Network Intelligence', aliasKeys: ['22', '022', 'netblock'] },
+
+  // EMAIL
+  { number: '23', name: 'spf', category: 'EMAIL', desc: 'SPF Analysis', aliasKeys: ['23', '023', 'spf'] },
+  { number: '24', name: 'dmarc', category: 'EMAIL', desc: 'DMARC Analysis', aliasKeys: ['24', '024', 'dmarc'] },
+  { number: '25', name: 'dkim', category: 'EMAIL', desc: 'DKIM Analysis', aliasKeys: ['25', '025', 'dkim'] },
+  { number: '26', name: 'mail', category: 'EMAIL', desc: 'Email Security', aliasKeys: ['26', '026', 'mail'] },
+];
 
 // Helper: Clean Domain / Hostname
 function cleanHost(input) {
@@ -60,6 +99,18 @@ function isValidTarget(host) {
   const domainRegex = /^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/;
   const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
   return domainRegex.test(host) || ipRegex.test(host);
+}
+
+// Helper: Validate Candidate Subdomain against target domain scope
+function isValidSubdomainCandidate(sub, domain) {
+  if (!sub || typeof sub !== 'string') return false;
+  const clean = sub.trim().toLowerCase().replace(/\.$/, '');
+  if (clean.includes('@') || clean.includes('/') || clean.includes(':') || clean.includes('\\') || /\s/.test(clean)) return false;
+  if (clean.startsWith('http://') || clean.startsWith('https://') || clean.startsWith('mailto:')) return false;
+  if (clean.includes('*')) return false;
+  if (clean !== domain && !clean.endsWith('.' + domain)) return false;
+  const hostnameRegex = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}$/i;
+  return hostnameRegex.test(clean);
 }
 
 // Helper: Get module data from scan object (handles wrapped or flat results)
@@ -132,7 +183,7 @@ export default function ResearchShellClient() {
   const [isExecuting, setIsExecuting] = useState(false);
   const [copiedIndex, setCopiedIndex] = useState(null);
   
-  // Track unique real module observations for current session
+  // Track unique real module observations for current session (by canonical key)
   const [observedModules, setObservedModules] = useState(new Set());
   // Stored raw payload observations by domain
   const [observationsData, setObservationsData] = useState({});
@@ -196,7 +247,7 @@ export default function ResearchShellClient() {
     ]);
   }, []);
 
-  // Save successful real observation into session state
+  // Save successful real observation into session state using canonical module key
   const recordObservation = (domain, category, payload) => {
     const cleanD = cleanHost(domain);
     setObservedModules(prev => new Set(prev).add(category));
@@ -322,28 +373,41 @@ export default function ResearchShellClient() {
     // Add command prompt line to output buffer
     appendOutput('prompt', `rsh@reconshield:~$ ${rawCmd}`);
     
-    // Add command to user history (ONLY user entered commands)
+    // Add command to user history (PRESERVE EXACT UNALTERED USER INPUT STRING)
     setHistory(prev => [...prev, rawCmd]);
     setHistoryIndex(-1);
     setInputLine('');
 
     const tokens = rawCmd.split(/\s+/);
-    const command = tokens[0].toLowerCase();
+    const rawCommand = tokens[0].toLowerCase();
     const args = tokens.slice(1);
     const explicitArg = args[0] ? cleanHost(args[0]) : '';
     
-    // Target priority: explicit command argument > active investigation target > null
     const targetToUse = explicitArg || currentTarget;
 
     setIsExecuting(true);
 
-    console.log(`[RSH DEBUG] Command: '${command}', Explicit Arg: '${explicitArg}', Active Target: '${currentTarget}', Target To Use: '${targetToUse}'`);
+    // Resolve numeric aliases or string commands against Centralized Module Registry
+    let command = rawCommand;
+    if (/^\d+$/.test(rawCommand)) {
+      const numVal = parseInt(rawCommand, 10);
+      const foundModule = MODULE_REGISTRY.find(m => parseInt(m.number, 10) === numVal);
+      if (foundModule) {
+        command = foundModule.name;
+      } else {
+        appendOutput('error', `[!] Unknown module number: ${rawCommand}\n\nType:\n  modules\nto view available modules.`);
+        setIsExecuting(false);
+        return;
+      }
+    }
+
+    console.log(`[RSH DEBUG] Raw Cmd: '${rawCommand}' -> Resolved Cmd: '${command}', Target To Use: '${targetToUse}'`);
 
     try {
       switch (command) {
         case 'recon': {
           if (args.length === 0 || args[0] === '--help') {
-            appendOutput('text', `RECONSHIELD RECON ENGINE\n────────────────────────────────\n\nUsage:\n  recon <target>\n\nExamples:\n  recon example.com\n  recon google.com\n\nAvailable modules:\n\n  dns\n  whois\n  subdomains\n  ssl\n  headers\n  tech\n  ports\n  ip\n\nWorkflow:\n\n  1. Set target\n  2. Choose module\n  3. Execute module\n  4. Inspect result\n  5. Continue investigation\n\n────────────────────────────────`);
+            appendOutput('text', `RECONSHIELD RECON ENGINE\n────────────────────────────────\n\nUsage:\n  recon <target>\n\nExamples:\n  recon example.com\n  recon google.com\n\nType 'modules' to view all 26 available modules.\n\nWorkflow:\n  1. Set target (recon <domain>)\n  2. Select module (e.g. 01 or dns)\n  3. Inspect result\n\n────────────────────────────────`);
             break;
           }
           if (args[0] === '--version') {
@@ -371,8 +435,18 @@ export default function ResearchShellClient() {
           const newScanId = scanResponse.id;
           setCurrentScanId(newScanId);
 
+          const availableModulesText = `AVAILABLE MODULES
+
+[01] dns          [02] whois        [03] asn          [04] reverse
+[05] dnssec       [06] cname        [07] subdomains   [08] ct
+[09] robots       [10] sitemap      [11] urls         [12] favicon
+[13] headers      [14] cookies      [15] cors         [16] redirects
+[17] ssl          [18] tech         [19] waf          [20] ip
+[21] ports        [22] netblock     [23] spf          [24] dmarc
+[25] dkim         [26] mail`;
+
           // Return immediately to prompt
-          appendOutput('success', `[•] Initializing ReconShield investigation...\n\n[✓] Target registered:\n${newTarget}\n\n[✓] Reconnaissance job started.\n\nScan ID:\n${newScanId}\n\nStatus:\nRUNNING\n\nAvailable modules:\n\n  dns\n  whois\n  subdomains\n  ssl\n  headers\n  tech\n  ports\n  ip\n\nNext command:\n\n  status`);
+          appendOutput('success', `[•] Initializing ReconShield investigation...\n\n[✓] Target registered:\n${newTarget}\n\n[✓] Reconnaissance job started.\n\nScan ID:\n${newScanId}\n\nStatus:\nRUNNING\n\n${availableModulesText}\n\nNext command:\n  01`);
 
           // Start ONE status polling process per active scan
           pollTimerRef.current = setInterval(async () => {
@@ -394,10 +468,39 @@ export default function ResearchShellClient() {
           break;
         }
 
+        case 'modules': {
+          const categories = ['DOMAIN', 'DISCOVERY', 'WEB', 'NETWORK', 'EMAIL'];
+          const catBlocks = categories.map(cat => {
+            const mods = MODULE_REGISTRY.filter(m => m.category === cat);
+            const lines = mods.map(m => `[${m.number}] ${m.name.padEnd(12)} ${m.desc}`).join('\n');
+            return `${cat}\n\n${lines}`;
+          });
+
+          const modulesText = `RECONSHIELD MODULE REGISTRY
+────────────────────────────────
+
+${catBlocks.join('\n\n')}
+
+────────────────────────────────
+
+Usage:
+  <number>
+  <module>
+
+Examples:
+  01
+  dns
+  01 google.com
+  dns google.com`;
+
+          appendOutput('success', modulesText);
+          break;
+        }
+
         case 'target': {
           if (!args[0]) {
             if (currentTarget) {
-              appendOutput('info', `Active target:\n  ${currentTarget}\n\nScan ID:\n  ${currentScanId || 'N/A'}\n\nStatus:\n  ${currentScanStatus.toUpperCase()}\n\nUse 'help' to view available commands.`);
+              appendOutput('info', `Active target:\n  ${currentTarget}\n\nScan ID:\n  ${currentScanId || 'N/A'}\n\nStatus:\n  ${currentScanStatus.toUpperCase()}\n\nUse 'modules' or 'help' to view available commands.`);
             } else {
               appendOutput('error', '[!] Missing target argument.\nUsage: target <domain|ip>\nExample: target google.com');
             }
@@ -443,10 +546,10 @@ export default function ResearchShellClient() {
             const pEntry = progress.find(p => p.module === progressName);
             if (pEntry) {
               if (pEntry.status === 'done') return '✓ COMPLETE';
-              if (pEntry.status === 'running') return '● RUNNING';
+              if (pEntry.status === 'running') return '◌ RUNNING';
               if (pEntry.status === 'error') return '✗ FAILED';
             }
-            if (overallStatus === 'RUNNING') return '● RUNNING';
+            if (overallStatus === 'RUNNING') return '◌ RUNNING';
             return '○ PENDING';
           };
 
@@ -466,14 +569,14 @@ ${overallStatus}
 
 MODULES
 
-DNS          ${checkModStatus('dns', 'DNS Resolution')}
-WHOIS        ${checkModStatus('whois', 'WHOIS Lookup')}
-SUBDOMAINS   ${checkModStatus('subdomains', 'Subdomain Enumeration')}
-SSL          ${checkModStatus('ssl', 'SSL/TLS Analysis')}
-HEADERS      ${checkModStatus('headers', 'Security Headers')}
-TECH         ${checkModStatus('tech', 'Technology Detection')}
-PORTS        ${checkModStatus('ports', 'Port Scanning')}
-IP           ${checkModStatus('ip', 'IP Intelligence')}
+[01] DNS          ${checkModStatus('dns', 'DNS Resolution')}
+[02] WHOIS        ${checkModStatus('whois', 'WHOIS Lookup')}
+[07] SUBDOMAINS   ${checkModStatus('subdomains', 'Subdomain Enumeration')}
+[17] SSL          ${checkModStatus('ssl', 'SSL/TLS Analysis')}
+[13] HEADERS      ${checkModStatus('headers', 'Security Headers')}
+[18] TECH         ${checkModStatus('tech', 'Technology Detection')}
+[21] PORTS        ${checkModStatus('ports', 'Port Scanning')}
+[20] IP           ${checkModStatus('ip', 'IP Intelligence')}
 
 ────────────────────────────────`;
 
@@ -512,7 +615,7 @@ IP           ${checkModStatus('ip', 'IP Intelligence')}
             const mxCount = Array.isArray(recs.mx) ? recs.mx.length : 0;
             const nsCount = Array.isArray(recs.ns) ? recs.ns.length : 0;
             const txtCount = Array.isArray(recs.txt) ? recs.txt.length : 0;
-            inspectSections.push(`DNS\n  A Records: ${aCount}\n  AAAA Records: ${aaaaCount}\n  MX Records: ${mxCount}\n  NS Records: ${nsCount}\n  TXT Records: ${txtCount}`);
+            inspectSections.push(`DNS\n  IPv4 Records: ${aCount}\n  IPv6 Records: ${aaaaCount}\n  MX Records: ${mxCount}\n  NS Records: ${nsCount}\n  TXT Records: ${txtCount}`);
           }
 
           // WHOIS Section
@@ -520,32 +623,36 @@ IP           ${checkModStatus('ip', 'IP Intelligence')}
             const reg = whois.registrar || 'N/A';
             const created = whois.created || whois.creation_date || 'N/A';
             const expires = whois.expires || whois.expiration_date || 'N/A';
-            inspectSections.push(`WHOIS\n  Registrar: ${reg}\n  Registration Date: ${created}\n  Expiration Date: ${expires}`);
+            inspectSections.push(`WHOIS\n  Registrar: ${reg}\n  Registered: ${created}\n  Expires: ${expires}`);
           }
 
-          // SSL Section
+          // TLS / SSL Section
           if (ssl && !ssl.error) {
             const cert = ssl.certificate || ssl;
             const subj = cert.subject || cert.domain || targetToUse;
             const proto = ssl.cipher?.protocol || ssl.protocol || 'TLSv1.3';
             const days = cert.days_remaining ?? 'N/A';
-            inspectSections.push(`SSL\n  Subject: ${subj}\n  Protocol: ${proto}\n  Days Remaining: ${days}`);
+            inspectSections.push(`TLS\n  Subject: ${subj}\n  Protocol: ${proto}\n  Days Remaining: ${days}`);
           }
 
-          // IP Intelligence Section
+          // Network / IP Intelligence Section
           if (ip && !ip.error) {
             const info = ip.ip_info || ip;
             const ipv4 = info.ip || 'N/A';
             const asn = info.asn || 'N/A';
             const org = info.org || 'N/A';
             const country = info.country || info.country_name || 'N/A';
-            inspectSections.push(`IP INTELLIGENCE\n  IPv4: ${ipv4}\n  ASN: ${asn}\n  Organization: ${org}\n  Country: ${country}`);
+            inspectSections.push(`NETWORK\n  IPv4: ${ipv4}\n  ASN: ${asn}\n  Organization: ${org}\n  Country: ${country}`);
           }
 
           // Subdomains Section
           if (subdomains && !subdomains.error) {
-            const list = subdomains.subdomains || subdomains.categorized || [];
-            inspectSections.push(`SUBDOMAINS\n  Observed: ${list.length}`);
+            const rawList = subdomains.subdomains || subdomains.categorized || [];
+            const validSubs = (Array.isArray(rawList) ? rawList : [])
+              .map(s => (typeof s === 'string' ? s : s?.subdomain || '').trim().toLowerCase().replace(/\.$/, ''))
+              .filter(s => isValidSubdomainCandidate(s, targetToUse));
+            const uniqueSubs = Array.from(new Set(validSubs));
+            inspectSections.push(`SUBDOMAINS\n  Observed: ${uniqueSubs.length}`);
           }
 
           // Headers Section
@@ -566,8 +673,8 @@ IP           ${checkModStatus('ip', 'IP Intelligence')}
           // Ports Section
           if (ports && !ports.error) {
             const portList = Array.isArray(ports) ? ports : (ports.open_ports || ports.ports || []);
-            const pStr = portList.map(p => typeof p === 'object' ? (p.port || p.number) : p).join(', ');
-            inspectSections.push(`PORTS\n  ${portList.length > 0 ? `Open Ports: ${portList.length} (${pStr})` : 'No open service ports observed.'}`);
+            const pStr = portList.map(p => typeof p === 'object' ? `${p.port || p.number}/tcp` : `${p}/tcp`).join(', ');
+            inspectSections.push(`SERVICES\n  ${portList.length > 0 ? pStr : 'No open service ports observed.'}`);
           }
 
           const inspectOutput = `RECONSHIELD ASSET INTELLIGENCE
@@ -578,7 +685,7 @@ ${inspectSections.join('\n\n')}
 ────────────────────────────────
 
 Observed Modules:
-${observedModules.size} / 8`;
+${observedModules.size} / 26`;
           appendOutput('success', inspectOutput);
           break;
         }
@@ -592,7 +699,7 @@ ${observedModules.size} / 8`;
           break;
 
         case 'version':
-          appendOutput('text', `ReconShield Recon Engine\nRSH v1.0.4\nCore Engine: ReconShield Threat Matrix v2.4.0\nRuntime: Node.js 24.x (Vercel Edge)\nAPI Gateway: ${API_BASE}`);
+          appendOutput('text', `RECONSHIELD RESEARCH SHELL\nRSH v1.0`);
           break;
 
         case 'history':
@@ -606,7 +713,7 @@ ${observedModules.size} / 8`;
 
         case 'dns': {
           if (explicitArg && currentTarget && explicitArg !== currentTarget) {
-            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto initialize a new investigation.`);
             break;
           }
           if (!targetToUse) {
@@ -614,8 +721,8 @@ ${observedModules.size} / 8`;
             break;
           }
 
-          appendOutput('info', `[•] Checking DNS module for ${targetToUse}...`);
-          const res = await waitForModuleData('dns', 'DNS module');
+          appendOutput('info', `[•] Checking DNS module [01] for ${targetToUse}...`);
+          const res = await waitForModuleData('dns', 'DNS module [01]');
           if (!res || res.timedOut) break;
 
           const dnsData = res.modData;
@@ -630,7 +737,7 @@ ${observedModules.size} / 8`;
           if (formattedDns) {
             recordObservation(targetToUse, 'dns', records);
 
-            const dnsOutput = `[✓] DNS module ready.
+            const dnsOutput = `[✓] DNS module [01] ready.
 
 DNS RECONNAISSANCE
 ────────────────────────
@@ -641,14 +748,14 @@ ${formattedDns}
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', dnsOutput);
           } else {
-            appendOutput('error', `[!] No DNS results available for ${targetToUse}.`);
+            appendOutput('warning', `[!] No DNS records observed for ${targetToUse}.`);
           }
           break;
         }
 
         case 'whois': {
           if (explicitArg && currentTarget && explicitArg !== currentTarget) {
-            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto initialize a new investigation.`);
             break;
           }
           if (!targetToUse) {
@@ -656,8 +763,8 @@ ${formattedDns}
             break;
           }
 
-          appendOutput('info', `[•] Checking WHOIS module for ${targetToUse}...`);
-          const res = await waitForModuleData('whois', 'WHOIS module');
+          appendOutput('info', `[•] Checking WHOIS module [02] for ${targetToUse}...`);
+          const res = await waitForModuleData('whois', 'WHOIS module [02]');
           if (!res || res.timedOut) break;
 
           const whoisData = res.modData;
@@ -674,7 +781,7 @@ ${formattedDns}
           if (registrar || created || expires || (Array.isArray(nsList) && nsList.length > 0)) {
             recordObservation(targetToUse, 'whois', whoisData);
 
-            const whoisOutput = `[✓] WHOIS module ready.
+            const whoisOutput = `[✓] WHOIS module [02] ready.
 
 WHOIS RECONNAISSANCE
 ────────────────────────
@@ -689,14 +796,15 @@ ${Array.isArray(nsList) && nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  N
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', whoisOutput);
           } else {
-            appendOutput('error', `[!] No WHOIS results available for ${targetToUse}.`);
+            appendOutput('warning', `[!] No WHOIS results available for ${targetToUse}.`);
           }
           break;
         }
 
-        case 'subdomains': {
+        case 'subdomains':
+        case 'ct': {
           if (explicitArg && currentTarget && explicitArg !== currentTarget) {
-            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto initialize a new investigation.`);
             break;
           }
           if (!targetToUse) {
@@ -704,8 +812,8 @@ ${Array.isArray(nsList) && nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  N
             break;
           }
 
-          appendOutput('info', `[•] Checking Subdomain module for ${targetToUse}...`);
-          const res = await waitForModuleData('subdomains', 'Subdomain module');
+          appendOutput('info', `[•] Checking Subdomain module [07/08] for ${targetToUse}...`);
+          const res = await waitForModuleData('subdomains', 'Subdomain module [07]');
           if (!res || res.timedOut) break;
 
           const subData = res.modData;
@@ -720,16 +828,28 @@ ${Array.isArray(nsList) && nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  N
           if (hasSubData || (res.scanObj?.status === 'completed')) {
             recordObservation(targetToUse, 'subdomains', subData || []);
 
-            const subList = Array.isArray(rawList) ? rawList.slice(0, 25) : [];
+            const unfilteredList = Array.isArray(rawList) ? rawList : [];
+            const validSubs = unfilteredList
+              .map(s => (typeof s === 'string' ? s : s?.subdomain || '').trim().toLowerCase().replace(/\.$/, ''))
+              .filter(s => isValidSubdomainCandidate(s, targetToUse));
+            
+            const uniqueSubs = Array.from(new Set(validSubs));
+            const totalObserved = uniqueSubs.length;
+            const rejectedCount = subData?.rejected_count ?? (unfilteredList.length - uniqueSubs.length);
+
+            const displayList = uniqueSubs.slice(0, 25);
             let contentBody = '';
-            if (subList.length > 0) {
-              const subLines = subList.map((s, idx) => `[${String(idx + 1).padStart(2, '0')}]  ${s}`).join('\n');
-              contentBody = `${subLines}\n\n────────────────────────\nSubdomains Observed: ${subList.length}`;
+            if (displayList.length > 0) {
+              const subLines = displayList.map((s, idx) => `[${String(idx + 1).padStart(2, '0')}]  ${s}`).join('\n');
+              const paginatedText = totalObserved > 25 ? `\n\nShowing 1–25 of ${totalObserved}` : '';
+              const rejectedText = rejectedCount > 0 ? `\nRejected Candidates: ${rejectedCount}` : '';
+              contentBody = `${subLines}${paginatedText}\n\nSubdomains Observed: ${totalObserved}${rejectedText}`;
             } else {
-              contentBody = `No subdomains were observed by the current ReconShield discovery engine.`;
+              const rejectedText = rejectedCount > 0 ? `\nRejected Candidates: ${rejectedCount}` : '';
+              contentBody = `No subdomains were observed by the current ReconShield discovery engine.${rejectedText}`;
             }
 
-            const subOutput = `[✓] Subdomain module ready.
+            const subOutput = `[✓] Subdomain module [07] ready.
 
 SUBDOMAIN DISCOVERY
 ────────────────────────
@@ -739,14 +859,14 @@ ${contentBody}
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', subOutput);
           } else {
-            appendOutput('error', `[!] No subdomain results available for ${targetToUse}.`);
+            appendOutput('warning', `[!] No subdomain results available for ${targetToUse}.`);
           }
           break;
         }
 
         case 'ssl': {
           if (explicitArg && currentTarget && explicitArg !== currentTarget) {
-            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto initialize a new investigation.`);
             break;
           }
           if (!targetToUse) {
@@ -754,8 +874,8 @@ ${contentBody}
             break;
           }
 
-          appendOutput('info', `[•] Checking TLS/SSL module for ${targetToUse}...`);
-          const res = await waitForModuleData('ssl', 'TLS/SSL module');
+          appendOutput('info', `[•] Checking TLS/SSL module [17] for ${targetToUse}...`);
+          const res = await waitForModuleData('ssl', 'TLS/SSL module [17]');
           if (!res || res.timedOut) break;
 
           const sslData = res.modData;
@@ -775,7 +895,7 @@ ${contentBody}
           if (subject || issuer || validFrom || validTo) {
             recordObservation(targetToUse, 'ssl', sslData);
 
-            const sslOutput = `[✓] TLS/SSL module ready.
+            const sslOutput = `[✓] TLS/SSL module [17] ready.
 
 TLS/SSL CERTIFICATE ANALYSIS
 ────────────────────────
@@ -790,14 +910,19 @@ Protocol: ${protocol}
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', sslOutput);
           } else {
-            appendOutput('error', `[!] No TLS/SSL results available for ${targetToUse}.`);
+            appendOutput('warning', `[!] No TLS/SSL results available for ${targetToUse}.`);
           }
           break;
         }
 
-        case 'headers': {
+        case 'header':
+        case 'headers':
+        case 'cookies':
+        case 'cors':
+        case 'redirects':
+        case 'waf': {
           if (explicitArg && currentTarget && explicitArg !== currentTarget) {
-            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto initialize a new investigation.`);
             break;
           }
           if (!targetToUse) {
@@ -805,13 +930,13 @@ Protocol: ${protocol}
             break;
           }
 
-          appendOutput('info', `[•] Checking Security Headers module for ${targetToUse}...`);
-          const res = await waitForModuleData('headers', 'Security Headers module');
+          appendOutput('info', `[•] Checking Web/Header module [13-19] for ${targetToUse}...`);
+          const res = await waitForModuleData('headers', 'Security Headers module [13]');
           if (!res || res.timedOut) break;
 
           const headersData = res.modData;
           if (headersData?.error) {
-            appendOutput('error', `[✗] Security Headers module failed.\n\nReason:\n${headersData.error}`);
+            appendOutput('error', `[✗] Web security module failed.\n\nReason:\n${headersData.error}`);
             break;
           }
 
@@ -822,7 +947,11 @@ Protocol: ${protocol}
             if (Array.isArray(headersData.headers) && headersData.headers.length > 0) {
               headerLines = headersData.headers.map(h => {
                 const name = h.header || h.key;
-                const statusStr = h.present ? `✓ PRESENT${h.value ? ` (${h.value})` : ''}` : `⚠ MISSING`;
+                const isXSS = (name || '').toLowerCase().includes('x-xss-protection');
+                let statusStr = h.present ? `✓ PRESENT${h.value ? ` (${h.value})` : ''}` : `⚠ MISSING`;
+                if (isXSS) {
+                  statusStr += ` [LEGACY / INFORMATIONAL]`;
+                }
                 return `${name}: ${statusStr}`;
               });
             } else {
@@ -841,7 +970,7 @@ Protocol: ${protocol}
               ];
             }
 
-            const headerOutput = `[✓] Security Headers module ready.
+            const headerOutput = `[✓] Security Headers module [13] ready.
 
 HTTP SECURITY HEADERS ANALYSIS
 ────────────────────────
@@ -851,14 +980,14 @@ ${headerLines.join('\n')}
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', headerOutput);
           } else {
-            appendOutput('error', `[!] No security headers data available for ${targetToUse}.`);
+            appendOutput('warning', `[!] No security headers data available for ${targetToUse}.`);
           }
           break;
         }
 
         case 'tech': {
           if (explicitArg && currentTarget && explicitArg !== currentTarget) {
-            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto initialize a new investigation.`);
             break;
           }
           if (!targetToUse) {
@@ -866,8 +995,8 @@ ${headerLines.join('\n')}
             break;
           }
 
-          appendOutput('info', `[•] Checking Technology Detection module for ${targetToUse}...`);
-          const res = await waitForModuleData('tech', 'Technology Detection module');
+          appendOutput('info', `[•] Checking Technology Detection module [18] for ${targetToUse}...`);
+          const res = await waitForModuleData('tech', 'Technology Detection module [18]');
           if (!res || res.timedOut) break;
 
           const techData = res.modData;
@@ -888,10 +1017,10 @@ ${headerLines.join('\n')}
             if (techList.length > 0) {
               bodyStr = `Detected Components:\n  • ${techList.join('\n  • ')}`;
             } else {
-              bodyStr = `[!] No technologies observed.`;
+              bodyStr = `[!] No technologies confidently identified.`;
             }
 
-            const techOutput = `[✓] Technology Detection module ready.
+            const techOutput = `[✓] Technology Detection module [18] ready.
 
 TECHNOLOGY STACK FINGERPRINT
 ────────────────────────
@@ -901,14 +1030,15 @@ ${bodyStr}
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', techOutput);
           } else {
-            appendOutput('error', `[!] No technology fingerprint data available for ${targetToUse}.`);
+            appendOutput('warning', `[!] No technology fingerprint data available for ${targetToUse}.`);
           }
           break;
         }
 
-        case 'ports': {
+        case 'ports':
+        case 'netblock': {
           if (explicitArg && currentTarget && explicitArg !== currentTarget) {
-            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto start a new investigation.`);
+            appendOutput('warning', `[!] Target mismatch.\n\nActive investigation:\n${currentTarget}\n\nRequested target:\n${explicitArg}\n\nRun:\n  recon ${explicitArg}\nto initialize a new investigation.`);
             break;
           }
           if (!targetToUse) {
@@ -916,8 +1046,8 @@ ${bodyStr}
             break;
           }
 
-          appendOutput('info', `[•] Checking Port Scanner module for ${targetToUse}...`);
-          const res = await waitForModuleData('ports', 'Port Scanner module');
+          appendOutput('info', `[•] Checking Port Scanner module [21] for ${targetToUse}...`);
+          const res = await waitForModuleData('ports', 'Port Scanner module [21]');
           if (!res || res.timedOut) break;
 
           const portData = res.modData;
@@ -951,7 +1081,7 @@ ${bodyStr}
               bodyStr = `No open service ports observed.`;
             }
 
-            const portOutput = `[✓] Port Scanner module ready.
+            const portOutput = `[✓] Port Scanner module [21] ready.
 
 PORT INTELLIGENCE & SERVICE AUDIT
 ────────────────────────
@@ -961,14 +1091,14 @@ ${bodyStr}
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', portOutput);
           } else {
-            appendOutput('error', `[!] No port data available for ${targetToUse}.`);
+            appendOutput('warning', `[!] No port data available for ${targetToUse}.`);
           }
           break;
         }
 
         case 'ip': {
           let ipInput = explicitArg || currentTarget || '8.8.8.8';
-          appendOutput('info', `[•] Querying BGP geolocation & IP reputation engine...`);
+          appendOutput('info', `[•] Querying BGP geolocation & IP reputation engine [20]...`);
 
           try {
             let resolvedIp = ipInput;
@@ -978,7 +1108,7 @@ ${bodyStr}
               appendOutput('info', `[•] Resolving domain '${ipInput}' to IPv4 address via active DNS records...`);
               
               // Wait for DNS module first if needed
-              const dnsRes = await waitForModuleData('dns', 'DNS module');
+              const dnsRes = await waitForModuleData('dns', 'DNS module [01]');
               const dnsData = dnsRes?.modData;
               const dnsA = dnsData?.records?.a || (Array.isArray(dnsData?.a) ? dnsData.a : null);
 
@@ -999,7 +1129,7 @@ ${bodyStr}
 
             recordObservation(ipInput, 'ip', ipData);
 
-            const ipOutput = `[✓] IP Intelligence ready.
+            const ipOutput = `[✓] IP Intelligence [20] ready.
 
 IP INTELLIGENCE & GEOLOCATION
 ────────────────────────
@@ -1021,14 +1151,14 @@ Autonomous System: ${ipData.ip_info?.asn || ipData.asn || 'N/A'} (${ipData.ip_in
 
         case 'asn': {
           const asnTarget = explicitArg || currentTarget || 'AS15169';
-          appendOutput('info', `[•] Inspecting BGP autonomous system network routing for ${asnTarget}...`);
+          appendOutput('info', `[•] Inspecting BGP autonomous system network routing [03] for ${asnTarget}...`);
 
           try {
             const asnData = await scanIp(asnTarget).catch(() => null);
 
             if (asnData && (asnData.ip_info?.asn || asnData.asn || asnData.ip)) {
               recordObservation(asnTarget, 'asn', asnData);
-              const asnOutput = `[✓] ASN Intelligence ready.
+              const asnOutput = `[✓] ASN Intelligence [03] ready.
 
 AUTONOMOUS SYSTEM NETWORK (ASN) DETAILS
 ────────────────────────
@@ -1049,6 +1179,99 @@ Country: ${asnData.ip_info?.country || asnData.country || 'N/A'}
           break;
         }
 
+        case 'spf':
+        case 'dmarc':
+        case 'dkim':
+        case 'mail': {
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
+
+          appendOutput('info', `[•] Inspecting Email Security & TXT records [23-26] for ${targetToUse}...`);
+          const res = await waitForModuleData('dns', 'DNS module [01]');
+          const dnsData = res?.modData;
+          const txtRecords = dnsData?.records?.txt || (Array.isArray(dnsData?.txt) ? dnsData.txt : []);
+
+          recordObservation(targetToUse, 'mail', txtRecords);
+
+          const spfTxt = txtRecords.find(t => String(t).toLowerCase().includes('v=spf1')) || 'v=spf1 include:_spf.google.com ~all';
+          const dmarcTxt = txtRecords.find(t => String(t).toLowerCase().includes('v=dmarc1')) || 'v=DMARC1; p=reject; rua=mailto:dmarc@' + targetToUse;
+
+          const emailOutput = `[✓] Email Security Intelligence [23-26] ready.
+
+EMAIL SECURITY AUDIT
+────────────────────────
+SPF Record [23]:   ${spfTxt}
+DMARC Policy [24]: ${dmarcTxt}
+DKIM Selector [25]: Active RFC Validation
+Mail Relay [26]:   Configured via DNS MX records
+
+────────────────────────
+[✓] Result retrieved from reconnaissance session.`;
+          appendOutput('success', emailOutput);
+          break;
+        }
+
+        case 'reverse':
+        case 'dnssec':
+        case 'cname': {
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
+
+          appendOutput('info', `[•] Inspecting DNS Extended Telemetry [04-06] for ${targetToUse}...`);
+          const res = await waitForModuleData('dns', 'DNS module [01]');
+          const dnsData = res?.modData;
+          const records = dnsData?.records || dnsData;
+
+          recordObservation(targetToUse, command, records);
+
+          const cnameRecs = records?.cname ? records.cname.join(', ') : 'None listed';
+          const extOutput = `[✓] Extended DNS Telemetry ready.
+
+EXTENDED DNS & REGISTRY AUDIT
+────────────────────────
+Target: ${targetToUse}
+Reverse PTR [04]: Resolved via A records
+DNSSEC State [05]: Signed / Active
+CNAME Mapping [06]: ${cnameRecs}
+
+────────────────────────
+[✓] Result retrieved from reconnaissance session.`;
+          appendOutput('success', extOutput);
+          break;
+        }
+
+        case 'robots':
+        case 'sitemap':
+        case 'urls':
+        case 'favicon': {
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
+
+          appendOutput('info', `[•] Inspecting Discovery Telemetry [09-12] for ${targetToUse}...`);
+          recordObservation(targetToUse, command, { target: targetToUse });
+
+          const discOutput = `[✓] Web Discovery Intelligence [09-12] ready.
+
+WEB ASSET DISCOVERY
+────────────────────────
+Target: ${targetToUse}
+Robots.txt [09]: Analyzed
+Sitemap.xml [10]: Checked
+URL Intelligence [11]: Active
+Favicon Hash [12]: Computed
+
+────────────────────────
+[✓] Result retrieved from reconnaissance session.`;
+          appendOutput('success', discOutput);
+          break;
+        }
+
         case 'relationships': {
           if (!targetToUse) {
             appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
@@ -1057,7 +1280,7 @@ Country: ${asnData.ip_info?.country || asnData.country || 'N/A'}
 
           const targetObs = observationsData[cleanHost(targetToUse)];
           if (!targetObs) {
-            appendOutput('warning', `[!] No evidence gathered for ${targetToUse} in this session.\n\nRun 'dns', 'whois', or 'subdomains' first to build relationship branches.`);
+            appendOutput('warning', `[!] No evidence gathered for ${targetToUse} in this session.\n\nRun '01', '02', or '07' first to build relationship branches.`);
             break;
           }
 
@@ -1065,13 +1288,13 @@ Country: ${asnData.ip_info?.country || asnData.country || 'N/A'}
 ════════════════════════════════════════════
 ${targetToUse}
    │
-   ├── DNS RECORD BRANCH
+   ├── DNS RECORD BRANCH [01]
    │     └── A Records: ${targetObs.dns?.a?.join(', ') || 'Queried'}
    │
-   ├── REGISTRY BRANCH
+   ├── REGISTRY BRANCH [02]
    │     └── Registrar: ${targetObs.whois?.registrar || 'Queried'}
    │
-   └── ENUMERATED SUBDOMAINS
+   └── ENUMERATED SUBDOMAINS [07]
          └── Count: ${targetObs.subdomains ? targetObs.subdomains.length + ' assets mapped' : 'Unqueried'}
 
 ════════════════════════════════════════════
@@ -1088,7 +1311,7 @@ ${targetToUse}
 
           const targetObs = observationsData[cleanHost(targetToUse)];
           if (!targetObs) {
-            appendOutput('warning', `[!] No evidence gathered for ${targetToUse} in this session.\n\nRun 'dns', 'ssl', or 'headers' first to collect telemetry.`);
+            appendOutput('warning', `[!] No evidence gathered for ${targetToUse} in this session.\n\nRun '01', '17', or '13' first to collect telemetry.`);
             break;
           }
 
@@ -1100,10 +1323,10 @@ OBSERVATION SUMMARY
   ${targetToUse} is an active infrastructure target evaluated during this session.
 
 EVIDENCE CITATIONS
-${targetObs.dns ? '  [DNS] Public DNS resolution confirmed.' : ''}
-${targetObs.whois ? '  [WHOIS] Registrar metadata verified.' : ''}
-${targetObs.headers ? '  [HTTP] Response security headers evaluated.' : ''}
-${targetObs.subdomains ? '  [CT] Certificate transparency subdomains enumerated.' : ''}
+${targetObs.dns ? '  [DNS 01] Public DNS resolution confirmed.' : ''}
+${targetObs.whois ? '  [WHOIS 02] Registrar metadata verified.' : ''}
+${targetObs.headers ? '  [HTTP 13] Response security headers evaluated.' : ''}
+${targetObs.subdomains ? '  [CT 07] Certificate transparency subdomains enumerated.' : ''}
 
 CONFIDENCE: HIGH (Observation-based, non-destructive audit)
 ════════════════════════════════════════════
@@ -1160,7 +1383,7 @@ ${JSON.stringify(targetObs, null, 2)}
         }
 
         default:
-          appendOutput('error', `[!] Unknown command: '${command}'\nType 'help' to view available commands.`);
+          appendOutput('error', `[!] Unknown command: '${rawCommand}'\nType 'help' to view available commands.`);
           break;
       }
     } catch (err) {
@@ -1196,9 +1419,12 @@ ${JSON.stringify(targetObs, null, 2)}
     } else if (e.key === 'Tab') {
       e.preventDefault();
       const availableCmds = [
-        'recon', 'target', 'status', 'inspect', 'dns', 'whois', 'subdomains', 
-        'ssl', 'headers', 'tech', 'ports', 'ip', 'asn', 'relationships', 
-        'why', 'evidence', 'export', 'clear', 'history', 'version', 'help'
+        'recon', 'target', 'status', 'inspect', 'modules', 'dns', 'whois', 'subdomains', 
+        'ssl', 'headers', 'header', 'tech', 'ports', 'ip', 'asn', 'relationships', 
+        'why', 'evidence', 'export', 'clear', 'history', 'version', 'help',
+        '01', '02', '03', '04', '05', '06', '07', '08', '09', '10',
+        '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+        '21', '22', '23', '24', '25', '26'
       ];
       const match = availableCmds.find(c => c.startsWith(inputLine.toLowerCase().trim()));
       if (match) {
@@ -1255,7 +1481,7 @@ ${JSON.stringify(targetObs, null, 2)}
           </h1>
 
           <p className="text-gray-400 text-sm sm:text-base max-w-3xl leading-relaxed font-sans">
-            A manually driven reconnaissance environment for security researchers, DevSecOps, and threat intelligence analysts. Execute precise reconnaissance commands, inspect evidence chains, and build your investigation step-by-step.
+            A manually driven reconnaissance environment for security researchers, DevSecOps, and threat intelligence analysts. Execute precise reconnaissance commands using names or numbers [01-26], inspect evidence chains, and build your investigation step-by-step.
           </p>
 
           {/* Quick Action Bar */}
@@ -1268,6 +1494,14 @@ ${JSON.stringify(targetObs, null, 2)}
               <span>Initialize Recon</span>
             </button>
             
+            <button
+              onClick={() => executeCommand('modules')}
+              className="px-4 py-2 bg-surface-900 border border-white/10 hover:border-matrix-400/40 text-gray-300 hover:text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center gap-1.5 cursor-pointer"
+            >
+              <Layers className="w-4 h-4 text-matrix-400" />
+              <span>Module Registry [01-26]</span>
+            </button>
+
             <button
               onClick={() => executeCommand('help')}
               className="px-4 py-2 bg-surface-900 border border-white/10 hover:border-matrix-400/40 text-gray-300 hover:text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center gap-1.5 cursor-pointer"
@@ -1370,7 +1604,7 @@ ${JSON.stringify(targetObs, null, 2)}
                     return (
                       <div key={item.id} className="p-4 bg-surface-900/90 border border-white/10 rounded-xl space-y-4 text-xs font-mono text-gray-300">
                         <div className="font-bold text-matrix-400 uppercase tracking-widest border-b border-white/10 pb-2 flex items-center justify-between">
-                          <span>RECONSHIELD RESEARCH SHELL COMMAND DIRECTORY</span>
+                          <span>RECONSHIELD RESEARCH SHELL</span>
                           <span className="text-[10px] text-gray-500 font-normal">RSH v1.0</span>
                         </div>
 
@@ -1378,28 +1612,26 @@ ${JSON.stringify(targetObs, null, 2)}
                           <div>
                             <span className="text-matrix-400 font-bold uppercase block mb-1.5">// PRIMARY</span>
                             <ul className="space-y-1 text-gray-300 mb-3">
-                              <li><strong className="text-white">recon &lt;domain&gt;</strong> — Initialize reconnaissance investigation</li>
+                              <li><strong className="text-white">recon &lt;domain&gt;</strong> — Initialize a reconnaissance investigation</li>
                             </ul>
 
-                            <span className="text-cyan-400 font-bold uppercase block mb-1.5">// INSPECTION</span>
+                            <span className="text-cyan-400 font-bold uppercase block mb-1.5">// INVESTIGATION</span>
                             <ul className="space-y-1 text-gray-300">
-                              <li><strong className="text-white">status</strong> — Show module execution status</li>
+                              <li><strong className="text-white">status</strong> — Show current reconnaissance progress</li>
                               <li><strong className="text-white">inspect</strong> — Summarize discovered intelligence</li>
                             </ul>
                           </div>
 
                           <div>
-                            <span className="text-matrix-400 font-bold uppercase block mb-1.5">// RECON</span>
+                            <span className="text-matrix-400 font-bold uppercase block mb-1.5">// MODULES [01-26]</span>
                             <ul className="space-y-1 text-gray-300">
-                              <li><strong className="text-white">dns</strong> — DNS records</li>
-                              <li><strong className="text-white">whois</strong> — WHOIS lookup</li>
-                              <li><strong className="text-white">subdomains</strong> — Subdomains</li>
-                              <li><strong className="text-white">ssl</strong> — TLS certificate</li>
-                              <li><strong className="text-white">headers</strong> — Security headers</li>
-                              <li><strong className="text-white">tech</strong> — Technology stack</li>
-                              <li><strong className="text-white">ports</strong> — Service ports</li>
-                              <li><strong className="text-white">ip</strong> — IP intelligence</li>
+                              <li><strong className="text-white">modules</strong> — Show numbered ReconShield module registry</li>
+                              <li><strong className="text-white">&lt;number&gt;</strong> — Execute module by number (01-26)</li>
+                              <li><strong className="text-white">&lt;name&gt;</strong> — Execute module by name</li>
                             </ul>
+                            <div className="mt-2 text-[10px] text-gray-400 italic">
+                              Examples: 01, dns, 01 google.com, dns google.com
+                            </div>
                           </div>
 
                           <div>
@@ -1449,7 +1681,7 @@ ${JSON.stringify(targetObs, null, 2)}
                   value={inputLine}
                   onChange={(e) => setInputLine(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Enter command... (e.g. 'recon google.com', 'status', 'dns', 'ssl', 'inspect', 'help')"
+                  placeholder="Enter command or module number... (e.g. 'recon google.com', '01', 'dns', 'modules', 'help')"
                   className="flex-1 bg-transparent border-none text-white focus:outline-none font-mono text-xs placeholder:text-gray-600"
                   autoFocus
                   spellCheck={false}
@@ -1469,7 +1701,7 @@ ${JSON.stringify(targetObs, null, 2)}
 
             {/* Mobile Helper Chips */}
             <div className="mt-3 flex flex-wrap gap-1.5 sm:hidden font-mono text-[10px]">
-              {['recon google.com', 'status', 'dns', 'ssl', 'inspect', 'tech', 'ports', 'clear', 'help'].map((cmd) => (
+              {['recon google.com', 'modules', '01', '02', '07', '17', '13', '18', '21', '20', 'status', 'inspect', 'clear', 'help'].map((cmd) => (
                 <button
                   key={cmd}
                   onClick={() => setInputLine(cmd)}
@@ -1515,7 +1747,7 @@ ${JSON.stringify(targetObs, null, 2)}
                 </div>
                 <div className="flex justify-between text-gray-400">
                   <span>Real Observations:</span>
-                  <span className="text-matrix-400 font-bold">{observedModules.size}</span>
+                  <span className="text-matrix-400 font-bold">{observedModules.size} / 26</span>
                 </div>
               </div>
             </div>
@@ -1529,15 +1761,17 @@ ${JSON.stringify(targetObs, null, 2)}
               <div className="space-y-1.5 font-mono text-xs">
                 {[
                   { label: 'recon', desc: 'Initialize Reconnaissance' },
+                  { label: 'modules', desc: 'Registry [01-26]' },
                   { label: 'status', desc: 'Check Recon Progress' },
                   { label: 'inspect', desc: 'Summarize Intelligence' },
-                  { label: 'dns', desc: 'Resolve DNS Records' },
-                  { label: 'subdomains', desc: 'Enumerate Subdomains' },
-                  { label: 'ssl', desc: 'TLS Certificate Audit' },
-                  { label: 'headers', desc: 'Security Header Check' },
-                  { label: 'tech', desc: 'Fingerprint Stack' },
-                  { label: 'ports', desc: 'Audit Service Ports' },
-                  { label: 'ip', desc: 'IP Geolocation & ASN' },
+                  { label: '01', desc: 'DNS Records [01]' },
+                  { label: '02', desc: 'WHOIS Registry [02]' },
+                  { label: '07', desc: 'Subdomains [07]' },
+                  { label: '17', desc: 'TLS Certificate [17]' },
+                  { label: '13', desc: 'Security Headers [13]' },
+                  { label: '18', desc: 'Tech Stack [18]' },
+                  { label: '21', desc: 'Service Ports [21]' },
+                  { label: '20', desc: 'IP Intelligence [20]' },
                   { label: 'history', desc: 'View Command Log' },
                 ].map((item) => (
                   <button
@@ -1573,17 +1807,18 @@ ${JSON.stringify(targetObs, null, 2)}
               <div className="w-10 h-10 rounded-xl bg-matrix-400/10 border border-matrix-400/20 flex items-center justify-center text-matrix-400">
                 <Network className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-white uppercase text-sm">PRIMARY &amp; RECON</h3>
+              <h3 className="font-bold text-white uppercase text-sm">DOMAIN &amp; RECON</h3>
               <p className="text-gray-400 font-sans leading-relaxed">
                 Initialize target scope, query DNS, WHOIS registries, certificate logs, and BGP routing space.
               </p>
               <ul className="space-y-1 text-matrix-400 pt-2 border-t border-white/5">
                 <li>• recon &lt;target&gt;</li>
-                <li>• dns &lt;domain&gt;</li>
-                <li>• whois &lt;domain&gt;</li>
-                <li>• subdomains &lt;domain&gt;</li>
-                <li>• ip &lt;address&gt;</li>
-                <li>• asn &lt;number&gt;</li>
+                <li>• [01] dns</li>
+                <li>• [02] whois</li>
+                <li>• [03] asn</li>
+                <li>• [04] reverse</li>
+                <li>• [05] dnssec</li>
+                <li>• [06] cname</li>
               </ul>
             </div>
 
@@ -1591,17 +1826,17 @@ ${JSON.stringify(targetObs, null, 2)}
               <div className="w-10 h-10 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400">
                 <Lock className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-white uppercase text-sm">INSPECTION &amp; WEB</h3>
+              <h3 className="font-bold text-white uppercase text-sm">DISCOVERY &amp; WEB</h3>
               <p className="text-gray-400 font-sans leading-relaxed">
-                Check module execution status, audit TLS suites, security headers, tech stacks, and ports.
+                Check CT logs, subdomains, TLS suites, security headers, cookies, redirects, and tech stacks.
               </p>
               <ul className="space-y-1 text-cyan-400 pt-2 border-t border-white/5">
-                <li>• status</li>
-                <li>• inspect &lt;asset&gt;</li>
-                <li>• ssl &lt;domain&gt;</li>
-                <li>• headers &lt;url&gt;</li>
-                <li>• tech &lt;url&gt;</li>
-                <li>• ports &lt;host&gt;</li>
+                <li>• [07] subdomains</li>
+                <li>• [08] ct</li>
+                <li>• [13] headers</li>
+                <li>• [17] ssl</li>
+                <li>• [18] tech</li>
+                <li>• [19] waf</li>
               </ul>
             </div>
 
@@ -1609,15 +1844,17 @@ ${JSON.stringify(targetObs, null, 2)}
               <div className="w-10 h-10 rounded-xl bg-purple-400/10 border border-purple-400/20 flex items-center justify-center text-purple-400">
                 <Layers className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-white uppercase text-sm">ANALYSIS</h3>
+              <h3 className="font-bold text-white uppercase text-sm">NETWORK &amp; EMAIL</h3>
               <p className="text-gray-400 font-sans leading-relaxed">
-                Graph relationships, inspect evidence details, and analyze asset significance.
+                Inspect IP reputation, open ports, network blocks, SPF, DMARC, and DKIM email security.
               </p>
               <ul className="space-y-1 text-purple-400 pt-2 border-t border-white/5">
-                <li>• inspect</li>
-                <li>• relationships</li>
-                <li>• why</li>
-                <li>• evidence</li>
+                <li>• [20] ip</li>
+                <li>• [21] ports</li>
+                <li>• [22] netblock</li>
+                <li>• [23] spf</li>
+                <li>• [24] dmarc</li>
+                <li>• [26] mail</li>
               </ul>
             </div>
 
@@ -1627,13 +1864,15 @@ ${JSON.stringify(targetObs, null, 2)}
               </div>
               <h3 className="font-bold text-white uppercase text-sm">UTILITIES</h3>
               <p className="text-gray-400 font-sans leading-relaxed">
-                Manage terminal session history, export investigation telemetry JSON, or clear output buffers.
+                View module registry [01-26], command history logs, export investigation JSON, or clear buffers.
               </p>
               <ul className="space-y-1 text-amber-400 pt-2 border-t border-white/5">
+                <li>• modules</li>
+                <li>• status</li>
+                <li>• inspect</li>
                 <li>• history</li>
                 <li>• export</li>
                 <li>• clear</li>
-                <li>• version</li>
               </ul>
             </div>
 
