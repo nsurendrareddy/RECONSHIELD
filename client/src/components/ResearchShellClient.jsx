@@ -25,6 +25,10 @@ RECONSHIELD RESEARCH SHELL
 RSH v1.0
 Reconnaissance Environment
 
+Type:
+  recon <domain>
+to initialize a reconnaissance investigation.
+
 Type 'help' to view available commands.
 `;
 
@@ -33,6 +37,10 @@ const ASCII_BANNER_MOBILE = `
 RECONSHIELD RESEARCH SHELL (RSH v1.0)
 Reconnaissance Environment
 =========================================
+Type:
+  recon <domain>
+to initialize a reconnaissance investigation.
+
 Type 'help' to view available commands.
 `;
 
@@ -161,28 +169,26 @@ export default function ResearchShellClient() {
 
     try {
       switch (command) {
-        case 'help':
-          appendOutput('help', null);
-          break;
-
-        case 'clear':
-          setOutputBuffer([]);
-          break;
-
-        case 'version':
-          appendOutput('text', `RECONSHIELD RESEARCH SHELL (RSH) v1.0.4\nEngine: ReconShield Tool Core Architecture\nRuntime: Node.js 24.x (Vercel Edge)\nAPI Gateway: ${API_BASE}`);
-          break;
-
-        case 'history':
-          if (history.length === 0) {
-            appendOutput('info', 'No commands executed in current session history.');
-          } else {
-            const historyText = history.map((item, idx) => `  ${idx + 1}  ${item}`).join('\n');
-            appendOutput('text', `COMMAND HISTORY\n────────────────────────────────────────────\n${historyText}\n────────────────────────────────────────────`);
+        case 'recon': {
+          if (args.length === 0 || args[0] === '--help') {
+            appendOutput('text', `RECONSHIELD RECON ENGINE\n────────────────────────────────\n\nUsage:\n  recon <target>\n\nExamples:\n  recon example.com\n  recon google.com\n\nAvailable modules:\n\n  dns\n  whois\n  subdomains\n  ssl\n  headers\n  tech\n  ports\n  ip\n\nWorkflow:\n\n  1. Set target\n  2. Choose module\n  3. Execute module\n  4. Inspect result\n  5. Continue investigation\n\n────────────────────────────────`);
+            break;
           }
+          if (args[0] === '--version') {
+            appendOutput('text', `ReconShield Recon Engine\nRSH v1.0`);
+            break;
+          }
+          const newTarget = cleanHost(args[0]);
+          if (!isValidTarget(newTarget)) {
+            appendOutput('error', `[!] Invalid target: '${args[0]}'\nExpected valid domain (e.g. example.com) or IPv4 address.`);
+            break;
+          }
+          setCurrentTarget(newTarget);
+          appendOutput('success', `[•] Initializing ReconShield investigation...\n\n[✓] Target registered:\n${newTarget}\n\n[✓] Recon session initialized.\n\nAvailable modules:\n\n  dns\n  whois\n  subdomains\n  ssl\n  headers\n  tech\n  ports\n  ip\n\nNext command:\n\n  dns`);
           break;
+        }
 
-        case 'target':
+        case 'target': {
           if (!args[0]) {
             if (currentTarget) {
               appendOutput('info', `Active target:\n  ${currentTarget}\n\nScope:\n  ${currentTarget}\n\nUse 'help' to view available commands.`);
@@ -199,16 +205,37 @@ export default function ResearchShellClient() {
             }
           }
           break;
+        }
+
+        case 'help':
+          appendOutput('help', null);
+          break;
+
+        case 'clear':
+          setOutputBuffer([]);
+          break;
+
+        case 'version':
+          appendOutput('text', `ReconShield Recon Engine\nRSH v1.0.4\nCore Engine: ReconShield Threat Matrix v2.4.0\nRuntime: Node.js 24.x (Vercel Edge)\nAPI Gateway: ${API_BASE}`);
+          break;
+
+        case 'history':
+          if (history.length === 0) {
+            appendOutput('info', 'No commands executed in current session history.');
+          } else {
+            const historyText = history.map((item, idx) => `  ${idx + 1}  ${item}`).join('\n');
+            appendOutput('text', `COMMAND HISTORY\n────────────────────────────────────────────\n${historyText}\n────────────────────────────────────────────`);
+          }
+          break;
 
         case 'dns': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `target <domain>` or supply argument `dns <domain>`.');
+            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `dns <domain>`.');
             break;
           }
           appendOutput('info', `[•] Querying DNS resolver for ${targetToUse}...`);
 
           try {
-            // Real DNS DoH fetch for A, AAAA, MX, NS, TXT, CNAME
             const [aRes, mxRes, nsRes, txtRes] = await Promise.all([
               fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(targetToUse)}&type=A`, { headers: { 'Accept': 'application/dns-json' } }),
               fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(targetToUse)}&type=MX`, { headers: { 'Accept': 'application/dns-json' } }),
@@ -259,7 +286,7 @@ ${txtRecords.length > 0 ? '  ' + txtRecords.join('\n  ') : '  None observed'}
 
         case 'whois': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `target <domain>` or supply argument `whois <domain>`.');
+            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `whois <domain>`.');
             break;
           }
           appendOutput('info', `[•] Querying RDAP WHOIS registry for ${targetToUse}...`);
@@ -312,7 +339,7 @@ ${nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  None listed'}
 
         case 'subdomains': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `target <domain>` or supply argument `subdomains <domain>`.');
+            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `subdomains <domain>`.');
             break;
           }
           appendOutput('info', `[•] Querying Certificate Transparency logs for subdomains of ${targetToUse}...`);
@@ -426,13 +453,12 @@ Network CIDR: ${asnInfo.network || 'N/A'}
         case 'ssl':
         case 'ports': {
           if (!targetToUse) {
-            appendOutput('error', `[!] Target missing.\nSet target first via \`target <domain>\` or supply argument \`${command} <domain>\`.`);
+            appendOutput('error', `[!] Target missing.\nSet target first via \`recon <domain>\` or \`target <domain>\`, or supply argument \`${command} <domain>\`.`);
             break;
           }
           appendOutput('info', `[•] Triggering ReconShield real scanning engine for module: ${command.toUpperCase()} (${targetToUse})...`);
 
           try {
-            // Trigger backend scan execution via existing ReconShield startScan API
             const scanData = await startScan(targetToUse, true);
             const scanId = scanData.id;
 
@@ -519,7 +545,7 @@ ${Array.isArray(portsData) && portsData.length > 0 ? portsData.map(p => `PORT ${
 
         case 'inspect': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `target <domain>` or supply argument `inspect <domain>`.');
+            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `inspect <domain>`.');
             break;
           }
 
@@ -551,7 +577,7 @@ EVIDENCE SUMMARY
 
         case 'relationships': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `target <domain>` or supply argument `relationships <domain>`.');
+            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `relationships <domain>`.');
             break;
           }
 
@@ -583,7 +609,7 @@ ${targetToUse}
 
         case 'why': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `target <domain>` or supply argument `why <domain>`.');
+            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>` or `target <domain>`, or supply argument `why <domain>`.');
             break;
           }
 
@@ -616,7 +642,7 @@ CONFIDENCE: HIGH (Observation-based, non-destructive audit)
 
         case 'evidence': {
           if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nSet target first via `target <domain>`.');
+            appendOutput('error', '[!] Target missing.\nSet target first via `recon <domain>`.');
             break;
           }
 
@@ -695,9 +721,9 @@ ${JSON.stringify(targetObs, null, 2)}
     } else if (e.key === 'Tab') {
       e.preventDefault();
       const availableCmds = [
-        'help', 'version', 'clear', 'history', 'target', 'dns', 'whois', 
-        'subdomains', 'ip', 'asn', 'ssl', 'headers', 'tech', 'ports', 
-        'inspect', 'relationships', 'why', 'evidence', 'export'
+        'recon', 'target', 'dns', 'whois', 'subdomains', 'ip', 'asn', 
+        'ssl', 'headers', 'tech', 'ports', 'inspect', 'relationships', 
+        'why', 'evidence', 'export', 'clear', 'history', 'version', 'help'
       ];
       const match = availableCmds.find(c => c.startsWith(inputLine.toLowerCase().trim()));
       if (match) {
@@ -720,7 +746,7 @@ ${JSON.stringify(targetObs, null, 2)}
 
   // Quick Command click inserts command into terminal input box
   const handleQuickCommandClick = (cmdName) => {
-    setInputLine(cmdName + (currentTarget ? ` ${currentTarget}` : ' '));
+    setInputLine(cmdName === 'recon' ? 'recon ' : cmdName + (currentTarget ? ` ${currentTarget}` : ' '));
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -758,13 +784,21 @@ ${JSON.stringify(targetObs, null, 2)}
           {/* Quick Action Bar */}
           <div className="flex flex-wrap items-center gap-3 mt-6">
             <button
-              onClick={() => executeCommand('help')}
+              onClick={() => executeCommand('recon')}
               className="px-4 py-2 bg-matrix-400 hover:bg-matrix-300 text-black text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(0,255,136,0.3)] inline-flex items-center gap-1.5 cursor-pointer"
             >
-              <HelpCircle className="w-4 h-4" />
-              <span>View Command List</span>
+              <Zap className="w-4 h-4" />
+              <span>Initialize Recon</span>
             </button>
             
+            <button
+              onClick={() => executeCommand('help')}
+              className="px-4 py-2 bg-surface-900 border border-white/10 hover:border-matrix-400/40 text-gray-300 hover:text-white text-xs font-mono font-bold uppercase tracking-wider rounded-xl transition-all inline-flex items-center gap-1.5 cursor-pointer"
+            >
+              <HelpCircle className="w-4 h-4 text-cyan-400" />
+              <span>View Command List</span>
+            </button>
+
             {currentTarget && (
               <div className="px-4 py-2 bg-surface-900 border border-matrix-400/30 text-matrix-400 text-xs font-mono font-bold uppercase tracking-wider rounded-xl inline-flex items-center gap-1.5">
                 <Shield className="w-4 h-4 text-matrix-400" />
@@ -865,44 +899,52 @@ ${JSON.stringify(targetObs, null, 2)}
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
+                            <span className="text-matrix-400 font-bold uppercase block mb-1.5">// PRIMARY</span>
+                            <ul className="space-y-1 text-gray-300 mb-3">
+                              <li><strong className="text-white">recon &lt;target&gt;</strong> — Initialize reconnaissance session</li>
+                            </ul>
+
                             <span className="text-matrix-400 font-bold uppercase block mb-1.5">// RECONNAISSANCE</span>
                             <ul className="space-y-1 text-gray-300">
-                              <li><strong className="text-white">target &lt;domain&gt;</strong> — Register active investigation target</li>
-                              <li><strong className="text-white">dns &lt;domain&gt;</strong> — Resolve A, MX, NS, TXT DNS records</li>
-                              <li><strong className="text-white">whois &lt;domain&gt;</strong> — Query registrar &amp; RDAP metadata</li>
-                              <li><strong className="text-white">subdomains &lt;domain&gt;</strong> — Enumerate CT logs &amp; subdomains</li>
-                              <li><strong className="text-white">ip &lt;address&gt;</strong> — Geolocation &amp; BGP network lookup</li>
-                              <li><strong className="text-white">asn &lt;number&gt;</strong> — Autonomous System CIDR ranges</li>
+                              <li><strong className="text-white">dns &lt;domain&gt;</strong> — DNS reconnaissance</li>
+                              <li><strong className="text-white">whois &lt;domain&gt;</strong> — WHOIS lookup</li>
+                              <li><strong className="text-white">subdomains &lt;domain&gt;</strong> — Subdomain discovery</li>
+                              <li><strong className="text-white">ip &lt;address&gt;</strong> — IP intelligence</li>
+                              <li><strong className="text-white">asn &lt;number&gt;</strong> — ASN intelligence</li>
                             </ul>
                           </div>
 
                           <div>
-                            <span className="text-cyan-400 font-bold uppercase block mb-1.5">// WEB &amp; PROTOCOL</span>
+                            <span className="text-cyan-400 font-bold uppercase block mb-1.5">// WEB</span>
+                            <ul className="space-y-1 text-gray-300 mb-3">
+                              <li><strong className="text-white">ssl &lt;domain&gt;</strong> — TLS certificate analysis</li>
+                              <li><strong className="text-white">headers &lt;url&gt;</strong> — HTTP security headers</li>
+                              <li><strong className="text-white">tech &lt;url&gt;</strong> — Technology fingerprinting</li>
+                            </ul>
+
+                            <span className="text-cyan-400 font-bold uppercase block mb-1.5">// NETWORK</span>
                             <ul className="space-y-1 text-gray-300">
-                              <li><strong className="text-white">ssl &lt;domain&gt;</strong> — TLS 1.3 handshake &amp; cert audit</li>
-                              <li><strong className="text-white">headers &lt;url&gt;</strong> — Evaluate HSTS, CSP, X-Frame headers</li>
-                              <li><strong className="text-white">tech &lt;url&gt;</strong> — Fingerprint web server &amp; JS stack</li>
-                              <li><strong className="text-white">ports &lt;host&gt;</strong> — Audit authorized service ports</li>
+                              <li><strong className="text-white">ports &lt;host&gt;</strong> — Port intelligence</li>
                             </ul>
                           </div>
 
                           <div>
-                            <span className="text-purple-400 font-bold uppercase block mb-1.5">// INTELLIGENCE &amp; EVIDENCE</span>
+                            <span className="text-purple-400 font-bold uppercase block mb-1.5">// ANALYSIS</span>
                             <ul className="space-y-1 text-gray-300">
-                              <li><strong className="text-white">inspect &lt;asset&gt;</strong> — Synthesize asset security summary</li>
+                              <li><strong className="text-white">inspect &lt;asset&gt;</strong> — Asset security summary</li>
                               <li><strong className="text-white">relationships &lt;asset&gt;</strong> — Graph network &amp; tech links</li>
-                              <li><strong className="text-white">why &lt;asset&gt;</strong> — Observational significance analysis</li>
                               <li><strong className="text-white">evidence &lt;id&gt;</strong> — Inspect underlying raw evidence</li>
+                              <li><strong className="text-white">why &lt;asset&gt;</strong> — Observational significance analysis</li>
                             </ul>
                           </div>
 
                           <div>
-                            <span className="text-amber-400 font-bold uppercase block mb-1.5">// UTILITIES &amp; SESSION</span>
+                            <span className="text-amber-400 font-bold uppercase block mb-1.5">// UTILITY</span>
                             <ul className="space-y-1 text-gray-300">
                               <li><strong className="text-white">history</strong> — Print command history log</li>
-                              <li><strong className="text-white">export</strong> — Download investigation log JSON</li>
                               <li><strong className="text-white">clear</strong> — Flush terminal screen buffer</li>
                               <li><strong className="text-white">version</strong> — Show RSH engine version</li>
+                              <li><strong className="text-white">help</strong> — Display command directory</li>
                             </ul>
                           </div>
                         </div>
@@ -943,7 +985,7 @@ ${JSON.stringify(targetObs, null, 2)}
                   value={inputLine}
                   onChange={(e) => setInputLine(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Enter command... (e.g. 'help', 'target google.com', 'dns', 'ssl')"
+                  placeholder="Enter command... (e.g. 'recon google.com', 'dns', 'ssl', 'help')"
                   className="flex-1 bg-transparent border-none text-white focus:outline-none font-mono text-xs placeholder:text-gray-600"
                   autoFocus
                   spellCheck={false}
@@ -963,7 +1005,7 @@ ${JSON.stringify(targetObs, null, 2)}
 
             {/* Mobile Helper Chips */}
             <div className="mt-3 flex flex-wrap gap-1.5 sm:hidden font-mono text-[10px]">
-              {['help', 'target google.com', 'dns', 'ssl', 'headers', 'tech', 'inspect', 'clear'].map((cmd) => (
+              {['recon google.com', 'dns', 'ssl', 'headers', 'tech', 'inspect', 'clear', 'help'].map((cmd) => (
                 <button
                   key={cmd}
                   onClick={() => setInputLine(cmd)}
@@ -993,7 +1035,7 @@ ${JSON.stringify(targetObs, null, 2)}
                 </div>
                 <div className="text-[11px] font-mono text-gray-400 mt-1 flex items-center gap-2">
                   <span className={`w-2 h-2 rounded-full ${currentTarget ? 'bg-matrix-400' : 'bg-gray-600'}`} />
-                  <span>{currentTarget ? 'Target Scope Locked' : 'Use `target <domain>`'}</span>
+                  <span>{currentTarget ? '● Target Scope Locked' : 'Use `recon <target>`'}</span>
                 </div>
               </div>
 
@@ -1017,6 +1059,7 @@ ${JSON.stringify(targetObs, null, 2)}
 
               <div className="space-y-1.5 font-mono text-xs">
                 {[
+                  { label: 'recon', desc: 'Initialize Reconnaissance' },
                   { label: 'dns', desc: 'Resolve DNS Records' },
                   { label: 'subdomains', desc: 'Enumerate Subdomains' },
                   { label: 'ssl', desc: 'TLS Certificate Audit' },
@@ -1061,12 +1104,12 @@ ${JSON.stringify(targetObs, null, 2)}
               <div className="w-10 h-10 rounded-xl bg-matrix-400/10 border border-matrix-400/20 flex items-center justify-center text-matrix-400">
                 <Network className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-white uppercase text-sm">RECON</h3>
+              <h3 className="font-bold text-white uppercase text-sm">PRIMARY &amp; RECON</h3>
               <p className="text-gray-400 font-sans leading-relaxed">
-                Query domain name systems, WHOIS registries, certificate transparency logs, and BGP routing space.
+                Initialize target scope, query DNS, WHOIS registries, certificate logs, and BGP routing space.
               </p>
               <ul className="space-y-1 text-matrix-400 pt-2 border-t border-white/5">
-                <li>• target &lt;domain&gt;</li>
+                <li>• recon &lt;target&gt;</li>
                 <li>• dns &lt;domain&gt;</li>
                 <li>• whois &lt;domain&gt;</li>
                 <li>• subdomains &lt;domain&gt;</li>
