@@ -294,7 +294,7 @@ export default function ResearchShellClient() {
           setCurrentScanId(newScanId);
 
           // Return immediately to prompt
-          appendOutput('success', `[•] Initializing ReconShield investigation...\n\n[✓] Target registered:\n${newTarget}\n\n[✓] Reconnaissance job started.\n\nScan ID:\n${newScanId}\n\nStatus:\nRUNNING\n\nAvailable modules:\n\n  dns\n  whois\n  subdomains\n  ssl\n  headers\n  tech\n  ports\n  ip\n\nNext command:\n\n  dns`);
+          appendOutput('success', `[•] Initializing ReconShield investigation...\n\n[✓] Target registered:\n${newTarget}\n\n[✓] Reconnaissance job started.\n\nScan ID:\n${newScanId}\n\nStatus:\nRUNNING\n\nAvailable modules:\n\n  dns\n  whois\n  subdomains\n  ssl\n  headers\n  tech\n  ports\n  ip\n\nNext command:\n\n  status`);
 
           // Start ONE status polling process per active scan
           pollTimerRef.current = setInterval(async () => {
@@ -334,6 +334,177 @@ export default function ResearchShellClient() {
           break;
         }
 
+        case 'status': {
+          if (!currentTarget && !currentScanId) {
+            appendOutput('info', `[!] No active reconnaissance target.\nRun 'recon <domain>' to initialize an investigation session.`);
+            break;
+          }
+
+          appendOutput('info', `[•] Checking reconnaissance status...`);
+          const scanObj = await getActiveScanTelemetry();
+          const overallStatus = (currentScanStatus || scanObj?.status || 'idle').toUpperCase();
+          const results = scanObj?.results || scanObj;
+          const progress = scanObj?.progress || [];
+
+          const checkModStatus = (modKey, progressName) => {
+            const data = results ? results[modKey] : null;
+            if (data?.error) return '✗ FAILED';
+            if (data && typeof data === 'object') {
+              if (modKey === 'dns' && (data.records || data.a || data.ns)) return '✓ COMPLETE';
+              if (modKey === 'whois' && (data.registrar || data.created || data.domain || data.name_servers)) return '✓ COMPLETE';
+              if (modKey === 'subdomains' && (data.subdomains || data.categorized)) return '✓ COMPLETE';
+              if (modKey === 'ssl' && (data.certificate || data.subject || data.issuer)) return '✓ COMPLETE';
+              if (modKey === 'headers' && (data.headers || data.hsts || data.score != null)) return '✓ COMPLETE';
+              if (modKey === 'tech' && (data.technologies || Array.isArray(data))) return '✓ COMPLETE';
+              if (modKey === 'ports' && (data.open_ports || data.ports || Array.isArray(data))) return '✓ COMPLETE';
+              if (modKey === 'ip' && (data.ip_info || data.ip || data.country)) return '✓ COMPLETE';
+            }
+            if (overallStatus === 'COMPLETED') {
+              return '✓ COMPLETE';
+            }
+            const pEntry = progress.find(p => p.module === progressName);
+            if (pEntry) {
+              if (pEntry.status === 'done') return '✓ COMPLETE';
+              if (pEntry.status === 'running') return '● RUNNING';
+              if (pEntry.status === 'error') return '✗ FAILED';
+            }
+            if (overallStatus === 'RUNNING') return '● RUNNING';
+            return '○ PENDING';
+          };
+
+          const shortId = currentScanId ? `${currentScanId.slice(0, 18)}...` : 'N/A';
+
+          const statusReport = `RECONNAISSANCE STATUS
+────────────────────────────────
+
+Target:
+${currentTarget || 'N/A'}
+
+Scan ID:
+${shortId}
+
+Overall Status:
+${overallStatus}
+
+MODULES
+
+DNS          ${checkModStatus('dns', 'DNS Resolution')}
+WHOIS        ${checkModStatus('whois', 'WHOIS Lookup')}
+SUBDOMAINS   ${checkModStatus('subdomains', 'Subdomain Enumeration')}
+SSL          ${checkModStatus('ssl', 'SSL/TLS Analysis')}
+HEADERS      ${checkModStatus('headers', 'Security Headers')}
+TECH         ${checkModStatus('tech', 'Technology Detection')}
+PORTS        ${checkModStatus('ports', 'Port Scanning')}
+IP           ${checkModStatus('ip', 'IP Intelligence')}
+
+────────────────────────────────`;
+
+          appendOutput('success', statusReport);
+          break;
+        }
+
+        case 'inspect': {
+          if (!targetToUse) {
+            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
+            break;
+          }
+
+          appendOutput('info', `[•] Consolidating asset intelligence for ${targetToUse}...`);
+          const scanObj = await getActiveScanTelemetry();
+          const results = scanObj?.results || scanObj || {};
+
+          const dns = results.dns;
+          const whois = results.whois;
+          const ssl = results.ssl;
+          const ip = results.ip;
+          const subdomains = results.subdomains;
+          const headers = results.headers;
+          const tech = results.tech;
+          const ports = results.ports;
+
+          const inspectSections = [];
+
+          inspectSections.push(`TARGET\n  ${targetToUse}`);
+
+          // DNS Section
+          if (dns && !dns.error) {
+            const recs = dns.records || dns;
+            const aCount = Array.isArray(recs.a) ? recs.a.length : 0;
+            const aaaaCount = Array.isArray(recs.aaaa) ? recs.aaaa.length : 0;
+            const mxCount = Array.isArray(recs.mx) ? recs.mx.length : 0;
+            const nsCount = Array.isArray(recs.ns) ? recs.ns.length : 0;
+            const txtCount = Array.isArray(recs.txt) ? recs.txt.length : 0;
+            inspectSections.push(`DNS\n  A Records: ${aCount}\n  AAAA Records: ${aaaaCount}\n  MX Records: ${mxCount}\n  NS Records: ${nsCount}\n  TXT Records: ${txtCount}`);
+          }
+
+          // WHOIS Section
+          if (whois && !whois.error && (whois.registrar || whois.created)) {
+            const reg = whois.registrar || 'N/A';
+            const created = whois.created || whois.creation_date || 'N/A';
+            const expires = whois.expires || whois.expiration_date || 'N/A';
+            inspectSections.push(`WHOIS\n  Registrar: ${reg}\n  Registration Date: ${created}\n  Expiration Date: ${expires}`);
+          }
+
+          // SSL Section
+          if (ssl && !ssl.error) {
+            const cert = ssl.certificate || ssl;
+            const subj = cert.subject || cert.domain || targetToUse;
+            const proto = ssl.cipher?.protocol || ssl.protocol || 'TLSv1.3';
+            const days = cert.days_remaining ?? 'N/A';
+            inspectSections.push(`SSL\n  Subject: ${subj}\n  Protocol: ${proto}\n  Days Remaining: ${days}`);
+          }
+
+          // IP Intelligence Section
+          if (ip && !ip.error) {
+            const info = ip.ip_info || ip;
+            const ipv4 = info.ip || 'N/A';
+            const asn = info.asn || 'N/A';
+            const org = info.org || 'N/A';
+            const country = info.country || info.country_name || 'N/A';
+            inspectSections.push(`IP INTELLIGENCE\n  IPv4: ${ipv4}\n  ASN: ${asn}\n  Organization: ${org}\n  Country: ${country}`);
+          }
+
+          // Subdomains Section
+          if (subdomains && !subdomains.error) {
+            const list = subdomains.subdomains || subdomains.categorized || [];
+            inspectSections.push(`SUBDOMAINS\n  Observed: ${list.length}`);
+          }
+
+          // Headers Section
+          if (headers && !headers.error && typeof headers === 'object') {
+            const hsts = headers.hsts?.present || headers.hsts ? 'PRESENT' : 'MISSING';
+            const csp = headers.csp?.present || headers.csp ? 'PRESENT' : 'MISSING';
+            const xframe = headers.x_frame_options || headers.xframe || 'Not specified';
+            inspectSections.push(`HEADERS\n  Strict-Transport-Security: ${hsts}\n  Content-Security-Policy: ${csp}\n  X-Frame-Options: ${xframe}`);
+          }
+
+          // Technology Section
+          if (tech && !tech.error) {
+            const techList = Array.isArray(tech) ? tech : (tech.technologies || tech.detected || []);
+            const techNames = techList.map(t => typeof t === 'object' ? t.name : String(t));
+            inspectSections.push(`TECHNOLOGY\n  ${techNames.length > 0 ? 'Detected Components: ' + techNames.join(', ') : 'No technologies observed.'}`);
+          }
+
+          // Ports Section
+          if (ports && !ports.error) {
+            const portList = Array.isArray(ports) ? ports : (ports.open_ports || ports.ports || []);
+            const pStr = portList.map(p => typeof p === 'object' ? (p.port || p.number) : p).join(', ');
+            inspectSections.push(`PORTS\n  ${portList.length > 0 ? `Open Ports: ${portList.length} (${pStr})` : 'No open service ports observed.'}`);
+          }
+
+          const inspectOutput = `RECONSHIELD ASSET INTELLIGENCE
+────────────────────────────────
+
+${inspectSections.join('\n\n')}
+
+────────────────────────────────
+
+Observed Modules:
+${observedModules.size} / 8`;
+          appendOutput('success', inspectOutput);
+          break;
+        }
+
         case 'help':
           appendOutput('help', null);
           break;
@@ -365,7 +536,7 @@ export default function ResearchShellClient() {
             break;
           }
 
-          appendOutput('info', `[•] Checking DNS module for ${targetToUse}...`);
+          appendOutput('info', `[•] Checking DNS module...`);
           const scanObj = await getActiveScanTelemetry();
           const dnsData = getModuleData(scanObj, 'dns');
 
@@ -378,7 +549,6 @@ export default function ResearchShellClient() {
           const formattedDns = formatDnsRecords(records);
 
           if (formattedDns) {
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
             recordObservation(targetToUse, 'dns', records);
 
             const dnsOutput = `[✓] DNS module ready.
@@ -389,10 +559,10 @@ DNS RECONNAISSANCE
 ${formattedDns}
 
 ────────────────────────
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', dnsOutput);
           } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[!] DNS module is still running.\n\nPlease try again shortly.`);
+            appendOutput('warning', `[•] DNS module status: RUNNING.\n\nDNS results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No DNS results available for ${targetToUse}.`);
           }
@@ -409,7 +579,7 @@ ${formattedDns}
             break;
           }
 
-          appendOutput('info', `[•] Checking WHOIS module for ${targetToUse}...`);
+          appendOutput('info', `[•] Checking WHOIS module...`);
           const scanObj = await getActiveScanTelemetry();
           const whoisData = getModuleData(scanObj, 'whois');
 
@@ -424,7 +594,6 @@ ${formattedDns}
           const nsList = whoisData?.name_servers || whoisData?.nameservers || [];
 
           if (registrar || created || expires || (Array.isArray(nsList) && nsList.length > 0)) {
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
             recordObservation(targetToUse, 'whois', whoisData);
 
             const whoisOutput = `[✓] WHOIS module ready.
@@ -439,10 +608,10 @@ Name Servers:
 ${Array.isArray(nsList) && nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  None listed'}
 
 ────────────────────────
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', whoisOutput);
           } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[!] WHOIS module is still running.\n\nPlease try again shortly.`);
+            appendOutput('warning', `[•] WHOIS module status: RUNNING.\n\nWHOIS results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No WHOIS results available for ${targetToUse}.`);
           }
@@ -459,7 +628,7 @@ ${Array.isArray(nsList) && nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  N
             break;
           }
 
-          appendOutput('info', `[•] Checking Subdomain module for ${targetToUse}...`);
+          appendOutput('info', `[•] Checking Subdomain module...`);
           const scanObj = await getActiveScanTelemetry();
           const subData = getModuleData(scanObj, 'subdomains');
 
@@ -469,27 +638,33 @@ ${Array.isArray(nsList) && nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  N
           }
 
           const rawList = subData?.subdomains || (subData?.categorized ? subData.categorized.map(s => s.subdomain || s) : null);
-          const subList = Array.isArray(rawList) ? rawList.slice(0, 25) : [];
+          const hasSubData = subData && typeof subData === 'object' && !subData.error;
 
-          if (subList.length > 0) {
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'subdomains', subList);
+          if (hasSubData || (scanObj?.status === 'completed')) {
+            recordObservation(targetToUse, 'subdomains', subData || []);
 
-            const subLines = subList.map((s, idx) => `[${String(idx + 1).padStart(2, '0')}]  ${s}`).join('\n');
+            const subList = Array.isArray(rawList) ? rawList.slice(0, 25) : [];
+            let contentBody = '';
+            if (subList.length > 0) {
+              const subLines = subList.map((s, idx) => `[${String(idx + 1).padStart(2, '0')}]  ${s}`).join('\n');
+              contentBody = `${subLines}\n\n────────────────────────\nSubdomains Observed: ${subList.length}`;
+            } else {
+              contentBody = `No subdomains were observed by the current ReconShield discovery engine.`;
+            }
+
             const subOutput = `[✓] Subdomain module ready.
 
 SUBDOMAIN DISCOVERY
 ────────────────────────
-${subLines}
+${contentBody}
 
 ────────────────────────
-Subdomains Observed: ${subList.length}
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', subOutput);
           } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[!] Subdomain discovery module is still running.\n\nPlease try again shortly.`);
+            appendOutput('warning', `[•] Subdomain module status: RUNNING.\n\nSubdomain results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
-            appendOutput('error', `[!] No subdomains observed for ${targetToUse}.`);
+            appendOutput('error', `[!] No subdomain results available for ${targetToUse}.`);
           }
           break;
         }
@@ -504,7 +679,7 @@ Subdomains Observed: ${subList.length}
             break;
           }
 
-          appendOutput('info', `[•] Checking TLS/SSL module for ${targetToUse}...`);
+          appendOutput('info', `[•] Checking TLS/SSL module...`);
           const scanObj = await getActiveScanTelemetry();
           const sslData = getModuleData(scanObj, 'ssl');
 
@@ -519,10 +694,9 @@ Subdomains Observed: ${subList.length}
           const validFrom = cert?.not_before || cert?.valid_from;
           const validTo = cert?.not_after || cert?.valid_to;
           const daysRemaining = cert?.days_remaining;
-          const protocol = sslData?.cipher?.protocol || sslData?.protocol || 'TLS 1.3';
+          const protocol = sslData?.cipher?.protocol || sslData?.protocol || 'TLSv1.3';
 
           if (subject || issuer || validFrom || validTo) {
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
             recordObservation(targetToUse, 'ssl', sslData);
 
             const sslOutput = `[✓] TLS/SSL module ready.
@@ -537,10 +711,10 @@ Days Remaining: ${daysRemaining ?? 'N/A'}
 Protocol: ${protocol}
 
 ────────────────────────
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', sslOutput);
           } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[!] TLS certificate module is still running.\n\nPlease try again shortly.`);
+            appendOutput('warning', `[•] TLS/SSL module status: RUNNING.\n\nTLS/SSL results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No TLS/SSL results available for ${targetToUse}.`);
           }
@@ -557,7 +731,7 @@ Protocol: ${protocol}
             break;
           }
 
-          appendOutput('info', `[•] Checking HTTP Headers module for ${targetToUse}...`);
+          appendOutput('info', `[•] Checking Security Headers module...`);
           const scanObj = await getActiveScanTelemetry();
           const headersData = getModuleData(scanObj, 'headers');
 
@@ -567,30 +741,42 @@ Protocol: ${protocol}
           }
 
           if (headersData && typeof headersData === 'object' && Object.keys(headersData).length > 0) {
-            const hsts = headersData.hsts?.present || headersData.hsts;
-            const csp = headersData.csp?.present || headersData.csp;
-            const xframe = headersData.x_frame_options || headersData.xframe || 'Not specified';
-            const xcontent = headersData.x_content_type_options || headersData.xcontent || 'Not specified';
-            const referrer = headersData.referrer_policy || 'Not specified';
-
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
             recordObservation(targetToUse, 'headers', headersData);
+
+            let headerLines = [];
+            if (Array.isArray(headersData.headers) && headersData.headers.length > 0) {
+              headerLines = headersData.headers.map(h => {
+                const name = h.header || h.key;
+                const statusStr = h.present ? `✓ PRESENT${h.value ? ` (${h.value})` : ''}` : `⚠ MISSING`;
+                return `${name}: ${statusStr}`;
+              });
+            } else {
+              const hsts = headersData.hsts?.present || headersData.hsts;
+              const csp = headersData.csp?.present || headersData.csp;
+              const xframe = headersData.x_frame_options || headersData.xframe || 'Not specified';
+              const xcontent = headersData.x_content_type_options || headersData.xcontent || 'Not specified';
+              const referrer = headersData.referrer_policy || 'Not specified';
+
+              headerLines = [
+                `Strict-Transport-Security: ${hsts ? '✓ PRESENT' : '⚠ MISSING'}`,
+                `Content-Security-Policy: ${csp ? '✓ PRESENT' : '⚠ MISSING'}`,
+                `X-Frame-Options: ${xframe}`,
+                `X-Content-Type-Options: ${xcontent}`,
+                `Referrer-Policy: ${referrer}`
+              ];
+            }
 
             const headerOutput = `[✓] Security Headers module ready.
 
 HTTP SECURITY HEADERS ANALYSIS
 ────────────────────────
-Strict-Transport-Security: ${hsts ? '✓ PRESENT' : '⚠ MISSING'}
-Content-Security-Policy: ${csp ? '✓ PRESENT' : '⚠ MISSING'}
-X-Frame-Options: ${xframe}
-X-Content-Type-Options: ${xcontent}
-Referrer-Policy: ${referrer}
+${headerLines.join('\n')}
 
 ────────────────────────
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', headerOutput);
           } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[!] Security Headers module is still running.\n\nPlease try again shortly.`);
+            appendOutput('warning', `[•] Security Headers module status: RUNNING.\n\nSecurity Header results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No security headers data available for ${targetToUse}.`);
           }
@@ -607,7 +793,7 @@ Referrer-Policy: ${referrer}
             break;
           }
 
-          appendOutput('info', `[•] Checking Technology Detection module for ${targetToUse}...`);
+          appendOutput('info', `[•] Checking Technology Detection module...`);
           const scanObj = await getActiveScanTelemetry();
           const techData = getModuleData(scanObj, 'tech');
 
@@ -617,23 +803,31 @@ Referrer-Policy: ${referrer}
           }
 
           const rawTech = Array.isArray(techData) ? techData : (techData?.technologies || techData?.detected);
-          if (Array.isArray(rawTech) || (techData && typeof techData === 'object')) {
-            const techList = Array.isArray(rawTech) ? rawTech.map(t => typeof t === 'object' ? (t.name || JSON.stringify(t)) : String(t)) : [];
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'tech', techData);
+          const hasTechData = techData && typeof techData === 'object' && !techData.error;
+
+          if (hasTechData || (scanObj?.status === 'completed')) {
+            recordObservation(targetToUse, 'tech', techData || []);
+
+            const techList = Array.isArray(rawTech) ? rawTech.map(t => typeof t === 'object' ? `${t.name}${t.category ? ` (${t.category})` : ''}` : String(t)) : [];
+
+            let bodyStr = '';
+            if (techList.length > 0) {
+              bodyStr = `Detected Components:\n  • ${techList.join('\n  • ')}`;
+            } else {
+              bodyStr = `[!] No technologies observed.`;
+            }
 
             const techOutput = `[✓] Technology Detection module ready.
 
 TECHNOLOGY STACK FINGERPRINT
 ────────────────────────
-Detected Components:
-${techList.length > 0 ? '  • ' + techList.join('\n  • ') : '  • Standard HTTP Web Server'}
+${bodyStr}
 
 ────────────────────────
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', techOutput);
           } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[!] Technology Detection module is still running.\n\nPlease try again shortly.`);
+            appendOutput('warning', `[•] Technology Detection module status: RUNNING.\n\nTechnology Detection results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No technology fingerprint data available for ${targetToUse}.`);
           }
@@ -650,7 +844,7 @@ ${techList.length > 0 ? '  • ' + techList.join('\n  • ') : '  • Standard H
             break;
           }
 
-          appendOutput('info', `[•] Checking Port Scanner module for ${targetToUse}...`);
+          appendOutput('info', `[•] Checking Port Scanner module...`);
           const scanObj = await getActiveScanTelemetry();
           const portData = getModuleData(scanObj, 'ports');
 
@@ -660,22 +854,41 @@ ${techList.length > 0 ? '  • ' + techList.join('\n  • ') : '  • Standard H
           }
 
           const rawPorts = Array.isArray(portData) ? portData : (portData?.open_ports || portData?.ports);
-          if (Array.isArray(rawPorts) || (portData && typeof portData === 'object')) {
+          const hasPortData = portData && typeof portData === 'object' && !portData.error;
+
+          if (hasPortData || (scanObj?.status === 'completed')) {
+            recordObservation(targetToUse, 'ports', portData || []);
+
             const portList = Array.isArray(rawPorts) ? rawPorts : [];
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'ports', portData);
+
+            let bodyStr = '';
+            if (portList.length > 0) {
+              const headerRow = `PORT    STATE    SERVICE\n\n`;
+              const rows = portList.map(p => {
+                if (typeof p === 'object') {
+                  const portNum = String(p.port || p.number || '').padEnd(8);
+                  const state = String(p.state || 'OPEN').toUpperCase().padEnd(9);
+                  const service = String(p.service || 'UNKNOWN').toUpperCase();
+                  return `${portNum}${state}${service}`;
+                }
+                return `${String(p).padEnd(8)}OPEN     UNKNOWN`;
+              }).join('\n');
+              bodyStr = headerRow + rows;
+            } else {
+              bodyStr = `No open service ports observed.`;
+            }
 
             const portOutput = `[✓] Port Scanner module ready.
 
 PORT INTELLIGENCE & SERVICE AUDIT
 ────────────────────────
-${portList.length > 0 ? portList.map(p => typeof p === 'object' ? `PORT ${p.port || p.number}/tcp  SERVICE: ${(p.service || 'open').toUpperCase()}` : `PORT ${p}/tcp  STATE: OPEN`).join('\n') : '  Standard HTTP (80) / HTTPS (443) services observed'}
+${bodyStr}
 
 ────────────────────────
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', portOutput);
           } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[!] Port Scanner module is still running.\n\nPlease try again shortly.`);
+            appendOutput('warning', `[•] Port Scanner module status: RUNNING.\n\nPort Scanner results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No port data available for ${targetToUse}.`);
           }
@@ -684,7 +897,7 @@ ${portList.length > 0 ? portList.map(p => typeof p === 'object' ? `PORT ${p.port
 
         case 'ip': {
           let ipInput = explicitArg || currentTarget || '8.8.8.8';
-          appendOutput('info', `[•] Querying BGP geolocation & IP reputation engine for ${ipInput}...`);
+          appendOutput('info', `[•] Querying BGP geolocation & IP reputation engine...`);
 
           try {
             let resolvedIp = ipInput;
@@ -710,10 +923,11 @@ ${portList.length > 0 ? portList.map(p => typeof p === 'object' ? `PORT ${p.port
               throw new Error(`No IP intelligence data returned for ${resolvedIp}`);
             }
 
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(targetToUse, 'ip', ipData);
+            recordObservation(ipInput, 'ip', ipData);
 
-            const ipOutput = `[✓] IP INTELLIGENCE & GEOLOCATION
+            const ipOutput = `[✓] IP Intelligence ready.
+
+IP INTELLIGENCE & GEOLOCATION
 ────────────────────────
 Target Domain / IP: ${ipInput}
 IPv4 Address: ${ipData.ip_info?.ip || ipData.ip || resolvedIp}
@@ -722,7 +936,7 @@ Country: ${ipData.ip_info?.country || ipData.country || ipData.country_name || '
 Autonomous System: ${ipData.ip_info?.asn || ipData.asn || 'N/A'} (${ipData.ip_info?.org || ipData.org || 'N/A'})
 
 ────────────────────────
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', ipOutput);
           } catch (err) {
             console.error(`[RSH ERROR] IP query failed for ${ipInput}:`, err);
@@ -737,18 +951,19 @@ Autonomous System: ${ipData.ip_info?.asn || ipData.asn || 'N/A'} (${ipData.ip_in
 
           try {
             const asnData = await scanIp(asnTarget).catch(() => null);
-            const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
 
             if (asnData && (asnData.ip_info?.asn || asnData.asn || asnData.ip)) {
               recordObservation(asnTarget, 'asn', asnData);
-              const asnOutput = `[✓] AUTONOMOUS SYSTEM NETWORK (ASN) DETAILS
+              const asnOutput = `[✓] ASN Intelligence ready.
+
+AUTONOMOUS SYSTEM NETWORK (ASN) DETAILS
 ────────────────────────
 ASN Identifier: ${asnData.ip_info?.asn || asnData.asn || asnTarget}
 Organization: ${asnData.ip_info?.org || asnData.org || 'N/A'}
 Country: ${asnData.ip_info?.country || asnData.country || 'N/A'}
 
 ────────────────────────
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
               appendOutput('success', asnOutput);
             } else {
               throw new Error(`Unable to fetch BGP details for ${asnTarget}`);
@@ -757,38 +972,6 @@ Country: ${asnData.ip_info?.country || asnData.country || 'N/A'}
             console.error(`[RSH ERROR] ASN lookup failed for ${asnTarget}:`, err);
             appendOutput('error', `[✗] ASN lookup failed.\n\nReason:\n${err.message}`);
           }
-          break;
-        }
-
-        case 'inspect': {
-          if (!targetToUse) {
-            appendOutput('error', '[!] Target missing.\nRun `recon <domain>` to start a reconnaissance investigation.');
-            break;
-          }
-
-          const targetObs = observationsData[cleanHost(targetToUse)];
-          if (!targetObs) {
-            appendOutput('warning', `[!] No evidence gathered for ${targetToUse} in this session.\n\nRun 'dns', 'whois', 'ssl', or 'headers' first to inspect modules.`);
-            break;
-          }
-
-          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-          const inspectOutput = `ASSET COMPREHENSIVE INSPECTION: ${targetToUse}
-════════════════════════════════════════════
-Asset Name:       ${targetToUse}
-Observations:     ${Object.keys(targetObs).filter(k => k !== 'lastUpdated').join(', ').toUpperCase()}
-Last Observation: ${targetObs.lastUpdated || 'Current session'}
-
-EVIDENCE SUMMARY
-  [DNS]  ${targetObs.dns ? 'Verified DNS records resolved' : 'Not queried'}
-  [WHOIS] ${targetObs.whois ? 'Registrar: ' + (targetObs.whois.registrar || 'Recorded') : 'Not queried'}
-  [SSL]  ${targetObs.ssl ? 'TLS audit recorded' : 'Not queried'}
-  [HEADERS] ${targetObs.headers ? 'Security headers evaluated' : 'Not queried'}
-  [SUBDOMAINS] ${targetObs.subdomains ? targetObs.subdomains.length + ' subdomains enumerated' : 'Not queried'}
-
-════════════════════════════════════════════
-[✓] Completed in ${elapsed}s`;
-          appendOutput('success', inspectOutput);
           break;
         }
 
@@ -804,7 +987,6 @@ EVIDENCE SUMMARY
             break;
           }
 
-          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
           const relTree = `RELATIONSHIP GRAPH MATRIX: ${targetToUse}
 ════════════════════════════════════════════
 ${targetToUse}
@@ -819,7 +1001,7 @@ ${targetToUse}
          └── Count: ${targetObs.subdomains ? targetObs.subdomains.length + ' assets mapped' : 'Unqueried'}
 
 ════════════════════════════════════════════
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
           appendOutput('success', relTree);
           break;
         }
@@ -836,7 +1018,6 @@ ${targetToUse}
             break;
           }
 
-          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
           const whyOutput = `WHY THIS ASSET MATTERS (EVIDENCE OBSERVATION)
 ════════════════════════════════════════════
 Target: ${targetToUse}
@@ -852,7 +1033,7 @@ ${targetObs.subdomains ? '  [CT] Certificate transparency subdomains enumerated.
 
 CONFIDENCE: HIGH (Observation-based, non-destructive audit)
 ════════════════════════════════════════════
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
           appendOutput('success', whyOutput);
           break;
         }
@@ -869,12 +1050,11 @@ CONFIDENCE: HIGH (Observation-based, non-destructive audit)
             break;
           }
 
-          const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
           const evOutput = `RAW EVIDENCE PAYLOAD: ${targetToUse}
 ════════════════════════════════════════════
 ${JSON.stringify(targetObs, null, 2)}
 ════════════════════════════════════════════
-[✓] Completed in ${elapsed}s`;
+[✓] Result retrieved from reconnaissance session.`;
           appendOutput('success', evOutput);
           break;
         }
@@ -942,8 +1122,8 @@ ${JSON.stringify(targetObs, null, 2)}
     } else if (e.key === 'Tab') {
       e.preventDefault();
       const availableCmds = [
-        'recon', 'target', 'dns', 'whois', 'subdomains', 'ip', 'asn', 
-        'ssl', 'headers', 'tech', 'ports', 'inspect', 'relationships', 
+        'recon', 'target', 'status', 'inspect', 'dns', 'whois', 'subdomains', 
+        'ssl', 'headers', 'tech', 'ports', 'ip', 'asn', 'relationships', 
         'why', 'evidence', 'export', 'clear', 'history', 'version', 'help'
       ];
       const match = availableCmds.find(c => c.startsWith(inputLine.toLowerCase().trim()));
@@ -1117,47 +1297,34 @@ ${JSON.stringify(targetObs, null, 2)}
                       <div key={item.id} className="p-4 bg-surface-900/90 border border-white/10 rounded-xl space-y-4 text-xs font-mono text-gray-300">
                         <div className="font-bold text-matrix-400 uppercase tracking-widest border-b border-white/10 pb-2 flex items-center justify-between">
                           <span>RECONSHIELD RESEARCH SHELL COMMAND DIRECTORY</span>
-                          <span className="text-[10px] text-gray-500 font-normal">Use command &lt;target&gt;</span>
+                          <span className="text-[10px] text-gray-500 font-normal">RSH v1.0</span>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
                             <span className="text-matrix-400 font-bold uppercase block mb-1.5">// PRIMARY</span>
                             <ul className="space-y-1 text-gray-300 mb-3">
-                              <li><strong className="text-white">recon &lt;target&gt;</strong> — Initialize reconnaissance session</li>
+                              <li><strong className="text-white">recon &lt;domain&gt;</strong> — Initialize reconnaissance investigation</li>
                             </ul>
 
-                            <span className="text-matrix-400 font-bold uppercase block mb-1.5">// RECONNAISSANCE</span>
+                            <span className="text-cyan-400 font-bold uppercase block mb-1.5">// INSPECTION</span>
                             <ul className="space-y-1 text-gray-300">
-                              <li><strong className="text-white">dns &lt;domain&gt;</strong> — DNS reconnaissance</li>
-                              <li><strong className="text-white">whois &lt;domain&gt;</strong> — WHOIS lookup</li>
-                              <li><strong className="text-white">subdomains &lt;domain&gt;</strong> — Subdomain discovery</li>
-                              <li><strong className="text-white">ip &lt;address&gt;</strong> — IP intelligence</li>
-                              <li><strong className="text-white">asn &lt;number&gt;</strong> — ASN intelligence</li>
+                              <li><strong className="text-white">status</strong> — Show module execution status</li>
+                              <li><strong className="text-white">inspect</strong> — Summarize discovered intelligence</li>
                             </ul>
                           </div>
 
                           <div>
-                            <span className="text-cyan-400 font-bold uppercase block mb-1.5">// WEB</span>
-                            <ul className="space-y-1 text-gray-300 mb-3">
-                              <li><strong className="text-white">ssl &lt;domain&gt;</strong> — TLS certificate analysis</li>
-                              <li><strong className="text-white">headers &lt;url&gt;</strong> — HTTP security headers</li>
-                              <li><strong className="text-white">tech &lt;url&gt;</strong> — Technology fingerprinting</li>
-                            </ul>
-
-                            <span className="text-cyan-400 font-bold uppercase block mb-1.5">// NETWORK</span>
+                            <span className="text-matrix-400 font-bold uppercase block mb-1.5">// RECON</span>
                             <ul className="space-y-1 text-gray-300">
-                              <li><strong className="text-white">ports &lt;host&gt;</strong> — Port intelligence</li>
-                            </ul>
-                          </div>
-
-                          <div>
-                            <span className="text-purple-400 font-bold uppercase block mb-1.5">// ANALYSIS</span>
-                            <ul className="space-y-1 text-gray-300">
-                              <li><strong className="text-white">inspect &lt;asset&gt;</strong> — Asset security summary</li>
-                              <li><strong className="text-white">relationships &lt;asset&gt;</strong> — Graph network &amp; tech links</li>
-                              <li><strong className="text-white">evidence &lt;id&gt;</strong> — Inspect underlying raw evidence</li>
-                              <li><strong className="text-white">why &lt;asset&gt;</strong> — Observational significance analysis</li>
+                              <li><strong className="text-white">dns</strong> — DNS records</li>
+                              <li><strong className="text-white">whois</strong> — WHOIS lookup</li>
+                              <li><strong className="text-white">subdomains</strong> — Subdomains</li>
+                              <li><strong className="text-white">ssl</strong> — TLS certificate</li>
+                              <li><strong className="text-white">headers</strong> — Security headers</li>
+                              <li><strong className="text-white">tech</strong> — Technology stack</li>
+                              <li><strong className="text-white">ports</strong> — Service ports</li>
+                              <li><strong className="text-white">ip</strong> — IP intelligence</li>
                             </ul>
                           </div>
 
@@ -1208,7 +1375,7 @@ ${JSON.stringify(targetObs, null, 2)}
                   value={inputLine}
                   onChange={(e) => setInputLine(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Enter command... (e.g. 'recon google.com', 'dns', 'ssl', 'help')"
+                  placeholder="Enter command... (e.g. 'recon google.com', 'status', 'dns', 'ssl', 'inspect', 'help')"
                   className="flex-1 bg-transparent border-none text-white focus:outline-none font-mono text-xs placeholder:text-gray-600"
                   autoFocus
                   spellCheck={false}
@@ -1228,7 +1395,7 @@ ${JSON.stringify(targetObs, null, 2)}
 
             {/* Mobile Helper Chips */}
             <div className="mt-3 flex flex-wrap gap-1.5 sm:hidden font-mono text-[10px]">
-              {['recon google.com', 'dns', 'ssl', 'headers', 'tech', 'inspect', 'clear', 'help'].map((cmd) => (
+              {['recon google.com', 'status', 'dns', 'ssl', 'inspect', 'tech', 'ports', 'clear', 'help'].map((cmd) => (
                 <button
                   key={cmd}
                   onClick={() => setInputLine(cmd)}
@@ -1288,15 +1455,15 @@ ${JSON.stringify(targetObs, null, 2)}
               <div className="space-y-1.5 font-mono text-xs">
                 {[
                   { label: 'recon', desc: 'Initialize Reconnaissance' },
+                  { label: 'status', desc: 'Check Recon Progress' },
+                  { label: 'inspect', desc: 'Summarize Intelligence' },
                   { label: 'dns', desc: 'Resolve DNS Records' },
                   { label: 'subdomains', desc: 'Enumerate Subdomains' },
                   { label: 'ssl', desc: 'TLS Certificate Audit' },
                   { label: 'headers', desc: 'Security Header Check' },
                   { label: 'tech', desc: 'Fingerprint Stack' },
                   { label: 'ports', desc: 'Audit Service Ports' },
-                  { label: 'inspect', desc: 'Full Asset Inspection' },
-                  { label: 'relationships', desc: 'View Asset Graph' },
-                  { label: 'why', desc: 'Observational Analysis' },
+                  { label: 'ip', desc: 'IP Geolocation & ASN' },
                   { label: 'history', desc: 'View Command Log' },
                 ].map((item) => (
                   <button
@@ -1350,11 +1517,13 @@ ${JSON.stringify(targetObs, null, 2)}
               <div className="w-10 h-10 rounded-xl bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center text-cyan-400">
                 <Lock className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-white uppercase text-sm">WEB &amp; SECURITY</h3>
+              <h3 className="font-bold text-white uppercase text-sm">INSPECTION &amp; WEB</h3>
               <p className="text-gray-400 font-sans leading-relaxed">
-                Audit TLS handshake suites, security response headers, fingerprint stacks, and authorized service ports.
+                Check module execution status, audit TLS suites, security headers, tech stacks, and ports.
               </p>
               <ul className="space-y-1 text-cyan-400 pt-2 border-t border-white/5">
+                <li>• status</li>
+                <li>• inspect &lt;asset&gt;</li>
                 <li>• ssl &lt;domain&gt;</li>
                 <li>• headers &lt;url&gt;</li>
                 <li>• tech &lt;url&gt;</li>
@@ -1371,10 +1540,10 @@ ${JSON.stringify(targetObs, null, 2)}
                 Graph relationships, inspect evidence details, and analyze asset significance.
               </p>
               <ul className="space-y-1 text-purple-400 pt-2 border-t border-white/5">
-                <li>• inspect &lt;asset&gt;</li>
-                <li>• relationships &lt;asset&gt;</li>
-                <li>• why &lt;asset&gt;</li>
-                <li>• evidence &lt;id&gt;</li>
+                <li>• inspect</li>
+                <li>• relationships</li>
+                <li>• why</li>
+                <li>• evidence</li>
               </ul>
             </div>
 
