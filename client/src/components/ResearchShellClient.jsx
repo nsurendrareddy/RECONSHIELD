@@ -235,6 +235,85 @@ export default function ResearchShellClient() {
     }
   };
 
+  // Reusable helper: Wait for module result from active background scan via controlled read-only GET requests
+  const waitForModuleData = async (moduleKey, moduleDisplayName, maxWaitMs = 75000) => {
+    if (!currentScanId) return null;
+
+    let scanObj = await getActiveScanTelemetry();
+    let modData = getModuleData(scanObj, moduleKey);
+
+    // If data is already present or module explicitly errored
+    if (modData?.error) {
+      return { scanObj, modData };
+    }
+    if (modData && typeof modData === 'object') {
+      if (moduleKey === 'dns' && (modData.records || modData.a || modData.ns)) return { scanObj, modData };
+      if (moduleKey === 'whois' && (modData.registrar || modData.created || modData.domain || modData.name_servers)) return { scanObj, modData };
+      if (moduleKey === 'subdomains' && (modData.subdomains || modData.categorized)) return { scanObj, modData };
+      if (moduleKey === 'ssl' && (modData.certificate || modData.subject || modData.issuer)) return { scanObj, modData };
+      if (moduleKey === 'headers' && (modData.headers || modData.hsts || modData.score != null)) return { scanObj, modData };
+      if (moduleKey === 'tech' && (modData.technologies || Array.isArray(modData))) return { scanObj, modData };
+      if (moduleKey === 'ports' && (modData.open_ports || modData.ports || Array.isArray(modData))) return { scanObj, modData };
+      if (moduleKey === 'ip' && (modData.ip_info || modData.ip || modData.country)) return { scanObj, modData };
+    }
+
+    if (scanObj?.status === 'completed' || scanObj?.status === 'failed') {
+      return { scanObj, modData };
+    }
+
+    // Module is RUNNING -> Notify user that terminal is waiting for result
+    appendOutput('info', `[•] ${moduleDisplayName} status: RUNNING.`);
+    appendOutput('info', `[•] Waiting for ${moduleDisplayName} result...`);
+
+    const startTime = Date.now();
+    const pollIntervalMs = 1800; // Controlled 1.8s read-only polling interval
+
+    while (Date.now() - startTime < maxWaitMs) {
+      if (!currentScanId) return null;
+
+      await new Promise(res => setTimeout(res, pollIntervalMs));
+
+      try {
+        scanObj = await getScan(currentScanId);
+        if (scanObj) {
+          if (scanObj.status === 'completed') {
+            setLatestScanResult(scanObj);
+            stopScanPolling();
+          }
+          if (scanObj.status) {
+            setCurrentScanStatus(scanObj.status);
+          }
+        }
+
+        modData = getModuleData(scanObj, moduleKey);
+
+        if (modData?.error) {
+          return { scanObj, modData };
+        }
+
+        if (modData && typeof modData === 'object') {
+          if (moduleKey === 'dns' && (modData.records || modData.a || modData.ns)) return { scanObj, modData };
+          if (moduleKey === 'whois' && (modData.registrar || modData.created || modData.domain || modData.name_servers)) return { scanObj, modData };
+          if (moduleKey === 'subdomains' && (modData.subdomains || modData.categorized)) return { scanObj, modData };
+          if (moduleKey === 'ssl' && (modData.certificate || modData.subject || modData.issuer)) return { scanObj, modData };
+          if (moduleKey === 'headers' && (modData.headers || modData.hsts || modData.score != null)) return { scanObj, modData };
+          if (moduleKey === 'tech' && (modData.technologies || Array.isArray(modData))) return { scanObj, modData };
+          if (moduleKey === 'ports' && (modData.open_ports || modData.ports || Array.isArray(modData))) return { scanObj, modData };
+          if (moduleKey === 'ip' && (modData.ip_info || modData.ip || modData.country)) return { scanObj, modData };
+        }
+
+        if (scanObj?.status === 'completed' || scanObj?.status === 'failed') {
+          return { scanObj, modData };
+        }
+      } catch (err) {
+        console.warn(`[RSH DEBUG] Polling GET /api/scan/${currentScanId} warning:`, err.message);
+      }
+    }
+
+    appendOutput('warning', `[!] ${moduleDisplayName} is taking longer than expected.\n\nThe reconnaissance scan is still running.\n\nUse:\n  status\nto check progress.`);
+    return { scanObj, modData: null, timedOut: true };
+  };
+
   // Execute Command Handler
   const executeCommand = async (cmdString) => {
     const rawCmd = cmdString.trim();
@@ -257,7 +336,6 @@ export default function ResearchShellClient() {
     const targetToUse = explicitArg || currentTarget;
 
     setIsExecuting(true);
-    const startTime = performance.now();
 
     console.log(`[RSH DEBUG] Command: '${command}', Explicit Arg: '${explicitArg}', Active Target: '${currentTarget}', Target To Use: '${targetToUse}'`);
 
@@ -536,10 +614,11 @@ ${observedModules.size} / 8`;
             break;
           }
 
-          appendOutput('info', `[•] Checking DNS module...`);
-          const scanObj = await getActiveScanTelemetry();
-          const dnsData = getModuleData(scanObj, 'dns');
+          appendOutput('info', `[•] Checking DNS module for ${targetToUse}...`);
+          const res = await waitForModuleData('dns', 'DNS module');
+          if (!res || res.timedOut) break;
 
+          const dnsData = res.modData;
           if (dnsData?.error) {
             appendOutput('error', `[✗] DNS module failed.\n\nReason:\n${dnsData.error}`);
             break;
@@ -561,8 +640,6 @@ ${formattedDns}
 ────────────────────────
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', dnsOutput);
-          } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[•] DNS module status: RUNNING.\n\nDNS results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No DNS results available for ${targetToUse}.`);
           }
@@ -579,10 +656,11 @@ ${formattedDns}
             break;
           }
 
-          appendOutput('info', `[•] Checking WHOIS module...`);
-          const scanObj = await getActiveScanTelemetry();
-          const whoisData = getModuleData(scanObj, 'whois');
+          appendOutput('info', `[•] Checking WHOIS module for ${targetToUse}...`);
+          const res = await waitForModuleData('whois', 'WHOIS module');
+          if (!res || res.timedOut) break;
 
+          const whoisData = res.modData;
           if (whoisData?.error) {
             appendOutput('error', `[✗] WHOIS module failed.\n\nReason:\n${whoisData.error}`);
             break;
@@ -610,8 +688,6 @@ ${Array.isArray(nsList) && nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  N
 ────────────────────────
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', whoisOutput);
-          } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[•] WHOIS module status: RUNNING.\n\nWHOIS results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No WHOIS results available for ${targetToUse}.`);
           }
@@ -628,10 +704,11 @@ ${Array.isArray(nsList) && nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  N
             break;
           }
 
-          appendOutput('info', `[•] Checking Subdomain module...`);
-          const scanObj = await getActiveScanTelemetry();
-          const subData = getModuleData(scanObj, 'subdomains');
+          appendOutput('info', `[•] Checking Subdomain module for ${targetToUse}...`);
+          const res = await waitForModuleData('subdomains', 'Subdomain module');
+          if (!res || res.timedOut) break;
 
+          const subData = res.modData;
           if (subData?.error) {
             appendOutput('error', `[✗] Subdomain module failed.\n\nReason:\n${subData.error}`);
             break;
@@ -640,7 +717,7 @@ ${Array.isArray(nsList) && nsList.length > 0 ? '  ' + nsList.join('\n  ') : '  N
           const rawList = subData?.subdomains || (subData?.categorized ? subData.categorized.map(s => s.subdomain || s) : null);
           const hasSubData = subData && typeof subData === 'object' && !subData.error;
 
-          if (hasSubData || (scanObj?.status === 'completed')) {
+          if (hasSubData || (res.scanObj?.status === 'completed')) {
             recordObservation(targetToUse, 'subdomains', subData || []);
 
             const subList = Array.isArray(rawList) ? rawList.slice(0, 25) : [];
@@ -661,8 +738,6 @@ ${contentBody}
 ────────────────────────
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', subOutput);
-          } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[•] Subdomain module status: RUNNING.\n\nSubdomain results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No subdomain results available for ${targetToUse}.`);
           }
@@ -679,10 +754,11 @@ ${contentBody}
             break;
           }
 
-          appendOutput('info', `[•] Checking TLS/SSL module...`);
-          const scanObj = await getActiveScanTelemetry();
-          const sslData = getModuleData(scanObj, 'ssl');
+          appendOutput('info', `[•] Checking TLS/SSL module for ${targetToUse}...`);
+          const res = await waitForModuleData('ssl', 'TLS/SSL module');
+          if (!res || res.timedOut) break;
 
+          const sslData = res.modData;
           if (sslData?.error) {
             appendOutput('error', `[✗] TLS/SSL module failed.\n\nReason:\n${sslData.error}`);
             break;
@@ -713,8 +789,6 @@ Protocol: ${protocol}
 ────────────────────────
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', sslOutput);
-          } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[•] TLS/SSL module status: RUNNING.\n\nTLS/SSL results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No TLS/SSL results available for ${targetToUse}.`);
           }
@@ -731,10 +805,11 @@ Protocol: ${protocol}
             break;
           }
 
-          appendOutput('info', `[•] Checking Security Headers module...`);
-          const scanObj = await getActiveScanTelemetry();
-          const headersData = getModuleData(scanObj, 'headers');
+          appendOutput('info', `[•] Checking Security Headers module for ${targetToUse}...`);
+          const res = await waitForModuleData('headers', 'Security Headers module');
+          if (!res || res.timedOut) break;
 
+          const headersData = res.modData;
           if (headersData?.error) {
             appendOutput('error', `[✗] Security Headers module failed.\n\nReason:\n${headersData.error}`);
             break;
@@ -775,8 +850,6 @@ ${headerLines.join('\n')}
 ────────────────────────
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', headerOutput);
-          } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[•] Security Headers module status: RUNNING.\n\nSecurity Header results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No security headers data available for ${targetToUse}.`);
           }
@@ -793,10 +866,11 @@ ${headerLines.join('\n')}
             break;
           }
 
-          appendOutput('info', `[•] Checking Technology Detection module...`);
-          const scanObj = await getActiveScanTelemetry();
-          const techData = getModuleData(scanObj, 'tech');
+          appendOutput('info', `[•] Checking Technology Detection module for ${targetToUse}...`);
+          const res = await waitForModuleData('tech', 'Technology Detection module');
+          if (!res || res.timedOut) break;
 
+          const techData = res.modData;
           if (techData?.error) {
             appendOutput('error', `[✗] Technology Detection module failed.\n\nReason:\n${techData.error}`);
             break;
@@ -805,7 +879,7 @@ ${headerLines.join('\n')}
           const rawTech = Array.isArray(techData) ? techData : (techData?.technologies || techData?.detected);
           const hasTechData = techData && typeof techData === 'object' && !techData.error;
 
-          if (hasTechData || (scanObj?.status === 'completed')) {
+          if (hasTechData || (res.scanObj?.status === 'completed')) {
             recordObservation(targetToUse, 'tech', techData || []);
 
             const techList = Array.isArray(rawTech) ? rawTech.map(t => typeof t === 'object' ? `${t.name}${t.category ? ` (${t.category})` : ''}` : String(t)) : [];
@@ -826,8 +900,6 @@ ${bodyStr}
 ────────────────────────
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', techOutput);
-          } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[•] Technology Detection module status: RUNNING.\n\nTechnology Detection results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No technology fingerprint data available for ${targetToUse}.`);
           }
@@ -844,10 +916,11 @@ ${bodyStr}
             break;
           }
 
-          appendOutput('info', `[•] Checking Port Scanner module...`);
-          const scanObj = await getActiveScanTelemetry();
-          const portData = getModuleData(scanObj, 'ports');
+          appendOutput('info', `[•] Checking Port Scanner module for ${targetToUse}...`);
+          const res = await waitForModuleData('ports', 'Port Scanner module');
+          if (!res || res.timedOut) break;
 
+          const portData = res.modData;
           if (portData?.error) {
             appendOutput('error', `[✗] Port Scanner module failed.\n\nReason:\n${portData.error}`);
             break;
@@ -856,7 +929,7 @@ ${bodyStr}
           const rawPorts = Array.isArray(portData) ? portData : (portData?.open_ports || portData?.ports);
           const hasPortData = portData && typeof portData === 'object' && !portData.error;
 
-          if (hasPortData || (scanObj?.status === 'completed')) {
+          if (hasPortData || (res.scanObj?.status === 'completed')) {
             recordObservation(targetToUse, 'ports', portData || []);
 
             const portList = Array.isArray(rawPorts) ? rawPorts : [];
@@ -887,8 +960,6 @@ ${bodyStr}
 ────────────────────────
 [✓] Result retrieved from reconnaissance session.`;
             appendOutput('success', portOutput);
-          } else if (scanObj?.status === 'running' || currentScanStatus === 'running') {
-            appendOutput('warning', `[•] Port Scanner module status: RUNNING.\n\nPort Scanner results are not available yet.\n\nUse:\n  status\nto view reconnaissance progress.`);
           } else {
             appendOutput('error', `[!] No port data available for ${targetToUse}.`);
           }
@@ -905,9 +976,12 @@ ${bodyStr}
 
             if (!ipRegex.test(ipInput)) {
               appendOutput('info', `[•] Resolving domain '${ipInput}' to IPv4 address via active DNS records...`);
-              const scanObj = await getActiveScanTelemetry();
-              const dnsData = getModuleData(scanObj, 'dns');
+              
+              // Wait for DNS module first if needed
+              const dnsRes = await waitForModuleData('dns', 'DNS module');
+              const dnsData = dnsRes?.modData;
               const dnsA = dnsData?.records?.a || (Array.isArray(dnsData?.a) ? dnsData.a : null);
+
               if (Array.isArray(dnsA) && dnsA.length > 0) {
                 resolvedIp = dnsA[0];
                 appendOutput('info', `[✓] Domain '${ipInput}' resolved to IPv4: ${resolvedIp}`);
