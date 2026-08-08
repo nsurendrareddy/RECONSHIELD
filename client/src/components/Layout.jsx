@@ -43,6 +43,7 @@ const TOOLS_DATA = {
 }
 
 const PLATFORM_CARDS = [
+  { name: 'Research Shell', desc: 'Manual cyber intelligence terminal (RSH)', path: '/research-shell', icon: Terminal },
   { name: 'Academic Labs', desc: 'Cybersecurity learning resources', path: '/academic', icon: GraduationCap },
   { name: 'Resources Library', desc: 'Guides, checklists, reports', path: '/resources', icon: BookOpen },
   { name: 'Open Source Projects', desc: 'GitHub repositories', path: '/opensource', icon: Code },

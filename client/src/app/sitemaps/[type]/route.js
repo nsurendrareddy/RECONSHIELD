@@ -248,6 +248,7 @@ export async function GET(request, { params }) {
         { url: `${BASE_URL}/glossary`, priority: 0.7, freq: 'weekly' },
         { url: `${BASE_URL}/opensource`, priority: 0.8, freq: 'weekly' },
         { url: `${BASE_URL}/academic`, priority: 0.7, freq: 'weekly' },
+        { url: `${BASE_URL}/research-shell`, priority: 0.9, freq: 'daily' },
         { url: `${BASE_URL}/resources`, priority: 0.8, freq: 'weekly' },
         { url: `${BASE_URL}/stats`, priority: 0.8, freq: 'weekly' },
         { url: `${BASE_URL}/newsletter`, priority: 0.4, freq: 'monthly' },
