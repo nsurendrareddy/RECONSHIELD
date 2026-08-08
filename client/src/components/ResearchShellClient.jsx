@@ -149,12 +149,13 @@ export default function ResearchShellClient() {
     const cleanD = cleanHost(targetDomain);
     if (!cleanD) throw new Error('Invalid target domain specified');
     
-    // Check if we already have scan result cached for this session
+    // Return cached scan result if already completed in this session
     if (observations.assets[cleanD]?.rawScanResult) {
+      console.log(`[RSH DEBUG] Returning session cached scan data for: ${cleanD}`);
       return observations.assets[cleanD].rawScanResult;
     }
 
-    console.log(`[RSH DEBUG] Initiating real scan via ReconShield API for domain: ${cleanD}`);
+    console.log(`[RSH DEBUG] Calling startScan API endpoint for domain: ${cleanD}`);
     const scanData = await startScan(cleanD, true);
     const scanId = scanData.id;
 
@@ -162,13 +163,22 @@ export default function ResearchShellClient() {
     while (attempts < 60) {
       attempts++;
       await new Promise(resolve => setTimeout(resolve, 1500));
-      const statusRes = await getScanStatus(scanId);
-
-      if (statusRes.status === 'completed') {
-        const fullResult = await getScan(scanId);
-        return fullResult;
-      } else if (statusRes.status === 'failed') {
-        throw new Error(`ReconShield backend scanner returned failure status for ${cleanD}`);
+      
+      try {
+        const statusRes = await getScanStatus(scanId);
+        console.log(`[RSH DEBUG] Polling scan status (attempt ${attempts}):`, statusRes.status);
+        
+        if (statusRes.status === 'completed') {
+          const fullResult = await getScan(scanId);
+          return fullResult;
+        } else if (statusRes.status === 'failed') {
+          throw new Error(`ReconShield backend scanner returned failure for ${cleanD}`);
+        }
+      } catch (err) {
+        if (err.message.includes('failure') || attempts >= 60) {
+          throw err;
+        }
+        console.warn(`[RSH DEBUG] Transient polling status warning (attempt ${attempts}):`, err.message);
       }
     }
     throw new Error(`Scan request for ${cleanD} timed out waiting for backend completion`);
@@ -177,7 +187,7 @@ export default function ResearchShellClient() {
   // Execute Command Handler
   const executeCommand = async (cmdString) => {
     const rawCmd = cmdString.trim();
-    if (!rawCmd) return;
+    if (!rawCmd || isExecuting) return;
 
     // Add command prompt line to output buffer
     appendOutput('prompt', `rsh@reconshield:~$ ${rawCmd}`);
@@ -192,13 +202,13 @@ export default function ResearchShellClient() {
     const args = tokens.slice(1);
     const explicitArg = args[0] ? cleanHost(args[0]) : '';
     
-    // Resolve active target: explicit argument takes precedence, fallback to session currentTarget
+    // Target priority: explicit command argument > active investigation target > null
     const targetToUse = explicitArg || currentTarget;
 
     setIsExecuting(true);
     const startTime = performance.now();
 
-    console.log(`[RSH DEBUG] Command: '${command}', Explicit Arg: '${explicitArg}', Active Target: '${currentTarget}', Target To Use: '${targetToUse}'`);
+    console.log(`[RSH DEBUG] Executing Command: '${command}', Explicit Arg: '${explicitArg}', Active Target: '${currentTarget}', Target To Use: '${targetToUse}'`);
 
     try {
       switch (command) {
@@ -279,9 +289,10 @@ export default function ResearchShellClient() {
             const nsRecs = records.ns || [];
             const txtRecs = records.txt || [];
             const cnameRecs = records.cname || [];
+            const soaRecs = records.soa || [];
 
-            if (aRecs.length === 0 && aaaaRecs.length === 0 && mxRecs.length === 0 && nsRecs.length === 0 && txtRecs.length === 0 && cnameRecs.length === 0) {
-              appendOutput('error', `[✗] DNS lookup failed.\n\nReason:\nNo DNS records returned for ${targetToUse} from backend DNS resolver.`);
+            if (aRecs.length === 0 && aaaaRecs.length === 0 && mxRecs.length === 0 && nsRecs.length === 0 && txtRecs.length === 0 && cnameRecs.length === 0 && soaRecs.length === 0) {
+              appendOutput('error', `[✗] DNS lookup failed.\n\nReason:\nNo DNS records returned for ${targetToUse} from ReconShield DNS backend.`);
               break;
             }
 
@@ -295,6 +306,7 @@ export default function ResearchShellClient() {
             if (nsRecs.length > 0) dnsLines.push(`NS Records:\n  ${nsRecs.join('\n  ')}`);
             if (txtRecs.length > 0) dnsLines.push(`TXT Records:\n  ${txtRecs.join('\n  ')}`);
             if (cnameRecs.length > 0) dnsLines.push(`CNAME Records:\n  ${cnameRecs.join('\n  ')}`);
+            if (soaRecs.length > 0) dnsLines.push(`SOA Records:\n  ${soaRecs.join('\n  ')}`);
 
             const dnsOutput = `[✓] DNS lookup completed: ${targetToUse}
 ────────────────────────────────────────────
@@ -320,6 +332,11 @@ ${dnsLines.join('\n\n')}
           try {
             const scanResult = await fetchDomainScanData(targetToUse);
             const whoisData = scanResult?.whois || scanResult?.domain || {};
+
+            if (whoisData.error && whoisData.error.includes('429')) {
+              appendOutput('warning', `[!] WHOIS rate limit reached.\n\nReason:\n${whoisData.error}`);
+              break;
+            }
 
             const registrar = whoisData.registrar || 'N/A';
             const created = whoisData.created || whoisData.creation_date || 'N/A';
@@ -524,17 +541,38 @@ ${Array.isArray(portList) && portList.length > 0 ? portList.map(p => `PORT ${p.p
         }
 
         case 'ip': {
-          const ipOrTarget = targetToUse || '8.8.8.8';
-          appendOutput('info', `[•] Querying BGP geolocation & IP reputation engine for ${ipOrTarget}...`);
+          let ipTarget = explicitArg || currentTarget || '8.8.8.8';
+          appendOutput('info', `[•] Querying BGP geolocation & IP reputation engine for ${ipTarget}...`);
 
           try {
-            const ipData = await scanIp(ipOrTarget);
+            let resolvedIp = ipTarget;
+            const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+
+            // If ipTarget is a domain (e.g. google.com), first resolve its IPv4 address via DNS A record!
+            if (!ipRegex.test(ipTarget)) {
+              appendOutput('info', `[•] Resolving domain '${ipTarget}' to IPv4 address...`);
+              const scanResult = await fetchDomainScanData(ipTarget).catch(() => null);
+              const dnsA = scanResult?.dns?.records?.a;
+              if (Array.isArray(dnsA) && dnsA.length > 0) {
+                resolvedIp = dnsA[0];
+                appendOutput('info', `[✓] Domain '${ipTarget}' resolved to IPv4: ${resolvedIp}`);
+              }
+            }
+
+            console.log(`[RSH DEBUG] Calling scanIp API for resolved IP: ${resolvedIp}`);
+            const ipData = await scanIp(resolvedIp);
+            
+            if (!ipData || (!ipData.ip && !ipData.country && !ipData.country_name)) {
+              throw new Error(`No IP intelligence data returned for ${resolvedIp}`);
+            }
+
             const elapsed = ((performance.now() - startTime) / 1000).toFixed(2);
-            recordObservation(ipOrTarget, 'ip', ipData);
+            recordObservation(ipTarget, 'ip', ipData);
 
             const ipOutput = `IP INTELLIGENCE & GEOLOCATION
 ────────────────────────────────────────────
-IPv4 Address: ${ipData.ip || ipOrTarget}
+Target Domain / IP: ${ipTarget}
+IPv4 Address: ${ipData.ip || resolvedIp}
 City/Region: ${ipData.city || 'N/A'}, ${ipData.region || 'N/A'}
 Country: ${ipData.country || ipData.country_name || 'N/A'}
 Autonomous System: ${ipData.asn || 'N/A'} (${ipData.org || 'N/A'})
@@ -543,7 +581,7 @@ Autonomous System: ${ipData.asn || 'N/A'} (${ipData.org || 'N/A'})
 [✓] Completed in ${elapsed}s`;
             appendOutput('success', ipOutput);
           } catch (err) {
-            console.error(`[RSH ERROR] IP query failed for ${ipOrTarget}:`, err);
+            console.error(`[RSH ERROR] IP query failed for ${ipTarget}:`, err);
             appendOutput('error', `[✗] IP intelligence lookup failed.\n\nReason:\n${err.message}`);
           }
           break;
@@ -783,7 +821,9 @@ ${JSON.stringify(cleanPayload, null, 2)}
 
   // Quick Command click inserts command into terminal input box
   const handleQuickCommandClick = (cmdName) => {
-    setInputLine(cmdName === 'recon' ? 'recon ' : cmdName + (currentTarget ? ` ${currentTarget}` : ' '));
+    if (isExecuting) return;
+    const initialText = cmdName === 'recon' ? 'recon ' : (cmdName + (currentTarget ? ` ${currentTarget}` : ' '));
+    setInputLine(initialText);
     if (inputRef.current) {
       inputRef.current.focus();
     }
